@@ -108,14 +108,14 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">菜单列表</li>
         <!-- Optionally, you can add icons to the links -->
-        <li v-for="level0 in menusLevel0" class="treeview menu-open">
+        <li v-for="level0 in menusLevel0" :key="level0" class="treeview menu-open">
           <a href="#"><i class="fa fa-th"></i> <span>{{level0.Name}}</span>
             <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
           </a>
           <ul class="treeview-menu" style="display: block;">
-            <li v-for="level1 in getMenusLevel1(level0.Id)"><router-link :to="'/'+level1.Url"><i class="fa fa-circle-o"></i> <span>{{level1.Name}}</span></router-link></li>
+            <li v-for="level1 in getMenusLevel1(level0.Id)" :key="level1"><router-link :to="'/'+level1.Url"><i class="fa fa-circle-o"></i> <span>{{level1.Name}}</span></router-link></li>
           </ul>
         </li>
       </ul>
