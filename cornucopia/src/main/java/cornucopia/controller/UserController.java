@@ -1,9 +1,9 @@
-package cornucopia.user;
+package cornucopia.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cornucopia.common.JsonResult;
+import cornucopia.model.JsonResult;
 
 @RestController
 @RequestMapping("/user")

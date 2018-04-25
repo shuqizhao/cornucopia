@@ -1,4 +1,4 @@
-package cornucopia.common;
+package cornucopia.model;
 
 public class JsonResult<T> {
 	private int code;
