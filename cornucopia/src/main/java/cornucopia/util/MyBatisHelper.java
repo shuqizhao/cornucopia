@@ -34,4 +34,8 @@ public class MyBatisHelper {
 	public static SqlSessionFactory getSession() {
 		return sqlSessionFactory;
 	}
+	
+	public static <T> T getMapper(Class<T> mapper) {
+		return sqlSessionFactory.openSession().getMapper(mapper);
+	}
 }
