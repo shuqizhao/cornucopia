@@ -6,14 +6,14 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 
-const XcfgDevList = r => require.ensure([], () => r(require('../biz/xcfg/xcfgDevList.vue')), 'xcfg')
-const XcfgTestingList = r => require.ensure([], () => r(require('../biz/xcfg/xcfgTestingList.vue')), 'xcfg')
-const XcfgLabsList = r => require.ensure([], () => r(require('../biz/xcfg/xcfgLabsList.vue')), 'xcfg')
-const XcfgProdList = r => require.ensure([], () => r(require('../biz/xcfg/xcfgProdList.vue')), 'xcfg')
-const XcfgAdd = r => require.ensure([], () => r(require('../biz/xcfg/xcfgAdd.vue')), 'xcfg')
-const XcfgApolloAdd = r => require.ensure([], () => r(require('../biz/xcfg/xcfgApolloAdd.vue')), 'xcfg')
-const XcfgView = r => require.ensure([], () => r(require('../biz/xcfg/xcfgView.vue')), 'xcfg')
-const XcfgHistoryView = r => require.ensure([], () => r(require('../biz/xcfg/xcfgHistoryView.vue')), 'xcfg')
+// const XcfgDevList = r => require.ensure([], () => r(require('../biz/xcfg/xcfgDevList.vue')), 'xcfg')
+// const XcfgTestingList = r => require.ensure([], () => r(require('../biz/xcfg/xcfgTestingList.vue')), 'xcfg')
+// const XcfgLabsList = r => require.ensure([], () => r(require('../biz/xcfg/xcfgLabsList.vue')), 'xcfg')
+// const XcfgProdList = r => require.ensure([], () => r(require('../biz/xcfg/xcfgProdList.vue')), 'xcfg')
+// const XcfgAdd = r => require.ensure([], () => r(require('../biz/xcfg/xcfgAdd.vue')), 'xcfg')
+// const XcfgApolloAdd = r => require.ensure([], () => r(require('../biz/xcfg/xcfgApolloAdd.vue')), 'xcfg')
+// const XcfgView = r => require.ensure([], () => r(require('../biz/xcfg/xcfgView.vue')), 'xcfg')
+// const XcfgHistoryView = r => require.ensure([], () => r(require('../biz/xcfg/xcfgHistoryView.vue')), 'xcfg')
 
 
 const UserList = r => require.ensure([], () => r(require('../biz/auth/user.vue')), 'auth')
@@ -41,30 +41,6 @@ const router = new VueRouter({
   routes: [{
     path: '/',
     component: UserList
-  },{
-    path: '/xcfg/dev',
-    component: XcfgDevList
-  },{
-    path: '/xcfg/testing',
-    component: XcfgTestingList
-  },{
-    path: '/xcfg/labs',
-    component: XcfgLabsList
-  },{
-    path: '/xcfg/prod',
-    component: XcfgProdList
-  }, {
-    path: '/xcfg/xcfgview',
-    component: XcfgView
-  }, {
-    path: '/xcfg/xcfgadd',
-    component: XcfgAdd
-  }, {
-    path: '/xcfg/xcfgapolloadd',
-    component: XcfgApolloAdd
-  }, {
-    path: '/xcfg/xcfgHistoryView',
-    component: XcfgHistoryView
   }, {
     path: '/auth/user',
     component: UserList

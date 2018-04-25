@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cornucopia.dao.UserDao">
+    <resultMap type="cornucopia.model.UserEntity" id="userDao">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="pwd" property="pwd" />
+    </resultMap>
+
+    <select id="getUserEntity" resultType="cornucopia.model.UserEntity"
+        resultMap="userDao">
+        SELECT * FROM user WHERE name = #{un} and pwd = #{pwd} and is_deleted=0 and is_enabled=1
+    </select>
+</mapper>
