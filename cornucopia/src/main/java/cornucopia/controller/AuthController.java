@@ -19,8 +19,7 @@ public class AuthController {
 	public JsonResult<String> login(HttpServletResponse response, @ModelAttribute("Un") String un,
 			@ModelAttribute("Pwd") String pwd) {
 		int code = 500;
-		UserService userService = new UserService();
-		boolean isLogin = userService.isLogin(un, pwd);
+		boolean isLogin = UserService.newInstance().isLogin(un, pwd);
 		if(isLogin)
 		{
 			code = 200;
