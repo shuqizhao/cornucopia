@@ -16,8 +16,10 @@ public class MenuService {
 		return instance;
 	}
 	
+	MenuDao menuDao = MyBatisHelper.getMapper(MenuDao.class);
+	
 	public List<MenuEntity> getAllMenus(){
-		MenuDao menuDao = MyBatisHelper.getMapper(MenuDao.class);
-		return menuDao.getAllMenus();
+		List<MenuEntity> menus = menuDao.getAllMenus();
+		return menus;
 	}
 }

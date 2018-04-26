@@ -27,10 +27,10 @@ const RoleAdd = r => require.ensure([], () => r(require('../biz/auth/roleAdd.vue
 
 const ResourceList = r => require.ensure([], () => r(require('../biz/auth/resource.vue')), 'auth')
 
-
-/**
- *  加载模块
- */
+const DashboardView = r => require.ensure([], () => r(require('../biz/dashboard.vue')), 'xcfg')
+    /**
+     *  加载模块
+     */
 Vue.use(VueRouter)
 
 /**
@@ -38,34 +38,34 @@ Vue.use(VueRouter)
  */
 
 const router = new VueRouter({
-  routes: [{
-    path: '/',
-    component: UserList
-  }, {
-    path: '/auth/user',
-    component: UserList
-  }, {
-    path: '/auth/userview',
-    component: UserView
-  }, {
-    path: '/auth/useradd',
-    component: UserAdd
-  } ,{
-    path: '/auth/usermod',
-    component: UserMod
-  }, {
-    path: '/auth/role',
-    component: RoleList
-  }, {
-    path: '/auth/roleview',
-    component: RoleView
-  }, {
-    path: '/auth/roleadd',
-    component: RoleAdd
-  }, {
-    path: '/auth/resource',
-    component: ResourceList
-  }]
+    routes: [{
+        path: '/',
+        component: DashboardView
+    }, {
+        path: '/auth/user',
+        component: UserList
+    }, {
+        path: '/auth/userview',
+        component: UserView
+    }, {
+        path: '/auth/useradd',
+        component: UserAdd
+    }, {
+        path: '/auth/usermod',
+        component: UserMod
+    }, {
+        path: '/auth/role',
+        component: RoleList
+    }, {
+        path: '/auth/roleview',
+        component: RoleView
+    }, {
+        path: '/auth/roleadd',
+        component: RoleAdd
+    }, {
+        path: '/auth/resource',
+        component: ResourceList
+    }]
 })
 
 export default router
