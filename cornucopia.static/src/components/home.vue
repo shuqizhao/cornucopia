@@ -93,7 +93,7 @@
       </div>
 
       <!-- search form (Optional) -->
-      <form action="#" method="get" class="sidebar-form">
+      <!-- <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="q" id="searchText" class="form-control" @keyup="filterMenus" placeholder="Search...">
           <span class="input-group-btn">
@@ -101,12 +101,12 @@
               </button>
             </span>
         </div>
-      </form>
+      </form> -->
       <!-- /.search form -->
 
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">菜单列表</li>
+        <!-- <li class="header">菜单列表</li> -->
         <!-- Optionally, you can add icons to the links -->
         <li v-for="level0 in menusLevel0" :key="level0.Id" class="treeview menu-open">
           <a href="#"><i class="fa fa-th"></i> <span>{{level0.Name}}</span>
