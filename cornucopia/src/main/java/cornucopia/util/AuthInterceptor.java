@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import cornucopia.service.WhiteListService;
+
 public class AuthInterceptor implements HandlerInterceptor {
 	/**
 	 * controller 执行之前调用
@@ -15,8 +17,9 @@ public class AuthInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		String url = request.getRequestURI();
-//		System.out.println(url);
-		if (url.equals("/auth/login")) {
+		boolean isAllowPass =  WhiteListService.getInstance().allowPass(url);
+//		Log4jHelper.LOGGER.info(url);
+		if (isAllowPass) {
 			return true;
 		} else {
 			response.setStatus(403);
