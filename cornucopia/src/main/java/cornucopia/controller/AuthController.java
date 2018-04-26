@@ -1,5 +1,7 @@
 package cornucopia.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -8,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
+import cornucopia.entity.MenuEntity;
+import cornucopia.service.MenuService;
 import cornucopia.service.UserService;
 import cornucopia.util.CookieUtil;
 
@@ -20,8 +24,7 @@ public class AuthController {
 			@ModelAttribute("Pwd") String pwd) {
 		int code = 500;
 		boolean isLogin = UserService.getInstance().isLogin(un, pwd);
-		if(isLogin)
-		{
+		if (isLogin) {
 			code = 200;
 			CookieUtil.set(response, "adAuthCookie", "true", 3600 * 24);
 			CookieUtil.set(response, "loginUser", un, 3600 * 24);
@@ -30,6 +33,16 @@ public class AuthController {
 		jr.setCode(code);
 		jr.setMessage("login sucess!");
 		jr.setData("1");
+		return jr;
+	}
+
+	@RequestMapping(value = { "/menus", "" }, method = RequestMethod.GET)
+	public JsonResult<List<MenuEntity>> menus(HttpServletResponse response) {
+		int code = 200;
+		JsonResult<List<MenuEntity>> jr = new JsonResult<List<MenuEntity>>();
+		jr.setCode(code);
+		List<MenuEntity> menus = MenuService.getInstance().getAllMenus();
+		jr.setData(menus);
 		return jr;
 	}
 }

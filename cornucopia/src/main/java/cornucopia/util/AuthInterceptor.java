@@ -2,6 +2,7 @@ package cornucopia.util;
 
 import java.io.OutputStream;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,18 +18,24 @@ public class AuthInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		String url = request.getRequestURI();
-		boolean isAllowPass =  WhiteListService.getInstance().allowPass(url);
-//		Log4jHelper.LOGGER.info(url);
+		boolean isAllowPass = WhiteListService.getInstance().allowPass(url);
+		// Log4jHelper.LOGGER.info(url);
 		if (isAllowPass) {
 			return true;
-		} else {
-			response.setStatus(403);
-			response.setHeader("content-type", "text/html;charset=UTF-8");
-			String data = "Unauthorized authority!";
-			OutputStream outputStream = response.getOutputStream();
-			byte[] dataByteArr = data.getBytes("UTF-8");
-			outputStream.write(dataByteArr);
-			return false;
 		}
+		Cookie cookie = CookieUtil.get(request, "adAuthCookie");
+		if (cookie != null) {
+			String adAuthCookie = cookie.getValue();
+			if (adAuthCookie.equals("true")) {
+				return true;
+			}
+		}
+		response.setStatus(403);
+		response.setHeader("content-type", "text/html;charset=UTF-8");
+		String data = "Unauthorized authority!";
+		OutputStream outputStream = response.getOutputStream();
+		byte[] dataByteArr = data.getBytes("UTF-8");
+		outputStream.write(dataByteArr);
+		return false;
 	}
 }

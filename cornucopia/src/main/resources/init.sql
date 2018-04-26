@@ -13,3 +13,10 @@ CREATE PROCEDURE sp_white_list_all()
 BEGIN
 select * from sys_white_list where is_deleted=0 and is_enabled=1;
 end;
+
+drop PROCEDURE if EXISTS sp_menu_all;
+
+CREATE PROCEDURE sp_menu_all()
+BEGIN
+select * from sys_menu where is_deleted=0 and is_enabled=1;
+end;
