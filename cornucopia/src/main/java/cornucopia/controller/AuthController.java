@@ -23,9 +23,9 @@ public class AuthController {
 		if(isLogin)
 		{
 			code = 200;
+			CookieUtil.set(response, "adAuthCookie", "true", 3600 * 24);
+			CookieUtil.set(response, "loginUser", un, 3600 * 24);
 		}
-		CookieUtil.set(response, "adAuthCookie", "true", 3600 * 24);
-		CookieUtil.set(response, "loginUser", un, 3600 * 24);
 		JsonResult<String> jr = new JsonResult<String>();
 		jr.setCode(code);
 		jr.setMessage("login sucess!");
