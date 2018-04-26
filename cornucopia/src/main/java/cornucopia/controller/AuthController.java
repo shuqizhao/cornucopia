@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import cornucopia.model.JsonResult;
+import cornucopia.entity.JsonResult;
 import cornucopia.service.UserService;
 import cornucopia.util.CookieUtil;
 
@@ -19,7 +19,7 @@ public class AuthController {
 	public JsonResult<String> login(HttpServletResponse response, @ModelAttribute("Un") String un,
 			@ModelAttribute("Pwd") String pwd) {
 		int code = 500;
-		boolean isLogin = UserService.newInstance().isLogin(un, pwd);
+		boolean isLogin = UserService.getInstance().isLogin(un, pwd);
 		if(isLogin)
 		{
 			code = 200;
