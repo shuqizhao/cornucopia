@@ -41,6 +41,9 @@ const router = new VueRouter({
     routes: [{
         path: '/',
         component: DashboardView
+    },{
+        path: '/dashboard',
+        component: DashboardView
     }, {
         path: '/auth/user',
         component: UserList

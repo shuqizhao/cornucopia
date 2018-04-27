@@ -109,14 +109,14 @@
         <!-- <li class="header">菜单列表</li> -->
         <!-- Optionally, you can add icons to the links -->
         <li v-for="level0 in menusLevel0" :key="level0.Id" :class="level0.Type==0?'treeview menu-open':''">
-          <a href="#">
+          <router-link :to="level0.Type==1?'/'+level0.Url:'#'">
             <i v-if="level0.Icon" :class="'fa ' + level0.Icon"></i> 
             <i v-else class="fa fa-th"></i> 
             <span>{{level0.Name}}</span>
             <span v-if="level0.Type==0" class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
-          </a>
+          </router-link>
           <ul v-if="level0.Type==0" class="treeview-menu" style="display: block;">
             <li v-for="level1 in getMenusLevel1(level0.Id)" :key="level1.Id"><router-link :to="'/'+level1.Url"><i class="fa fa-circle-o"></i> <span>{{level1.Name}}</span></router-link></li>
           </ul>
@@ -280,14 +280,14 @@ export default {
       var arr = [];
       for (var i = 0; i < this.menus.length; i++) {
         if (this.menus[i].ParentId == id) {
-           var searchText=$('#searchText').val();
-            if(searchText){
-              if(this.menus[i].Name.indexOf(searchText)!=-1){
-                arr.push(this.menus[i]);
-              }
-            }else{
+          var searchText = $("#searchText").val();
+          if (searchText) {
+            if (this.menus[i].Name.indexOf(searchText) != -1) {
               arr.push(this.menus[i]);
             }
+          } else {
+            arr.push(this.menus[i]);
+          }
         }
       }
       return arr;
@@ -326,7 +326,7 @@ export default {
       return str;
     },
     filterMenus: function() {
-       this.menusLevel0 = this.getMenusLevel0();
+      this.menusLevel0 = this.getMenusLevel0();
     }
   }
 };

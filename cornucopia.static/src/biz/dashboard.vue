@@ -107,7 +107,7 @@
 
                   <div class="chart">
                     <!-- Sales Chart Canvas -->
-                    <vue-chart type="bar" :data="chartData" height="200px;"></vue-chart>
+                    <vue-chart type="bar" :data="chartData" :height="200"></vue-chart>
                   </div>
                   <!-- /.chart-responsive -->
                 </div>
