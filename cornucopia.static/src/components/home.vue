@@ -108,13 +108,16 @@
       <ul class="sidebar-menu" data-widget="tree">
         <!-- <li class="header">菜单列表</li> -->
         <!-- Optionally, you can add icons to the links -->
-        <li v-for="level0 in menusLevel0" :key="level0.Id" class="treeview menu-open">
-          <a href="#"><i class="fa fa-th"></i> <span>{{level0.Name}}</span>
-            <span class="pull-right-container">
+        <li v-for="level0 in menusLevel0" :key="level0.Id" :class="level0.Type==0?'treeview menu-open':''">
+          <a href="#">
+            <i v-if="level0.Icon" :class="'fa ' + level0.Icon"></i> 
+            <i v-else class="fa fa-th"></i> 
+            <span>{{level0.Name}}</span>
+            <span v-if="level0.Type==0" class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
           </a>
-          <ul class="treeview-menu" style="display: block;">
+          <ul v-if="level0.Type==0" class="treeview-menu" style="display: block;">
             <li v-for="level1 in getMenusLevel1(level0.Id)" :key="level1.Id"><router-link :to="'/'+level1.Url"><i class="fa fa-circle-o"></i> <span>{{level1.Name}}</span></router-link></li>
           </ul>
         </li>
@@ -268,14 +271,6 @@ export default {
     },
     filterLevel0: function(item) {
       if (item.ParentId == 0) {
-        // var searchText=$('#searchText').val();
-        // if(searchText){
-        //   if(item.Name.indexOf(searchText)!=-1){
-        //     return true;
-        //   }else{
-        //     return false;
-        //   }
-        // }
         return true;
       } else {
         return false;

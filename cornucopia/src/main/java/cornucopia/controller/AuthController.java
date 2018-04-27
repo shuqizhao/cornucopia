@@ -38,10 +38,9 @@ public class AuthController {
 
 	@RequestMapping(value = { "/menus", "" }, method = RequestMethod.GET)
 	public JsonResult<List<MenuEntity>> menus(HttpServletResponse response) {
-		int code = 200;
-		JsonResult<List<MenuEntity>> jr = new JsonResult<List<MenuEntity>>();
-		jr.setCode(code);
 		List<MenuEntity> menus = MenuService.getInstance().getAllMenus();
+		JsonResult<List<MenuEntity>> jr = new JsonResult<List<MenuEntity>>();
+		jr.setCode(200);
 		jr.setData(menus);
 		return jr;
 	}
