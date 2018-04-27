@@ -27,7 +27,7 @@ const RoleAdd = r => require.ensure([], () => r(require('../biz/auth/roleAdd.vue
 
 const ResourceList = r => require.ensure([], () => r(require('../biz/auth/resource.vue')), 'auth')
 
-const DashboardView = r => require.ensure([], () => r(require('../biz/dashboard.vue')), 'xcfg')
+const DashboardView = r => require.ensure([], () => r(require('../biz/dashboard.vue')), 'dashboard')
     /**
      *  加载模块
      */
