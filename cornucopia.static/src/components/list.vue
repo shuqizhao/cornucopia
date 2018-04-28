@@ -85,7 +85,7 @@
         </div>
         <!-- <hr v-if="SearchItemsCount!=0" /> -->
         <div class="box-body">
-            <table id="tableList" style="width:100%" class="table table-bordered table-hover">
+            <table id="tableList" style="width:100%;white-space: nowrap;" class="table table-bordered table-hover">
             </table>
         </div>
     </div>
@@ -97,6 +97,8 @@
 import "datatables.net-bs/css/dataTables.bootstrap.css";
 import "datatables.net/js/jquery.dataTables";
 import "datatables.net-bs/js/dataTables.bootstrap";
+import "datatables.net-fixedcolumns/js/dataTables.fixedColumns"
+import "datatables.net-fixedcolumns-bs/css/fixedColumns.bootstrap.css"
 
 import "bootstrap-daterangepicker/daterangepicker.css";
 import "bootstrap-daterangepicker/daterangepicker";
@@ -367,7 +369,8 @@ export default {
       bSort: false,
       bLengthChange: true,
       sServerMethod: "POST",
-      sDom: '<"H"<"dataTables_function"/>rp>t<"F"lip>'
+      sDom: '<"H"<"dataTables_function"/>rp>t<"F"lip>',
+      "pagingType": "full_numbers",
     };
 
     var lastCfg = $.extend(true, dataTableCfg, this.cfg);

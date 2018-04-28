@@ -1,5 +1,7 @@
 package cornucopia.service;
 
+import java.util.List;
+
 import cornucopia.dao.UserDao;
 import cornucopia.entity.UserEntity;
 import cornucopia.util.MyBatisHelper;
@@ -24,5 +26,9 @@ public class UserService {
 	public boolean isLogin(String un, String pwd) {
 		UserEntity userEntity = this.getUserEntity(un, pwd);
 		return userEntity != null;
+	}
+	
+	public List<UserEntity> getUsersByPage(int start,int length){
+		return userdao.getUsersByPage(start, length);
 	}
 }

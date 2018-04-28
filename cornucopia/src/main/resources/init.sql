@@ -20,3 +20,10 @@ CREATE PROCEDURE sp_menu_all()
 BEGIN
 select * from sys_menu where is_deleted=0 and is_enabled=1;
 end;
+
+drop PROCEDURE if EXISTS sp_user_get_by_page;
+
+CREATE PROCEDURE sp_user_get_by_page(start INT,length INT)
+BEGIN
+	select * from sys_user limit start,length;
+END;

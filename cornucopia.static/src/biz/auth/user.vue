@@ -7,19 +7,24 @@ export default {
     var self = this;
     return {
       cfg: {
-        isShowSearchArea:"true",
+        // isShowSearchArea:"true",
+        //  scrollX:        true,
+      // scrollCollapse: true,
+        fixedColumns:   {
+            leftColumns: 4
+        },
         title: "用户管理列表",
         parentTitle:'权限管理',
         url: this.getGlobalData().ApiBaseUrl +"/user/list",
         columns: [
           {
             title: "用户名",
-            name: "Name",
+            name: "name",
             isSearch: true
           },
           {
             title: "是否启用",
-            name: "IsEnabled",
+            name: "isEnabled",
             isSearch: true,
             type: "combox",
             data: [
