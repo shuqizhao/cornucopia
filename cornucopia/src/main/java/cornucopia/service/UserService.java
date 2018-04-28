@@ -27,8 +27,8 @@ public class UserService {
 		UserEntity userEntity = this.getUserEntity(un, pwd);
 		return userEntity != null;
 	}
-	
-	public List<UserEntity> getUsersByPage(int start,int length){
+
+	public List<UserEntity> getUsersByPage(int start, int length) {
 		return userdao.getUsersByPage(start, length);
 	}
 }

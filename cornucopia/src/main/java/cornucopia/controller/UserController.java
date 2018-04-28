@@ -1,6 +1,7 @@
 package cornucopia.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +17,15 @@ import cornucopia.util.DataTableResult;
 @RequestMapping("/user")
 public class UserController {
 
-	@RequestMapping(value = { "/list"}, method = RequestMethod.POST)
+	@RequestMapping(value = { "/list" }, method = RequestMethod.POST)
 	public DataTableResult<UserEntity> list(DataTableParameter dtp) {
-		List<UserEntity> users = UserService.getInstance().getUsersByPage(dtp.getiDisplayStart(), dtp.getiDisplayLength());
-//		List<UserEntity> users = new ArrayList<UserEntity>();
-		DataTableResult<UserEntity> dtr = new DataTableResult<UserEntity>(dtp.getsEcho() + 1, 9, 9, users);
+		List<UserEntity> users = UserService.getInstance().getUsersByPage(dtp.getiDisplayStart(),
+				dtp.getiDisplayLength());
+		int count = 0;
+		if (users != null && users.size() > 0) {
+			count = users.get(0).getTotalCount();
+		}
+		DataTableResult<UserEntity> dtr = new DataTableResult<UserEntity>(dtp.getsEcho() + 1, count, count, users);
 		return dtr;
 	}
 }

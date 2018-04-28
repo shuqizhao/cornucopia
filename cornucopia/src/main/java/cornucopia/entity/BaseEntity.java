@@ -6,9 +6,10 @@ public class BaseEntity {
 	private int isDeleted;
 	private int isEnabled;
 	private int createBy;
-	private String createDate;
+	private String createTime;
 	private int updateBy;
-	private String updateDate;
+	private String updateTime;
+	private int totalCount;
 
 	public int getId() {
 		return id;
@@ -50,12 +51,12 @@ public class BaseEntity {
 		this.createBy = createBy;
 	}
 
-	public String getCreateDate() {
-		return createDate;
+	public String getCreateTime() {
+		return createTime;
 	}
 
-	public void setCreateDate(String createDate) {
-		this.createDate = createDate;
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
 	}
 
 	public int getUpdateBy() {
@@ -66,11 +67,19 @@ public class BaseEntity {
 		this.updateBy = updateBy;
 	}
 
-	public String getUpdateDate() {
-		return updateDate;
+	public String getUpdateTime() {
+		return updateTime;
 	}
 
-	public void setUpdateDate(String updateDate) {
-		this.updateDate = updateDate;
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public int getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(int totalCount) {
+		this.totalCount = totalCount;
 	}
 }

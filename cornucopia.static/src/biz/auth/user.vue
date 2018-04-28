@@ -8,14 +8,14 @@ export default {
     return {
       cfg: {
         // isShowSearchArea:"true",
-        //  scrollX:        true,
-      // scrollCollapse: true,
-        fixedColumns:   {
-            leftColumns: 4
+        scrollX: true,
+        scrollCollapse: true,
+        fixedColumns: {
+          leftColumns: 4
         },
         title: "用户管理列表",
-        parentTitle:'权限管理',
-        url: this.getGlobalData().ApiBaseUrl +"/user/list",
+        parentTitle: "权限管理",
+        url: this.getGlobalData().ApiBaseUrl + "/user/list",
         columns: [
           {
             title: "用户名",
@@ -44,17 +44,17 @@ export default {
           },
           {
             title: "创建时间",
-            name: "CreateTime",
+            name: "createTime",
             isSearch: true,
             type: "timer"
           },
           {
             title: "最后登录时间",
-            name: "LastLoginTime"
+            name: "lastLoginTime"
           }
         ],
         fnRowCallback: function(row, data) {
-          if (data.IsEnabled) {
+          if (data.isEnabled) {
             $("td:eq(3)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
           } else {
             $("td:eq(3)", row).html('<i class="el-icon-close"></i>');
@@ -65,11 +65,11 @@ export default {
           more: [
             {
               text: "停用",
-              url: this.getGlobalData().ApiBaseUrl +"/user/disable"
+              url: this.getGlobalData().ApiBaseUrl + "/user/disable"
             },
             {
               text: "启用",
-              url: this.getGlobalData().ApiBaseUrl +"/user/enable"
+              url: this.getGlobalData().ApiBaseUrl + "/user/enable"
             }
           ],
           common: [

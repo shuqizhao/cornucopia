@@ -25,5 +25,9 @@ drop PROCEDURE if EXISTS sp_user_get_by_page;
 
 CREATE PROCEDURE sp_user_get_by_page(start INT,length INT)
 BEGIN
-	select * from sys_user limit start,length;
+   declare totalCount int;
+   select count(1) into totalCount from sys_user;
+	select *,totalCount from sys_user limit start,length;
+	
+	
 END;
