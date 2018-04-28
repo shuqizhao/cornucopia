@@ -19,7 +19,7 @@ import cornucopia.util.CookieUtil;
 @RequestMapping("/auth")
 public class AuthController {
 
-	@RequestMapping(value = { "/login", "" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/login"}, method = RequestMethod.POST)
 	public JsonResult<String> login(HttpServletResponse response, @ModelAttribute("Un") String un,
 			@ModelAttribute("Pwd") String pwd) {
 		int code = 500;
@@ -36,7 +36,7 @@ public class AuthController {
 		return jr;
 	}
 
-	@RequestMapping(value = { "/menus", "" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/menus"}, method = RequestMethod.GET)
 	public JsonResult<List<MenuEntity>> menus(HttpServletResponse response) {
 		List<MenuEntity> menus = MenuService.getInstance().getAllMenus();
 		JsonResult<List<MenuEntity>> jr = new JsonResult<List<MenuEntity>>();

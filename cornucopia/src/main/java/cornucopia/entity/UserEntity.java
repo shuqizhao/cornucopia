@@ -1,6 +1,6 @@
 package cornucopia.entity;
 
-public class UserEntity {
+public class UserEntity extends BaseEntity{
 	private int id;
 	
 	private String name;
