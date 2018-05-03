@@ -13,19 +13,19 @@ export default {
         columns: [
           {
             title: "id",
-            name: "Id",
+            name: "id",
             isHide: true
           },
           {
             title: "角色名",
-            name: "Name"
+            name: "name"
           },
           {
             title: "创建时间",
-            name: "CreateTime"
+            name: "createTime"
           }
         ],
-        idName: "Id",
+        idName: "id",
         functions: {
           common: [
             {

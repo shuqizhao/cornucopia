@@ -371,6 +371,7 @@ export default {
       sServerMethod: "POST",
       sDom: '<"H"<"dataTables_function"/>rp>t<"F"lip>',
       "pagingType": "full_numbers",
+      "lengthMenu": [[5,10, 25, 50, 100,300], [5,10, 25, 50, 100,300]]
     };
 
     var lastCfg = $.extend(true, dataTableCfg, this.cfg);

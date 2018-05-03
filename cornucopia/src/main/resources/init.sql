@@ -31,3 +31,14 @@ BEGIN
 	
 	
 END;
+
+drop PROCEDURE if EXISTS sp_role_get_by_page;
+
+CREATE PROCEDURE sp_role_get_by_page(start INT,length INT)
+BEGIN
+   declare totalCount int;
+   select count(1) into totalCount from sys_role;
+	select *,totalCount from sys_role limit start,length;
+	
+	
+END;

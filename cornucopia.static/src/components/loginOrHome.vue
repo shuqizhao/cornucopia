@@ -1,5 +1,5 @@
 <template>
-    <home v-if="isLogin"></home>
+    <home v-if="isLogin" :collapse="this.collapse+''"></home>
     <login v-else></login>
 </template>
 
@@ -35,6 +35,7 @@ const Home = r =>
 const Login = r =>
   require.ensure([], () => r(require("../components/login.vue")), "login");
 export default {
+  props: ["collapse"],
   data() {
     return {
       isLogin: this.getCookie(this.getGlobalData().LoginCookeName),
