@@ -14,7 +14,7 @@ export default {
           leftColumns: 4
         },
         title: "用户管理列表",
-        parentTitle: "权限管理",
+        parentTitle: "系统管理",
         url: this.getGlobalData().ApiBaseUrl + "/user/list",
         columns: [
           {
@@ -43,8 +43,34 @@ export default {
             ]
           },
           {
+            title: "工号",
+            name: "personNumber",
+            isSearch: true
+          },{
+            title: "职位",
+            name: "jobId"
+          },{
+            title: "工作邮箱",
+            name: "email"
+          },{
+            title: "手机号码",
+            name: "phone"
+          },{
+            title: "所属上级",
+            name: "managerId"
+          },{
+            title: "所在部门",
+            name: "orgId"
+          },
+            {
             title: "创建时间",
             name: "createTime",
+            isSearch: true,
+            type: "timer"
+          },
+           {
+            title: "修改时间",
+            name: "updateTime",
             isSearch: true,
             type: "timer"
           },
