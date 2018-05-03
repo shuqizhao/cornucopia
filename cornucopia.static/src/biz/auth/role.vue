@@ -18,11 +18,11 @@ export default {
           },
           {
             title: "角色名",
-            name: "Name"
+            name: "name"
           },
           {
             title: "创建时间",
-            name: "CreateTime"
+            name: "createTime"
           }
         ],
         idName: "Id",
