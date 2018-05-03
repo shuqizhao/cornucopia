@@ -225,10 +225,14 @@
 
 <script>
 export default {
+  props: ["collapse"],
   name: "app",
   mounted: function() {
     this.getMenus();
     this.displayName = this.getCookie("loginUser");
+    if(this.collapse=="true"){
+      $('.sidebar-mini').addClass('sidebar-collapse');
+    }
   },
   data() {
     return {

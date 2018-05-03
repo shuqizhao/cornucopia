@@ -1,7 +1,5 @@
 <template>
-<div>
-    <mimiApp></mimiApp>
-    </div>
+    <mimiApp :collapse="true"></mimiApp>
 </template>
 
 <script>
