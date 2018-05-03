@@ -13,7 +13,7 @@ export default {
         columns: [
           {
             title: "id",
-            name: "Id",
+            name: "id",
             isHide: true
           },
           {
@@ -25,7 +25,7 @@ export default {
             name: "createTime"
           }
         ],
-        idName: "Id",
+        idName: "id",
         functions: {
           common: [
             {
