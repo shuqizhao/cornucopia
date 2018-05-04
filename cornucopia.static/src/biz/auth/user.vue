@@ -86,7 +86,7 @@ export default {
             $("td:eq(3)", row).html('<i class="el-icon-close"></i>');
           }
         },
-        idName: "Id",
+        idName: "id",
         functions: {
           more: [
             {

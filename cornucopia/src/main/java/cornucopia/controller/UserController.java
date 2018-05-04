@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import cornucopia.entity.JsonResult;
 import cornucopia.entity.UserEntity;
 import cornucopia.service.UserService;
 import cornucopia.util.DataTableParameter;
@@ -25,5 +26,14 @@ public class UserController {
 		}
 		DataTableResult<UserEntity> dtr = new DataTableResult<UserEntity>(dtp.getsEcho() + 1, count, count, users);
 		return dtr;
+	}
+	
+	@RequestMapping(value = { "/get"}, method = RequestMethod.GET)
+	public JsonResult<UserEntity> get(int id) {
+		UserEntity user = UserService.getInstance().getUser(id);
+		JsonResult<UserEntity> jr = new JsonResult<UserEntity>();
+		jr.setCode(200);
+		jr.setData(user);
+		return jr;
 	}
 }

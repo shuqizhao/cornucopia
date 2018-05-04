@@ -24,7 +24,7 @@ export default {
             type: "hidden"
           },
           {
-            name: "Name",
+            name: "name",
             title: "用户名",
             type: "text"
           },
@@ -38,7 +38,7 @@ export default {
               this.$route.query.id
           },
           {
-            name: "IsEnabled",
+            name: "isEnabled",
             title: "是否启用",
             type: "yesno"
           }

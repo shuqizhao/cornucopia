@@ -31,4 +31,8 @@ public class UserService {
 	public List<UserEntity> getUsersByPage(int start, int length) {
 		return userdao.getUsersByPage(start, length);
 	}
+
+	public UserEntity getUser(int id) {
+		return userdao.getUser(id);
+	}
 }

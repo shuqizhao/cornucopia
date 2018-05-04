@@ -13,4 +13,7 @@ public interface UserDao {
 
 	@Select("call sp_user_get_by_page(#{start},#{length})")
 	public List<UserEntity> getUsersByPage(@Param("start") int start, @Param("length") int length);
+
+	@Select("call sp_user_get(#{userId})")
+	public UserEntity getUser(@Param("userId") int id);
 }

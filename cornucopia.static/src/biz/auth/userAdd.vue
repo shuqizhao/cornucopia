@@ -12,21 +12,27 @@ export default {
         save: this.getGlobalData().ApiBaseUrl + "/user/add",
         items: [
           {
-            name: "Id",
-            type: "hidden"
-          },
-          {
-            name: "Name",
+            name: "name",
             title: "用户名",
             type: "text"
           },
+           {
+            name: "phone",
+            title: "手机号",
+            type: "text"
+          },
+            {
+            name: "email",
+            title: "邮箱",
+            type: "text"
+          },
           {
-            name: "Pwd",
+            name: "pwd",
             title: "密码",
             type: "pwd"
           },
           {
-            name: "Pwd1",
+            name: "pwd1",
             title: "确认密码",
             type: "pwd"
           }
@@ -44,13 +50,13 @@ export default {
           }
         },
         messages: {
-          Name: {
+          name: {
             required: "用户名必须填写"
           },
-          Pwd: {
+          pwd: {
             required: "密码必须填写"
           },
-          Pwd1: {
+          pwd1: {
             required: "确认密码必须填写",
             equalTo: "确认密码必须与密码相同"
           }
