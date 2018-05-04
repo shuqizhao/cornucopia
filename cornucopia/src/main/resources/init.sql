@@ -42,3 +42,10 @@ BEGIN
 	
 	
 END;
+
+drop PROCEDURE if EXISTS sp_user_get;
+
+create PROCEDURE sp_user_get(userId int)
+BEGIN
+	select * from sys_user where id = userId;
+end;

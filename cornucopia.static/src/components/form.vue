@@ -23,11 +23,11 @@
             <div class="box-body">
                 <template v-for="item in cfg.items" >
                     <input v-if="item.type=='hidden'" :id="item.name" type="hidden" :key="item.name" class="form-control" :value="detail[item.name]" :controltype='item.type' />
-                    <br v-if="item.type=='textxml'" :key="item.name"/>
-                    <br v-if="item.type=='textnginx'" :key="item.name"/>
-                    <div v-if="item.type!='hidden'" :key="item.name" class="form-group" style="margin-right:20px;width:100%">
-                        <label style="width:10%;text-align: right" for="name">{{item.title}}：</label>
-                        <div class="input-group" style="vertical-align: top;width:80%;display:inline-table;margin-bottom:30px;">
+                    <br v-if="item.br==true" :key="item.name"/>
+                    <br v-if="item.br==true" :key="item.name"/>
+                    <div v-if="item.type!='hidden'" :key="item.name" class="form-group" :style="'margin-left:80px;border:5px solid red;margin-bottom:15px;width:'+item.width">
+                        <span style="text-align:right;" class="control-label">{{item.title}}：</span>
+                        <div class="input-group" style="width:70%;">
                             <div v-if="item.type=='baidutext'">
                                 <div v-if="cfg.mode=='detailEdit'||cfg.mode=='create'" class="textarea">
                                     <hiden :id="item.name" :name="item.name" class="form-control" rows="5" :controltype='item.type'/>
@@ -36,7 +36,7 @@
                             </div>
                             <template v-if="cfg.mode=='edit'||cfg.mode=='create'||(cfg.mode=='detailEdit'&&cfg.detailEditMode=='edit')">
                                 <input v-if="item.type=='hidden'" :id="item.name" type="hidden" class="form-control" :value="detail[item.name]" :controltype='item.type' />
-                                <input v-else-if="item.type=='text'" :id="item.name" :name="item.name" type="text" :placeholder="item.placeholder" class="input-xlarge form-control" :value="detail[item.name]" :controltype='item.type' />
+                                <input v-else-if="item.type=='text'" :id="item.name" :name="item.name" type="text" :placeholder="item.placeholder" class="input-xlarge form-control" style="margin-right:0;" :value="detail[item.name]" :controltype='item.type' />
                                 <textarea v-else-if="item.type=='textarea'" :id="item.name" :name="item.name" style='width:270px;' class="form-control" rows="5" :controltype='item.type' :value="detail[item.name]"></textarea>
                                 <iframe v-else-if="item.type=='textxml'" readonly='false' :id="item.name" :name="item.name"  scrolling="no" frameborder="0" class="form-control embed-responsive-item" :controltype='item.type' style="min-height:190px;" src="/src/ref/codemirror/codemirror.html"></iframe>
                                 <iframe v-else-if="item.type=='textnginx'" readonly='false' :id="item.name" :name="item.name"  scrolling="no" frameborder="0" class="form-control embed-responsive-item" :controltype='item.type' style="min-height:190px;" src="/src/ref/codemirror/codemirrornginx.html"></iframe>
@@ -109,17 +109,18 @@
                                 <iframe v-else-if="item.type=='textnginx'" readonly='false' :id="item.name+'_readonly'" :name="item.name+'_readonly'" style='width:100%'  scrolling="no" frameborder="0" class="form-control" :controltype='item.type' src="/src/ref/codemirror/codemirrornginx.html"></iframe>
                                 <ul v-else-if="item.type=='tree'" :id="item.name+1" class="ztree"></ul>
                                 <!-- <div v-else-if="item.type=='select2select'" v-html="detail[item.name]" style="width:100%" /> -->
+                                <el-transfer  v-else-if="item.type=='select2select'" filterable   :titles="['待选择', '已选择']" ></el-transfer>
                                 <input v-else-if="item.type!='hidden'" class="input-xlarge form-control" disabled='disabled' :value="detail[item.name]" style="width:100%" />
                             </template>
                         </div>
                         <!-- <span>
                                 {{item.helpblock}}
                         </span> -->
-                    </div> 
-                </template> 
+                    </div>
+                </template>
             </div>
             <!-- /.box-body -->
-            <div class="box-footer navbar-fixed-bottom">
+            <div class="box-footer">
                 <!-- Button -->
                 <center>
                     <div v-if="cfg.mode=='edit'||cfg.mode=='create'">
@@ -159,6 +160,7 @@ export default {
       this.fillData();
     }
     // this.iframeLoad();
+    $('.content-wrapper').removeAttr('style');
   },
   updated: function() {
     self = this;

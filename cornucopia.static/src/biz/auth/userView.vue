@@ -28,20 +28,21 @@ export default {
             title: "用户名",
             type: "text"
           },
+            {
+            name: "isEnabled",
+            title: "是否启用",
+            type: "yesno",
+          },
           {
             name: "roles",
             title: "角色",
             type: "select2select",
+            width:"100%",
             url:
               this.getGlobalData().ApiBaseUrl +
               "/user/roles?id=" +
               this.$route.query.id
           },
-          {
-            name: "isEnabled",
-            title: "是否启用",
-            type: "yesno"
-          }
         ],
         afterEditRender: function(mode,data) {
           $(self.$el).find("#name").attr("disabled", true);
