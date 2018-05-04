@@ -15,31 +15,29 @@ export default {
             name: "name",
             title: "用户名",
             type: "text",
-             width:"300px;"
+            width:"300px;"
           },
            {
             name: "phone",
             title: "手机号",
             type: "text",
-              width:"300px;"
+            width:"300px;"
           },
             {
             name: "email",
             title: "邮箱",
             type: "text",
-             width:"300px;"
+            width:"300px;"
           },
           {
             name: "pwd",
             title: "我的密码",
-            type: "pwd",
-             width:"300px;"
+            type: "pwd"
           },
           {
             name: "pwd1",
             title: "确认密码",
-            type: "pwd",
-             width:"300px;"
+            type: "pwd"
           }
         ],
         rules: {

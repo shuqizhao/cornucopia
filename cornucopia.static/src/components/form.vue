@@ -25,9 +25,10 @@
                     <input v-if="item.type=='hidden'" :id="item.name" type="hidden" :key="item.name" class="form-control" :value="detail[item.name]" :controltype='item.type' />
                     <br v-if="item.br==true" :key="item.name"/>
                     <br v-if="item.br==true" :key="item.name"/>
-                    <div v-if="item.type!='hidden'" :key="item.name" class="form-group" :style="'margin-left:80px;border:5px solid red;margin-bottom:15px;width:'+item.width">
-                        <span style="text-align:right;" class="control-label">{{item.title}}：</span>
-                        <div class="input-group" style="width:70%;">
+                    <table v-if="item.type!='hidden'" :key="item.name" class="form-group" :style="'margin-left:80px;margin-bottom:15px;width:'+item.width">
+                      <tr>
+                        <td style="text-align:right;" width="80px">{{item.title}}：</td>
+                        <td :width="item.width?'':'92%'">
                             <div v-if="item.type=='baidutext'">
                                 <div v-if="cfg.mode=='detailEdit'||cfg.mode=='create'" class="textarea">
                                     <hiden :id="item.name" :name="item.name" class="form-control" rows="5" :controltype='item.type'/>
@@ -36,11 +37,11 @@
                             </div>
                             <template v-if="cfg.mode=='edit'||cfg.mode=='create'||(cfg.mode=='detailEdit'&&cfg.detailEditMode=='edit')">
                                 <input v-if="item.type=='hidden'" :id="item.name" type="hidden" class="form-control" :value="detail[item.name]" :controltype='item.type' />
-                                <input v-else-if="item.type=='text'" :id="item.name" :name="item.name" type="text" :placeholder="item.placeholder" class="input-xlarge form-control" style="margin-right:0;" :value="detail[item.name]" :controltype='item.type' />
+                                <input v-else-if="item.type=='text'" :id="item.name" :name="item.name" type="text" :placeholder="item.placeholder" class="input-xlarge form-control" style="width:100%;"  :value="detail[item.name]" :controltype='item.type' />
                                 <textarea v-else-if="item.type=='textarea'" :id="item.name" :name="item.name" style='width:270px;' class="form-control" rows="5" :controltype='item.type' :value="detail[item.name]"></textarea>
                                 <iframe v-else-if="item.type=='textxml'" readonly='false' :id="item.name" :name="item.name"  scrolling="no" frameborder="0" class="form-control embed-responsive-item" :controltype='item.type' style="min-height:190px;" src="/src/ref/codemirror/codemirror.html"></iframe>
                                 <iframe v-else-if="item.type=='textnginx'" readonly='false' :id="item.name" :name="item.name"  scrolling="no" frameborder="0" class="form-control embed-responsive-item" :controltype='item.type' style="min-height:190px;" src="/src/ref/codemirror/codemirrornginx.html"></iframe>
-                                <input v-else-if="item.type=='pwd'" :id="item.name" :name="item.name" type="password" :placeholder="item.placeholder" class="input-xlarge form-control" :value="detail[item.name]" :controltype='item.type' />
+                                <input v-else-if="item.type=='pwd'" :id="item.name" :name="item.name" type="password" :placeholder="item.placeholder" class="input-xlarge form-control" style="width:100%;" :value="detail[item.name]" :controltype='item.type' />
                                 <select v-else-if="item.type=='combox'" :id="item.name" style='width:284px;' class="input-xlarge form-control" :controltype='item.type'>
                                     <!-- <option v-for="option in item.data" v-if="option.id==detail[item.name]" selected="selected" :value="option.id">{{option.value}}</option>
                                     <option :value="option.id">{{option.value}}</option> -->
@@ -112,11 +113,12 @@
                                 <el-transfer  v-else-if="item.type=='select2select'" filterable   :titles="['待选择', '已选择']" ></el-transfer>
                                 <input v-else-if="item.type!='hidden'" class="input-xlarge form-control" disabled='disabled' :value="detail[item.name]" style="width:100%" />
                             </template>
-                        </div>
+                        </td>
                         <!-- <span>
                                 {{item.helpblock}}
                         </span> -->
-                    </div>
+                        </tr>
+                    </table>
                 </template>
             </div>
             <!-- /.box-body -->

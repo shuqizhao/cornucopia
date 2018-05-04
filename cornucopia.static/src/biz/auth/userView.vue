@@ -37,7 +37,6 @@ export default {
             name: "roles",
             title: "角色",
             type: "select2select",
-            width:"100%",
             url:
               this.getGlobalData().ApiBaseUrl +
               "/user/roles?id=" +
