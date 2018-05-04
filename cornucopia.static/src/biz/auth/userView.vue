@@ -32,11 +32,13 @@ export default {
             name: "isEnabled",
             title: "是否启用",
             type: "yesno",
+            width:"250px"
           },
           {
             name: "roles",
             title: "角色",
             type: "select2select",
+            width:"700px",
             url:
               this.getGlobalData().ApiBaseUrl +
               "/user/roles?id=" +
