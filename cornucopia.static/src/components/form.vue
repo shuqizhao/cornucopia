@@ -22,10 +22,10 @@
         <form class="form-inline form" onsubmit='return false;' role="form">
             <div class="box-body">
                 <template v-for="item in cfg.items" >
-                    <input v-if="item.type=='hidden'" :id="item.name" type="hidden" class="form-control" :value="detail[item.name]" :controltype='item.type' />
-                    <br v-if="item.type=='textxml'" />
-                    <br v-if="item.type=='textnginx'" />
-                    <div v-if="item.type!='hidden'" class="form-group" style="margin-right:20px;width:100%">
+                    <input v-if="item.type=='hidden'" :id="item.name" type="hidden" :key="item.name" class="form-control" :value="detail[item.name]" :controltype='item.type' />
+                    <br v-if="item.type=='textxml'" :key="item.name"/>
+                    <br v-if="item.type=='textnginx'" :key="item.name"/>
+                    <div v-if="item.type!='hidden'" :key="item.name" class="form-group" style="margin-right:20px;width:100%">
                         <label style="width:10%;text-align: right" for="name">{{item.title}}：</label>
                         <div class="input-group" style="vertical-align: top;width:80%;display:inline-table;margin-bottom:30px;">
                             <div v-if="item.type=='baidutext'">
@@ -126,7 +126,7 @@
                         <button @click="btnCommit($event)" class="btn btn-primary btn-commit">保存</button>
                         <button  @click="btnCancel" class="btn btn-info btn-cancel" data-dismiss="modal" aria-hidden="true">取消</button>
                         <div v-if="cfg.buttons">
-                            <button v-for="item in cfg.buttons" :class="'btn '+item.type+' btn-buttons'" :name='item.name'>{{item.title}}</button>
+                            <button v-for="item in cfg.buttons" :key="item.title" :class="'btn '+item.type+' btn-buttons'" :name='item.name'>{{item.title}}</button>
                         </div>
                     </div>
                     <div v-if="cfg.mode=='detailEdit'">
