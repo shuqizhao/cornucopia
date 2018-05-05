@@ -16,4 +16,7 @@ public interface UserDao {
 
 	@Select("call sp_user_get(#{userId})")
 	public UserEntity getUser(@Param("userId") int id);
+
+	@Select("call sp_user_roles(#{userId})")
+	public List<Integer> getUserRoles(int id);
 }

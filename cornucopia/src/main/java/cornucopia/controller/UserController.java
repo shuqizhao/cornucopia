@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
 import cornucopia.entity.UserEntity;
+import cornucopia.model.TransferViewModel;
 import cornucopia.service.UserService;
 import cornucopia.util.DataTableParameter;
 import cornucopia.util.DataTableResult;
@@ -35,5 +36,11 @@ public class UserController {
 		jr.setCode(200);
 		jr.setData(user);
 		return jr;
+	}
+	
+	@RequestMapping(value = "/roles", method = RequestMethod.GET)
+	public TransferViewModel roles(int id) {
+		TransferViewModel transferViewModel = UserService.getInstance().getUserRolesTransfer(id);
+		return transferViewModel;
 	}
 }

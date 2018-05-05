@@ -10,4 +10,7 @@ import cornucopia.entity.RoleEntity;
 public interface RoleDao {
 	@Select("call sp_role_get_by_page(#{start},#{length})")
 	public List<RoleEntity> getRolesByPage(@Param("start") int start, @Param("length") int length);
+
+	@Select("call sp_role_all()")
+	public List<RoleEntity> getAllRoles();
 }

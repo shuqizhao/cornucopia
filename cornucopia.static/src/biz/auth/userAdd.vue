@@ -41,7 +41,7 @@ export default {
           }
         ],
         rules: {
-          Name: {
+          name: {
             required: true
           },
           Pwd: {

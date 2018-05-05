@@ -21,4 +21,8 @@ public class RoleService {
 	public List<RoleEntity> getRolesByPage(int start, int length) {
 		return roledao.getRolesByPage(start, length);
 	}
+	
+	public List<RoleEntity> getAllRoles() {
+		return roledao.getAllRoles();
+	}
 }
