@@ -102,7 +102,7 @@
                                 <iframe v-else-if="item.type=='textnginx'" readonly='false' :id="item.name+'_readonly'" :name="item.name+'_readonly'" style='width:100%'  scrolling="no" frameborder="0" class="form-control" :controltype='item.type' src="/src/ref/codemirror/codemirrornginx.html"></iframe>
                                 <ul v-else-if="item.type=='tree'" :id="item.name+1" class="ztree"></ul>
                                 <!-- <div v-else-if="item.type=='select2select'" v-html="detail[item.name]" style="width:100%" /> -->
-                                <el-transfer  v-else-if="item.type=='select2select'" filterable   :titles="['待选择', '已选择']" ></el-transfer>
+                                <el-transfer  v-else-if="item.type=='transfer'" filterable v-model="value1[item.name]" :data="data1[item.name]" v-bind="bindTransfer(item.name,item.url)" :titles="['待选择', '已选择']"  ></el-transfer>
                                 <input v-else-if="item.type!='hidden'" class="input-xlarge form-control" disabled='disabled' :value="detail[item.name]" style="width:100%" />
                             </template>
                         </td>
@@ -166,7 +166,9 @@ export default {
   data() {
     return {
       detail: {},
-      commiting: false
+      commiting: false,
+      value1:{},
+      data1:{}
     };
   },
   methods: {
@@ -537,6 +539,39 @@ export default {
               });
             }
           });
+        }
+      });
+    },
+    bindTransfer:function(id, url){
+      var self = this;
+      if(self.data1[id]||self.value1[id]){
+        return;
+      }
+      self.data1[id]=[]
+      self.value1[id]=[];
+      $.ajax({
+        type: "GET",
+        url: url,
+        async:false,
+        success: function(data) {
+          if(data.left){
+            for(var i in data.left){
+              self.data1[id].push({
+                key: data.left[i].id,
+                label: data.left[i].name
+              });
+            }
+          }
+          if(data.right){
+            for(var i=0;i<data.right.length;i++){
+              self.data1[id].push({
+                key: data.right[i].id,
+                label: data.right[i].name
+              });
+              self.value1[id].push(data.right[i].id)
+            }
+          }
+          
         }
       });
     }

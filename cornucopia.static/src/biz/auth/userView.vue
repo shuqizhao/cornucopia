@@ -37,12 +37,11 @@ export default {
           {
             name: "roles",
             title: "角色",
-            type: "select2select",
+            type: "transfer",
             width:"700px",
             url:
               this.getGlobalData().ApiBaseUrl +
-              "/user/roles?id=" +
-              this.$route.query.id
+              "/user/roles?id=" + this.$route.query.id
           },
         ],
         afterEditRender: function(mode,data) {
