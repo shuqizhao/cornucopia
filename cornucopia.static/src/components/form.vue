@@ -150,7 +150,6 @@
 <script>
 let Base64 = require("js-base64").Base64;
 import "jquery-validation";
-import Vue from 'vue'
 export default {
   props: ["cfg"],
   mounted: function() {
@@ -159,15 +158,12 @@ export default {
     if (this.cfg.mode != "create") {
       this.fillData();
     }
-    // this.iframeLoad();
-    // $('.content-wrapper').removeAttr('style');
   },
-  beforeUpdate:function(){
-    // $(".el-button el-button--primary").click(function() {
-    //   setTimeout(function(){self.$forceUpdate();}, 100);
-    // });
+  beforeUpdate: function() {
     $(".el-transfer__button").click(function() {
-     setTimeout(function(){self.$forceUpdate();}, 100);
+      setTimeout(function() {
+        self.$forceUpdate();
+      }, 100);
     });
   },
   updated: function() {
@@ -227,13 +223,20 @@ export default {
       }
     },
     btnEdit: function() {
-      // debugger;
+      var self = this;
       this.cfg.detailEditMode = "edit";
-      this.$forceUpdate();
+      self.$forceUpdate();
+      setTimeout(function() {
+        self.$forceUpdate();
+      }, 1000);
     },
     btnDecancel: function() {
+      var self = this;
       this.cfg.detailEditMode = "detail";
-      this.$forceUpdate();
+      self.$forceUpdate();
+      setTimeout(function() {
+        self.$forceUpdate();
+      }, 1000);
     },
     btnDecommit: function(event) {
       var target = event.currentTarget;
@@ -567,7 +570,7 @@ export default {
         for (var i in self.data1[id]) {
           var obj = self.data1[id][i];
           obj.disabled = disabled;
-          self.$set(self.data1[id],i,obj);
+          self.$set(self.data1[id], i, obj);
           // self.data1[id][i].disabled = disabled;
         }
         return;
