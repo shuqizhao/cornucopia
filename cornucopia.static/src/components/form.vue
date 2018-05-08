@@ -150,6 +150,7 @@
 <script>
 let Base64 = require("js-base64").Base64;
 import "jquery-validation";
+import Vue from 'vue'
 export default {
   props: ["cfg"],
   mounted: function() {
@@ -161,20 +162,12 @@ export default {
     // this.iframeLoad();
     // $('.content-wrapper').removeAttr('style');
   },
-  watch: {
-    data1: {
-      handler: function(newValue, oldValue) {
-        alert("change")
-      },
-      deep: true
-    }
-  },
   beforeUpdate:function(){
-    $(".el-icon-arrow-right").click(function() {
-      self.$forceUpdate();
-    });
-    $(".el-icon-arrow-left").click(function() {
-      self.$forceUpdate();
+    // $(".el-button el-button--primary").click(function() {
+    //   setTimeout(function(){self.$forceUpdate();}, 100);
+    // });
+    $(".el-transfer__button").click(function() {
+     setTimeout(function(){self.$forceUpdate();}, 100);
     });
   },
   updated: function() {
@@ -611,7 +604,7 @@ export default {
       });
     },
     bindTransferChangeEvent: function(id) {
-      alert("change")
+      // alert("change")
       // this.$forceUpdate();
     }
   }
