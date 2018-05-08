@@ -6,7 +6,9 @@
             <i v-if="cfg.mode=='detailEdit'&&cfg.detailEditMode!='edit'" class="el-icon-view" />
             <i v-else-if="cfg.mode=='detailEdit'&&cfg.detailEditMode=='edit'" class="el-icon-edit" />
             <i v-else class="el-icon-circle-plus" />
-            <h3 class="box-title">{{cfg.title}}</h3>
+            <h3 v-if="cfg.mode=='detailEdit'&&cfg.detailEditMode!='edit'" class="box-title">{{cfg.detailTitle}}</h3>
+            <h3 v-else-if="cfg.mode=='detailEdit'&&cfg.detailEditMode=='edit'" class="box-title">{{cfg.editTitle}}</h3>
+            <h3 v-else class="box-title">{{cfg.title}}</h3>
             <small>{{cfg.desc}}</small>
         </div>
         <!-- /.box-header -->
@@ -67,6 +69,7 @@
                                     <div :id="item.name+'1'"></div>
                                     <input :id="item.name" type="hidden" :value="detail[item.name]" class="form-control" />
                                 </div>
+                                <el-transfer  v-else-if="item.type=='transfer'" filterable v-model="value1[item.name]" :data="data1[item.name]" :abc="bindTransfer(item.name,item.url,false)" :titles="['待选择', '已选择']" :change="bindTransferChangeEvent(item.name)" ></el-transfer>
                                 <div v-else-if="item.type=='tree'">
                                     <input :id="item.name" type="hidden" :value="detail[item.name]" class="form-control" />
                                     <div class="controls customTree">
@@ -102,7 +105,7 @@
                                 <iframe v-else-if="item.type=='textnginx'" readonly='false' :id="item.name+'_readonly'" :name="item.name+'_readonly'" style='width:100%'  scrolling="no" frameborder="0" class="form-control" :controltype='item.type' src="/src/ref/codemirror/codemirrornginx.html"></iframe>
                                 <ul v-else-if="item.type=='tree'" :id="item.name+1" class="ztree"></ul>
                                 <!-- <div v-else-if="item.type=='select2select'" v-html="detail[item.name]" style="width:100%" /> -->
-                                <el-transfer  v-else-if="item.type=='transfer'" filterable v-model="value1[item.name]" :data="data1[item.name]" v-bind="bindTransfer(item.name,item.url)" :titles="['待选择', '已选择']"  ></el-transfer>
+                                <el-transfer  v-else-if="item.type=='transfer'" filterable v-model="value1[item.name]" :data="data1[item.name]" :abc="bindTransfer(item.name,item.url,true)" :titles="['待选择', '已选择']"  ></el-transfer>
                                 <input v-else-if="item.type!='hidden'" class="input-xlarge form-control" disabled='disabled' :value="detail[item.name]" style="width:100%" />
                             </template>
                         </td>
@@ -150,11 +153,29 @@ import "jquery-validation";
 export default {
   props: ["cfg"],
   mounted: function() {
+    var self = this;
+    self.isMounted = true;
     if (this.cfg.mode != "create") {
       this.fillData();
     }
     // this.iframeLoad();
-    $('.content-wrapper').removeAttr('style');
+    // $('.content-wrapper').removeAttr('style');
+  },
+  watch: {
+    data1: {
+      handler: function(newValue, oldValue) {
+        alert("change")
+      },
+      deep: true
+    }
+  },
+  beforeUpdate:function(){
+    $(".el-icon-arrow-right").click(function() {
+      self.$forceUpdate();
+    });
+    $(".el-icon-arrow-left").click(function() {
+      self.$forceUpdate();
+    });
   },
   updated: function() {
     self = this;
@@ -167,8 +188,9 @@ export default {
     return {
       detail: {},
       commiting: false,
-      value1:{},
-      data1:{}
+      value1: {},
+      data1: {},
+      isMounted: false
     };
   },
   methods: {
@@ -233,10 +255,10 @@ export default {
     },
     btnCommit: function(e, handler) {
       var self = this;
-      if(!handler){
-        handler = function(){
+      if (!handler) {
+        handler = function() {
           self.commiting = false;
-        }
+        };
       }
       self.commiting = true;
       var validateCfg = {
@@ -341,7 +363,7 @@ export default {
                 type: "warning"
               });
             }
-            
+
             // if (error.text()) {
             //   self.$message({
             //     type: "warning",
@@ -542,38 +564,55 @@ export default {
         }
       });
     },
-    bindTransfer:function(id, url){
+    bindTransfer: function(id, url, disabled) {
       var self = this;
-      if(self.data1[id]||self.value1[id]){
+      if (!self.isMounted) {
         return;
       }
-      self.data1[id]=[]
-      self.value1[id]=[];
+
+      if (self.data1[id] || self.value1[id]) {
+        for (var i in self.data1[id]) {
+          var obj = self.data1[id][i];
+          obj.disabled = disabled;
+          self.$set(self.data1[id],i,obj);
+          // self.data1[id][i].disabled = disabled;
+        }
+        return;
+      }
+      self.data1[id] = [];
+      self.value1[id] = [];
       $.ajax({
         type: "GET",
         url: url,
-        async:false,
+        async: false,
         success: function(data) {
-          if(data.left){
-            for(var i in data.left){
+          if (data.left) {
+            for (var i in data.left) {
               self.data1[id].push({
                 key: data.left[i].id,
-                label: data.left[i].name
+                label: data.left[i].name,
+                disabled: disabled
               });
             }
           }
-          if(data.right){
-            for(var i=0;i<data.right.length;i++){
+          if (data.right) {
+            for (var i = 0; i < data.right.length; i++) {
               self.data1[id].push({
                 key: data.right[i].id,
-                label: data.right[i].name
+                label: data.right[i].name,
+                disabled: disabled
               });
-              self.value1[id].push(data.right[i].id)
+              self.value1[id].push(data.right[i].id);
             }
           }
-          
+          // debugger;
+          self.$forceUpdate();
         }
       });
+    },
+    bindTransferChangeEvent: function(id) {
+      alert("change")
+      // this.$forceUpdate();
     }
   }
 };
