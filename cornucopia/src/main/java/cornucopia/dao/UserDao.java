@@ -2,6 +2,8 @@ package cornucopia.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -18,5 +20,11 @@ public interface UserDao {
 	public UserEntity getUser(@Param("userId") int id);
 
 	@Select("call sp_user_roles(#{userId})")
-	public List<Integer> getUserRoles(int id);
+	public List<Integer> getUserRoles(@Param("userId") int id);
+
+	@Delete("call sp_user_roles_del(#{userId})")
+	public boolean deleteUserRoles(@Param("userId") int id);
+
+	@Insert("call sp_user_role_insert(#{userId},#{roleId})")
+	public void insertUserRole(@Param("userId") int id,@Param("roleId") int roleId);
 }

@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
 import cornucopia.entity.UserEntity;
 import cornucopia.model.TransferViewModel;
+import cornucopia.model.UserRoleViewModel;
 import cornucopia.service.UserService;
 import cornucopia.util.DataTableParameter;
 import cornucopia.util.DataTableResult;
@@ -45,11 +47,11 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public JsonResult<String> update(UserEntity uen) {
-		System.out.println(uen.getId());
+	public JsonResult<String> update(int id,@RequestParam(value = "roles[]") int[] roles) {
+		boolean isOk = UserService.getInstance().updateUserRoles(id,roles);
 		JsonResult<String> jr = new JsonResult<String>();
 		jr.setCode(200);
-		jr.setMessage("login sucess!");
+		jr.setMessage("update sucess!");
 		jr.setData("1");
 		return jr;
 	}

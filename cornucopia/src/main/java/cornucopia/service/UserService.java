@@ -44,7 +44,7 @@ public class UserService {
 	public TransferViewModel getUserRolesTransfer(int id) {
 		List<Integer> roleIds = userdao.getUserRoles(id);
 		List<RoleEntity> roleEntities = RoleService.getInstance().getAllRoles();
-		
+
 		List<RoleEntity> left = roleEntities.stream().filter((RoleEntity r) -> !roleIds.contains(r.getId()))
 				.collect(Collectors.toList());
 		List<IdNameModel> leftIdNameModel = new ArrayList<IdNameModel>();
@@ -67,5 +67,13 @@ public class UserService {
 		transferViewModel.setLeft(leftIdNameModel);
 		transferViewModel.setRight(rightIdNameModel);
 		return transferViewModel;
+	}
+
+	public boolean updateUserRoles(int id, int[] roles) {
+		userdao.deleteUserRoles(id);
+		for(int roleId : roles) {
+			userdao.insertUserRole(id,roleId);
+		}
+		return true;
 	}
 }

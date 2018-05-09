@@ -69,8 +69,10 @@
                                     <div :id="item.name+'1'"></div>
                                     <input :id="item.name" type="hidden" :value="detail[item.name]" class="form-control" />
                                 </div>
-                                <el-transfer  v-else-if="item.type=='transfer'" filterable v-model="value1[item.name]" :data="bindTransfer(item.name,item.url,false)" :titles="['待选择', '已选择']" @change="bindTransferChangeEvent(item.name)" ></el-transfer>
-                                <!-- <el-transfer  v-else-if="item.type=='transfer'" filterable v-model="value1[item.name]" :data="data1[item.name]" :abc="bindTransfer(item.name,item.url,true)" :titles="['待选择', '已选择']"  ></el-transfer> -->
+                                <div  v-else-if="item.type=='transfer'">
+                                    <input :id="item.name" type="hidden" :controltype='item.type'  class="form-control" />
+                                    <el-transfer  filterable v-model="value1[item.name]" :data="bindTransfer(item.name,item.url,false)" :titles="['待选择', '已选择']" @change="bindTransferChangeEvent(item.name)" ></el-transfer>
+                                </div>
                                 <div v-else-if="item.type=='tree'">
                                     <input :id="item.name" type="hidden" :value="detail[item.name]" class="form-control" />
                                     <div class="controls customTree">
@@ -456,7 +458,12 @@ export default {
             data[this.id] = UE.getEditor(this.id + "1")
               .getContent()
               .replace("<video", "<video autoplay");
-          } else {
+          } else if (item.attr("controltype") == "transfer") {
+            data[this.id] = self.value1[this.id]
+            if(data[this.id].length==0){
+              data[this.id].push(0)
+            }
+          }else {
             data[this.id] = item.val();
           }
         });
