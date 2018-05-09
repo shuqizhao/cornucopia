@@ -181,6 +181,7 @@ export default {
       commiting: false,
       value1: {},
       data1: {},
+      changing:{},
       isMounted: false,
       isShowDetail:true
     };
@@ -241,6 +242,7 @@ export default {
       self.commiting = true;
       self.btnCommit(target, function() {
         self.cfg.detailEditMode = "detail";
+        self.isShowDetail=true;
         self.commiting = false;
         self.fillData();
         // self.$forceUpdate();
@@ -562,8 +564,8 @@ export default {
       if (!self.isMounted) {
         return [];
       }
-      if(self.changing){
-        self.changing = false;
+      if(self.changing[id]){
+        self.changing[id] = false;
         return self.data1[id];
       }
       // if (self.data1[id] || self.value1[id]) {
@@ -609,8 +611,7 @@ export default {
       return self.data1[id];
     },
     bindTransferChangeEvent: function(id) {
-      // alert("change    " + id)
-      this.changing=true;
+      this.changing[id] = true;
       this.$forceUpdate();
     }
   }

@@ -43,4 +43,14 @@ public class UserController {
 		TransferViewModel transferViewModel = UserService.getInstance().getUserRolesTransfer(id);
 		return transferViewModel;
 	}
+	
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public JsonResult<String> update(UserEntity uen) {
+		System.out.println(uen.getId());
+		JsonResult<String> jr = new JsonResult<String>();
+		jr.setCode(200);
+		jr.setMessage("login sucess!");
+		jr.setData("1");
+		return jr;
+	}
 }

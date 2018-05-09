@@ -20,7 +20,7 @@ export default {
         save: this.getGlobalData().ApiBaseUrl + "/user/update",
         items: [
           {
-            name: "Id",
+            name: "id",
             type: "hidden"
           },
           {
