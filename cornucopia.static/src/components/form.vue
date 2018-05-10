@@ -13,7 +13,7 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form class="form-inline form" onsubmit='return false;' role="form">
+        <form id="form1" class="form-inline form" onsubmit='return false;' role="form">
             <div class="box-body">
                 <template v-for="item in cfg.items" >
                     <input v-if="item.type=='hidden'" :id="item.name" type="hidden" :key="item.name" class="form-control" :value="detail[item.name]" :controltype='item.type' />
@@ -219,11 +219,12 @@ export default {
     },
     btnCancel: function() {
       var self = this;
+      self.commiting = false;
       if (self.cfg.onCancel) {
         self.cfg.onCancel();
       } else if (self.cfg.isModal) {
         self.$parent.$parent.$parent.dialogVisible=false;
-        self.$parent.$destroy();
+        self.$parent.$parent.$parent.currentComponent="";
       } else {
         //$.fn.navigate();
         history.go(-1);
