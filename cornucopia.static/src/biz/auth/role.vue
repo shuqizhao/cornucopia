@@ -5,6 +5,7 @@
   </el-row>
 </template>
 <script>
+import roleAdd from "../../biz/auth/roleAdd"
 export default {
   data() {
     var self = this;
@@ -12,9 +13,11 @@ export default {
       cfg: {
         title: "角色管理列表",
         parentTitle: "权限管理",
-        url: this.getGlobalData().ApiBaseUrl + "/role/list",
+        simpleUrl: this.getGlobalData().ApiBaseUrl + "/role/alllist",
         "lengthMenu": [[-1], ["ALL"]],
-        sDom:'<"dataTables_function"/>',
+        sDom:'f<"dataTables_function"/>',
+        bServerSide: false,
+        hideCheckBox:true,
         columns: [
           {
             title: "id",
@@ -35,8 +38,8 @@ export default {
           common: [
             {
               text: "添加角色",
-              url: "/auth/roleadd",
-              mode: "navigate"
+              url: "RoleAdd",
+              mode: "modal"
             }
           ]
         },
@@ -74,7 +77,7 @@ export default {
           common: [
             {
               text: "添加角色",
-              url: "/auth/roleadd",
+              url: "component-a",
               mode: "navigate"
             }
           ]
@@ -86,7 +89,15 @@ export default {
           }
         ]
       }
-    };
+    }
+  },
+  components: {
+    'component-a': roleAdd
   }
 };
 </script>
+<style>
+.dataTables_filter {
+  margin-bottom: -40px;
+}
+</style>

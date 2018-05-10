@@ -90,6 +90,19 @@
         </div>
     </div>
   </section>
+
+  <el-dialog
+  title="提示"
+  :visible.sync="dialogVisible"
+  width="50%"
+  >
+   <component v-bind:is="currentComponent"></component>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+  </span>
+</el-dialog>
+
 </div>
 </template>
 
@@ -113,7 +126,7 @@ export default {
     var GodData = {};
     var searchColumns = [];
     var aoColumns = [];
-    if (this.cfg.functions) {
+    if (this.cfg.functions&&!self.cfg.hideCheckBox) {
       aoColumns.push({
         sTitle:
           '<center><input type="checkbox" class="searchDataTableCheckAll" /></center>',
@@ -370,11 +383,14 @@ export default {
       bLengthChange: true,
       sServerMethod: "POST",
       sDom: '<"H"<"dataTables_function"/>rp>t<"F"lip>',
-      "pagingType": "full_numbers",
+      // "pagingType": "full_numbers",
       "lengthMenu": [[5,10, 25, 50, 100,300], [5,10, 25, 50, 100,300]]
     };
 
     var lastCfg = $.extend(true, dataTableCfg, this.cfg);
+    if(!lastCfg.bServerSide){
+      lastCfg.data=self.getSimpleData();
+    }
     self.dataTable = $("#tableList").DataTable(lastCfg);
     self.dataTable.on("draw", function() {
       $(self.$el)
@@ -447,6 +463,8 @@ export default {
   },
   data() {
     return {
+      currentComponent:'',
+      dialogVisible: false,
       SearchItems: [],
       SearchItemsCount: 0,
       activeName: this.cfg.isShowSearchArea,
@@ -527,12 +545,8 @@ export default {
         this.$router.push({ path: url });
         return;
       } else if (mode == "modal") {
-        var modalForm = new ModalForm({
-          el: self.$el,
-          url: url
-        });
-        modalForm.render();
-        Backbone.history.navigate(url);
+        self.currentComponent = url;
+        self.dialogVisible = true;
         return;
       }
       var tipMsg = $(e).text();
@@ -660,6 +674,30 @@ export default {
         });
       self.dataTable.search(JSON.stringify(data)).draw();
     }
+    ,
+    getSimpleData: function() {
+      var self = this;
+      var data = [];
+      $.ajax({
+        type: "GET",
+        async:false,
+        xhrFields: {
+          withCredentials: true
+        },
+        url: self.cfg.simpleUrl,
+        success: function(response) {
+          if (response.code == "200") {
+            data = response.data;
+          } else if (response.message) {
+            self.$message({
+              type: "warning",
+              message: response.message
+            });
+          }
+        }
+      });
+      return data;
+    }
   }
 };
 </script>
@@ -676,9 +714,9 @@ export default {
   margin-left: 40px;
   display: inline-block;
 }
-.dataTables_filter {
+/* .dataTables_filter {
   visibility: hidden;
-}
+} */
 .searchColumTitle {
   width: 100px;
 }

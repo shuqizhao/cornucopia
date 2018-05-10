@@ -25,6 +25,8 @@ const RoleList = r => require.ensure([], () => r(require('../biz/auth/role.vue')
 const RoleView = r => require.ensure([], () => r(require('../biz/auth/roleView.vue')), 'auth')
 const RoleAdd = r => require.ensure([], () => r(require('../biz/auth/roleAdd.vue')), 'auth')
 
+Vue.component('RoleAdd', RoleAdd)
+
 const ResourceList = r => require.ensure([], () => r(require('../biz/auth/resource.vue')), 'auth')
 
 const DashboardView = r => require.ensure([], () => r(require('../biz/dashboard.vue')), 'dashboard')
