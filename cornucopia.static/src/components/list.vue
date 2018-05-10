@@ -375,8 +375,8 @@ export default {
     };
 
     var lastCfg = $.extend(true, dataTableCfg, this.cfg);
-    this.dataTable = $("#tableList").DataTable(lastCfg);
-    this.dataTable.on("draw", function() {
+    self.dataTable = $("#tableList").DataTable(lastCfg);
+    self.dataTable.on("draw", function() {
       $(self.$el)
         .find(".dataTables_paginate")
         .css("margin-top", "-40px");
@@ -424,6 +424,13 @@ export default {
       $('#listSearchAreaBtn').text('收起搜索区');
       $('#listSearchAreaBtn').next().addClass('el-icon-arrow-up');
     }
+
+    $('#tableList').on('click', 'tr', function () {
+        var data = self.dataTable.row( this ).data();
+        if(self.cfg.onClickRow){
+          self.cfg.onClickRow(data);
+        }
+    } );
   },
   updated: function() {
     var searchDataTableTop = $(this.$el).find(".searchDataTableTop");
@@ -449,7 +456,6 @@ export default {
   methods: {
     onSelectChange:function(val,id){
       $('#'+id).val(val);
-      debugger;
     },
     onCollapseChange:function(val){
       var txt = $('#listSearchAreaBtn').text();

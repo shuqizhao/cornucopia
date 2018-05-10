@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import cornucopia.entity.JsonResult;
 import cornucopia.entity.RoleEntity;
 import cornucopia.service.RoleService;
 import cornucopia.util.DataTableParameter;
@@ -24,5 +25,15 @@ public class RoleController {
 		}
 		DataTableResult<RoleEntity> dtr = new DataTableResult<RoleEntity>(dtp.getsEcho() + 1, count, count, roles);
 		return dtr;
+	}
+	
+	@RequestMapping(value = { "/alllist" }, method = RequestMethod.GET)
+	public JsonResult<List<RoleEntity>> alllist() {
+		List<RoleEntity> roles = RoleService.getInstance().getAllRoles();
+		
+		JsonResult<List<RoleEntity>> jr = new JsonResult<List<RoleEntity>>();
+		jr.setCode(200);
+		jr.setData(roles);
+		return jr;
 	}
 }

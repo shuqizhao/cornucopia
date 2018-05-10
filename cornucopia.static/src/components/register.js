@@ -44,6 +44,10 @@ Vue.component('loading', function (resolve) {
   require(['../components/loading.vue'], resolve)
 })
 
+Vue.component('tree', function (resolve) {
+  require(['../components/tree.vue'], resolve)
+})
+
 // const mimiApp = r => require.ensure([], () => r(require('../components/mimiApp.vue')), 'mimiApp')
 // Vue.component('mimiApp', mimiApp);
 
