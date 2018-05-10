@@ -91,11 +91,8 @@
     </div>
   </section>
 
-  <el-dialog
-  :visible.sync="dialogVisible"
-  width="50%"
-  >
-   <component v-bind:is="currentComponent"></component>
+  <el-dialog :visible.sync="dialogVisible" :width="this.cfg.dialogWidth?this.cfg.dialogWidth:'65%'" >
+   <component style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
   <!-- <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -459,6 +456,7 @@ export default {
       "margin-top",
       (span10Height - searchButtonHeight) / 2 + "px"
     );
+    // $('.content-wrapper').removeAttr('style');
   },
   data() {
     return {

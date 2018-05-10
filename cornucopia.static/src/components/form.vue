@@ -1,5 +1,5 @@
 <template>
-<div class="content-wrapper">
+<div :class="this.cfg.isModal?'':'content-wrapper'">
     <!-- Horizontal Form -->
     <div class="box box-info" >
         <div class="box-header with-border">
@@ -22,7 +22,7 @@
                     <table v-if="item.type!='hidden'" :key="item.name" class="form-group" :style="'margin-left:80px;margin-bottom:15px;width:'+item.width">
                       <tr>
                         <td style="text-align:right;" width="80px">{{item.title}}：</td>
-                        <td :width="item.width?'':'92%'">
+                        <td :width="item.width?item.width:'92%'">
                             <div v-if="item.type=='baidutext'">
                                 <div v-if="cfg.mode=='detailEdit'||cfg.mode=='create'" class="textarea">
                                     <hiden :id="item.name" :name="item.name" class="form-control" rows="5" :controltype='item.type'/>

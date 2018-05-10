@@ -5,7 +5,6 @@
   </el-row>
 </template>
 <script>
-import roleAdd from "../../biz/auth/roleAdd"
 export default {
   data() {
     var self = this;
@@ -90,9 +89,6 @@ export default {
         ]
       }
     }
-  },
-  components: {
-    'component-a': roleAdd
   }
 };
 </script>
