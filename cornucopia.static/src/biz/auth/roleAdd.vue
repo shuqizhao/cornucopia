@@ -9,6 +9,7 @@ export default {
       cfg: {
         title: "添加角色",
         mode: "create",
+        isModal:true,
         save: this.getGlobalData().ApiBaseUrl + "/role/add",
         items: [
           {

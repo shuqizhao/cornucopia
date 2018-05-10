@@ -221,8 +221,9 @@ export default {
       var self = this;
       if (self.cfg.onCancel) {
         self.cfg.onCancel();
-      } else if (self.modal) {
-        //$('.modal-backdrop').hide();
+      } else if (self.cfg.isModal) {
+        self.$parent.$parent.$parent.dialogVisible=false;
+        self.$parent.$destroy();
       } else {
         //$.fn.navigate();
         history.go(-1);
