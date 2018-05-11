@@ -382,12 +382,11 @@ export default {
       // "pagingType": "full_numbers",
       "lengthMenu": [[5,10, 25, 50, 100,300], [5,10, 25, 50, 100,300]]
     };
-
-    var lastCfg = $.extend(true, dataTableCfg, this.cfg);
-    if(!lastCfg.bServerSide){
-      lastCfg.data=self.getSimpleData();
+    self.lastCfg = $.extend(true, dataTableCfg, this.cfg);
+    if(!self.lastCfg.bServerSide){
+      self.lastCfg.data=self.getSimpleData();
     }
-    self.dataTable = $("#tableList").DataTable(lastCfg);
+    self.dataTable = $("#tableList").DataTable(self.lastCfg);
     self.dataTable.on("draw", function() {
       $(self.$el)
         .find(".dataTables_paginate")
@@ -460,6 +459,7 @@ export default {
   },
   data() {
     return {
+      lastCfg:{},
       currentComponent:'',
       dialogVisible: false,
       SearchItems: [],
@@ -694,6 +694,13 @@ export default {
         }
       });
       return data;
+    },
+    reloadSimpleData:function(){
+      var self = this;
+      if(!self.lastCfg.bServerSide){
+        self.lastCfg.data=self.getSimpleData();
+        self.dataTable.clear().rows.add(self.lastCfg.data).draw()
+      }
     }
   }
 };

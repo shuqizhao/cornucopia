@@ -36,4 +36,22 @@ public class RoleController {
 		jr.setData(roles);
 		return jr;
 	}
+	
+	@RequestMapping(value = { "/exists" }, method = RequestMethod.POST)
+	public JsonResult<Integer> exists(String name) {
+		int isExists = RoleService.getInstance().exists(name);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(isExists);
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/add" }, method = RequestMethod.POST)
+	public JsonResult<Integer> add(RoleEntity roleEntity) {
+		RoleService.getInstance().insert(roleEntity);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(roleEntity.getId());
+		return jr;
+	}
 }

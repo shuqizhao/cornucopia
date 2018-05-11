@@ -13,32 +13,19 @@ export default {
         save: this.getGlobalData().ApiBaseUrl + "/role/add",
         items: [
           {
-            name: "Id",
-            type: "hidden"
-          },
-          {
-            name: "Name",
+            name: "name",
             title: "角色名",
             type: "text"
           }
         ],
         rules: {
-          Name: {
+          name: {
             required: true
           }
         },
         messages: {
-          Name: {
+          name: {
             required: "角色名必须填写"
-          }
-        },
-        onSuccess: function(mode, response) {
-          if (response.code == 200) {
-            history.back();
-          } else {
-            $.fn.message({
-              msg: "添加角色失败！"
-            });
           }
         },
         validate: function(data, saveData) {

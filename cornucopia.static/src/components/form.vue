@@ -498,8 +498,7 @@ export default {
               message: successLang,
               type: "success"
             });
-            //如果是模态窗体,关闭模态
-            $(".aModalForm").modal("hide");
+            
           } else if (response.message) {
             $(self.$el)
               .find(".btn-commit")
@@ -514,14 +513,28 @@ export default {
               if (handler) {
                 handler(response);
               } else {
-                history.go(-1);
+                if(self.cfg.isModal){
+                  self.$parent.$parent.$parent.dialogVisible=false;
+                  self.$parent.$parent.$parent.currentComponent="";
+                  self.$parent.$parent.$parent.reloadSimpleData();
+                  return;
+                }else{
+                  history.go(-1);
+                }
               }
             }
           } else {
             if (handler) {
               handler(response);
             } else {
-              history.go(-1);
+               if(self.cfg.isModal){
+                  self.$parent.$parent.$parent.dialogVisible=false;
+                  self.$parent.$parent.$parent.currentComponent="";
+                  self.$parent.$parent.$parent.reloadSimpleData();
+                  return;
+                }else{
+                  history.go(-1);
+                }
             }
           }
         }

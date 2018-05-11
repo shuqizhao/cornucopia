@@ -25,4 +25,12 @@ public class RoleService {
 	public List<RoleEntity> getAllRoles() {
 		return roledao.getAllRoles();
 	}
+
+	public int exists(String roleName) {
+		return roledao.exists(roleName);
+	}
+
+	public void insert(RoleEntity roleEntity) {
+		 roledao.insert(roleEntity);
+	}
 }
