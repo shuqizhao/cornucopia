@@ -44,4 +44,14 @@ public class AuthController {
 		jr.setData(menus);
 		return jr;
 	}
+	
+	@RequestMapping(value = { "/allResource" }, method = RequestMethod.GET)
+	public JsonResult<List<MenuEntity>> allResource() {
+		List<MenuEntity> menus = MenuService.getInstance().getAllMenusAndBtns();
+		
+		JsonResult<List<MenuEntity>> jr = new JsonResult<List<MenuEntity>>();
+		jr.setCode(200);
+		jr.setData(menus);
+		return jr;
+	}
 }

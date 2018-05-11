@@ -437,6 +437,7 @@ export default {
     }
 
     $('#tableList').on('click', 'tr', function () {
+        self.onSearch();
         var data = self.dataTable.row( this ).data();
         if(self.cfg.onClickRow){
           self.cfg.onClickRow(data);
@@ -701,6 +702,18 @@ export default {
         self.lastCfg.data=self.getSimpleData();
         self.dataTable.clear().rows.add(self.lastCfg.data).draw()
       }
+    },
+    onSearch:function(){
+      const loading = this.$loading({
+        lock: true,
+        text: '拼命加载中...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)',
+        target: document.querySelector('body')
+      });
+      setTimeout(() => {
+        loading.close();
+      }, 2000);
     }
   }
 };

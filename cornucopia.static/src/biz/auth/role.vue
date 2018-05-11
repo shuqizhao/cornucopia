@@ -49,13 +49,13 @@ export default {
           }
         ],
         onClickRow:function(data){
-          alert(data.id)
+          
         }
       },
       treeCfg: {
         title: "角色管理列表",
         parentTitle: "权限管理",
-        url: this.getGlobalData().ApiBaseUrl + "/role/alllist",
+        url: this.getGlobalData().ApiBaseUrl + "/auth/allResource",
         columns: [
           {
             title: "id",

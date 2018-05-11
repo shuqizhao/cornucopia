@@ -73,7 +73,7 @@ export default {
       data2: [],
       defaultProps: {
         children: "children",
-        label: "name"
+        label: "Name"
       }
     };
   },
