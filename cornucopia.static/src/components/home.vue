@@ -245,6 +245,11 @@ export default {
       $('.sidebar-mini').addClass('sidebar-collapse');
     }
   },
+  beforeUpdate:function(){
+    // alert('home')
+    // this.title="";
+    // this.parentTitle="";
+  },
   data() {
     return {
       avatar: this.getGlobalData().Avatar,

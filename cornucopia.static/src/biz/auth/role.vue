@@ -10,7 +10,7 @@ export default {
     var self = this;
     return {
       cfg: {
-        title: "角色管理列表",
+        title: "角色管理",
         parentTitle: "权限管理",
         simpleUrl: this.getGlobalData().ApiBaseUrl + "/role/alllist",
         "lengthMenu": [[-1], ["ALL"]],
@@ -90,6 +90,11 @@ export default {
         ]
       }
     }
+  },
+  updated:function(){
+    var self = this;
+    self.$parent.title= self.cfg.title;
+    self.$parent.parentTitle= self.cfg.parentTitle;
   }
 };
 </script>

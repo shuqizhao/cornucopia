@@ -104,8 +104,6 @@ export default {
   props: ["cfg"],
   mounted: function() {
     var self = this;
-    self.$parent.$parent.title= self.cfg.title;
-    self.$parent.$parent.parentTitle= self.cfg.parentTitle;
     var GodData = {};
     var searchColumns = [];
     var aoColumns = [];
@@ -443,7 +441,10 @@ export default {
       "margin-top",
       (span10Height - searchButtonHeight) / 2 + "px"
     );
-    // $('.content-wrapper').removeAttr('style');
+    // alert('list')
+    var self = this;
+    self.$parent.$parent.title= self.cfg.title;
+    self.$parent.$parent.parentTitle= self.cfg.parentTitle;
   },
   data() {
     return {
