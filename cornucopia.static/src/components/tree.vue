@@ -1,8 +1,16 @@
 <template>
-<div class="content-wrapper">
-    <section v-if="false" class="content-header">fs</section>
-    <section class="content container-fluid">
-        <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
+<div class="box">
+<div class="box-header">
+<h3 class="box-title">Latest Orders</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+</div>
+  <div class="box-body">
+    <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
 
         <el-tree
         class="filter-tree"
@@ -13,7 +21,7 @@
         :filter-node-method="filterNode"
         ref="tree2">
         </el-tree>
-    </section>
+  </div>
 </div>
 </template>
 <script>

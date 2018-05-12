@@ -130,7 +130,7 @@
   <!-- Content Wrapper. Contains page content -->
   <div>
    <div class="content-wrapper">
-    <section class="content-header">
+    <section v-if="this.title" class="content-header">
         <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item><i class="fa fa-dashboard"></i> 首页</el-breadcrumb-item>
         <el-breadcrumb-item>{{this.parentTitle}}</el-breadcrumb-item>
