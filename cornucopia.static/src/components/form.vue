@@ -1,7 +1,7 @@
 <template>
 <div>
     <!-- Horizontal Form -->
-    <div class="box box-info" >
+    <div class="box box-info" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
         <div class="box-header with-border">
             <i v-if="cfg.mode=='detailEdit'&&cfg.detailEditMode!='edit'" class="el-icon-view" />
             <i v-else-if="cfg.mode=='detailEdit'&&cfg.detailEditMode=='edit'" class="el-icon-edit" />

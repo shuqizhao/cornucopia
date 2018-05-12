@@ -1,5 +1,5 @@
 <template>
-<div class="box">
+<div class="box" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
 <div class="box-header">
 <h3 class="box-title">Latest Orders</h3>
 

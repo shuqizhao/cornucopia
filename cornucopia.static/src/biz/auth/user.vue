@@ -13,7 +13,7 @@ export default {
         fixedColumns: {
           leftColumns: 4
         },
-        title: "用户管理列表",
+        title: "用户管理",
         parentTitle: "系统管理",
         url: this.getGlobalData().ApiBaseUrl + "/user/list",
         columns: [
