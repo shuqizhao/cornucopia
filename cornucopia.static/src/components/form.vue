@@ -1,5 +1,5 @@
 <template>
-<div :class="this.cfg.isModal?'':'content-wrapper'">
+<div>
     <!-- Horizontal Form -->
     <div class="box box-info" >
         <div class="box-header with-border">

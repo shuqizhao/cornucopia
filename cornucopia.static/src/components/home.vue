@@ -129,7 +129,18 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div>
-   <div style="min-height:480px;"><router-view></router-view></div>
+   <div class="content-wrapper">
+    <section class="content-header">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item><i class="fa fa-dashboard"></i> 首页</el-breadcrumb-item>
+        <el-breadcrumb-item>{{this.parentTitle}}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{this.title}}</el-breadcrumb-item>
+        </el-breadcrumb>
+      </section>
+      <section class="content">
+        <router-view></router-view>
+      </section>
+   </div>
   </div>
   <!-- /.content-wrapper -->
 
@@ -241,7 +252,9 @@ export default {
       menusLevel0: [],
       menusLevel1: [],
       displayName: "",
-      displayTitle: ""
+      displayTitle: "",
+      title:"",
+      parentTitle:""
     };
   },
   methods: {

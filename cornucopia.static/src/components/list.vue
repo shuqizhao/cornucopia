@@ -1,13 +1,12 @@
 <template>
-<div class="content-wrapper">
-  <section v-if="cfg.title" class="content-header">
+<div>
+  <!--section v-if="cfg.title" class="content-header">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item><i class="fa fa-dashboard"></i> 首页</el-breadcrumb-item>
       <el-breadcrumb-item>{{cfg.parentTitle}}</el-breadcrumb-item>
       <el-breadcrumb-item>{{cfg.title}}</el-breadcrumb-item>
     </el-breadcrumb>
-  </section>
-  <section class="content container-fluid">
+  </section-->
     <div class="box">
         <div v-show="SearchItemsCount!=0" class="box-header searchDataTableTop">
           <el-collapse v-model="activeName"  @change="onCollapseChange">
@@ -89,14 +88,9 @@
             </table>
         </div>
     </div>
-  </section>
 
-  <el-dialog :visible.sync="dialogVisible" :width="this.cfg.dialogWidth?this.cfg.dialogWidth:'65%'" >
+<el-dialog :visible.sync="dialogVisible" :width="this.cfg.dialogWidth?this.cfg.dialogWidth:'65%'" >
    <component style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
-  <!-- <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-  </span> -->
 </el-dialog>
 
 </div>
@@ -119,6 +113,8 @@ export default {
   props: ["cfg"],
   mounted: function() {
     var self = this;
+    self.$parent.$parent.title= self.cfg.title;
+    self.$parent.$parent.parentTitle= self.cfg.parentTitle;
     var GodData = {};
     var searchColumns = [];
     var aoColumns = [];
