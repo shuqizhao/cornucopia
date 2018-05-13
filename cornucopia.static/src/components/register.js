@@ -151,14 +151,18 @@ Vue.prototype.clearCookie = function(cname, domain) {
     this.setCookie(cname, "", -1, domain);
 }
 
-Vue.prototype.openLoading = function() {
+Vue.prototype.openLoading = function(el) {
     var self = this;
+    var targetTemp = self.$el;
+    if (el) {
+        targetTemp = el;
+    }
     self.loading = self.$loading({
         lock: true,
         text: '拼命加载中...',
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)',
-        target: self.$el
+        target: targetTemp
     });
     setTimeout(() => {
         self.loading.close();

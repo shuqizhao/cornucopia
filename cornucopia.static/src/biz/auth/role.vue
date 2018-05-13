@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-col :span="12"><list :cfg="cfg"></list></el-col>
-    <el-col :span="12"><tree :cfg="treeCfg"></tree></el-col>
+    <el-col :span="12" id="resTree"><tree :cfg="treeCfg"></tree></el-col>
   </el-row>
 </template>
 <script>
@@ -49,7 +49,7 @@ export default {
           }
         ],
         onClickRow:function(data){
-          self.openLoading();
+          self.openLoading($('#resTree')[0]);
         }
       },
       treeCfg: {
