@@ -1,13 +1,20 @@
 <template>
 <div class="box" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
 <div class="box-header">
-<h3 class="box-title">Latest Orders</h3>
+  <div v-if="this.cfg.title">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item><i class="fa fa-dashboard"></i> 首页</el-breadcrumb-item>
+        <el-breadcrumb-item>{{this.cfg.parentTitle}}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{this.cfg.title}}</el-breadcrumb-item>
+        </el-breadcrumb>
+        <hr/>
+  </div>
 
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
+  <div class="box-tools pull-right">
+    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+    </button>
+    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+  </div>
 </div>
   <div class="box-body">
     <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>

@@ -53,9 +53,8 @@ export default {
         }
       },
       treeCfg: {
-        title: "角色管理列表",
+        title: "资源管理",
         parentTitle: "权限管理",
-        boxStyle:"height:500px",
         url: this.getGlobalData().ApiBaseUrl + "/auth/allResource",
         columns: [
           {

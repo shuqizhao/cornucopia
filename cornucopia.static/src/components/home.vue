@@ -130,11 +130,11 @@
   <!-- Content Wrapper. Contains page content -->
   <div>
    <div class="content-wrapper">
-    <section v-if="this.title" class="content-header">
+    <section v-if="this.breadcrumbTitle" class="content-header">
         <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item><i class="fa fa-dashboard"></i> 首页</el-breadcrumb-item>
-        <el-breadcrumb-item>{{this.parentTitle}}</el-breadcrumb-item>
-        <el-breadcrumb-item>{{this.title}}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{this.breadcrumbParentTitle}}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{this.breadcrumbTitle}}</el-breadcrumb-item>
         </el-breadcrumb>
       </section>
       <section class="content">
@@ -258,8 +258,8 @@ export default {
       menusLevel1: [],
       displayName: "",
       displayTitle: "",
-      title:"",
-      parentTitle:""
+      breadcrumbTitle:"",
+      breadcrumbParentTitle:""
     };
   },
   methods: {

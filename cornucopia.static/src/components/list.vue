@@ -1,6 +1,16 @@
 <template>
 <div>
   <div class="box" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
+  
+      <div v-if="this.cfg.title" class="box-header">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item><i class="fa fa-dashboard"></i> 首页</el-breadcrumb-item>
+        <el-breadcrumb-item>{{this.cfg.parentTitle}}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{this.cfg.title}}</el-breadcrumb-item>
+        </el-breadcrumb>
+        <hr v-if="SearchItemsCount==0"/>
+      </div>
+
       <div v-show="SearchItemsCount!=0" class="box-header searchDataTableTop">
         <el-collapse v-model="activeName"  @change="onCollapseChange">
           <el-collapse-item name="true" >
@@ -73,7 +83,6 @@
             </div>
           </el-collapse-item>
         </el-collapse>
-      
       </div>
       <!-- <hr v-if="SearchItemsCount!=0" /> -->
       <div class="box-body">
@@ -453,7 +462,7 @@ export default {
       SearchItems: [],
       SearchItemsCount: 0,
       activeName: this.cfg.isShowSearchArea,
-      value:""
+      value:"",
     };
   },
   methods: {
