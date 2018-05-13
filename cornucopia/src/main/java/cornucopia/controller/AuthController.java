@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
 import cornucopia.entity.MenuEntity;
+import cornucopia.model.ResourceViewModel;
 import cornucopia.service.MenuService;
 import cornucopia.service.UserService;
 import cornucopia.util.CookieUtil;
@@ -46,10 +47,9 @@ public class AuthController {
 	}
 	
 	@RequestMapping(value = { "/allResource" }, method = RequestMethod.GET)
-	public JsonResult<List<MenuEntity>> allResource() {
-		List<MenuEntity> menus = MenuService.getInstance().getAllMenusAndBtns();
-		
-		JsonResult<List<MenuEntity>> jr = new JsonResult<List<MenuEntity>>();
+	public JsonResult<List<ResourceViewModel>> allResource() {
+		List<ResourceViewModel> menus = MenuService.getInstance().getAllResourceTree();
+		JsonResult<List<ResourceViewModel>> jr = new JsonResult<List<ResourceViewModel>>();
 		jr.setCode(200);
 		jr.setData(menus);
 		return jr;
