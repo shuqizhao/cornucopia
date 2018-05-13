@@ -49,7 +49,7 @@ export default {
           }
         ],
         onClickRow:function(data){
-          
+          self.openLoading();
         }
       },
       treeCfg: {

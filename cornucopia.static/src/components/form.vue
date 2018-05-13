@@ -158,7 +158,9 @@ export default {
   mounted: function() {
     var self = this;
     self.isMounted = true;
+    
     if (this.cfg.mode != "create") {
+      self.openLoading();
       this.fillData();
     }
   },
@@ -553,6 +555,7 @@ export default {
         success: function(result) {
           if (result.code == "200") {
             self.detail = result.data;
+            self.closeLoading();
           }
         }
       });
