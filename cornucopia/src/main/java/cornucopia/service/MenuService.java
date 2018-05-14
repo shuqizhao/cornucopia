@@ -45,6 +45,15 @@ public class MenuService {
 			ResourceViewModel rvm = new ResourceViewModel();
 			rvm.setId(menu.getId());
 			rvm.setName(menu.getName());
+			if(menu.getIcon()==null || menu.getIcon().equals("")) {
+				if(menu.getParentId()==0) {
+					rvm.setIcon("fa-th");
+				}else {
+					rvm.setIcon("fa-circle-o");
+				}
+			}else {
+				rvm.setIcon(menu.getIcon());
+			}
 			List<ResourceViewModel> temp = buildResourceTree(menu.getId(), menus);
 			rvm.setChildren(temp);
 			rvms.add(rvm);

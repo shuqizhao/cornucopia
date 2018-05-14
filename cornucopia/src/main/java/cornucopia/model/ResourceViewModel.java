@@ -5,6 +5,7 @@ import java.util.List;
 public class ResourceViewModel {
 	private int id;
 	private String name;
+	private String icon;
 	private List<ResourceViewModel> children;
 
 	public int getId() {
@@ -29,5 +30,13 @@ public class ResourceViewModel {
 
 	public void setChildren(List<ResourceViewModel> children) {
 		this.children = children;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 }

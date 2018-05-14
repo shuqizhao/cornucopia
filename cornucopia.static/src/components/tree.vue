@@ -27,6 +27,12 @@
         show-checkbox
         :filter-node-method="filterNode"
         ref="tree2">
+
+          <span class="custom-tree-node" slot-scope="{ node, data }">
+          
+          <span><i :class="'fa '+data.icon"></i> {{ node.label }}</span>
+      </span>
+
         </el-tree>
   </div>
 </div>
