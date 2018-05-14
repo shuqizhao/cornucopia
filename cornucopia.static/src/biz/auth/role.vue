@@ -80,7 +80,7 @@ export default {
         functions: [
             {
               text: "保存",
-              type: "btn-info",
+              type: "btn-success",
               onClick:function(){
                 if(!self.currentRoleId){
                   self.$message({
