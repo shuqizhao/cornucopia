@@ -8,6 +8,9 @@
         <el-breadcrumb-item>{{this.cfg.title}}</el-breadcrumb-item>
         </el-breadcrumb>
         <hr/>
+  <div>
+    <button v-for="item in cfg.functions" :key="item.text" @click="item.onClick" :class="'btn '+item.type+' btn-buttons glyphicon glyphicon-floppy-saved'" >{{item.text}}</button>
+  </div>
   </div>
 
   <div class="box-tools pull-right">
@@ -21,6 +24,7 @@
 
         <el-tree
         class="filter-tree"
+         node-key="id"
         :data="data2"
         :props="defaultProps"
         default-expand-all
@@ -85,6 +89,10 @@ export default {
           }
         }
       });
+    },
+    setCheckedKeys:function(checkList){
+      var self = this;
+      self.$refs.tree2.setCheckedKeys(checkList);
     }
   },
 

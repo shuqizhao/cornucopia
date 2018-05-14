@@ -60,4 +60,9 @@ public class MenuService {
 		}
 		return rvms;
 	}
+
+	public List<Integer> getCheckedList(int roleId) {
+		List<Integer> checkedList = menuDao.getCheckedList(roleId);
+		return checkedList;
+	}
 }
