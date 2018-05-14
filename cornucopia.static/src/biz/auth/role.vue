@@ -17,6 +17,7 @@ export default {
         sDom:'f<"dataTables_function"/>',
         bServerSide: false,
         hideCheckBox:true,
+        showSelectedRowColor:true,
         columns: [
           {
             title: "id",
@@ -48,7 +49,7 @@ export default {
             url: "/auth/roleview"
           }
         ],
-        onClickRow:function(data){
+        onClickRow:function(data,target){
           self.$refs.tree.cfg.title=data.name;
           self.openLoading($('#resTree')[0]);
            $.ajax({

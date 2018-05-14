@@ -431,9 +431,13 @@ export default {
     }
 
     $('#tableList').on('click', 'tr', function () {
-        var data = self.dataTable.row( this ).data();
+        if(self.cfg.showSelectedRowColor){
+           $('#tableList tr').css('background-color', "");
+           $(this).css('background-color', "#D6D5C3");
+        }
+        var data = self.dataTable.row(this).data();
         if(self.cfg.onClickRow){
-          self.cfg.onClickRow(data);
+          self.cfg.onClickRow(data,this);
         }
     } );
   },
