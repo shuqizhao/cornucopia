@@ -94,6 +94,15 @@ export default {
       var self = this;
       self.$refs.tree2.setCheckedKeys(checkList);
     }
+    ,
+    getCheckedKeys:function(){
+      var self = this;
+      var checkedList = self.$refs.tree2.getCheckedKeys()
+      if(checkedList.length==0){
+        return [0];
+      }
+      return checkedList;
+    }
   },
 
   data() {

@@ -65,4 +65,12 @@ public class MenuService {
 		List<Integer> checkedList = menuDao.getCheckedList(roleId);
 		return checkedList;
 	}
+
+	public int saveCheckedList(int roleId, List<Integer> checkedList) {
+		menuDao.deleteRoleMenus(roleId);
+		for(int menuId : checkedList) {
+			menuDao.insertRoleMenu(roleId,menuId);
+		}
+		return 1;
+	}
 }

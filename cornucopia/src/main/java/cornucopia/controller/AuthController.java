@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
@@ -61,6 +62,15 @@ public class AuthController {
 		JsonResult<List<Integer>> jr = new JsonResult<List<Integer>>();
 		jr.setCode(200);
 		jr.setData(checkedList);
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/saveCheckedList" }, method = RequestMethod.POST)
+	public JsonResult<Integer> saveCheckedList(int roleId,@RequestParam(value = "checkedList[]") List<Integer> checkedList) {
+		int isOk = MenuService.getInstance().saveCheckedList(roleId,checkedList);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(isOk);
 		return jr;
 	}
 }
