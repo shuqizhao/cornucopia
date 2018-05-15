@@ -81,6 +81,7 @@ export default {
             {
               text: "保存",
               type: "btn-success",
+              icon:"el-icon-success",
               onClick:function(){
                 if(!self.currentRoleId){
                   self.$message({
@@ -122,6 +123,22 @@ export default {
                         }
                       });
                 });
+              }
+            },
+            {
+              text: "全选",
+              type: "btn-success",
+              icon:'el-icon-circle-check-outline',
+              onClick:function(){
+                self.$refs.tree.checkAll();
+              }
+            },
+            {
+              text: "清空",
+              type: "btn-success",
+              icon:'el-icon-circle-close-outline',
+              onClick:function(){
+                self.$refs.tree.clearAll();
               }
             }
           ]

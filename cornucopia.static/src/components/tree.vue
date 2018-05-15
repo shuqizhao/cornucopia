@@ -9,7 +9,7 @@
         </el-breadcrumb>
         <hr/>
   <div>
-    <button v-for="item in cfg.functions" :key="item.text" @click="item.onClick" :class="'btn '+item.type+' btn-buttons glyphicon glyphicon-floppy-saved'" >{{item.text}}</button>
+    <button v-for="item in cfg.functions" :key="item.text" @click="item.onClick" :class="'btn '+item.type+' btn-buttons '+item.icon" style="margin-right:10px;">{{item.text}}</button>
   </div>
   </div>
 
@@ -102,6 +102,14 @@ export default {
         return [0];
       }
       return checkedList;
+    },
+    checkAll:function(){
+      var self = this;
+      self.$refs.tree2.setCheckedNodes(self.data2);
+    },
+    clearAll:function(){
+      var self = this;
+      self.$refs.tree2.setCheckedKeys([0]);
     }
   },
 
