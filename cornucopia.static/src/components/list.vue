@@ -431,11 +431,12 @@ export default {
     }
 
     $('#tableList').on('click', 'tr', function () {
+        var data = self.dataTable.row(this).data();
         if(self.cfg.showSelectedRowColor){
            $('#tableList tr').css('background-color', "");
            $(this).css('background-color', "#D6D5C3");
+           self.currentId = data.id;
         }
-        var data = self.dataTable.row(this).data();
         if(self.cfg.onClickRow){
           self.cfg.onClickRow(data,this);
         }
@@ -549,32 +550,12 @@ export default {
       }
       var tipMsg = $(e).text();
       var checks = $(self.$el).find("input:checkbox:checked");
-      if (mode != "skipcheck" && checks.length == 0) {
-        // var PleaseSelectLang = $.i18n.map["PleaseSelect"];
-        // var RecordLang = $.i18n.map["Record"];
-        // var kongge = "";
-        // if ((GlobalData.Lang = "CN")) {
-        //   kongge = " ";
-        // }
+      if (mode != "skipcheck" && checks.length == 0&&!self.currentId) {
         self.$message({
           message: "请选择一条记录",
           type: "warning"
         });
       } else {
-        // var OkLang = $.i18n.map["Ok"];
-        // var CancelLang = $.i18n.map["Cancel"];
-        // var TipsLang = $.i18n.map["Tips"];
-        // var TipMsg = $.i18n.map["TipMsg"];
-        // $.messager.model = {
-        //   ok: {
-        //     text: OkLang,
-        //     classed: "btn-primary"
-        //   },
-        //   cancel: {
-        //     text: CancelLang,
-        //     classed: "btn-danger"
-        //   }
-        // };
         var TipMsg = "是否继续?";
         var tips = $(e.target).attr("tips");
         if (!tips) {
@@ -594,6 +575,9 @@ export default {
                 formData.push($(this).val());
               }
             });
+            if(self.currentId){
+              formData.push(self.currentId)
+            }
             if (mode == "download") {
               if (limitSelected) {
                 if (limitSelected < data.length) {

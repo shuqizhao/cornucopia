@@ -56,15 +56,15 @@ export default {
           more: [
             {
               text: "停用",
-              url: this.getGlobalData().ApiBaseUrl + "/user/disable"
+              url: this.getGlobalData().ApiBaseUrl + "/role/disable"
             },
             {
               text: "启用",
-              url: this.getGlobalData().ApiBaseUrl + "/user/enable"
+              url: this.getGlobalData().ApiBaseUrl + "/role/enable"
             },
             {
               text: "删除",
-              url: this.getGlobalData().ApiBaseUrl + "/user/enable"
+              url: this.getGlobalData().ApiBaseUrl + "/role/delete"
             }
           ]
         },
