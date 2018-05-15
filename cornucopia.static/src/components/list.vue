@@ -622,6 +622,7 @@ export default {
                       message: "操作成功!",
                       type: "success"
                     });
+                    self.currentId="";
                   } else {
                     self.$message({
                       message: response.message + "！",
