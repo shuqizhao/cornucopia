@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
@@ -52,6 +53,33 @@ public class RoleController {
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(roleEntity.getId());
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/disable" }, method = RequestMethod.POST)
+	public JsonResult<Integer> disable(@RequestParam(value = "Ids") int id) {
+		int result = RoleService.getInstance().disable(id);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(result);
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/enable" }, method = RequestMethod.POST)
+	public JsonResult<Integer> enable(@RequestParam(value = "Ids") int id) {
+		int result = RoleService.getInstance().enable(id);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(result);
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/delete" }, method = RequestMethod.POST)
+	public JsonResult<Integer> delete(@RequestParam(value = "Ids") int id) {
+		int result = RoleService.getInstance().delete(id);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(result);
 		return jr;
 	}
 }

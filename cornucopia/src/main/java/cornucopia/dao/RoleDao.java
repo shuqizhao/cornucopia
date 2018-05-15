@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import cornucopia.entity.RoleEntity;
 
@@ -22,4 +23,13 @@ public interface RoleDao {
 	@Insert("call sp_role_insert(#{role.name})")
 	@Options(useGeneratedKeys = true, keyProperty = "role.id")
 	public void insert(@Param("role") RoleEntity roleEntity);
+
+	@Update("call sp_role_disable(#{id})")
+	public int disable(@Param("id")int id);
+	
+	@Update("call sp_role_enable(#{id})")
+	public int enable(@Param("id")int id);
+	
+	@Update("call sp_role_delete(#{id})")
+	public int delete(@Param("id")int id);
 }

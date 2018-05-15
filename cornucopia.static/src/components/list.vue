@@ -616,6 +616,7 @@ export default {
                 data: { Ids: formData },
                 success: function(response) {
                   if (response.code == 200) {
+                    self.reloadSimpleData();
                     self.dataTable.draw(false);
                     self.$message({
                       message: "操作成功!",

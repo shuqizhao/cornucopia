@@ -33,4 +33,16 @@ public class RoleService {
 	public void insert(RoleEntity roleEntity) {
 		 roledao.insert(roleEntity);
 	}
+
+	public int disable(int id) {
+		return roledao.disable(id);
+	}
+	
+	public int enable(int id) {
+		return roledao.enable(id);
+	}
+	
+	public int delete(int id) {
+		return roledao.delete(id);
+	}
 }
