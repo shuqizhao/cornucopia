@@ -49,7 +49,6 @@ export default {
       this.$refs.tree2.filter(val);
     }
   },
-
   methods: {
     filterNode(value, data) {
       if (!value) return true;
@@ -124,6 +123,24 @@ export default {
     };
   },
   mounted: function() {
+    var self = this;
+    this.cfg.functions = this.cfg.functions || []
+    this.cfg.functions.push({
+              text: "全选",
+              type: "btn-success",
+              icon:'el-icon-circle-check-outline',
+              onClick:function(){
+                self.checkAll();
+              }
+            });
+    this.cfg.functions.push({
+              text: "清空",
+              type: "btn-success",
+              icon:'el-icon-circle-close-outline',
+              onClick:function(){
+                self.clearAll();
+              }
+            });
     this.loadUrl();
   }
 };
