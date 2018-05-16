@@ -153,7 +153,6 @@ $.ajax({
   },
   dataType: 'json'
 });
-
 var systemRouters = [];
 for (var i = 0; i < menuData.length; i++) {
   let url = menuData[i].Url;

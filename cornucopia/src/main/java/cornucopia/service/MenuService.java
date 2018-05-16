@@ -30,6 +30,11 @@ public class MenuService {
 		List<MenuEntity> menus = menuDao.getAllMenusAndBtns();
 		return menus;
 	}
+	
+	public List<MenuEntity> getAllRouters() {
+		List<MenuEntity> menus = menuDao.getAllRouters();
+		return menus;
+	}
 
 	public List<TreeViewModel> getAllResourceTree() {
 		List<MenuEntity> menus = getAllMenusAndBtns();

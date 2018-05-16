@@ -89,7 +89,7 @@ public class AuthController {
 	
 	@RequestMapping(value = { "/routerList" }, method = RequestMethod.GET)
 	public JsonResult<List<MenuEntity>> routerList() {
-		List<MenuEntity> menus = MenuService.getInstance().getAllMenus();
+		List<MenuEntity> menus = MenuService.getInstance().getAllRouters();
 		JsonResult<List<MenuEntity>> jr = new JsonResult<List<MenuEntity>>();
 		jr.setCode(200);
 		jr.setData(menus);

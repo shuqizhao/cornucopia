@@ -24,4 +24,7 @@ public interface MenuDao {
 
 	@Insert("call sp_role_menu_insert(#{roleId},#{menuId})")
 	public void insertRoleMenu(@Param("roleId") int roleId,@Param("menuId") int menuId);
+
+	@Select("call sp_menu_router_all()")
+	public List<MenuEntity> getAllRouters();
 }
