@@ -146,36 +146,31 @@ Vue.use(VueRouter)
 var menuData = {};
 
 $.ajax({
-  url: jsonData.ApiBaseUrl + '/auth/routerList',
-  async: false,
-  success: function (result) {
-    menuData = result.data;
-  },
-  dataType: 'json'
+    url: jsonData.ApiBaseUrl + '/auth/routerList',
+    async: false,
+    success: function(result) {
+        menuData = result.data;
+    },
+    dataType: 'json'
 });
 var systemRouters = [];
 for (var i = 0; i < menuData.length; i++) {
-  let url = menuData[i].Url;
-  if (url) {
-    if (menuData[i].Type == 1) {
-      var splits = url.split('/');
-      Vue.component(splits.length > 0 ? splits[1] : splits[0], r => require.ensure([], () => r(require('../biz/' + url + '.vue')), 'biz'))
-    } else if (menuData[i].Type == 2) {
-      systemRouters.push({
-        path: '/',
-        component: r => require.ensure([], () => r(require('../biz/' + url + '.vue')), 'dashboard')
-      });
-    } else {
-      systemRouters.push({
-        path: '/' + url,
-        component: r => require.ensure([], () => r(require('../biz/' + url + '.vue')), 'biz')
-      });
+    let routerName = menuData[i].routerName;
+    let url = menuData[i].Url;
+    if (url) {
+        if (menuData[i].Type == 1) {
+            Vue.component(routerName, r => require.ensure([], () => r(require('../biz' + url + '.vue')), 'biz'))
+        } else {
+            systemRouters.push({
+                path: routerName,
+                component: r => require.ensure([], () => r(require('../biz' + url + '.vue')), 'biz')
+            });
+        }
     }
-  }
 }
 
 const router = new VueRouter({
-  routes: systemRouters
+    routes: systemRouters
 });
 
 export default router

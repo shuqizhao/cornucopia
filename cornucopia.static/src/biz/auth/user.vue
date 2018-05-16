@@ -101,7 +101,7 @@ export default {
           common: [
             {
               text: "添加用户",
-              url: "/auth/useradd",
+              url: "/auth/userAdd",
               mode: "navigate"
             }
           ]
@@ -109,7 +109,7 @@ export default {
         operations: [
           {
             text: "查看",
-            url: "/auth/userview"
+            url: "/auth/userView"
           }
         ]
       }

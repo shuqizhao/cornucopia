@@ -18,7 +18,7 @@ export default {
         url: this.getGlobalData().ApiBaseUrl + "/auth/whiteList",
         columns: [
           {
-            title: "用户名",
+            title: "名称",
             name: "name",
             isSearch: true
           },
@@ -43,24 +43,8 @@ export default {
             ]
           },
           {
-            title: "工号",
-            name: "personNumber",
-            isSearch: true
-          },{
-            title: "职位",
-            name: "jobId"
-          },{
-            title: "工作邮箱",
-            name: "email"
-          },{
-            title: "手机号码",
-            name: "phone"
-          },{
-            title: "所属上级",
-            name: "managerId"
-          },{
-            title: "所在部门",
-            name: "orgId"
+            title: "Url",
+            name: "url"
           },
             {
             title: "创建时间",
@@ -73,10 +57,6 @@ export default {
             name: "updateTime",
             isSearch: true,
             type: "timer"
-          },
-          {
-            title: "最后登录时间",
-            name: "lastLoginTime"
           }
         ],
         fnRowCallback: function(row, data) {
@@ -100,9 +80,9 @@ export default {
           ],
           common: [
             {
-              text: "添加用户",
-              url: "/auth/useradd",
-              mode: "navigate"
+              text: "添加白名单",
+              url: "roleAdd",
+              mode: "modal"
             }
           ]
         },

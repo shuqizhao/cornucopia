@@ -4,9 +4,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class MenuEntity extends BaseEntity {
 	
+	private String routerName;
+	
 	@JsonProperty(value = "Icon")
 	private String icon;
 	
+	public String getRouterName() {
+		return routerName;
+	}
+
+	public void setRouterName(String routerName) {
+		this.routerName = routerName;
+	}
+
 	public String getIcon() {
 		return icon;
 	}
