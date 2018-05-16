@@ -2,11 +2,11 @@ package cornucopia.model;
 
 import java.util.List;
 
-public class ResourceViewModel {
+public class TreeViewModel {
 	private int id;
 	private String name;
 	private String icon;
-	private List<ResourceViewModel> children;
+	private List<TreeViewModel> children;
 
 	public int getId() {
 		return id;
@@ -24,11 +24,11 @@ public class ResourceViewModel {
 		this.name = name;
 	}
 
-	public List<ResourceViewModel> getChildren() {
+	public List<TreeViewModel> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<ResourceViewModel> children) {
+	public void setChildren(List<TreeViewModel> children) {
 		this.children = children;
 	}
 

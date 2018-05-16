@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
 import cornucopia.entity.MenuEntity;
-import cornucopia.model.ResourceViewModel;
+import cornucopia.model.TreeViewModel;
 import cornucopia.service.MenuService;
+import cornucopia.service.OrgService;
 import cornucopia.service.UserService;
 import cornucopia.util.CookieUtil;
 
@@ -48,9 +49,9 @@ public class AuthController {
 	}
 	
 	@RequestMapping(value = { "/allResource" }, method = RequestMethod.GET)
-	public JsonResult<List<ResourceViewModel>> allResource() {
-		List<ResourceViewModel> menus = MenuService.getInstance().getAllResourceTree();
-		JsonResult<List<ResourceViewModel>> jr = new JsonResult<List<ResourceViewModel>>();
+	public JsonResult<List<TreeViewModel>> allResource() {
+		List<TreeViewModel> menus = MenuService.getInstance().getAllResourceTree();
+		JsonResult<List<TreeViewModel>> jr = new JsonResult<List<TreeViewModel>>();
 		jr.setCode(200);
 		jr.setData(menus);
 		return jr;
@@ -71,6 +72,15 @@ public class AuthController {
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(isOk);
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/allOrg" }, method = RequestMethod.GET)
+	public JsonResult<List<TreeViewModel>> allOrg() {
+		List<TreeViewModel> menus = OrgService.getInstance().getAllOrgTree();
+		JsonResult<List<TreeViewModel>> jr = new JsonResult<List<TreeViewModel>>();
+		jr.setCode(200);
+		jr.setData(menus);
 		return jr;
 	}
 }

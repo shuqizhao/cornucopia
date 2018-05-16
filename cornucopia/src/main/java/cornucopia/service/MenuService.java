@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import cornucopia.dao.MenuDao;
 import cornucopia.entity.MenuEntity;
-import cornucopia.model.ResourceViewModel;
+import cornucopia.model.TreeViewModel;
 import cornucopia.util.MyBatisHelper;
 
 public class MenuService {
@@ -31,18 +31,18 @@ public class MenuService {
 		return menus;
 	}
 
-	public List<ResourceViewModel> getAllResourceTree() {
+	public List<TreeViewModel> getAllResourceTree() {
 		List<MenuEntity> menus = getAllMenusAndBtns();
-		List<ResourceViewModel> rvms = buildResourceTree(0, menus);
+		List<TreeViewModel> rvms = buildResourceTree(0, menus);
 		return rvms;
 	}
 
-	private List<ResourceViewModel> buildResourceTree(int parentId, List<MenuEntity> menus) {
-		List<ResourceViewModel> rvms = new ArrayList<ResourceViewModel>();
+	private List<TreeViewModel> buildResourceTree(int parentId, List<MenuEntity> menus) {
+		List<TreeViewModel> rvms = new ArrayList<TreeViewModel>();
 		List<MenuEntity> curMenus = menus.stream().filter((MenuEntity r) -> r.getParentId() == parentId)
 				.collect(Collectors.toList());
 		for (MenuEntity menu : curMenus) {
-			ResourceViewModel rvm = new ResourceViewModel();
+			TreeViewModel rvm = new TreeViewModel();
 			rvm.setId(menu.getId());
 			rvm.setName(menu.getName());
 			if(menu.getIcon()==null || menu.getIcon().equals("")) {
@@ -54,7 +54,7 @@ public class MenuService {
 			}else {
 				rvm.setIcon(menu.getIcon());
 			}
-			List<ResourceViewModel> temp = buildResourceTree(menu.getId(), menus);
+			List<TreeViewModel> temp = buildResourceTree(menu.getId(), menus);
 			rvm.setChildren(temp);
 			rvms.add(rvm);
 		}

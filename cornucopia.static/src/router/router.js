@@ -27,6 +27,8 @@ const RoleAdd = r => require.ensure([], () => r(require('../biz/auth/roleAdd.vue
 
 Vue.component('RoleAdd', RoleAdd)
 
+const Org = r => require.ensure([], () => r(require('../biz/auth/org.vue')), 'auth')
+
 const ResourceList = r => require.ensure([], () => r(require('../biz/auth/resource.vue')), 'auth')
 
 const DashboardView = r => require.ensure([], () => r(require('../biz/dashboard.vue')), 'dashboard')
@@ -70,6 +72,9 @@ const router = new VueRouter({
     }, {
         path: '/auth/resource',
         component: ResourceList
+    }, {
+        path: '/auth/org',
+        component: Org
     }]
 })
 
