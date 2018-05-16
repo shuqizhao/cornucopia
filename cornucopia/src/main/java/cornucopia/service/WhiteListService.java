@@ -36,4 +36,8 @@ public class WhiteListService {
 		}
 		return false;
 	}
+
+	public List<WhiteListEntity> getWhiteListByPage(int start, int length) {
+		return whiteListDao.getWhiteListByPage(start, length);
+	}
 }

@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
 import cornucopia.entity.MenuEntity;
-import cornucopia.entity.UserEntity;
+import cornucopia.entity.WhiteListEntity;
 import cornucopia.model.TreeViewModel;
 import cornucopia.service.MenuService;
 import cornucopia.service.OrgService;
 import cornucopia.service.UserService;
+import cornucopia.service.WhiteListService;
 import cornucopia.util.CookieUtil;
 import cornucopia.util.DataTableParameter;
 import cornucopia.util.DataTableResult;
@@ -96,15 +97,15 @@ public class AuthController {
 		return jr;
 	}
 	
-	@RequestMapping(value = { "/whilteList" }, method = RequestMethod.POST)
-	public DataTableResult<UserEntity> list(DataTableParameter dtp) {
-		List<UserEntity> users = UserService.getInstance().getUsersByPage(dtp.getiDisplayStart(),
+	@RequestMapping(value = { "/whiteList" }, method = RequestMethod.POST)
+	public DataTableResult<WhiteListEntity> list(DataTableParameter dtp) {
+		List<WhiteListEntity> whiteList = WhiteListService.getInstance().getWhiteListByPage(dtp.getiDisplayStart(),
 				dtp.getiDisplayLength());
 		int count = 0;
-		if (users != null && users.size() > 0) {
-			count = users.get(0).getTotalCount();
+		if (whiteList != null && whiteList.size() > 0) {
+			count = whiteList.get(0).getTotalCount();
 		}
-		DataTableResult<UserEntity> dtr = new DataTableResult<UserEntity>(dtp.getsEcho() + 1, count, count, users);
+		DataTableResult<WhiteListEntity> dtr = new DataTableResult<WhiteListEntity>(dtp.getsEcho() + 1, count, count, whiteList);
 		return dtr;
 	}
 }

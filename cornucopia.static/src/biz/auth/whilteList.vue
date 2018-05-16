@@ -15,7 +15,7 @@ export default {
         // },
         title: "白名单管理",
         parentTitle: "系统管理",
-        url: this.getGlobalData().ApiBaseUrl + "/user/list",
+        url: this.getGlobalData().ApiBaseUrl + "/auth/whiteList",
         columns: [
           {
             title: "用户名",
