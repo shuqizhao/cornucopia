@@ -12,11 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
 import cornucopia.entity.MenuEntity;
+import cornucopia.entity.UserEntity;
 import cornucopia.model.TreeViewModel;
 import cornucopia.service.MenuService;
 import cornucopia.service.OrgService;
 import cornucopia.service.UserService;
 import cornucopia.util.CookieUtil;
+import cornucopia.util.DataTableParameter;
+import cornucopia.util.DataTableResult;
 
 @RestController
 @RequestMapping("/auth")
@@ -82,5 +85,26 @@ public class AuthController {
 		jr.setCode(200);
 		jr.setData(menus);
 		return jr;
+	}
+	
+	@RequestMapping(value = { "/routerList" }, method = RequestMethod.GET)
+	public JsonResult<List<MenuEntity>> routerList() {
+		List<MenuEntity> menus = MenuService.getInstance().getAllMenus();
+		JsonResult<List<MenuEntity>> jr = new JsonResult<List<MenuEntity>>();
+		jr.setCode(200);
+		jr.setData(menus);
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/whilteList" }, method = RequestMethod.POST)
+	public DataTableResult<UserEntity> list(DataTableParameter dtp) {
+		List<UserEntity> users = UserService.getInstance().getUsersByPage(dtp.getiDisplayStart(),
+				dtp.getiDisplayLength());
+		int count = 0;
+		if (users != null && users.size() > 0) {
+			count = users.get(0).getTotalCount();
+		}
+		DataTableResult<UserEntity> dtr = new DataTableResult<UserEntity>(dtp.getsEcho() + 1, count, count, users);
+		return dtr;
 	}
 }

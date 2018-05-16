@@ -1,29 +1,6 @@
 import Vue from 'vue'
+import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
-
-// import 'bootstrap/dist/css/bootstrap.css'
-
-
-// //AdminLTE
-// import 'admin-lte/dist/css/skins/_all-skins.min.css'
-// import 'admin-lte/dist/css/AdminLTE.min.css'
-
-// //font-awesome
-// import 'font-awesome/css/font-awesome.min.css'
-
-// import 'ionicons/dist/css/ionicons.min.css'
-
-// import 'admin-lte/dist/css/skins/skin-blue.min.css'
-
-// import 'bootstrap/dist/js/bootstrap'
-// import 'admin-lte/dist/js/adminlte'
-
-// import ElementUI from 'element-ui'
-// import 'element-ui/lib/theme-chalk/index.css'
-
-// import '../components/select2select'
-
-// Vue.use(ElementUI)
 
 Vue.component('mimiApp', function(resolve) {
     require(['../components/mimiApp.vue'], resolve)
@@ -47,22 +24,6 @@ Vue.component('loading', function(resolve) {
 Vue.component('tree', function(resolve) {
     require(['../components/tree.vue'], resolve)
 })
-
-// const mimiApp = r => require.ensure([], () => r(require('../components/mimiApp.vue')), 'mimiApp')
-// Vue.component('mimiApp', mimiApp);
-
-// const loading = r => require.ensure([], () => r(require('../components/loading.vue')), 'loading')
-// Vue.component('loading', loading);
-
-// const LoginOrHome = r => require.ensure([], () => r(require('../components/loginOrHome.vue')), 'loginOrHome')
-// Vue.component('LoginOrHome', LoginOrHome);
-
-// const List = r => require.ensure([], () => r(require('../components/list.vue')), 'list')
-// Vue.component('list', List);
-
-// const Form = r => require.ensure([], () => r(require('../components/form.vue')), 'form')
-// Vue.component('mform', Form);
-
 
 
 jQuery.ajaxSetup({
@@ -173,3 +134,49 @@ Vue.prototype.closeLoading = function() {
     var self = this;
     self.loading.close();
 }
+
+/**
+ *  加载模块
+ */
+Vue.use(VueRouter)
+
+/**
+ *  配置路由
+ */
+var menuData = {};
+
+$.ajax({
+  url: jsonData.ApiBaseUrl + '/auth/routerList',
+  async: false,
+  success: function (result) {
+    menuData = result.data;
+  },
+  dataType: 'json'
+});
+
+var systemRouters = [];
+for (var i = 0; i < menuData.length; i++) {
+  let url = menuData[i].Url;
+  if (url) {
+    if (menuData[i].Type == 1) {
+      var splits = url.split('/');
+      Vue.component(splits.length > 0 ? splits[1] : splits[0], r => require.ensure([], () => r(require('../biz/' + url + '.vue')), 'biz'))
+    } else if (menuData[i].Type == 2) {
+      systemRouters.push({
+        path: '/',
+        component: r => require.ensure([], () => r(require('../biz/' + url + '.vue')), 'dashboard')
+      });
+    } else {
+      systemRouters.push({
+        path: '/' + url,
+        component: r => require.ensure([], () => r(require('../biz/' + url + '.vue')), 'biz')
+      });
+    }
+  }
+}
+
+const router = new VueRouter({
+  routes: systemRouters
+});
+
+export default router

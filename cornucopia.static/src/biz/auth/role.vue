@@ -49,7 +49,7 @@ export default {
           common: [
             {
               text: "添加角色",
-              url: "RoleAdd",
+              url: "roleAdd",
               mode: "modal"
             }
           ],
