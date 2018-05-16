@@ -184,6 +184,17 @@ Vue.prototype.showFunction = function(functionName) {
     return isUse;
 }
 
+Vue.prototype.getButtonIcon = function(functionName) {
+    if (!functionName) return "";
+    for (var i = 0; i < menuData.length; i++) {
+        var tempName = menuData[i].functionName;
+        if (tempName == functionName) {
+            return menuData[i].Icon;
+        }
+    }
+    return '';
+}
+
 const router = new VueRouter({
     routes: systemRouters
 });

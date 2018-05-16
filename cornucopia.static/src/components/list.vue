@@ -259,7 +259,7 @@ export default {
           buttons +=
             "<button id='" +
             button.text +
-            "' class='btn btn-success searchDataTableMoreOp' url='" +
+            "' class='btn btn-success searchDataTableMoreOp "+self.getButtonIcon(button.functionName)+"' url='" +
             button.url +
             "' mode='" +
             button.mode +
