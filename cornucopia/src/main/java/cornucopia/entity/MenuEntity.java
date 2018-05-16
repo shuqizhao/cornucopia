@@ -6,6 +6,8 @@ public class MenuEntity extends BaseEntity {
 	
 	private String routerName;
 	
+	private String functionName;
+	
 	@JsonProperty(value = "Icon")
 	private String icon;
 	
@@ -78,5 +80,13 @@ public class MenuEntity extends BaseEntity {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public String getFunctionName() {
+		return functionName;
+	}
+
+	public void setFunctionName(String functionName) {
+		this.functionName = functionName;
 	}
 }

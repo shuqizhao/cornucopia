@@ -102,7 +102,8 @@ export default {
             {
               text: "添加用户",
               url: "/auth/userAdd",
-              mode: "navigate"
+              mode: "navigate",
+              functionName:'userAdd'
             }
           ]
         },

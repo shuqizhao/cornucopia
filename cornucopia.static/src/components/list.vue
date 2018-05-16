@@ -141,13 +141,7 @@ export default {
       var ops = [];
       for (var i = 0; i < this.cfg.operations.length; i++) {
         var op = this.cfg.operations[i];
-        var isUse = true;
-        if (op.functionName) {
-          isUse = false;
-          if ($.inArray(op.functionName, GodData.Functions) != -1) {
-            isUse = true;
-          }
-        }
+        var isUse = self.showFunction(op.functionName);
         if (!isUse) {
           continue;
         }
@@ -253,13 +247,7 @@ export default {
         var ops = [];
         for (var i = 0; i < functions.common.length; i++) {
           var op = functions.common[i];
-          var isUse = true;
-          if (op.functionName) {
-            isUse = false;
-            if ($.inArray(op.functionName, GodData.Functions) != -1) {
-              isUse = true;
-            }
-          }
+          var isUse = self.showFunction(op.functionName);
           if (!isUse) {
             continue;
           }
@@ -288,13 +276,7 @@ export default {
         var ops = [];
         for (var i = 0; i < functions.more.length; i++) {
           var op = functions.more[i];
-          var isUse = true;
-          if (op.functionName) {
-            isUse = false;
-            if ($.inArray(op.functionName, GodData.Functions) != -1) {
-              isUse = true;
-            }
-          }
+          var isUse = self.showFunction(op.functionName);
           if (!isUse) {
             continue;
           }

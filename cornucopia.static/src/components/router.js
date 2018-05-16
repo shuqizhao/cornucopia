@@ -144,7 +144,7 @@ Vue.use(VueRouter)
  *  配置路由
  */
 var menuData = {};
-
+var functions = [];
 $.ajax({
     url: jsonData.ApiBaseUrl + '/auth/routerList',
     async: false,
@@ -157,6 +157,10 @@ var systemRouters = [];
 for (var i = 0; i < menuData.length; i++) {
     let routerName = menuData[i].routerName;
     let url = menuData[i].Url;
+    let functionName = menuData[i].functionName;
+    if (functionName) {
+        functions.push(functionName)
+    }
     if (url) {
         if (menuData[i].Type == 1) {
             Vue.component(routerName, r => require.ensure([], () => r(require('../biz' + url + '.vue')), 'biz'))
@@ -167,6 +171,17 @@ for (var i = 0; i < menuData.length; i++) {
             });
         }
     }
+}
+
+Vue.prototype.showFunction = function(functionName) {
+    var isUse = true;
+    if (functionName) {
+        isUse = false;
+        if ($.inArray(functionName, functions) != -1) {
+            isUse = true;
+        }
+    }
+    return isUse;
 }
 
 const router = new VueRouter({
