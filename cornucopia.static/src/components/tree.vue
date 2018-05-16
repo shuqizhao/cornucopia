@@ -56,6 +56,7 @@ export default {
     },
     loadUrl: function(handler) {
       var self = this;
+      self.openLoading();
       $.ajax({
         type: "GET",
         xhrFields: {
@@ -65,6 +66,7 @@ export default {
         success: function(response) {
           if (response.code == "200") {
             self.data2 = response.data;
+            self.closeLoading();
           } else if (response.message) {
             self.$message({
               type: "warning",

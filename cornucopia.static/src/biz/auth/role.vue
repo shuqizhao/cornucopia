@@ -68,12 +68,6 @@ export default {
             }
           ]
         },
-        // operations: [
-        //   {
-        //     text: "删除",
-        //     url: "/auth/roleview"
-        //   }
-        // ],
         onClickRow: function(data, target) {
           self.$refs.tree.cfg.title = data.name;
           self.openLoading($("#resTree")[0]);
