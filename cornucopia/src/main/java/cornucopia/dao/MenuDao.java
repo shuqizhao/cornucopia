@@ -10,8 +10,8 @@ import org.apache.ibatis.annotations.Select;
 import cornucopia.entity.MenuEntity;
 
 public interface MenuDao {
-	@Select("call sp_menu_all()")
-    public List<MenuEntity> getAllMenus();
+	@Select("call sp_menu_all(#{userId})")
+    public List<MenuEntity> getAllMenus(@Param("userId") int userId);
 	
 	@Select("call sp_menu_btn_all()")
     public List<MenuEntity> getAllMenusAndBtns();
@@ -25,6 +25,6 @@ public interface MenuDao {
 	@Insert("call sp_role_menu_insert(#{roleId},#{menuId})")
 	public void insertRoleMenu(@Param("roleId") int roleId,@Param("menuId") int menuId);
 
-	@Select("call sp_menu_router_all()")
-	public List<MenuEntity> getAllRouters();
+	@Select("call sp_menu_router_all(#{userId})")
+	public List<MenuEntity> getAllRouters(@Param("userId") int userId);
 }

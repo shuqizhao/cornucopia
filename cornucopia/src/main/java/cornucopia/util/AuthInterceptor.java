@@ -23,6 +23,13 @@ public class AuthInterceptor implements HandlerInterceptor {
 		if (isAllowPass) {
 			return true;
 		}
+		
+		Object userEntity = request.getSession().getAttribute("user");
+		if(userEntity == null) {
+			CookieUtil.set(response, "adAuthCookie", "", 3600 * 24);
+			return false;
+		}
+		
 		Cookie cookie = CookieUtil.get(request, "adAuthCookie");
 		if (cookie != null) {
 			String adAuthCookie = cookie.getValue();

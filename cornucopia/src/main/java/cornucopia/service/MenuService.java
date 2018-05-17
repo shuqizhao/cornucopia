@@ -21,8 +21,8 @@ public class MenuService {
 
 	MenuDao menuDao = MyBatisHelper.getMapper(MenuDao.class);
 
-	public List<MenuEntity> getAllMenus() {
-		List<MenuEntity> menus = menuDao.getAllMenus();
+	public List<MenuEntity> getAllMenus(int userId) {
+		List<MenuEntity> menus = menuDao.getAllMenus(userId);
 		return menus;
 	}
 
@@ -31,8 +31,8 @@ public class MenuService {
 		return menus;
 	}
 	
-	public List<MenuEntity> getAllRouters() {
-		List<MenuEntity> menus = menuDao.getAllRouters();
+	public List<MenuEntity> getAllRouters(int userId) {
+		List<MenuEntity> menus = menuDao.getAllRouters(userId);
 		return menus;
 	}
 

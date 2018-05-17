@@ -28,9 +28,9 @@ public class UserService {
 		return userdao.getUserEntity(un, pwd);
 	}
 
-	public boolean isLogin(String un, String pwd) {
+	public UserEntity isLogin(String un, String pwd) {
 		UserEntity userEntity = this.getUserEntity(un, pwd);
-		return userEntity != null;
+		return userEntity;
 	}
 
 	public List<UserEntity> getUsersByPage(int start, int length) {
