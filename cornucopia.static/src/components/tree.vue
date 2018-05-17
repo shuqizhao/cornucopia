@@ -27,8 +27,8 @@
          node-key="id"
         :data="data2"
         :props="defaultProps"
-        check-strictly="true"
-        indent="24"
+        :check-strictly="true"
+        :indent="24"
         default-expand-all
         show-checkbox
         :filter-node-method="filterNode"

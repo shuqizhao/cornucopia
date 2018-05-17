@@ -1,6 +1,8 @@
 package cornucopia.util;
 
 import java.io.OutputStream;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import cornucopia.entity.MenuEntity;
+import cornucopia.entity.UserEntity;
+import cornucopia.service.MenuService;
 import cornucopia.service.WhiteListService;
 
 public class AuthInterceptor implements HandlerInterceptor {
@@ -18,13 +23,16 @@ public class AuthInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		String url = request.getRequestURI();
-		boolean isAllowPass = WhiteListService.getInstance().allowPass(url);
-		// Log4jHelper.LOGGER.info(url);
+		if(url == "/error") {
+			return true;
+		}
+		boolean isAllowPass = WhiteListService.getInstance().allowPassNotNeedLogin(url);
+//		 Log4jHelper.LOGGER.info(url);
 		if (isAllowPass) {
 			return true;
 		}
 		
-		Object userEntity = request.getSession().getAttribute("user");
+		UserEntity userEntity = (UserEntity)request.getSession().getAttribute("user");
 		if(userEntity == null) {
 			CookieUtil.set(response, "adAuthCookie", "", 3600 * 24);
 			return false;
@@ -34,7 +42,19 @@ public class AuthInterceptor implements HandlerInterceptor {
 		if (cookie != null) {
 			String adAuthCookie = cookie.getValue();
 			if (adAuthCookie.equals("true")) {
-				return true;
+				
+				isAllowPass = WhiteListService.getInstance().allowPassNeedLogin(url);
+				if (isAllowPass) {
+					return true;
+				}
+				
+				int userId = userEntity.getId();
+				List<MenuEntity> menus = MenuService.getInstance().getAllMenus(userId);
+				List<MenuEntity> curMenus = menus.stream().filter((MenuEntity r) -> r.getApi()!=null && r.getApi().toLowerCase().equals(url.toLowerCase()))
+						.collect(Collectors.toList());
+				if(curMenus.size()>0) {
+					return true;
+				}
 			}
 		}
 		response.setStatus(403);

@@ -24,13 +24,26 @@ public class WhiteListService {
 	 * @param url
 	 * @return
 	 */
-	public boolean allowPass(String url) {
+	public boolean allowPassNotNeedLogin(String url) {
 		if (url == null)
 			return false;
 		
 		List<WhiteListEntity> whiteListEntities = whiteListDao.getAllWhiteListEntities();
 		for (WhiteListEntity whiteListEntity : whiteListEntities) {
-			if (whiteListEntity.getUrl().toLowerCase().equals(url.toLowerCase())) {
+			if (whiteListEntity.getType()==0 && whiteListEntity.getUrl().toLowerCase().equals(url.toLowerCase())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean allowPassNeedLogin(String url) {
+		if (url == null)
+			return false;
+		
+		List<WhiteListEntity> whiteListEntities = whiteListDao.getAllWhiteListEntities();
+		for (WhiteListEntity whiteListEntity : whiteListEntities) {
+			if (whiteListEntity.getType()==1 && whiteListEntity.getUrl().toLowerCase().equals(url.toLowerCase())) {
 				return true;
 			}
 		}
