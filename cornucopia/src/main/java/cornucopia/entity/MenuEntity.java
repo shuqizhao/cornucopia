@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class MenuEntity extends BaseEntity {
 	
+	private String api;
+	
 	private String routerName;
 	
 	private String functionName;
@@ -88,5 +90,13 @@ public class MenuEntity extends BaseEntity {
 
 	public void setFunctionName(String functionName) {
 		this.functionName = functionName;
+	}
+
+	public String getApi() {
+		return api;
+	}
+
+	public void setApi(String api) {
+		this.api = api;
 	}
 }

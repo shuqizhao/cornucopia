@@ -91,11 +91,13 @@ export default {
           more: [
             {
               text: "停用",
-              url: this.getGlobalData().ApiBaseUrl + "/user/disable"
+              url: this.getGlobalData().ApiBaseUrl + "/user/disable",
+              functionName:'userDisable'
             },
             {
               text: "启用",
-              url: this.getGlobalData().ApiBaseUrl + "/user/enable"
+              url: this.getGlobalData().ApiBaseUrl + "/user/enable",
+              functionName:'userEnable'
             }
           ],
           common: [
