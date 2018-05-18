@@ -4,17 +4,21 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.mapping.StatementType;
 
 import cornucopia.entity.UserEntity;
+import cornucopia.util.PagingParameters;
 
 public interface UserDao {
 	@Select("call sp_user_login(#{un},#{pwd})")
 	public UserEntity getUserEntity(@Param("un") String un, @Param("pwd") String pwd);
 
-	@Select("call sp_user_get_by_page(#{start},#{length})")
-	public List<UserEntity> getUsersByPage(@Param("start") int start, @Param("length") int length);
+	@Select("call sp_user_get_by_page(#{pp.start},#{pp.length},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
+	@Options(statementType = StatementType.CALLABLE)
+	public List<UserEntity> getUsersByPage(@Param("pp") PagingParameters pp);
 
 	@Select("call sp_user_get(#{userId})")
 	public UserEntity getUser(@Param("userId") int id);

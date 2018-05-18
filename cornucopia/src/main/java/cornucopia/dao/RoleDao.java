@@ -6,13 +6,17 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.mapping.StatementType;
 
 import cornucopia.entity.RoleEntity;
+import cornucopia.util.PagingParameters;
 
 public interface RoleDao {
-	@Select("call sp_role_get_by_page(#{start},#{length})")
-	public List<RoleEntity> getRolesByPage(@Param("start") int start, @Param("length") int length);
+	@Select("call sp_role_get_by_page(#{pp.start},#{pp.length},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
+	@Options(statementType = StatementType.CALLABLE)
+	public List<RoleEntity> getRolesByPage(@Param("pp") PagingParameters pp);
 
 	@Select("call sp_role_all()")
 	public List<RoleEntity> getAllRoles();
@@ -21,8 +25,9 @@ public interface RoleDao {
 	public int exists(@Param("roleName") String roleName);
 
 	@Insert("call sp_role_insert(#{role.name})")
-	@Options(useGeneratedKeys = true, keyProperty = "role.id")
-	public void insert(@Param("role") RoleEntity roleEntity);
+//	@Options(useGeneratedKeys = true, keyProperty = "role.id",statementType = StatementType.CALLABLE)
+	@SelectKey(statement="Select LAST_INSERT_ID()", keyProperty="role.id", before=false, resultType=int.class)
+	public int insert(@Param("role") RoleEntity roleEntity);
 
 	@Update("call sp_role_disable(#{id})")
 	public int disable(@Param("id")int id);

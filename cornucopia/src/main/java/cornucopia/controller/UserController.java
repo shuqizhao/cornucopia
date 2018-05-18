@@ -13,6 +13,7 @@ import cornucopia.model.TransferViewModel;
 import cornucopia.service.UserService;
 import cornucopia.util.DataTableParameter;
 import cornucopia.util.DataTableResult;
+import cornucopia.util.PagingParameters;
 
 @RestController
 @RequestMapping("/user")
@@ -20,12 +21,12 @@ public class UserController {
 
 	@RequestMapping(value = { "/list" }, method = RequestMethod.POST)
 	public DataTableResult<UserEntity> list(DataTableParameter dtp) {
-		List<UserEntity> users = UserService.getInstance().getUsersByPage(dtp.getiDisplayStart(),
-				dtp.getiDisplayLength());
-		int count = 0;
-		if (users != null && users.size() > 0) {
-			count = users.get(0).getTotalCount();
-		}
+		PagingParameters pp = new PagingParameters();
+		pp.setStart(dtp.getiDisplayStart());
+		pp.setLength(dtp.getiDisplayLength());
+		pp.setTotalRows(0);
+		List<UserEntity> users = UserService.getInstance().getUsersByPage(pp);
+		int count = pp.getTotalRows();
 		DataTableResult<UserEntity> dtr = new DataTableResult<UserEntity>(dtp.getsEcho() + 1, count, count, users);
 		return dtr;
 	}

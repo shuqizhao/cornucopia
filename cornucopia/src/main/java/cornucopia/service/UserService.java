@@ -10,6 +10,7 @@ import cornucopia.entity.UserEntity;
 import cornucopia.model.IdNameModel;
 import cornucopia.model.TransferViewModel;
 import cornucopia.util.MyBatisHelper;
+import cornucopia.util.PagingParameters;
 
 public class UserService {
 
@@ -33,8 +34,8 @@ public class UserService {
 		return userEntity;
 	}
 
-	public List<UserEntity> getUsersByPage(int start, int length) {
-		return userdao.getUsersByPage(start, length);
+	public List<UserEntity> getUsersByPage(PagingParameters pp) {
+		return userdao.getUsersByPage(pp);
 	}
 
 	public UserEntity getUser(int id) {

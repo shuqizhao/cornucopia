@@ -5,6 +5,7 @@ import java.util.List;
 import cornucopia.dao.RoleDao;
 import cornucopia.entity.RoleEntity;
 import cornucopia.util.MyBatisHelper;
+import cornucopia.util.PagingParameters;
 
 public class RoleService {
 	private static RoleService instance = new RoleService();
@@ -18,8 +19,8 @@ public class RoleService {
 
 	RoleDao roledao = MyBatisHelper.getMapper(RoleDao.class);
 
-	public List<RoleEntity> getRolesByPage(int start, int length) {
-		return roledao.getRolesByPage(start, length);
+	public List<RoleEntity> getRolesByPage(PagingParameters pp) {
+		return roledao.getRolesByPage(pp);
 	}
 	
 	public List<RoleEntity> getAllRoles() {
@@ -30,8 +31,8 @@ public class RoleService {
 		return roledao.exists(roleName);
 	}
 
-	public void insert(RoleEntity roleEntity) {
-		 roledao.insert(roleEntity);
+	public int insert(RoleEntity roleEntity) {
+		 return roledao.insert(roleEntity);
 	}
 
 	public int disable(int id) {

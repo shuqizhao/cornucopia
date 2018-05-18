@@ -12,18 +12,18 @@ import cornucopia.entity.RoleEntity;
 import cornucopia.service.RoleService;
 import cornucopia.util.DataTableParameter;
 import cornucopia.util.DataTableResult;
+import cornucopia.util.PagingParameters;
 
 @RestController
 @RequestMapping("/role")
 public class RoleController {
 	@RequestMapping(value = { "/list" }, method = RequestMethod.POST)
 	public DataTableResult<RoleEntity> list(DataTableParameter dtp) {
-		List<RoleEntity> roles = RoleService.getInstance().getRolesByPage(dtp.getiDisplayStart(),
-				dtp.getiDisplayLength());
-		int count = 0;
-		if (roles != null && roles.size() > 0) {
-			count = roles.get(0).getTotalCount();
-		}
+		PagingParameters pp = new PagingParameters();
+		pp.setStart(dtp.getiDisplayStart());
+		pp.setLength(dtp.getiDisplayLength());
+		List<RoleEntity> roles = RoleService.getInstance().getRolesByPage(pp);
+		int count = pp.getTotalRows();
 		DataTableResult<RoleEntity> dtr = new DataTableResult<RoleEntity>(dtp.getsEcho() + 1, count, count, roles);
 		return dtr;
 	}
