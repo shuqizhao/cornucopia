@@ -46,6 +46,11 @@ export default {
             title: "Url",
             name: "url"
           },
+          {
+            title: "类型",
+            name: "type"
+          }
+          ,
             {
             title: "创建时间",
             name: "createTime",
@@ -61,9 +66,15 @@ export default {
         ],
         fnRowCallback: function(row, data) {
           if (data.isEnabled) {
-            $("td:eq(3)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
+            $("td:eq(3)", row).html('<center><i class="fa fa-fw fa-check-circle"></i></center>');
           } else {
-            $("td:eq(3)", row).html('<i class="el-icon-close"></i>');
+            $("td:eq(3)", row).html('<center><i class="el-icon-close"></i></center>');
+          }
+
+          if (data.type==1) {
+            $("td:eq(5)", row).html('<center><div class="label label-success">需要登陆</div></center>');
+          } else {
+            $("td:eq(5)", row).html('<center><div class="label label-warning">不需要登陆</div></center>');
           }
         },
         idName: "id",
