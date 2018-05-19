@@ -42,15 +42,17 @@
                                 </select>
                                 <input  v-else-if="item.type=='timer'" :id="item.name" :name="item.name" type="text" :placeholder="item.placeholder" class="form-control" :controltype='item.type' :value="detail[item.name]" />
                                 <div v-else-if="item.type=='uploader'">
-                                        <input :id="item.name" :name="item.name" type="text" :value="displayValue" class="form-control" :controltype='item.type' style="width: 0;height: 0;border: 0;background: transparent;" />
-                                        <p :id="item.name+1" style="line-height:29px;display:inline;">
-                                            <a target="_bank" :href='displayLink'>
-                                                {{displayText}}
-                                            </a>
-                                        </p>
-                                        &nbsp;&nbsp;&nbsp;
-                                        <img :id="item.name+3" src="" style="display:none" />
-                                        <div :id="item.name+2" style="width:400px;"></div>
+                                        <!--input :id="item.name" :name="item.name" type="text" :value="displayValue" class="form-control" :controltype='item.type' style="width: 0;height: 0;border: 0;background: transparent;" /-->
+                                        <el-upload
+                                          action="https://jsonplaceholder.typicode.com/posts/"
+                                          list-type="picture-card"
+                                          :on-preview="handlePictureCardPreview"
+                                          :on-remove="handleRemove">
+                                          <i class="el-icon-plus"></i>
+                                        </el-upload>
+                                        <el-dialog :visible.sync="dialogVisible">
+                                          <img width="100%" :src="dialogImageUrl" alt="">
+                                        </el-dialog>
                                 </div>
                                 <div v-else-if="item.type=='suggest'" class="input-group">
                                     <input :id="item.name" :name="item.name" type="text" style="width:230px;margin-right:0px;" class="form-control" :controltype='item.type' />
@@ -163,6 +165,7 @@ export default {
       self.openLoading();
       this.fillData();
     }
+    $(this.$el).find('input[type="file"]').hide();
   },
   beforeUpdate: function() {
     // $(".el-transfer__button").click(function() {
@@ -191,6 +194,13 @@ export default {
     };
   },
   methods: {
+     handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      },
     iframeLoad: function() {
       var iframes = document.getElementsByTagName("iframe");
       for (var i = 0; i < iframes.length; i++) {

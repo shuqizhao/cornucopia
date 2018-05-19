@@ -155,40 +155,8 @@ export default {
           },
           {
             name: "name",
-            title: "姓名",
-            type: "text",
-            width:"300px;"
-          },
-          {
-            name: "department",
-            title: "部门",
-            type: "text",
-            width:"300px;"
-          },
-          {
-            name: "title",
-            title: "职位",
-            type: "text",
-            width:"300px;"
-          },
-          {
-            name: "workNo",
-            title: "工号",
-            type: "text",
-            width:"300px;"
-          },
-          {
-            name: "workEmail",
-            title: "邮箱",
-            type: "text",
-            width:"300px;"
-          }
-          ,
-          {
-            name: "phone",
-            title: "手机号",
-            type: "text",
-            width:"300px;"
+            title: "文件集",
+            type: "uploader"
           }
         ],
         afterEditRender: function() {
