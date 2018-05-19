@@ -58,9 +58,11 @@
               <a class="btn btn-app">
                 <i class="fa fa-plus-circle"></i> 入职申请
               </a>
+              <router-link to="/departure/apply">
                <a class="btn btn-app">
-                <i class="fa fa-plus-circle"></i> 离职申请
+               <i class="fa fa-plus-circle"></i> 离职申请
               </a>
+              </router-link>
             </div>
             <!-- /.box-body -->
           </div>

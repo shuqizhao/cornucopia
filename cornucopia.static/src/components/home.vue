@@ -302,14 +302,16 @@ export default {
       var arr = [];
       for (var i = 0; i < this.menus.length; i++) {
         if (this.menus[i].ParentId == id) {
-          var searchText = $("#searchText").val();
-          if (searchText) {
-            if (this.menus[i].Name.indexOf(searchText) != -1) {
-              arr.push(this.menus[i]);
-            }
-          } else {
-            arr.push(this.menus[i]);
-          }
+          // var searchText = $("#searchText").val();
+          // if (searchText) {
+          //   if (this.menus[i].Name.indexOf(searchText) != -1) {
+          //     arr.push(this.menus[i]);
+          //   }
+          // } else {
+          //   arr.push(this.menus[i]);
+          // }
+          arr.push(this.menus[i]);
+          
         }
       }
       return arr;

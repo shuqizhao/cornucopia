@@ -1,5 +1,5 @@
 <template>
-    <div></div>
+    <div>离职了</div>
 </template>
 <script>
 export default {
