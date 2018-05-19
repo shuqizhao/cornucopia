@@ -87,6 +87,12 @@
 </template>
 <script>
 export default {
+  mounted:function(){
+    this.setBreadcrumbTitle(this,"发起新流程","发起新流程");
+  },
+  destroyed:function(){
+    this.setBreadcrumbTitle(this,"","");
+  },
   data() {
     var self = this;
     return {};

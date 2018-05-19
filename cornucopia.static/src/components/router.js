@@ -195,6 +195,11 @@ Vue.prototype.getButtonIcon = function(functionName) {
     return '';
 }
 
+Vue.prototype.setBreadcrumbTitle = function(self, parentTitle, title) {
+    self.$root.$children[0].$children[0].$children[0].$children[0].breadcrumbTitle = title;
+    self.$root.$children[0].$children[0].$children[0].$children[0].breadcrumbParentTitle = parentTitle;
+}
+
 const router = new VueRouter({
     routes: systemRouters
 });

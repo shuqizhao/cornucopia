@@ -2,6 +2,8 @@ package cornucopia.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,6 +55,15 @@ public class UserController {
 		jr.setCode(200);
 		jr.setMessage("update sucess!");
 		jr.setData("1");
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/getSelf"}, method = RequestMethod.GET)
+	public JsonResult<UserEntity> getSelf(HttpServletRequest request) {
+		UserEntity user = (UserEntity)request.getSession().getAttribute("user");
+		JsonResult<UserEntity> jr = new JsonResult<UserEntity>();
+		jr.setCode(200);
+		jr.setData(user);
 		return jr;
 	}
 }

@@ -120,7 +120,7 @@
                 </template>
             </div>
             <!-- /.box-body -->
-            <div class="box-footer">
+            <div v-if="!cfg.hideFooter" class="box-footer">
                 <!-- Button -->
                 <center>
                     <div v-if="cfg.mode=='edit'||cfg.mode=='create'">

@@ -246,9 +246,6 @@ export default {
     }
   },
   beforeUpdate:function(){
-    // alert('home')
-    // this.title="";
-    // this.parentTitle="";
   },
   data() {
     return {
