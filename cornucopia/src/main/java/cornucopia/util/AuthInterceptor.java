@@ -22,8 +22,11 @@ public class AuthInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		if(request.getMethod().equals("OPTIONS")){
+			return true;
+		}
 		String url = request.getRequestURI();
-		if(url == "/error") {
+		if(url.equals("/error")) {
 			return true;
 		}
 		boolean isAllowPass = WhiteListService.getInstance().allowPassNotNeedLogin(url);

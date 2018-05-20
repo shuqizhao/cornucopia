@@ -44,8 +44,9 @@
                                 <div v-else-if="item.type=='uploader'">
                                         <!--input :id="item.name" :name="item.name" type="text" :value="displayValue" class="form-control" :controltype='item.type' style="width: 0;height: 0;border: 0;background: transparent;" /-->
                                         <el-upload
-                                          action="https://jsonplaceholder.typicode.com/posts/"
+                                          :action="item.url"
                                           list-type="picture-card"
+                                          :with-credentials="true"
                                           :on-preview="handlePictureCardPreview"
                                           :on-remove="handleRemove">
                                           <i class="el-icon-plus"></i>
@@ -190,7 +191,9 @@ export default {
       data1: {},
       changing:{},
       isMounted: false,
-      isShowDetail:true
+      isShowDetail:true,
+      dialogImageUrl:"",
+      dialogVisible:false
     };
   },
   methods: {

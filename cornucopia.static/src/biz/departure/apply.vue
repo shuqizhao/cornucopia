@@ -156,7 +156,8 @@ export default {
           {
             name: "name",
             title: "文件集",
-            type: "uploader"
+            type: "uploader",
+            url:this.getGlobalData().ApiBaseUrl+"/upload",
           }
         ],
         afterEditRender: function() {
