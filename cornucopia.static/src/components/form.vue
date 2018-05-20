@@ -54,6 +54,7 @@
                                           :on-preview="handlePictureCardPreview"
                                           :on-remove="handleRemove">
                                           <i class="el-icon-plus"></i>
+                                          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                                         </el-upload>
                                         <el-dialog :visible.sync="dialogVisible">
                                           <img width="100%" :src="dialogImageUrl" alt="">
@@ -659,6 +660,14 @@ export default {
     onFileUpload:function(response,file,fileList){
       if(response.code == 200){
         $(self.$el).find("#"+response.message).val(response.data);
+        for(var i=0;i<fileList.length;i++){
+          var item = fileList[i];
+          $(self.$el).parent().find("li:eq("+i+")").append('<span style="position: absolute; top: 0; left: 0;">'+item.name+'</span>');
+          $(self.$el).parent().find("li:eq("+i+")").attr("data-toggle", "tooltip");
+          $(self.$el).parent().find("li:eq("+i+")").attr("data-placement", "top");
+          $(self.$el).parent().find("li:eq("+i+")").attr("data-original-title", item.name);
+          $(self.$el).parent().find("li:eq("+i+")").tooltip();
+        }
       }
     },
     onLimited:function(){
