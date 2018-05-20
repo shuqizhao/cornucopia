@@ -17,17 +17,23 @@ import cornucopia.entity.JsonResult;
 @RestController
 public class UploadController {
 	@RequestMapping(value = { "/upload" }, method = RequestMethod.POST)
-	public JsonResult<String> upload(@RequestParam("file") MultipartFile file) {
+	public JsonResult<String> upload(@RequestParam("file") MultipartFile file,@RequestParam("id") String id) {
 		int code = 500;
+		String data = java.util.UUID.randomUUID().toString();
 		String message = "";
 		if (!file.isEmpty()) {
 			try {
+				File dir = new File(data);
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
 				BufferedOutputStream out = new BufferedOutputStream(
-						new FileOutputStream(new File(file.getOriginalFilename())));
+						new FileOutputStream(new File(data + "/" + file.getOriginalFilename())));
 				out.write(file.getBytes());
 				out.flush();
 				out.close();
 				code = 200;
+				message = id;
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 				message = e.getMessage();
@@ -41,7 +47,7 @@ public class UploadController {
 		JsonResult<String> jr = new JsonResult<String>();
 		jr.setCode(code);
 		jr.setMessage(message);
-		jr.setData("1");
+		jr.setData(data);
 		return jr;
 	}
 }

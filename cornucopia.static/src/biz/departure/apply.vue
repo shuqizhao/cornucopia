@@ -157,6 +157,8 @@ export default {
             name: "name",
             title: "文件集",
             type: "uploader",
+            hideLabel:"true",
+            limit:10,
             url:this.getGlobalData().ApiBaseUrl+"/upload",
           }
         ],

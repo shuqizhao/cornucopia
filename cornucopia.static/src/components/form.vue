@@ -21,7 +21,7 @@
                     <br v-if="item.br==true" :key="item.name"/>
                     <table v-if="item.type!='hidden'" :key="item.name" class="form-group" :style="'margin-left:80px;margin-bottom:15px;width:'+item.width">
                       <tr>
-                        <td style="text-align:right;" width="80px">{{item.title}}：</td>
+                        <td v-if="!item.hideLabel" style="text-align:right;" width="80px">{{item.title}}：</td>
                         <td :width="item.width?item.width:'92%'">
                             <div v-if="item.type=='baidutext'">
                                 <div v-if="cfg.mode=='detailEdit'||cfg.mode=='create'" class="textarea">
@@ -42,11 +42,15 @@
                                 </select>
                                 <input  v-else-if="item.type=='timer'" :id="item.name" :name="item.name" type="text" :placeholder="item.placeholder" class="form-control" :controltype='item.type' :value="detail[item.name]" />
                                 <div v-else-if="item.type=='uploader'">
-                                        <!--input :id="item.name" :name="item.name" type="text" :value="displayValue" class="form-control" :controltype='item.type' style="width: 0;height: 0;border: 0;background: transparent;" /-->
+                                        <input :id="item.name" :name="item.name" type="hidden" :value="detail[item.name]" class="form-control" :controltype='item.type'  />
                                         <el-upload
                                           :action="item.url"
+                                          :data="{id:item.name}"
                                           list-type="picture-card"
                                           :with-credentials="true"
+                                          :limit="item.limit?item.limit:1"
+                                          :on-success="onFileUpload"
+                                          :on-exceed="onLimited"
                                           :on-preview="handlePictureCardPreview"
                                           :on-remove="handleRemove">
                                           <i class="el-icon-plus"></i>
@@ -651,6 +655,17 @@ export default {
     bindTransferChangeEvent: function(id) {
       this.changing[id] = true;
       this.$forceUpdate();
+    },
+    onFileUpload:function(response,file,fileList){
+      if(response.code == 200){
+        $(self.$el).find("#"+response.message).val(response.data);
+      }
+    },
+    onLimited:function(){
+       self.$message({
+              message: "只能上传一个文件!",
+              type: "warning"
+        });
     }
   }
 };
