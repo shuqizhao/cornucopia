@@ -92,8 +92,9 @@ export default {
           common: [
             {
               text: "添加白名单",
-              url: "roleAdd",
-              mode: "modal"
+              url: "/auth/whitelistAdd",
+              functionName:'whitelistAdd',
+              mode: "navigate"
             }
           ]
         },
