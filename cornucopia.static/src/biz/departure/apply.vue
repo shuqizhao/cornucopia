@@ -95,41 +95,46 @@ export default {
             type: "hidden"
           },
           {
-            name: "name",
-            title: "姓名",
-            type: "text",
-            width:"300px;"
-          },
-          {
-            name: "department",
-            title: "部门",
-            type: "text",
-            width:"300px;"
-          },
-          {
             name: "title",
             title: "职位",
             type: "text",
             width:"300px;"
           },
           {
+            name: "department",
+            title: "直接主管",
+            type: "text",
+            width:"300px;"
+          },
+          {
+            name: "title",
+            title: "入职日期",
+            type: "text",
+            width:"300px;"
+          },
+          {
             name: "workNo",
-            title: "工号",
+            title: "离职日期",
             type: "text",
             width:"300px;"
           },
           {
             name: "workEmail",
-            title: "邮箱",
+            title: "联系电话",
             type: "text",
             width:"300px;"
           }
           ,
           {
             name: "phone",
-            title: "手机号",
+            title: "个人邮箱",
             type: "text",
             width:"300px;"
+          },
+          {
+            name: "phone",
+            title: "离职原因",
+            type: "textarea"
           }
         ],
         afterEditRender: function() {
