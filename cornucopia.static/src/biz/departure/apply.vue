@@ -134,7 +134,8 @@ export default {
           {
             name: "phone",
             title: "离职原因",
-            type: "textarea"
+            type: "textarea",
+            isRequire:true
           }
         ],
         afterEditRender: function() {
