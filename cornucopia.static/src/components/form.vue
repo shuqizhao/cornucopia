@@ -19,9 +19,9 @@
                     <input v-if="item.type=='hidden'" :id="item.name" type="hidden" :key="item.name" class="form-control" :value="detail[item.name]" :controltype='item.type' />
                     <br v-if="item.br==true" :key="item.name"/>
                     <br v-if="item.br==true" :key="item.name"/>
-                    <table v-if="item.type!='hidden'" :key="item.name" class="form-group" :style="'margin-left:80px;margin-bottom:15px;width:'+item.width">
+                    <table v-if="item.type!='hidden'" :key="item.name" class="form-group" :style="'margin-left:50px;margin-bottom:15px;width:'+item.width">
                       <tr>
-                        <td v-if="!item.hideLabel" style="text-align:right;" width="80px">{{item.title}}：</td>
+                        <td v-if="!item.hideLabel" style="text-align:right;" width="85px">{{item.title}}：</td>
                         <td :width="item.width?item.width:'92%'">
                             <div v-if="item.type=='baidutext'">
                                 <div v-if="cfg.mode=='detailEdit'||cfg.mode=='create'" class="textarea">
