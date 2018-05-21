@@ -58,6 +58,7 @@
                                         </el-upload>
                                         <el-dialog :visible.sync="dialogVisible">
                                           <img width="100%" :src="dialogImageUrl" alt="">
+                                          <label>{{dialogImageName}}</label>
                                         </el-dialog>
                                 </div>
                                 <div v-else-if="item.type=='suggest'" class="input-group">
@@ -198,17 +199,44 @@ export default {
       isMounted: false,
       isShowDetail:true,
       dialogImageUrl:"",
+      dialogImageName:"",
       dialogVisible:false
     };
   },
   methods: {
      handleRemove(file, fileList) {
-        console.log(file, fileList);
+        for(var i=0;i<fileList.length;i++){
+          var item = fileList[i];
+          $(self.$el).parent().find("li:eq("+i+")").find('div').remove();
+          $(self.$el).parent().find("li:eq("+i+")").append('<div style="position: absolute; top: 0; left: 0;">'+item.name+'</div>');
+        }
       },
       handlePictureCardPreview(file) {
+        console.log(file)
         this.dialogImageUrl = file.url;
+        this.dialogImageName = file.name;
         this.dialogVisible = true;
       },
+      onFileUpload:function(response,file,fileList){
+        if(response.code == 200){
+          $(self.$el).find("#"+response.message).val(response.data);
+          for(var i=0;i<fileList.length;i++){
+            var item = fileList[i];
+            $(self.$el).parent().find("li:eq("+i+")").find('div').remove();
+            $(self.$el).parent().find("li:eq("+i+")").append('<div style="position: absolute; top: 120px; left: 0;z-">'+item.name+'</div>');
+            $(self.$el).parent().find("li:eq("+i+")").find('div').attr("data-toggle", "tooltip");
+            $(self.$el).parent().find("li:eq("+i+")").find('div').attr("data-placement", "top");
+            $(self.$el).parent().find("li:eq("+i+")").find('div').attr("data-original-title", item.name);
+            $(self.$el).parent().find("li:eq("+i+")").find('div').tooltip();
+          }
+        }
+    },
+    onLimited:function(){
+       self.$message({
+              message: "只能上传一个文件!",
+              type: "warning"
+        });
+    },
     iframeLoad: function() {
       var iframes = document.getElementsByTagName("iframe");
       for (var i = 0; i < iframes.length; i++) {
@@ -657,25 +685,7 @@ export default {
       this.changing[id] = true;
       this.$forceUpdate();
     },
-    onFileUpload:function(response,file,fileList){
-      if(response.code == 200){
-        $(self.$el).find("#"+response.message).val(response.data);
-        for(var i=0;i<fileList.length;i++){
-          var item = fileList[i];
-          $(self.$el).parent().find("li:eq("+i+")").append('<span style="position: absolute; top: 0; left: 0;">'+item.name+'</span>');
-          $(self.$el).parent().find("li:eq("+i+")").attr("data-toggle", "tooltip");
-          $(self.$el).parent().find("li:eq("+i+")").attr("data-placement", "top");
-          $(self.$el).parent().find("li:eq("+i+")").attr("data-original-title", item.name);
-          $(self.$el).parent().find("li:eq("+i+")").tooltip();
-        }
-      }
-    },
-    onLimited:function(){
-       self.$message({
-              message: "只能上传一个文件!",
-              type: "warning"
-        });
-    }
+    
   }
 };
 </script>
