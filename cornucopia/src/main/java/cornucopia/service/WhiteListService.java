@@ -67,6 +67,10 @@ public class WhiteListService {
 	}
 
 	public WhiteListEntity getWhiteListEntity(int id) {
-		return whiteListDao.getWhiteListEntity(id);
+		return whiteListDao.get(id);
+	}
+	
+	public int updateWhiteListEntity(WhiteListEntity wle) {
+		return whiteListDao.update(wle);
 	}
 }

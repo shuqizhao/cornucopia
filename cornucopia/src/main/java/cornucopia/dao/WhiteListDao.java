@@ -21,7 +21,7 @@ public interface WhiteListDao {
 	@SelectKey(statement="Select LAST_INSERT_ID()", keyProperty="wle.id", before=false, resultType=int.class)
 	public int insert(@Param("wle") WhiteListEntity wle);
 	
-	@Update("call sp_whitelist_update(#{wle.name},#{wle.url})")
+	@Update("call sp_whitelist_update(#{wle.id},#{wle.name},#{wle.url},#{wle.type})")
 	public int update(@Param("wle") WhiteListEntity wle);
 	
 	@Update("call sp_whitelist_disable(#{id})")
@@ -34,5 +34,5 @@ public interface WhiteListDao {
 	public int delete(@Param("id")int id);
 
 	@Select("call sp_whitelist_get(#{id})")
-	public WhiteListEntity getWhiteListEntity(@Param("id") int id);
+	public WhiteListEntity get(@Param("id") int id);
 }

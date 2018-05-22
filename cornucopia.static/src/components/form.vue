@@ -118,6 +118,7 @@
                                 <ul v-else-if="item.type=='tree'" :id="item.name+1" class="ztree"></ul>
                                 <!-- <div v-else-if="item.type=='select2select'" v-html="detail[item.name]" style="width:100%" /> -->
                                 <el-transfer  v-else-if="item.type=='transfer'" filterable v-model="value1[item.name]" :data="bindTransfer(item.name,item.url,true)" :titles="['待选择', '已选择']"  ></el-transfer>
+                                <input v-else-if="item.type=='combox'" class="input-xlarge form-control" disabled='disabled' :value="bindCombox(item.data,detail[item.name])" style="width:100%" />
                                 <input v-else-if="item.type!='hidden'" class="input-xlarge form-control" disabled='disabled' :value="detail[item.name]" style="width:100%" />
                             </template>
                         </td>
@@ -133,7 +134,7 @@
                 <!-- Button -->
                 <center>
                     <div v-if="cfg.mode=='edit'||cfg.mode=='create'">
-                        <button @click="btnCommit($event)" class="btn btn-primary btn-commit">保存</button>
+                        <button v-if="cfg.editFunctionName?this.showFunction(cfg.editFunctionName):true" @click="btnCommit($event)" class="btn btn-primary btn-commit">保存</button>
                         <button  @click="btnCancel" class="btn btn-info btn-cancel" data-dismiss="modal" aria-hidden="true">取消</button>
                         <div v-if="cfg.buttons">
                             <button v-for="item in cfg.buttons" :key="item.title" :class="'btn '+item.type+' btn-buttons'" :name='item.name'>{{item.title}}</button>
@@ -141,7 +142,7 @@
                     </div>
                     <div v-if="cfg.mode=='detailEdit'">
                         <div v-if="isShowDetail">
-                            <button @click="btnEdit" class="btn btn-primary btn-edit">编辑</button>
+                            <button v-if="cfg.editFunctionName?this.showFunction(cfg.editFunctionName):true" @click="btnEdit" class="btn btn-primary btn-edit">编辑</button>
                             <button @click="btnCancel" class="btn btn-info btn-cancel" data-dismiss="modal">返回</button>
                         </div>
                         <div v-else>
@@ -685,7 +686,18 @@ export default {
       this.changing[id] = true;
       this.$forceUpdate();
     },
-    
+    bindCombox:function(data,id){
+      if(data){
+        for(var i=0;i<data.length;i++){
+          var item = data[i];
+          if(item.id == id){
+            return item.value;
+          }
+        }
+      }else{
+        return id;
+      }
+    }
   }
 };
 </script>

@@ -64,4 +64,14 @@ public class WhiteListController {
 		jr.setData(whiteListEntity);
 		return jr;
 	}
+	
+	@RequestMapping(value = { "/update" }, method = RequestMethod.POST)
+	public JsonResult<Integer> update(WhiteListEntity whiteListEntity) {
+		int result = WhiteListService.getInstance().updateWhiteListEntity(whiteListEntity);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(result);
+		return jr;
+	}
+	
 }

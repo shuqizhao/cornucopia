@@ -11,14 +11,20 @@ export default {
         detailTitle: "查看白名单",
         editTitle: "编辑白名单",
         mode: "detailEdit",
+        editFunctionName:'whitelistUpdate',
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/whitelist/get",
           params: {
             id: this.$route.query.id
           }
         },
-        save: this.getGlobalData().ApiBaseUrl + "/whitelist/add",
+        save: this.getGlobalData().ApiBaseUrl + "/whitelist/update",
         items: [
+          {
+            name: "id",
+            title: "id",
+            type: "hidden"
+          },
           {
             name: "name",
             title: "名称",
