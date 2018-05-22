@@ -65,4 +65,8 @@ public class WhiteListService {
 	public int disable(int id) {
 		return whiteListDao.disable(id);
 	}
+
+	public WhiteListEntity getWhiteListEntity(int id) {
+		return whiteListDao.getWhiteListEntity(id);
+	}
 }

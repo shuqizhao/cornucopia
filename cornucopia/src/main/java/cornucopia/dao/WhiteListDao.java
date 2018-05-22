@@ -32,4 +32,7 @@ public interface WhiteListDao {
 	
 	@Update("call sp_whitelist_delete(#{id})")
 	public int delete(@Param("id")int id);
+
+	@Select("call sp_whitelist_get(#{id})")
+	public WhiteListEntity getWhiteListEntity(@Param("id") int id);
 }

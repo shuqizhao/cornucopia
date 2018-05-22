@@ -55,4 +55,13 @@ public class WhiteListController {
 		jr.setData(result);
 		return jr;
 	}
+	
+	@RequestMapping(value = { "/get" }, method = RequestMethod.GET)
+	public JsonResult<WhiteListEntity> get(int id) {
+		WhiteListEntity whiteListEntity = WhiteListService.getInstance().getWhiteListEntity(id);
+		JsonResult<WhiteListEntity> jr = new JsonResult<WhiteListEntity>();
+		jr.setCode(200);
+		jr.setData(whiteListEntity);
+		return jr;
+	}
 }
