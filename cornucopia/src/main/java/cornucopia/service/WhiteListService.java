@@ -53,4 +53,8 @@ public class WhiteListService {
 	public List<WhiteListEntity> getWhiteListByPage(int start, int length) {
 		return whiteListDao.getWhiteListByPage(start, length);
 	}
+
+	public int addWhiteListByPage(WhiteListEntity whiteListEntity) {
+		return whiteListDao.insert(whiteListEntity);
+	}
 }

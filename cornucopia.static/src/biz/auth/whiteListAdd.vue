@@ -9,7 +9,7 @@ export default {
       cfg: {
         title: "添加白名单",
         mode: "create",
-        save: this.getGlobalData().ApiBaseUrl + "/role/add",
+        save: this.getGlobalData().ApiBaseUrl + "/whitelist/add",
         items: [
           {
             name: "name",
@@ -40,34 +40,28 @@ export default {
         rules: {
           name: {
             required: true
+          },
+          url: {
+            required: true
           }
         },
         messages: {
           name: {
             required: "名称必须填写"
+          },
+          url: {
+            required: "URL必须填写"
           }
         },
-        validate: function(data, saveData) {
-          $.ajax({
-            type: "POST",
-            xhrFields: {
-              withCredentials: true
-            },
-            url: self.getGlobalData().ApiBaseUrl + "/role/exists",
-            data: data,
-            success: function(response) {
-              if (response.code == 200 && response.data == 0) {
-                saveData(data);
-              } else {
-                self.$message({
-                  type: "warning",
-                  message: "角色已经存在!"
-                });
-              }
-            }
-          });
-          return false;
-        }
+        onSuccess: function(mode, response) {
+          if (response.code == 200) {
+            history.back();
+          } else {
+            $.fn.message({
+              msg: "添加白名单失败！"
+            });
+          }
+        },
       }
     };
   }
