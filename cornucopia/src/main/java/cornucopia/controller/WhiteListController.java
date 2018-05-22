@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
@@ -34,6 +35,24 @@ public class WhiteListController {
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(whiteListEntity.getId());
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/disable" }, method = RequestMethod.POST)
+	public JsonResult<Integer> disable(@RequestParam(value = "Ids") int id) {
+		int result = WhiteListService.getInstance().disable(id);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(result);
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/enable" }, method = RequestMethod.POST)
+	public JsonResult<Integer> enable(@RequestParam(value = "Ids") int id) {
+		int result = WhiteListService.getInstance().enable(id);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(result);
 		return jr;
 	}
 }

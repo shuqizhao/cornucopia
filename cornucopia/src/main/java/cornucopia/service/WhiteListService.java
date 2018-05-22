@@ -57,4 +57,12 @@ public class WhiteListService {
 	public int addWhiteListByPage(WhiteListEntity whiteListEntity) {
 		return whiteListDao.insert(whiteListEntity);
 	}
+
+	public int enable(int id) {
+		return whiteListDao.enable(id);
+	}
+
+	public int disable(int id) {
+		return whiteListDao.disable(id);
+	}
 }

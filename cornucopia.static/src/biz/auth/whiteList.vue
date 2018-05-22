@@ -82,11 +82,13 @@ export default {
           more: [
             {
               text: "停用",
-              url: this.getGlobalData().ApiBaseUrl + "/user/disable"
+              url: this.getGlobalData().ApiBaseUrl + "/whitelist/disable",
+              functionName:'whitelistDisable',
             },
             {
               text: "启用",
-              url: this.getGlobalData().ApiBaseUrl + "/user/enable"
+              url: this.getGlobalData().ApiBaseUrl + "/whitelist/enable",
+              functionName:'whitelistEnable',
             }
           ],
           common: [
@@ -101,7 +103,8 @@ export default {
         operations: [
           {
             text: "查看",
-            url: "/auth/userview"
+            url: "/auth/whitelistView",
+            functionName:'whitelistView',
           }
         ]
       }
