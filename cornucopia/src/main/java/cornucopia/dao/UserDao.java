@@ -37,6 +37,6 @@ public interface UserDao {
 	@Update("call sp_user_mod_pwd(#{umpvm.id},#{umpvm.pwd})")
 	public int modPwd(@Param("umpvm") UserModPwdViewModel umpvm);
 
-	@Select("call sp_user_check_pwd(#{umpvm.id},#{umpvm.pwd})")
-	public int checkPwd(UserModPwdViewModel umpvm);
+	@Select("call sp_user_check_pwd(#{umpvm.id},#{umpvm.oldPwd})")
+	public int checkPwd(@Param("umpvm") UserModPwdViewModel umpvm);
 }

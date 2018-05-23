@@ -9,7 +9,7 @@ export default {
       cfg: {
         title: "修改密码",
         mode: "create",
-        save: self.getGlobalData().ApiBaseUrl + "/auth/mod",
+        save: self.getGlobalData().ApiBaseUrl + "/auth/usermod",
         modal: "true",
         items: [
           {
