@@ -14,22 +14,26 @@ export default {
         items: [
           {
             name: "Id",
-            type: "hidden"
+            type: "hidden",
+            
           },
           {
             name: "oldPwd",
             title: "原密码",
-            type: "pwd"
+            type: "pwd",
+            isRequire:true
           },
           {
             name: "pwd",
             title: "密码",
-            type: "pwd"
+            type: "pwd",
+            isRequire:true
           },
           {
             name: "pwd1",
             title: "确认密码",
-            type: "pwd"
+            type: "pwd",
+            isRequire:true
           }
         ],
         rules: {
