@@ -9,6 +9,7 @@ import cornucopia.entity.RoleEntity;
 import cornucopia.entity.UserEntity;
 import cornucopia.model.IdNameModel;
 import cornucopia.model.TransferViewModel;
+import cornucopia.model.UserModPwdViewModel;
 import cornucopia.util.MyBatisHelper;
 import cornucopia.util.PagingParameters;
 
@@ -72,9 +73,17 @@ public class UserService {
 
 	public boolean updateUserRoles(int id, int[] roles) {
 		userdao.deleteUserRoles(id);
-		for(int roleId : roles) {
-			userdao.insertUserRole(id,roleId);
+		for (int roleId : roles) {
+			userdao.insertUserRole(id, roleId);
 		}
 		return true;
+	}
+
+	public int modPwd(UserModPwdViewModel umpvm) {
+		return userdao.modPwd(umpvm);
+	}
+
+	public int checkPwd(UserModPwdViewModel umpvm) {
+		return userdao.checkPwd(umpvm);
 	}
 }

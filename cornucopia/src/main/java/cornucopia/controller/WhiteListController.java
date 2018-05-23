@@ -28,7 +28,7 @@ public class WhiteListController {
 				whiteList);
 		return dtr;
 	}
-	
+
 	@RequestMapping(value = { "/add" }, method = RequestMethod.POST)
 	public JsonResult<Integer> add(WhiteListEntity whiteListEntity) {
 		WhiteListService.getInstance().addWhiteListByPage(whiteListEntity);
@@ -37,7 +37,7 @@ public class WhiteListController {
 		jr.setData(whiteListEntity.getId());
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/disable" }, method = RequestMethod.POST)
 	public JsonResult<Integer> disable(@RequestParam(value = "Ids") int id) {
 		int result = WhiteListService.getInstance().disable(id);
@@ -46,7 +46,7 @@ public class WhiteListController {
 		jr.setData(result);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/enable" }, method = RequestMethod.POST)
 	public JsonResult<Integer> enable(@RequestParam(value = "Ids") int id) {
 		int result = WhiteListService.getInstance().enable(id);
@@ -55,7 +55,7 @@ public class WhiteListController {
 		jr.setData(result);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/get" }, method = RequestMethod.GET)
 	public JsonResult<WhiteListEntity> get(int id) {
 		WhiteListEntity whiteListEntity = WhiteListService.getInstance().getWhiteListEntity(id);
@@ -64,7 +64,7 @@ public class WhiteListController {
 		jr.setData(whiteListEntity);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/update" }, method = RequestMethod.POST)
 	public JsonResult<Integer> update(WhiteListEntity whiteListEntity) {
 		int result = WhiteListService.getInstance().updateWhiteListEntity(whiteListEntity);
@@ -73,5 +73,5 @@ public class WhiteListController {
 		jr.setData(result);
 		return jr;
 	}
-	
+
 }

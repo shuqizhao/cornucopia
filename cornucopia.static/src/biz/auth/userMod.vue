@@ -17,41 +17,41 @@ export default {
             type: "hidden"
           },
           {
-            name: "OldPwd",
+            name: "oldPwd",
             title: "原密码",
             type: "pwd"
           },
           {
-            name: "Pwd",
+            name: "pwd",
             title: "密码",
             type: "pwd"
           },
           {
-            name: "Pwd1",
+            name: "pwd1",
             title: "确认密码",
             type: "pwd"
           }
         ],
         rules: {
-          OldPwd: {
+          oldPwd: {
             required: true
           },
-          Pwd: {
+          pwd: {
             required: true
           },
-          Pwd1: {
+          pwd1: {
             required: true,
-            equalTo: "#Pwd"
+            equalTo: "#pwd"
           }
         },
         messages: {
-          OldPwd: {
+          oldPwd: {
             required: "原密码必须填写"
           },
-          Pwd: {
+          pwd: {
             required: "密码必须填写"
           },
-          Pwd1: {
+          pwd1: {
             required: "确认密码必须填写",
             equalTo: "确认密码必须与密码相同"
           }

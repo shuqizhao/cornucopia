@@ -16,6 +16,7 @@ import cornucopia.entity.MenuEntity;
 import cornucopia.entity.UserEntity;
 import cornucopia.entity.WhiteListEntity;
 import cornucopia.model.TreeViewModel;
+import cornucopia.model.UserModPwdViewModel;
 import cornucopia.service.MenuService;
 import cornucopia.service.OrgService;
 import cornucopia.service.UserService;
@@ -33,7 +34,7 @@ public class AuthController {
 			@ModelAttribute("Un") String un, @ModelAttribute("Pwd") String pwd) {
 		int code = 500;
 		UserEntity userEntity = UserService.getInstance().isLogin(un, pwd);
-		if (userEntity!=null) {
+		if (userEntity != null) {
 			code = 200;
 			CookieUtil.set(response, "adAuthCookie", "true", 3600 * 24);
 			CookieUtil.set(response, "loginUser", un, 3600 * 24);
@@ -47,10 +48,10 @@ public class AuthController {
 	}
 
 	@RequestMapping(value = { "/menus" }, method = RequestMethod.GET)
-	public JsonResult<List<MenuEntity>> menus(HttpServletRequest request,HttpServletResponse response) {
-		UserEntity userEntity = (UserEntity)request.getSession().getAttribute("user");
+	public JsonResult<List<MenuEntity>> menus(HttpServletRequest request, HttpServletResponse response) {
+		UserEntity userEntity = (UserEntity) request.getSession().getAttribute("user");
 		int userId = 0;
-		if(userEntity!=null) {
+		if (userEntity != null) {
 			userId = userEntity.getId();
 		}
 		List<MenuEntity> menus = MenuService.getInstance().getAllMenus(userId);
@@ -99,9 +100,9 @@ public class AuthController {
 
 	@RequestMapping(value = { "/routerList" }, method = RequestMethod.GET)
 	public JsonResult<List<MenuEntity>> routerList(HttpServletRequest request) {
-		UserEntity userEntity = (UserEntity)request.getSession().getAttribute("user");
+		UserEntity userEntity = (UserEntity) request.getSession().getAttribute("user");
 		int userId = 0;
-		if(userEntity!=null) {
+		if (userEntity != null) {
 			userId = userEntity.getId();
 		}
 		List<MenuEntity> menus = MenuService.getInstance().getAllRouters(userId);
@@ -122,5 +123,27 @@ public class AuthController {
 		DataTableResult<WhiteListEntity> dtr = new DataTableResult<WhiteListEntity>(dtp.getsEcho() + 1, count, count,
 				whiteList);
 		return dtr;
+	}
+
+	@RequestMapping(value = { "/usermod" }, method = RequestMethod.POST)
+	public JsonResult<Integer> userMod(HttpServletRequest request, UserModPwdViewModel umpvm) {
+		UserEntity userEntity = (UserEntity) request.getSession().getAttribute("user");
+		umpvm.setId(userEntity.getId()+"");
+		int isOk = UserService.getInstance().modPwd(umpvm);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(isOk);
+		return jr;
+	}
+
+	@RequestMapping(value = { "/checkpwd" }, method = RequestMethod.POST)
+	public JsonResult<Integer> checkPwd(HttpServletRequest request, UserModPwdViewModel umpvm) {
+		UserEntity userEntity = (UserEntity) request.getSession().getAttribute("user");
+		umpvm.setId(userEntity.getId()+"");
+		int isOk = UserService.getInstance().checkPwd(umpvm);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(isOk > 0 ? 1 : 0);
+		return jr;
 	}
 }

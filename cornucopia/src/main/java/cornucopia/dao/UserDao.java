@@ -7,9 +7,11 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.mapping.StatementType;
 
 import cornucopia.entity.UserEntity;
+import cornucopia.model.UserModPwdViewModel;
 import cornucopia.util.PagingParameters;
 
 public interface UserDao {
@@ -30,5 +32,11 @@ public interface UserDao {
 	public boolean deleteUserRoles(@Param("userId") int id);
 
 	@Insert("call sp_user_role_insert(#{userId},#{roleId})")
-	public void insertUserRole(@Param("userId") int id,@Param("roleId") int roleId);
+	public void insertUserRole(@Param("userId") int id, @Param("roleId") int roleId);
+
+	@Update("call sp_user_mod_pwd(#{umpvm.id},#{umpvm.pwd})")
+	public int modPwd(@Param("umpvm") UserModPwdViewModel umpvm);
+
+	@Select("call sp_user_check_pwd(#{umpvm.id},#{umpvm.pwd})")
+	public int checkPwd(UserModPwdViewModel umpvm);
 }
