@@ -145,6 +145,7 @@ Vue.use(VueRouter)
  */
 var menuData = {};
 var functions = [];
+var modals = [];
 $.ajax({
     url: jsonData.ApiBaseUrl + '/auth/routerList',
     async: false,
@@ -158,8 +159,12 @@ for (var i = 0; i < menuData.length; i++) {
     let routerName = menuData[i].routerName;
     let url = menuData[i].Url;
     let functionName = menuData[i].functionName;
+    let type = menuData[i].type;
+    if(type == 1){
+        modals.push(functionName);
+    }
     if (functionName) {
-        functions.push(functionName)
+        functions.push(functionName);
     }
     if (url) {
         if (menuData[i].Type == 1) {
@@ -178,6 +183,16 @@ Vue.prototype.showFunction = function(functionName) {
     if (functionName) {
         isUse = false;
         if ($.inArray(functionName, functions) != -1) {
+            isUse = true;
+        }
+    }
+    return isUse;
+}
+
+Vue.prototype.showModal = function(functionName) {
+    var isUse = false;
+    if (functionName) {
+        if ($.inArray(functionName, modals) != -1) {
             isUse = true;
         }
     }
