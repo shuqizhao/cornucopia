@@ -8,6 +8,11 @@
         <el-breadcrumb-item>{{this.cfg.parentTitle}}</el-breadcrumb-item>
         <el-breadcrumb-item>{{this.cfg.title}}</el-breadcrumb-item>
         </el-breadcrumb>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+          </button>
+          <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+        </div>
         <hr v-if="SearchItemsCount==0"/>
       </div>
 

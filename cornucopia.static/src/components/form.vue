@@ -10,6 +10,11 @@
             <h3 v-else-if="cfg.mode=='detailEdit'&&cfg.detailEditMode=='edit'" class="box-title">{{cfg.editTitle}}</h3>
             <h3 v-else class="box-title">{{cfg.title}}</h3>
             <small>{{cfg.desc}}</small>
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+              </button>
+              <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+            </div>
         </div>
         <!-- /.box-header -->
         <!-- form start -->

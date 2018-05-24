@@ -1,8 +1,8 @@
 <template>
  <el-row>
     <el-col :span="12"><list :cfg="cfg"></list></el-col>
-    <el-col :span="6" id="resTree"><tree  ref="tree" :cfg="treeCfg"></tree></el-col>
-    <el-col :span="6" id="resTree1"><tree  ref="tree1" :cfg="treeCfg"></tree></el-col>
+    <el-col :span="12" id="resTree"><tree  ref="tree" :cfg="treeCfg"></tree></el-col>
+    <!--el-col :span="6" id="resTree1"><tree  ref="tree1" :cfg="treeCfg"></tree></el-col-->
   </el-row>
 </template>
 <script>
