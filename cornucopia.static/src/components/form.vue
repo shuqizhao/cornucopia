@@ -205,6 +205,10 @@ export default {
     };
   },
   methods: {
+     showDialog:function(){
+       var className = this.$parent.$parent.$el.className;
+       return className.indexOf('el-dialog__wrapper')!=-1;
+     },
      handleRemove(file, fileList) {
         for(var i=0;i<fileList.length;i++){
           var item = fileList[i];
@@ -271,7 +275,7 @@ export default {
       self.commiting = false;
       if (self.cfg.onCancel) {
         self.cfg.onCancel();
-      } else if (self.cfg.isModal) {
+      } else if (self.showDialog()) {
         self.$parent.$parent.$parent.dialogVisible=false;
         self.$parent.$parent.$parent.currentComponent="";
       } else {
@@ -562,7 +566,7 @@ export default {
               if (handler) {
                 handler(response);
               } else {
-                if(self.cfg.isModal){
+                if(self.showDialog()){
                   self.$parent.$parent.$parent.dialogVisible=false;
                   self.$parent.$parent.$parent.currentComponent="";
                   self.$parent.$parent.$parent.reloadSimpleData();
@@ -576,7 +580,7 @@ export default {
             if (handler) {
               handler(response);
             } else {
-               if(self.cfg.isModal){
+               if(self.showDialog()){
                   self.$parent.$parent.$parent.dialogVisible=false;
                   self.$parent.$parent.$parent.currentComponent="";
                   self.$parent.$parent.$parent.reloadSimpleData();
