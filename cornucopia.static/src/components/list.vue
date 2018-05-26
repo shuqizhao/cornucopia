@@ -91,7 +91,7 @@
       </div>
       <!-- <hr v-if="SearchItemsCount!=0" /> -->
       <div class="box-body">
-          <table id="tableList" style="width:100%;white-space: nowrap;" class="table table-bordered table-hover">
+          <table :id="tableListId" style="width:100%;white-space: nowrap;" class="table table-bordered table-hover">
           </table>
       </div>
   </div>
@@ -367,7 +367,7 @@ export default {
     if(!self.lastCfg.bServerSide){
       self.lastCfg.data=self.getSimpleData();
     }
-    self.dataTable = $("#tableList").DataTable(self.lastCfg);
+    self.dataTable = $("#"+self.tableListId).DataTable(self.lastCfg);
     self.dataTable.on("draw", function() {
       $(self.$el)
         .find(".dataTables_paginate")
@@ -417,10 +417,10 @@ export default {
       $('#listSearchAreaBtn').next().addClass('el-icon-arrow-up');
     }
 
-    $('#tableList').on('click', 'tr', function () {
+    $('#'+self.tableListId).on('click', 'tr', function () {
         var data = self.dataTable.row(this).data();
         if(self.cfg.showSelectedRowColor){
-           $('#tableList tr').css('background-color', "");
+           $('#'+self.tableListId+' tr').css('background-color', "");
            $(this).css('background-color', "#D6D5C3");
            self.currentId = data.id;
         }
@@ -455,6 +455,7 @@ export default {
       SearchItemsCount: 0,
       activeName: this.cfg.isShowSearchArea,
       value:"",
+      tableListId : "tableList_"+this.newGuid()
     };
   },
   methods: {

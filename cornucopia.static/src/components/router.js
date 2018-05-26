@@ -160,7 +160,7 @@ for (var i = 0; i < menuData.length; i++) {
     let url = menuData[i].Url;
     let functionName = menuData[i].functionName;
     let type = menuData[i].type;
-    if(type == 1){
+    if (type == 1) {
         modals.push(functionName);
     }
     if (functionName) {
@@ -213,6 +213,13 @@ Vue.prototype.getButtonIcon = function(functionName) {
 Vue.prototype.setBreadcrumbTitle = function(self, parentTitle, title) {
     self.$root.$children[0].$children[0].$children[0].$children[0].breadcrumbTitle = title;
     self.$root.$children[0].$children[0].$children[0].$children[0].breadcrumbParentTitle = parentTitle;
+}
+
+function S4() {
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+}
+Vue.prototype.newGuid = function() {
+    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }
 
 const router = new VueRouter({

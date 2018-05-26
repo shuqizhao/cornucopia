@@ -1,8 +1,5 @@
 <template>
-  <el-row>
-    <el-col :span="12"><list :cfg="cfg"></list></el-col>
-    <el-col :span="12" id="resTree"><tree  ref="tree" :cfg="treeCfg"></tree></el-col>
-  </el-row>
+  <list :cfg="cfg"></list>
 </template>
 <script>
 export default {
@@ -51,7 +48,7 @@ export default {
               text: "添加流程",
               url: "processAdd",
               mode: "modal",
-              functionName:"processAdd"
+              functionName: "processAdd"
             }
           ],
           more: [
@@ -96,76 +93,6 @@ export default {
           });
         }
       },
-      treeCfg: {
-        title: "节点管理",
-        parentTitle: "流程管理",
-        url: this.getGlobalData().ApiBaseUrl + "/auth/allResource",
-        functions: [
-          {
-            text: "保存",
-            type: "btn-success",
-            icon: "el-icon-success",
-            onClick: function() {
-              if (!self.currentRoleId) {
-                self.$message({
-                  message: "请先选择角色!",
-                  type: "warning"
-                });
-                return;
-              }
-              self
-                .$confirm("确定要保存吗", "提示", {
-                  confirmButtonText: "确定",
-                  cancelButtonText: "取消",
-                  type: "info"
-                })
-                .then(() => {
-                  $.ajax({
-                    type: "POST",
-                    xhrFields: {
-                      withCredentials: true
-                    },
-                    data: {
-                      roleId: self.currentRoleId,
-                      checkedList: self.$refs.tree.getCheckedKeys()
-                    },
-                    url:
-                      self.getGlobalData().ApiBaseUrl + "/auth/saveCheckedList",
-                    success: function(response) {
-                      if (response.code == "200") {
-                        self.$message({
-                          message: "操作成功!",
-                          type: "success"
-                        });
-                      } else if (response.message) {
-                        self.$message({
-                          type: "warning",
-                          message: response.message
-                        });
-                      }
-                    }
-                  });
-                });
-            }
-          }
-          // {
-          //   text: "全选",
-          //   type: "btn-success",
-          //   icon:'el-icon-circle-check-outline',
-          //   onClick:function(){
-          //     self.$refs.tree.checkAll();
-          //   }
-          // },
-          // {
-          //   text: "清空",
-          //   type: "btn-success",
-          //   icon:'el-icon-circle-close-outline',
-          //   onClick:function(){
-          //     self.$refs.tree.clearAll();
-          //   }
-          // }
-        ]
-      }
     };
   },
   updated: function() {
