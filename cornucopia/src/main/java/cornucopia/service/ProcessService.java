@@ -26,8 +26,8 @@ public class ProcessService {
 		return processDao.exists(processName);
 	}
 
-	public int insert(ProcessEntity roleEntity) {
-		 return processDao.insert(roleEntity);
+	public int insert(ProcessEntity processEntity) {
+		 return processDao.insert(processEntity);
 	}
 
 	public int disable(int id) {

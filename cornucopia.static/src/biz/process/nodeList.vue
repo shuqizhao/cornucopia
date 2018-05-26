@@ -1,8 +1,8 @@
 <template>
   <el-row>
-    <el-col :span="8"><list :cfg="cfg"></list></el-col>
+    <el-col :span="10"><list :cfg="cfg"></list></el-col>
     <el-col :span="8"><list :cfg="cfg1"></list></el-col>
-    <el-col :span="8"><list :cfg="cfg2"></list></el-col>
+    <el-col :span="6"><list :cfg="cfg2"></list></el-col>
   </el-row>
 </template>
 <script>
@@ -13,9 +13,9 @@ export default {
       cfg: {
         title: "流程节点管理",
         parentTitle: "系统管理",
-        simpleUrl: this.getGlobalData().ApiBaseUrl + "/process/alllist",
+        simpleUrl: this.getGlobalData().ApiBaseUrl + "/process/allnodelist",
         lengthMenu: [[-1], ["ALL"]],
-        sDom: 'f<"dataTables_function"/>',
+        sDom: '<"dataTables_function"/>',
         bServerSide: false,
         hideCheckBox: true,
         showSelectedRowColor: true,
@@ -26,8 +26,24 @@ export default {
             isHide: true
           },
           {
-            title: "流程名",
-            name: "name"
+            title: "流程节点名",
+            name: "name",
+            isSearch: true,
+            type: "combox",
+            data: [
+              {
+                id: "2",
+                value: "离职流程"
+              },
+              {
+                id: "1",
+                value: "是"
+              },
+              {
+                id: "0",
+                value: "否"
+              }
+            ]
           },
           {
             title: "是否启用",
