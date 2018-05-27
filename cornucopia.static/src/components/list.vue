@@ -419,6 +419,7 @@ export default {
 
     $('#'+self.tableListId).on('click', 'tr', function () {
         var data = self.dataTable.row(this).data();
+        if(!data)return;
         if(self.cfg.showSelectedRowColor){
            $('#'+self.tableListId+' tr').css('background-color', "");
            $(this).css('background-color', "#D6D5C3");
