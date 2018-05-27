@@ -103,7 +103,7 @@ export default {
       cfg1: {
         title: "流程节点管理",
         parentTitle: "系统管理",
-        // simpleUrl: this.getGlobalData().ApiBaseUrl + "/process/alllist",
+        // simpleUrl: this.getGlobalData().ApiBaseUrl + "/processnode/alllist",
         lengthMenu: [[-1], ["ALL"]],
         sDom: '<"dataTables_function"/>',
         bServerSide: false,

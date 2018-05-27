@@ -28,12 +28,16 @@ export default {
           }
         },
         validate: function(data, saveData) {
-          data["processId"] = $("#id1").attr('processId');
-          if(!data["processId"]){
-              self.$message({
-                  type: "warning",
-                  message: "请先选择一个流程!"
-                });
+          data["processId"] = $("#id1").attr("processId");
+          self.$parent.$parent.cfg.simpleUrl =
+            self.getGlobalData().ApiBaseUrl +
+            "/processnode/alllist?processId=" +
+            data["processId"];
+          if (!data["processId"]) {
+            self.$message({
+              type: "warning",
+              message: "请先选择一个流程!"
+            });
             return false;
           }
           $.ajax({
