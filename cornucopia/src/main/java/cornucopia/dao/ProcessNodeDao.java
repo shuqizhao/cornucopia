@@ -11,13 +11,13 @@ import org.apache.ibatis.annotations.Update;
 import cornucopia.entity.ProcessNodeEntity;
 
 public interface ProcessNodeDao {
-	@Select("call sp_process_node_all()")
-	public List<ProcessNodeEntity> getAll();
+	@Select("call sp_process_node_all(#{processId})")
+	public List<ProcessNodeEntity> getAll(@Param("processId") int processId);
 
-	@Select("call sp_process_node_exists(#{processNodeName})")
-	public int exists(@Param("processNodeName") String processNodeName);
+	@Select("call sp_process_node_exists(#{processNodeName},#{processId})")
+	public int exists(@Param("processNodeName") String processNodeName,@Param("processId") int processId);
 
-	@Insert("call sp_process_node_insert(#{processNode.name})")
+	@Insert("call sp_process_node_insert(#{processNode.name},#{processNode.processId})")
 	@SelectKey(statement="Select LAST_INSERT_ID()", keyProperty="processNode.id", before=false, resultType=int.class)
 	public int insert(@Param("processNode") ProcessNodeEntity processNodeEntity);
 

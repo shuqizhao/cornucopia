@@ -15,8 +15,8 @@ import cornucopia.service.ProcessNodeService;
 @RequestMapping("/processnode")
 public class ProcessNodeContorller {
 	@RequestMapping(value = { "/alllist" }, method = RequestMethod.GET)
-	public JsonResult<List<ProcessNodeEntity>> alllist() {
-		List<ProcessNodeEntity> processNodes = ProcessNodeService.getInstance().getAll();
+	public JsonResult<List<ProcessNodeEntity>> alllist(int processId) {
+		List<ProcessNodeEntity> processNodes = ProcessNodeService.getInstance().getAll(processId);
 		JsonResult<List<ProcessNodeEntity>> jr = new JsonResult<List<ProcessNodeEntity>>();
 		jr.setCode(200);
 		jr.setData(processNodes);
@@ -24,8 +24,8 @@ public class ProcessNodeContorller {
 	}
 	
 	@RequestMapping(value = { "/exists" }, method = RequestMethod.POST)
-	public JsonResult<Integer> exists(String name) {
-		int isExists = ProcessNodeService.getInstance().exists(name);
+	public JsonResult<Integer> exists(String name,int processId) {
+		int isExists = ProcessNodeService.getInstance().exists(name,processId);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(isExists);

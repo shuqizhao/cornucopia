@@ -18,12 +18,12 @@ public class ProcessNodeService {
 
 	ProcessNodeDao processNodeDao = MyBatisHelper.getMapper(ProcessNodeDao.class);
 	
-	public List<ProcessNodeEntity> getAll() {
-		return processNodeDao.getAll();
+	public List<ProcessNodeEntity> getAll(int processId) {
+		return processNodeDao.getAll(processId);
 	}
 
-	public int exists(String processName) {
-		return processNodeDao.exists(processName);
+	public int exists(String nodeName,int processId) {
+		return processNodeDao.exists(nodeName,processId);
 	}
 
 	public int insert(ProcessNodeEntity processNodeEntity) {

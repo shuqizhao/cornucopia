@@ -649,6 +649,9 @@ export default {
     ,
     getSimpleData: function() {
       var self = this;
+      if(!self.cfg.simpleUrl){
+        return;
+      }
       var data = [];
       $.ajax({
         type: "GET",
@@ -676,6 +679,11 @@ export default {
         self.lastCfg.data=self.getSimpleData();
         self.dataTable.clear().rows.add(self.lastCfg.data).draw()
       }
+    },
+    loadSimpleData:function(data){
+      var self = this;
+      self.lastCfg.data = data;
+      self.dataTable.clear().rows.add(data).draw()
     }
   }
 };

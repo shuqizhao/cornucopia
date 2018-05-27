@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-col :span="6"><list :cfg="cfg"></list></el-col>
-    <el-col :span="6" id="id1"><list :cfg="cfg1"></list></el-col>
+    <el-col :span="6" id="id1"><list ref="nodeList" :cfg="cfg1"></list></el-col>
     <el-col :span="12" id="id2"><list :cfg="cfg2"></list></el-col>
   </el-row>
 </template>
@@ -10,6 +10,7 @@ export default {
   data() {
     var self = this;
     return {
+      processId:0,
       cfg: {
         title: "流程管理",
         parentTitle: "系统管理",
@@ -81,13 +82,14 @@ export default {
             },
             url:
               self.getGlobalData().ApiBaseUrl +
-              "/auth/getCheckedList?roleId=" +
+              "/processnode/alllist?processId=" +
               data.id,
             success: function(response) {
               if (response.code == "200") {
                 self.closeLoading("id1");
                 self.closeLoading("id2");
-                self.currentRoleId = data.id;
+                $("#id1").attr('processId',data.id);
+                self.$refs.nodeList.loadSimpleData(response.data);
               } else if (response.message) {
                 self.$message({
                   type: "warning",
@@ -101,7 +103,7 @@ export default {
       cfg1: {
         title: "流程节点管理",
         parentTitle: "系统管理",
-        simpleUrl: this.getGlobalData().ApiBaseUrl + "/process/alllist",
+        // simpleUrl: this.getGlobalData().ApiBaseUrl + "/process/alllist",
         lengthMenu: [[-1], ["ALL"]],
         sDom: '<"dataTables_function"/>',
         bServerSide: false,
@@ -138,9 +140,9 @@ export default {
           common: [
             {
               text: "添加流程节点",
-              url: "processAdd",
+              url: "processNodeAdd",
               mode: "modal",
-              functionName: "processAdd"
+              functionName: "processNodeAdd"
             }
           ],
           // more: [
@@ -157,43 +159,17 @@ export default {
           //     url: this.getGlobalData().ApiBaseUrl + "/processnode/delete"
           //   }
           // ]
-        },
-        onClickRow: function(data, target) {
-          self.$refs.tree.cfg.title = data.name;
-          self.openLoading($("#resTree")[0]);
-          $.ajax({
-            type: "GET",
-            xhrFields: {
-              withCredentials: true
-            },
-            url:
-              self.getGlobalData().ApiBaseUrl +
-              "/auth/getCheckedList?roleId=" +
-              data.id,
-            success: function(response) {
-              if (response.code == "200") {
-                self.$refs.tree.setCheckedKeys(response.data);
-                self.closeLoading();
-                self.currentRoleId = data.id;
-              } else if (response.message) {
-                self.$message({
-                  type: "warning",
-                  message: response.message
-                });
-              }
-            }
-          });
         }
       },
       cfg2: {
         title: "流程图管理",
         parentTitle: "系统管理",
-        simpleUrl: this.getGlobalData().ApiBaseUrl + "/processnode/alllist",
+        // simpleUrl: this.getGlobalData().ApiBaseUrl + "/processnode/alllist",
         lengthMenu: [[-1], ["ALL"]],
         sDom: '<"dataTables_function"/>',
         bServerSide: false,
         hideCheckBox: true,
-        showSelectedRowColor: true,
+        // showSelectedRowColor: true,
         columns: [
           {
             title: "id",
@@ -244,33 +220,6 @@ export default {
               url: this.getGlobalData().ApiBaseUrl + "/processnode/delete"
             }
           ]
-        },
-        onClickRow: function(data, target) {
-          self.$refs.tree.cfg.title = data.name;
-          self.openLoading($("#resTree")[0]);
-          self.openLoading($("#resTree")[0]);
-          $.ajax({
-            type: "GET",
-            xhrFields: {
-              withCredentials: true
-            },
-            url:
-              self.getGlobalData().ApiBaseUrl +
-              "/auth/getCheckedList?roleId=" +
-              data.id,
-            success: function(response) {
-              if (response.code == "200") {
-                self.$refs.tree.setCheckedKeys(response.data);
-                self.closeLoading();
-                self.currentRoleId = data.id;
-              } else if (response.message) {
-                self.$message({
-                  type: "warning",
-                  message: response.message
-                });
-              }
-            }
-          });
         }
       },
     };
