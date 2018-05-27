@@ -18,6 +18,7 @@ export default {
         bServerSide: false,
         hideCheckBox: true,
         showSelectedRowColor: true,
+        isShowSearchArea:"true",
         columns: [
           {
             title: "id",
@@ -64,7 +65,7 @@ export default {
         functions: {
           common: [
             {
-              text: "添加流程节点",
+              text: "添加路径",
               url: "processAdd",
               mode: "modal",
               functionName: "processAdd"
@@ -151,7 +152,7 @@ export default {
         functions: {
           common: [
             {
-              text: "添加节点",
+              text: "添加岗位",
               url: "processAdd",
               mode: "modal",
               functionName: "processAdd"
