@@ -13,77 +13,23 @@ export default {
       treeCfg: {
         title: "审批路线(一)",
         parentTitle: "流程管理",
-        url: this.getGlobalData().ApiBaseUrl + "/auth/allResource",
-        functions: [
-          {
-            text: "保存",
-            type: "btn-success",
-            icon: "el-icon-success",
-            onClick: function() {
-              if (!self.currentRoleId) {
-                self.$message({
-                  message: "请先选择角色!",
-                  type: "warning"
-                });
-                return;
-              }
-              self
-                .$confirm("确定要保存吗", "提示", {
-                  confirmButtonText: "确定",
-                  cancelButtonText: "取消",
-                  type: "info"
-                })
-                .then(() => {
-                  $.ajax({
-                    type: "POST",
-                    xhrFields: {
-                      withCredentials: true
-                    },
-                    data: {
-                      roleId: self.currentRoleId,
-                      checkedList: self.$refs.tree.getCheckedKeys()
-                    },
-                    url:
-                      self.getGlobalData().ApiBaseUrl + "/auth/saveCheckedList",
-                    success: function(response) {
-                      if (response.code == "200") {
-                        self.$message({
-                          message: "操作成功!",
-                          type: "success"
-                        });
-                      } else if (response.message) {
-                        self.$message({
-                          type: "warning",
-                          message: response.message
-                        });
-                      }
-                    }
-                  });
-                });
-            }
-          }
-          // {
-          //   text: "全选",
-          //   type: "btn-success",
-          //   icon:'el-icon-circle-check-outline',
-          //   onClick:function(){
-          //     self.$refs.tree.checkAll();
-          //   }
-          // },
-          // {
-          //   text: "清空",
-          //   type: "btn-success",
-          //   icon:'el-icon-circle-close-outline',
-          //   onClick:function(){
-          //     self.$refs.tree.clearAll();
-          //   }
-          // }
-        ]
+        filterType:"combox",
+        hideToolBar:true,
+        options1: [{
+          value: '1',
+          label: '离职流程'
+        }],
+        options2: [{
+          value: '1',
+          label: 'Doa节点'
+        }],
       },
        treeCfg1: {
         title: "审批路线(二)",
         parentTitle: "流程管理",
-        url: this.getGlobalData().ApiBaseUrl + "/auth/allResource",
+        filterType:"combox",
+        hideToolBar:true,
+        // url: this.getGlobalData().ApiBaseUrl + "/auth/allResource",
         functions: [
           {
             text: "保存",
@@ -241,8 +187,8 @@ export default {
   },
   updated: function() {
     var self = this;
-    self.$parent.title = self.cfg.title;
-    self.$parent.parentTitle = self.cfg.parentTitle;
+    // self.$parent.title = self.cfg.title;
+    // self.$parent.parentTitle = self.cfg.parentTitle;
   }
 };
 </script>

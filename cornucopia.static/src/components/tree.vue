@@ -8,7 +8,7 @@
         <el-breadcrumb-item>{{this.cfg.title}}</el-breadcrumb-item>
         </el-breadcrumb>
         <hr/>
-  <div>
+  <div v-if="!this.cfg.hideToolBar">
     <button v-for="item in cfg.functions" :key="item.text" @click="item.onClick" :class="'btn '+item.type+' btn-buttons '+item.icon" style="margin-right:10px;">{{item.text}}</button>
   </div>
   </div>
@@ -20,9 +20,26 @@
   </div>
 </div>
   <div class="box-body">
-    <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
-
-        <el-tree
+    <el-row v-if="this.cfg.filterType=='combox'">
+    <el-col :span="12"> <el-select v-model="value8" filterable placeholder="请选择" size="mini">
+      <el-option
+        v-for="item in this.cfg.options1"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+      </el-option>
+    </el-select></el-col>
+    <el-col :span="12"> <el-select v-model="value8" filterable placeholder="请选择" size="mini">
+      <el-option
+        v-for="item in this.cfg.options2"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+      </el-option>
+    </el-select></el-col>
+  </el-row>
+  <el-input v-else placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
+  <el-tree
         class="filter-tree"
          node-key="id"
         :data="data2"
@@ -58,6 +75,9 @@ export default {
     },
     loadUrl: function(handler) {
       var self = this;
+      if(!self.cfg.url){
+        return;
+      }
       self.openLoading();
       $.ajax({
         type: "GET",
@@ -123,7 +143,8 @@ export default {
       defaultProps: {
         children: "children",
         label: "name"
-      }
+      },
+      value8: ''
     };
   },
   mounted: function() {
