@@ -21,20 +21,21 @@
 </div>
   <div class="box-body">
     <el-row v-if="this.cfg.filterType=='combox'">
-    <el-col :span="12"> <el-select v-model="value8" filterable placeholder="请选择" size="mini">
+    <el-col :span="12"> <el-select v-model="value1" @change="option1Change" filterable placeholder="请选择" size="mini">
       <el-option
-        v-for="item in this.cfg.options1"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
+        v-for="item in options1"
+        :key="item.id"
+        :label="item.name"
+        :value="item.id"
+        >
       </el-option>
     </el-select></el-col>
-    <el-col :span="12"> <el-select v-model="value8" filterable placeholder="请选择" size="mini">
+    <el-col :span="12"> <el-select v-model="value2" filterable placeholder="请选择" size="mini">
       <el-option
-        v-for="item in this.cfg.options2"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
+        v-for="item in options2"
+        :key="item.id"
+        :label="item.name"
+        :value="item.id">
       </el-option>
     </el-select></el-col>
   </el-row>
@@ -113,6 +114,75 @@ export default {
         }
       });
     },
+    loadOption1Url: function(handler) {
+      var self = this;
+      if(!self.cfg.option1Url){
+        return;
+      }
+      // self.openLoading();
+      $.ajax({
+        type: "GET",
+        xhrFields: {
+          withCredentials: true
+        },
+        url: self.cfg.option1Url,
+        success: function(response) {
+          if (response.code == "200") {
+            self.options1 = response.data;
+            // self.closeLoading();
+          } else if (response.message) {
+            self.$message({
+              type: "warning",
+              message: response.message
+            });
+          }
+          if (self.cfg.onSuccess) {
+            if (self.cfg.onSuccess(self.cfg.mode, response)) {
+              if (handler) {
+                handler(response);
+              } else {
+                // history.go(-1);
+              }
+            }
+          } else {
+            if (handler) {
+              handler(response);
+            } else {
+              //   history.go(-1);
+            }
+          }
+        }
+      });
+    },
+    loadOption2Url: function(id) {
+      var self = this;
+      if(!self.cfg.option2Url){
+        return;
+      }
+      // self.openLoading();
+      $.ajax({
+        type: "GET",
+        xhrFields: {
+          withCredentials: true
+        },
+        url: self.cfg.option2Url+id,
+        success: function(response) {
+          if (response.code == "200") {
+            self.options2 = response.data;
+            self.value2='';
+            // self.closeLoading();
+          } else if (response.message) {
+            self.$message({
+              type: "warning",
+              message: response.message
+            });
+          }
+        }
+      });
+    },
+    option1Change:function(s1){
+      this.loadOption2Url(s1);
+    },
     setCheckedKeys:function(checkList){
       var self = this;
       self.$refs.tree2.setCheckedKeys(checkList);
@@ -144,7 +214,10 @@ export default {
         children: "children",
         label: "name"
       },
-      value8: ''
+      value1: '',
+      value2: '',
+      options1:[],
+      options2:[]
     };
   },
   mounted: function() {
@@ -167,6 +240,7 @@ export default {
               }
             });
     this.loadUrl();
+    this.loadOption1Url();
   }
 };
 </script>

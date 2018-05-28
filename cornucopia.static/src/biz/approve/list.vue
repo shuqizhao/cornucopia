@@ -7,28 +7,22 @@
 </template>
 <script>
 export default {
+  mounted: function() {},
   data() {
     var self = this;
     return {
       treeCfg: {
         title: "审批路线(一)",
         parentTitle: "流程管理",
-        filterType:"combox",
-        hideToolBar:true,
-        options1: [{
-          value: '1',
-          label: '离职流程'
-        }],
-        options2: [{
-          value: '1',
-          label: 'Doa节点'
-        }],
+        filterType: "combox",
+        hideToolBar: true,
+        option1Url: this.getGlobalData().ApiBaseUrl + "/process/alllist",
+        option2Url: this.getGlobalData().ApiBaseUrl + "/processnode/alllist?processId="
       },
-       treeCfg1: {
+      treeCfg1: {
         title: "审批路线(二)",
         parentTitle: "流程管理",
-        filterType:"combox",
-        hideToolBar:true,
+        hideToolBar: true,
         // url: this.getGlobalData().ApiBaseUrl + "/auth/allResource",
         functions: [
           {
@@ -99,7 +93,7 @@ export default {
       cfg1: {
         title: "审批岗位",
         parentTitle: "流程管理",
-        simpleUrl: this.getGlobalData().ApiBaseUrl + "/process/alllist",
+        // simpleUrl: this.getGlobalData().ApiBaseUrl + "/process/alllist",
         lengthMenu: [[-1], ["ALL"]],
         sDom: 'f<"dataTables_function"/>',
         bServerSide: false,
