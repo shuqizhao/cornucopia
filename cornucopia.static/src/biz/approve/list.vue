@@ -31,7 +31,7 @@ export default {
                 });
                 return;
               }
-              self.$refs.tree1.currentComponent = 'roleAdd';
+              self.$refs.tree1.currentComponent = 'approveAdd';
               self.$refs.tree1.dialogVisible = true;
             }
           }
