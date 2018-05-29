@@ -21,7 +21,7 @@
 </div>
   <div class="box-body">
     <el-row v-if="this.cfg.filterType=='combox'">
-    <el-col :span="12"> <el-select v-model="value1" @change="option1Change" filterable placeholder="请选择" size="mini">
+    <el-col :span="12"> <el-select v-model="value1" @change="option1Change" filterable placeholder="请选择" >
       <el-option
         v-for="item in options1"
         :key="item.id"
@@ -30,7 +30,7 @@
         >
       </el-option>
     </el-select></el-col>
-    <el-col :span="12"> <el-select v-model="value2" @change="option2Change" filterable placeholder="请选择" size="mini">
+    <el-col :span="12"> <el-select v-model="value2" @change="option2Change" filterable placeholder="请选择">
       <el-option
         v-for="item in options2"
         :key="item.id"
