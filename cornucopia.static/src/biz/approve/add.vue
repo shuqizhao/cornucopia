@@ -1,7 +1,8 @@
 <template>
  <div>
      <mform :cfg="cfg"></mform>
-     
+     <editList></editList>
+     <buttonBar></buttonBar>
  </div>
 </template>
 <script>

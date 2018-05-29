@@ -13,6 +13,11 @@ Vue.component('loginOrHome', function(resolve) {
 Vue.component('list', function(resolve) {
     require(['../components/list.vue'], resolve)
 })
+
+Vue.component('editList', function(resolve) {
+    require(['../components/editList.vue'], resolve)
+})
+
 Vue.component('mform', function(resolve) {
     require(['../components/form.vue'], resolve)
 })
@@ -23,6 +28,10 @@ Vue.component('loading', function(resolve) {
 
 Vue.component('tree', function(resolve) {
     require(['../components/tree.vue'], resolve)
+})
+
+Vue.component('buttonBar', function(resolve) {
+    require(['../components/buttonBar.vue'], resolve)
 })
 
 
