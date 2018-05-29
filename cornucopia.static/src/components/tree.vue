@@ -8,7 +8,7 @@
         <el-breadcrumb-item>{{this.cfg.title}}</el-breadcrumb-item>
         </el-breadcrumb>
         <hr/>
-  <div v-if="!this.cfg.hideToolBar">
+  <div>
     <button v-for="item in cfg.functions" :key="item.text" @click="item.onClick" :class="'btn '+item.type+' btn-buttons '+item.icon" style="margin-right:10px;">{{item.text}}</button>
   </div>
   </div>
@@ -30,7 +30,7 @@
         >
       </el-option>
     </el-select></el-col>
-    <el-col :span="12"> <el-select v-model="value2" filterable placeholder="请选择" size="mini">
+    <el-col :span="12"> <el-select v-model="value2" @change="option2Change" filterable placeholder="请选择" size="mini">
       <el-option
         v-for="item in options2"
         :key="item.id"
@@ -59,6 +59,10 @@
 
         </el-tree>
   </div>
+
+  <el-dialog :visible.sync="dialogVisible" :width="this.cfg.dialogWidth?this.cfg.dialogWidth:'65%'" >
+    <component :isDialog="true" style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
+  </el-dialog>
 </div>
 </template>
 <script>
@@ -76,7 +80,7 @@ export default {
     },
     loadUrl: function(handler) {
       var self = this;
-      if(!self.cfg.url){
+      if (!self.cfg.url) {
         return;
       }
       self.openLoading();
@@ -116,7 +120,7 @@ export default {
     },
     loadOption1Url: function(handler) {
       var self = this;
-      if(!self.cfg.option1Url){
+      if (!self.cfg.option1Url) {
         return;
       }
       // self.openLoading();
@@ -156,7 +160,7 @@ export default {
     },
     loadOption2Url: function(id) {
       var self = this;
-      if(!self.cfg.option2Url){
+      if (!self.cfg.option2Url) {
         return;
       }
       // self.openLoading();
@@ -165,11 +169,11 @@ export default {
         xhrFields: {
           withCredentials: true
         },
-        url: self.cfg.option2Url+id,
+        url: self.cfg.option2Url + id,
         success: function(response) {
           if (response.code == "200") {
             self.options2 = response.data;
-            self.value2='';
+            self.value2 = "";
             // self.closeLoading();
           } else if (response.message) {
             self.$message({
@@ -180,27 +184,29 @@ export default {
         }
       });
     },
-    option1Change:function(s1){
+    option1Change: function(s1) {
       this.loadOption2Url(s1);
     },
-    setCheckedKeys:function(checkList){
+    option2Change: function(s1) {
+      
+    },
+    setCheckedKeys: function(checkList) {
       var self = this;
       self.$refs.tree2.setCheckedKeys(checkList);
-    }
-    ,
-    getCheckedKeys:function(){
+    },
+    getCheckedKeys: function() {
       var self = this;
-      var checkedList = self.$refs.tree2.getCheckedKeys()
-      if(checkedList.length==0){
+      var checkedList = self.$refs.tree2.getCheckedKeys();
+      if (checkedList.length == 0) {
         return [0];
       }
       return checkedList;
     },
-    checkAll:function(){
+    checkAll: function() {
       var self = this;
       self.$refs.tree2.setCheckedNodes(self.data2);
     },
-    clearAll:function(){
+    clearAll: function() {
       var self = this;
       self.$refs.tree2.setCheckedKeys([0]);
     }
@@ -214,31 +220,36 @@ export default {
         children: "children",
         label: "name"
       },
-      value1: '',
-      value2: '',
-      options1:[],
-      options2:[]
+      value1: "",
+      value2: "",
+      options1: [],
+      options2: [],
+      dialogVisible:false,
+      currentComponent:''
     };
   },
   mounted: function() {
     var self = this;
-    this.cfg.functions = this.cfg.functions || []
-    this.cfg.functions.push({
-              text: "全选",
-              type: "btn-success",
-              icon:'el-icon-circle-check-outline',
-              onClick:function(){
-                self.checkAll();
-              }
-            });
-    this.cfg.functions.push({
-              text: "清空",
-              type: "btn-success",
-              icon:'el-icon-circle-close-outline',
-              onClick:function(){
-                self.clearAll();
-              }
-            });
+    this.cfg.functions = this.cfg.functions || [];
+    if (this.cfg.filterType != "combox") {
+      this.cfg.functions.push({
+        text: "全选",
+        type: "btn-success",
+        icon: "el-icon-circle-check-outline",
+        onClick: function() {
+          self.checkAll();
+        }
+      });
+      this.cfg.functions.push({
+        text: "清空",
+        type: "btn-success",
+        icon: "el-icon-circle-close-outline",
+        onClick: function() {
+          self.clearAll();
+        }
+      });
+    }
+
     this.loadUrl();
     this.loadOption1Url();
   }

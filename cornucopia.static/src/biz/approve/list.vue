@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-col :span="6"><tree  ref="tree" :cfg="treeCfg"></tree></el-col>
-    <el-col :span="6"><tree  ref="tree" :cfg="treeCfg1"></tree></el-col>
+    <el-col :span="6"><tree  ref="tree1" :cfg="treeCfg1"></tree></el-col>
     <el-col :span="12"><list :cfg="cfg1"></list></el-col>
   </el-row>
 </template>
@@ -17,7 +17,25 @@ export default {
         filterType: "combox",
         hideToolBar: true,
         option1Url: this.getGlobalData().ApiBaseUrl + "/process/alllist",
-        option2Url: this.getGlobalData().ApiBaseUrl + "/processnode/alllist?processId="
+        option2Url: this.getGlobalData().ApiBaseUrl + "/processnode/alllist?processId=",
+        functions: [
+          {
+            text: "新增",
+            type: "btn-success",
+            icon: "el-icon-circle-plus",
+            onClick: function() {
+              if (!self.$refs.tree.value2) {
+                self.$message({
+                  message: "请先选择流程节点!",
+                  type: "warning"
+                });
+                return;
+              }
+              self.$refs.tree1.currentComponent = 'roleAdd';
+              self.$refs.tree1.dialogVisible = true;
+            }
+          }
+        ]
       },
       treeCfg1: {
         title: "审批路线(二)",
