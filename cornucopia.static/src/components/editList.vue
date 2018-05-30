@@ -1,50 +1,42 @@
 <template>
 <div>
-    <div style="margin-top: 20px">
-        <el-button @click="setCurrent(tableData[1])">选中第二行</el-button>
-        <el-button @click="setCurrent()">取消选择</el-button>
+  <div class="box" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
+  
+      <div  class="box-header">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item v-if="this.cfg.parentTitle"><i class="fa fa-dashboard"></i> 首页</el-breadcrumb-item>
+        <el-breadcrumb-item v-if="this.cfg.parentTitle">{{this.cfg.parentTitle}}</el-breadcrumb-item>
+        <el-breadcrumb-item> <i class="el-icon-circle-plus" />{{this.cfg.title}}</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+          </button>
+          <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+        </div>
+        <hr/>
+      </div>
+    <div>
+        <el-button @click="setCurrent(tableData[1])">新增</el-button>
+        <el-button @click="setCurrent()">编辑</el-button>
     </div>
   <el-table
     :data="tableData"
     style="width: 100%">
-    <el-table-column
-      label="日期"
-      width="180">
+    <el-table-column v-for="item in this.cfg.items" :key="item.name"
+      :label="item.title"
+     >
       <template slot-scope="scope">
-        <i class="el-icon-time"></i>
-        <span style="margin-left: 10px">{{ scope.row.date }}</span>
-      </template>
-    </el-table-column>
-    <el-table-column
-      label="姓名"
-      width="180">
-      <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>姓名: {{ scope.row.name }}</p>
-          <p>住址: {{ scope.row.address }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.name }}</el-tag>
-          </div>
-        </el-popover>
-      </template>
-    </el-table-column>
-    <el-table-column label="操作">
-      <template slot-scope="scope">
-        <el-button
-          size="mini"
-          @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-        <el-button
-          size="mini"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        <el-input v-if="item.type=='text'" value="d" placeholder="请输入内容"></el-input>
       </template>
     </el-table-column>
   </el-table>
+</div>
 </div>
 </template>
 
 <script>
   export default {
+    props: ["cfg"],
     data() {
       return {
         tableData: [{
