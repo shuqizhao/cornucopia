@@ -2,7 +2,7 @@
  <div>
      <mform :cfg="cfg"></mform>
      <editList :cfg="cfg1"></editList>
-     <buttonBar></buttonBar>
+     <buttonBar :cfg="cfg1"></buttonBar>
  </div>
 </template>
 <script>
@@ -11,9 +11,10 @@ export default {
     var self = this;
     return {
       cfg: {
-        title: "添加审批路径",
+        title: "审批路径",
         mode: "create",
         save: this.getGlobalData().ApiBaseUrl + "/approve/add",
+        hideFooter:true,
         items: [
           {
             name: "name",

@@ -34,6 +34,22 @@ export default {
               self.$refs.tree1.currentComponent = 'approveAdd';
               self.$refs.tree1.dialogVisible = true;
             }
+          },
+          {
+            text: "编辑",
+            type: "btn-success",
+            icon: "el-icon-edit",
+            onClick: function() {
+              if (!self.$refs.tree.value2) {
+                self.$message({
+                  message: "请先选择流程节点!",
+                  type: "warning"
+                });
+                return;
+              }
+              self.$refs.tree1.currentComponent = 'approveAdd';
+              self.$refs.tree1.dialogVisible = true;
+            }
           }
         ]
       },

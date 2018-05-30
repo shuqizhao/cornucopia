@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="box" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
+  <div class="box box-info" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
   
       <div  class="box-header">
         <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -35,24 +35,27 @@
 </template>
 
 <script>
-  export default {
-    props: ["cfg"],
-    data() {
-      return {
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }]
-      }
+export default {
+  props: ["cfg"],
+ 
+  data() {
+    return {
+      tableData: [
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄"
+        }
+      ]
+    };
+  },
+  methods: {
+    handleEdit(index, row) {
+      console.log(index, row);
     },
-    methods: {
-      handleEdit(index, row) {
-        console.log(index, row);
-      },
-      handleDelete(index, row) {
-        console.log(index, row);
-      }
+    handleDelete(index, row) {
+      console.log(index, row);
     }
   }
+};
 </script>
