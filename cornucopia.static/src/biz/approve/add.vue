@@ -14,7 +14,7 @@ export default {
         title: "审批路径",
         mode: "create",
         save: this.getGlobalData().ApiBaseUrl + "/approve/add",
-        hideFooter:true,
+        hideFooter: true,
         items: [
           {
             name: "name",
@@ -33,66 +33,163 @@ export default {
           }
         },
         validate: function(data, saveData) {
-        //   $.ajax({
-        //     type: "POST",
-        //     xhrFields: {
-        //       withCredentials: true
-        //     },
-        //     url: self.getGlobalData().ApiBaseUrl + "/approve/exists",
-        //     data: data,
-        //     success: function(response) {
-        //       if (response.code == 200 && response.data == 0) {
-        //         saveData(data);
-        //       } else {
-        //         self.$message({
-        //           type: "warning",
-        //           message: "角色已经存在!"
-        //         });
-        //       }
-        //     }
-        //   });
+          //   $.ajax({
+          //     type: "POST",
+          //     xhrFields: {
+          //       withCredentials: true
+          //     },
+          //     url: self.getGlobalData().ApiBaseUrl + "/approve/exists",
+          //     data: data,
+          //     success: function(response) {
+          //       if (response.code == 200 && response.data == 0) {
+          //         saveData(data);
+          //       } else {
+          //         self.$message({
+          //           type: "warning",
+          //           message: "角色已经存在!"
+          //         });
+          //       }
+          //     }
+          //   });
           return false;
         }
       },
-        cfg1: {
+      cfg1: {
         title: "条件公式",
         mode: "create",
         save: this.getGlobalData().ApiBaseUrl + "/approve/add",
         items: [
           {
-            name: "name",
+            name: "boolOperation",
             title: "布尔运算符",
-            type: "text"
+            type: "combox",
+            data: [
+              {
+                id: 1,
+                name: "and"
+              },
+              {
+                id: 2,
+                name: "or"
+              }
+            ]
           },
-           {
-            name: "name",
+          {
+            name: "var1",
             title: "变量1",
             type: "text"
-          },{
-            name: "name",
-            title: "变量1来源",
-            type: "text"
-          },{
-            name: "name",
-            title: "变量1数据类型",
-            type: "text"
           },
-           {
-            name: "name",
+          {
+            name: "var1From",
+            title: "变量1来源",
+            type: "combox",
+            data: [
+              {
+                id: 1,
+                name: "文本"
+              },
+              {
+                id: 2,
+                name: "表单xpath"
+              }
+            ]
+          },
+          {
+            name: "var1Type",
+            title: "变量1类型",
+            type: "combox",
+            data: [
+              {
+                id: 1,
+                name: "字符串"
+              },
+              {
+                id: 2,
+                name: "整数"
+              },
+              {
+                id: 3,
+                name: "浮点型"
+              },
+              {
+                id: 4,
+                name: "日期型"
+              }
+            ]
+          },
+          {
+            name: "operation",
             title: "比较运算符",
-            type: "text"
-          }, {
-            name: "name",
+            type: "combox",
+            data: [
+              {
+                id: 1,
+                name: "=="
+              },
+              {
+                id: 2,
+                name: ">"
+              },
+              {
+                id: 3,
+                name: ">="
+              },
+              {
+                id: 4,
+                name: "<"
+              },
+              {
+                id: 5,
+                name: "<="
+              },
+              {
+                id: 6,
+                name: "!="
+              }
+            ]
+          },
+          {
+            name: "var2",
             title: "变量2",
             type: "text"
-          },{
-            name: "name",
+          },
+          {
+            name: "var2From",
             title: "变量2来源",
-            type: "text"
-          },{
-            name: "name",
-            title: "变量2数据类型",
-            type: "text"
+            type: "combox",
+            data: [
+              {
+                id: 1,
+                name: "文本"
+              },
+              {
+                id: 2,
+                name: "表单xpath"
+              }
+            ]
+          },
+          {
+            name: "var2Type",
+            title: "变量2类型",
+            type: "combox",
+            data: [
+              {
+                id: 1,
+                name: "字符串"
+              },
+              {
+                id: 2,
+                name: "整数"
+              },
+              {
+                id: 3,
+                name: "浮点型"
+              },
+              {
+                id: 4,
+                name: "日期型"
+              }
+            ]
           }
         ],
         rules: {

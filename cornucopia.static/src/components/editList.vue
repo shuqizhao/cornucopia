@@ -26,7 +26,15 @@
       :label="item.title"
      >
       <template slot-scope="scope">
-        <el-input v-if="item.type=='text'" value="d" placeholder="请输入内容"></el-input>
+        <el-input v-if="item.type=='text'" value="" placeholder="请输入内容"></el-input>
+         <el-select v-else-if="item.type=='combox'" value="" placeholder="请选择">
+            <el-option
+            v-for="opItem in item.data"
+            :key="opItem.id"
+            :label="opItem.name"
+            :value="opItem.id">
+            </el-option>
+        </el-select>
       </template>
     </el-table-column>
   </el-table>
@@ -45,8 +53,9 @@ export default {
           date: "2016-05-02",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1518 弄"
-        }
-      ]
+        },
+      ],
+      value: ''
     };
   },
   methods: {
