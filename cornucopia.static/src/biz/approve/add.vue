@@ -215,19 +215,45 @@ export default {
             }
           },
           {
-            text: "编辑",
+            text: "删除",
             type: "btn-success",
             icon: "el-icon-edit",
             onClick: function() {
-              if (!self.$refs.tree.value2) {
+              if (!self.$refs.tree1.value2) {
                 self.$message({
-                  message: "请先选择流程节点!",
+                  message: "请先选择!",
                   type: "warning"
                 });
                 return;
               }
-              self.$refs.tree1.currentComponent = 'approveAdd';
-              self.$refs.tree1.dialogVisible = true;
+            }
+          },
+          {
+            text: "上移",
+            type: "btn-success",
+            icon: "el-icon-edit",
+            onClick: function() {
+              if (!self.$refs.tree1.value2) {
+                self.$message({
+                  message: "请先选择!",
+                  type: "warning"
+                });
+                return;
+              }
+            }
+          },
+          {
+            text: "下移",
+            type: "btn-success",
+            icon: "el-icon-edit",
+            onClick: function() {
+              if (!self.$refs.tree1.value2) {
+                self.$message({
+                  message: "请先选择!",
+                  type: "warning"
+                });
+                return;
+              }
             }
           }
         ]

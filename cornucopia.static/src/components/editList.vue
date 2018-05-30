@@ -22,6 +22,10 @@
     :data="tableData"
     border
     style="width: 100%">
+    <el-table-column
+      type="selection"
+      width="55">
+    </el-table-column>
     <el-table-column v-for="item in this.cfg.items" :key="item.name"
       :label="item.title"
      >
