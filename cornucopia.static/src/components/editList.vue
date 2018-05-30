@@ -16,18 +16,18 @@
         <hr/>
       </div>
     <div>
-        <el-button @click="setCurrent(tableData[1])">新增</el-button>
-        <el-button @click="setCurrent()">编辑</el-button>
+        <button v-for="item in cfg.functions" :key="item.text" @click="item.onClick" :class="'btn '+item.type+' btn-buttons '+item.icon" style="margin-right:10px;">{{item.text}}</button>
     </div>
   <el-table
     :data="tableData"
+    border
     style="width: 100%">
     <el-table-column v-for="item in this.cfg.items" :key="item.name"
       :label="item.title"
      >
       <template slot-scope="scope">
-        <el-input v-if="item.type=='text'" value="" placeholder="请输入内容"></el-input>
-         <el-select v-else-if="item.type=='combox'" value="" placeholder="请选择">
+        <el-input v-if="item.type=='text'" value="" placeholder=""></el-input>
+         <el-select v-else-if="item.type=='combox'" v-model="tableValue[item.name+scope.$index]" value="" placeholder="">
             <el-option
             v-for="opItem in item.data"
             :key="opItem.id"
@@ -45,17 +45,11 @@
 <script>
 export default {
   props: ["cfg"],
- 
   data() {
+    var self = this;
     return {
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-      ],
-      value: ''
+      tableData: [],
+      tableValue: {}
     };
   },
   methods: {
@@ -64,6 +58,9 @@ export default {
     },
     handleDelete(index, row) {
       console.log(index, row);
+    },
+    insertNew: function(data) {
+      this.tableData.push(data);
     }
   }
 };

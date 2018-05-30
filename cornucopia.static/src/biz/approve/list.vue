@@ -16,6 +16,7 @@ export default {
         parentTitle: "流程管理",
         filterType: "combox",
         hideToolBar: true,
+        dialogWidth:"80%",
         option1Url: this.getGlobalData().ApiBaseUrl + "/process/alllist",
         option2Url: this.getGlobalData().ApiBaseUrl + "/processnode/alllist?processId=",
         functions: [
@@ -24,6 +25,7 @@ export default {
             type: "btn-success",
             icon: "el-icon-circle-plus",
             onClick: function() {
+              debugger;
               if (!self.$refs.tree.value2) {
                 self.$message({
                   message: "请先选择流程节点!",
@@ -31,8 +33,8 @@ export default {
                 });
                 return;
               }
-              self.$refs.tree1.currentComponent = 'approveAdd';
-              self.$refs.tree1.dialogVisible = true;
+              self.$refs.tree.currentComponent = 'approveAdd';
+              self.$refs.tree.dialogVisible = true;
             }
           },
           {

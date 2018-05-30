@@ -1,7 +1,7 @@
 <template>
  <div>
      <mform :cfg="cfg"></mform>
-     <editList :cfg="cfg1"></editList>
+     <editList ref="editList" :cfg="cfg1"></editList>
      <buttonBar :cfg="cfg1"></buttonBar>
  </div>
 </template>
@@ -204,7 +204,33 @@ export default {
         },
         validate: function(data, saveData) {
           return false;
-        }
+        },
+        functions: [
+          {
+            text: "新增",
+            type: "btn-success",
+            icon: "el-icon-circle-plus",
+            onClick: function() {
+              self.$refs.editList.insertNew({});
+            }
+          },
+          {
+            text: "编辑",
+            type: "btn-success",
+            icon: "el-icon-edit",
+            onClick: function() {
+              if (!self.$refs.tree.value2) {
+                self.$message({
+                  message: "请先选择流程节点!",
+                  type: "warning"
+                });
+                return;
+              }
+              self.$refs.tree1.currentComponent = 'approveAdd';
+              self.$refs.tree1.dialogVisible = true;
+            }
+          }
+        ]
       }
     };
   }
