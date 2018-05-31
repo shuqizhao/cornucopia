@@ -30,8 +30,8 @@
       :label="item.title"
      >
       <template slot-scope="scope">
-        <el-input v-if="item.type=='text'" value="" placeholder=""></el-input>
-         <el-select v-else-if="item.type=='combox'" v-model="tableValue[item.name+scope.$index]" value="" placeholder="">
+        <el-input v-if="item.type=='text'" :value="tableData[scope.$index][item.name]" placeholder=""></el-input>
+         <el-select v-else-if="item.type=='combox'" v-model="tableData[scope.$index][item.name]" placeholder="">
             <el-option
             v-for="opItem in item.data"
             :key="opItem.id"
