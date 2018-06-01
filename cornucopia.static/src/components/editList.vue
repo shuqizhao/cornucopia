@@ -66,13 +66,29 @@ export default {
       console.log(index, row);
     },
     insertNew: function(data) {
-    //   data.table_row_id = this.tableData.length;
       this.tableData.push(data);
     },
     deleteSelected: function() {
-      // this.tableData.splice(index,1);
       for (var i = 0; i < this.multipleSelection.length; i++) {
         this.removeObjWithArr(this.tableData, this.multipleSelection[i]);
+      }
+    },
+    upSelected: function() {
+      for (var i = 0; i < this.multipleSelection.length; i++) {
+        var index = this.getIndexWithArr(
+          this.tableData,
+          this.multipleSelection[i]
+        );
+        this.upRecord(this.tableData, index);
+      }
+    },
+    downSelected: function() {
+      for (var i = 0; i < this.multipleSelection.length; i++) {
+        var index = this.getIndexWithArr(
+          this.tableData,
+          this.multipleSelection[i]
+        );
+        this.downRecord(this.tableData, index);
       }
     },
     handleSelectionChange(val) {
@@ -90,6 +106,24 @@ export default {
     removeObjWithArr: function(_arr, _obj) {
       var index = this.getIndexWithArr(_arr, _obj);
       _arr.splice(index, 1);
+    },
+    swapItems: function(arr, index1, index2) {
+      arr[index1] = arr.splice(index2, 1, arr[index1])[0];
+      return arr;
+    },
+    // 上移
+    upRecord: function(arr, $index) {
+      if ($index == 0) {
+        return;
+      }
+      this.swapItems(arr, $index, $index - 1);
+    },
+    // 下移
+    downRecord: function(arr, $index) {
+      if ($index == arr.length - 1) {
+        return;
+      }
+      this.swapItems(arr, $index, $index + 1);
     }
   }
 };

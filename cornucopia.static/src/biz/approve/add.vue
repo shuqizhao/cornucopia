@@ -234,13 +234,7 @@ export default {
             type: "btn-success",
             icon: "el-icon-edit",
             onClick: function() {
-              if (!self.$refs.tree1.value2) {
-                self.$message({
-                  message: "请先选择!",
-                  type: "warning"
-                });
-                return;
-              }
+              self.$refs.editList.upSelected();
             }
           },
           {
@@ -248,13 +242,7 @@ export default {
             type: "btn-success",
             icon: "el-icon-edit",
             onClick: function() {
-              if (!self.$refs.tree1.value2) {
-                self.$message({
-                  message: "请先选择!",
-                  type: "warning"
-                });
-                return;
-              }
+              self.$refs.editList.downSelected();
             }
           }
         ]
