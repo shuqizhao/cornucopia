@@ -21,6 +21,8 @@
   <el-table
     :data="tableData"
     border
+    :show-overflow-tooltip="true"
+    @selection-change="handleSelectionChange"
     style="width: 100%">
     <el-table-column
       type="selection"
@@ -53,7 +55,7 @@ export default {
     var self = this;
     return {
       tableData: [],
-      tableValue: {}
+      multipleSelection: []
     };
   },
   methods: {
@@ -64,7 +66,31 @@ export default {
       console.log(index, row);
     },
     insertNew: function(data) {
+      data.table_row_id = this.tableData.length;
       this.tableData.push(data);
+    },
+    deleteSelected: function() {
+      // this.tableData.splice(index,1);
+      for (var i = 0; i < this.multipleSelection.length; i++) {
+        this.removeObjWithArr(this.tableData, this.multipleSelection[i]);
+      }
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+    getIndexWithArr: function(_arr, _obj) {
+      debugger;
+      var len = _arr.length;
+      for (var i = 0; i < len; i++) {
+        if (_arr[i].table_row_id == _obj.table_row_id) {
+          return parseInt(i);
+        }
+      }
+      return -1;
+    },
+    removeObjWithArr: function(_arr, _obj) {
+      var index = this.getIndexWithArr(_arr, _obj);
+      _arr.splice(index-1, 1);
     }
   }
 };

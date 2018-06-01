@@ -91,7 +91,10 @@ export default {
               {
                 id: 2,
                 name: "表单xpath"
-              }
+              } ,{
+                id: 3,
+                name: "函数"
+              },
             ]
           },
           {
@@ -165,7 +168,11 @@ export default {
               {
                 id: 2,
                 name: "表单xpath"
-              }
+              },
+               {
+                id: 3,
+                name: "函数"
+              },
             ]
           },
           {
@@ -219,13 +226,7 @@ export default {
             type: "btn-success",
             icon: "el-icon-edit",
             onClick: function() {
-              if (!self.$refs.tree1.value2) {
-                self.$message({
-                  message: "请先选择!",
-                  type: "warning"
-                });
-                return;
-              }
+             self.$refs.editList.deleteSelected();
             }
           },
           {
