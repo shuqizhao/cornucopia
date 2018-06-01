@@ -32,7 +32,7 @@
       :label="item.title"
      >
       <template slot-scope="scope">
-        <el-input v-if="item.type=='text'" :value="tableData[scope.$index][item.name]" placeholder=""></el-input>
+        <el-input v-if="item.type=='text'" v-model="tableData[scope.$index][item.name]" placeholder=""></el-input>
          <el-select v-else-if="item.type=='combox'" v-model="tableData[scope.$index][item.name]" placeholder="">
             <el-option
             v-for="opItem in item.data"
@@ -66,7 +66,7 @@ export default {
       console.log(index, row);
     },
     insertNew: function(data) {
-      data.table_row_id = this.tableData.length;
+    //   data.table_row_id = this.tableData.length;
       this.tableData.push(data);
     },
     deleteSelected: function() {
@@ -79,10 +79,9 @@ export default {
       this.multipleSelection = val;
     },
     getIndexWithArr: function(_arr, _obj) {
-      debugger;
       var len = _arr.length;
       for (var i = 0; i < len; i++) {
-        if (_arr[i].table_row_id == _obj.table_row_id) {
+        if (_arr[i] == _obj) {
           return parseInt(i);
         }
       }
@@ -90,7 +89,7 @@ export default {
     },
     removeObjWithArr: function(_arr, _obj) {
       var index = this.getIndexWithArr(_arr, _obj);
-      _arr.splice(index-1, 1);
+      _arr.splice(index, 1);
     }
   }
 };
