@@ -1,6 +1,6 @@
 <template>
  <div>
-     <mform :cfg="cfg"></mform>
+     <mform ref="from" :cfg="cfg"></mform>
      <editList ref="editList" :cfg="cfg1"></editList>
      <buttonBar :cfg="cfg1"></buttonBar>
  </div>
@@ -22,7 +22,7 @@ export default {
             type: "text"
           },
           {
-            name: "name",
+            name: "desc",
             title: "描述",
             type: "text"
           }
@@ -30,11 +30,14 @@ export default {
         rules: {
           name: {
             required: true
+          },
+          desc: {
+            required: true
           }
         },
         messages: {
           name: {
-            required: "审批路径名必须填写"
+            required: "函数名必须填写"
           }
         },
         validate: function(data, saveData) {
@@ -81,10 +84,11 @@ export default {
               {
                 id: 2,
                 name: "表单xpath"
-              } ,{
+              },
+              {
                 id: 3,
                 name: "函数"
-              },
+              }
             ]
           },
           {
@@ -112,7 +116,13 @@ export default {
             type: "btn-success",
             icon: "el-icon-circle-plus",
             onClick: function() {
-              self.$refs.editList.insertNew({boolOperation:1,var1From:2,var1Type:1,var2From:1,var2Type:1});
+              self.$refs.editList.insertNew({
+                boolOperation: 1,
+                var1From: 2,
+                var1Type: 1,
+                var2From: 1,
+                var2Type: 1
+              });
             }
           },
           {
@@ -120,7 +130,7 @@ export default {
             type: "btn-success",
             icon: "el-icon-edit",
             onClick: function() {
-             self.$refs.editList.deleteSelected();
+              self.$refs.editList.deleteSelected();
             }
           },
           {
@@ -142,6 +152,12 @@ export default {
         ]
       }
     };
+  },
+  methods: {
+    save: function() {
+        debugger;
+        var data = this.$refs.from.getData();
+    }
   }
 };
 </script>

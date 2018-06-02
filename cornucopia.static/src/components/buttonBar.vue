@@ -3,7 +3,7 @@
         <center>
         <el-button
         type="primary"
-          @click="btnCancel">保存</el-button>
+          @click="btnSave">保存</el-button>
         <el-button
           type="warning"
           @click="btnCancel">取消</el-button>
@@ -29,6 +29,12 @@ export default {
       } else {
         //$.fn.navigate();
         history.go(-1);
+      }
+    },
+    btnSave: function() {
+      var save = this.$parent.save;
+      if(save){
+        save();
       }
     }
   },
