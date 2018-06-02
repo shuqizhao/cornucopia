@@ -117,13 +117,7 @@ export default {
             type: "btn-success",
             icon: "el-icon-circle-plus",
             onClick: function() {
-              self.$refs.editList.insertNew({
-                boolOperation: 1,
-                var1From: 2,
-                var1Type: 1,
-                var2From: 1,
-                var2Type: 1
-              });
+              self.$refs.editList.insertNew({});
             }
           },
           {

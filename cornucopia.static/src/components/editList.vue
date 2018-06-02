@@ -34,7 +34,7 @@
             >
             <template slot-scope="scope">
                 <el-input v-if="item.type=='text'" :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" ></el-input>
-                <el-select v-else-if="item.type=='combox'" v-model="tableData[scope.$index][item.name]" placeholder="">
+                <el-select v-else-if="item.type=='combox'" :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="">
                     <el-option
                     v-for="opItem in item.data"
                     :key="opItem.id"
@@ -51,6 +51,28 @@
 </template>
 
 <script>
+$(function() {
+  if ($.validator) {
+    $.validator.prototype.elements = function() {
+      var validator = this,
+        rulesCache = {};
+      return $(this.currentForm)
+        .find("input, select, textarea")
+        .not(":submit, :reset, :image, [disabled]")
+        .not(this.settings.ignore)
+        .filter(function() {
+          if (!this.name && validator.settings.debug && window.console) {
+            console.error("%o has no name assigned", this);
+          }
+          if (!this.name || this.name == "") {
+            return false;
+          }
+          rulesCache[this.name] = true;
+          return true;
+        });
+    };
+  }
+});
 export default {
   props: ["cfg"],
   data() {
@@ -140,10 +162,22 @@ export default {
         },
         errorPlacement: function(error, element) {
           if (true) {
-            element.parent().parent().attr("data-toggle", "tooltip");
-            element.parent().parent().attr("data-placement", "right");
-            element.parent().parent().attr("data-original-title", error.text());
-            element.parent().parent().tooltip("show");
+            element
+              .parent()
+              .parent()
+              .attr("data-toggle", "tooltip");
+            element
+              .parent()
+              .parent()
+              .attr("data-placement", "top");
+            element
+              .parent()
+              .parent()
+              .attr("data-original-title", error.text());
+            element
+              .parent()
+              .parent()
+              .tooltip("show");
             element.addClass("myerror");
           }
 
@@ -159,7 +193,10 @@ export default {
           }
         },
         success: function(error, element) {
-          $(element).parent().parent().tooltip("destroy");
+          $(element)
+            .parent()
+            .parent()
+            .tooltip("destroy");
           $(element).removeClass("myerror");
         },
         submitHandler: function(form) {
