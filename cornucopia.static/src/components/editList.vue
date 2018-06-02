@@ -165,18 +165,22 @@ export default {
             element
               .parent()
               .parent()
+               .parent()
               .attr("data-toggle", "tooltip");
             element
               .parent()
               .parent()
-              .attr("data-placement", "top");
+               .parent()
+              .attr("data-placement", "right");
             element
               .parent()
               .parent()
+               .parent()
               .attr("data-original-title", error.text());
             element
               .parent()
               .parent()
+               .parent()
               .tooltip("show");
             element.addClass("myerror");
           }
@@ -196,6 +200,7 @@ export default {
           $(element)
             .parent()
             .parent()
+             .parent()
             .tooltip("destroy");
           $(element).removeClass("myerror");
         },
