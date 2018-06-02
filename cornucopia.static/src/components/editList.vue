@@ -18,32 +18,34 @@
     <div>
         <button v-for="item in cfg.functions" :key="item.text" @click="item.onClick" :class="'btn '+item.type+' btn-buttons '+item.icon" style="margin-right:10px;">{{item.text}}</button>
     </div>
-  <el-table
-    :data="tableData"
-    border
-    :show-overflow-tooltip="true"
-    @selection-change="handleSelectionChange"
-    style="width: 100%">
-    <el-table-column
-      type="selection"
-      width="55">
-    </el-table-column>
-    <el-table-column v-for="item in this.cfg.items" :key="item.name"
-      :label="item.title"
-     >
-      <template slot-scope="scope">
-        <el-input v-if="item.type=='text'" v-model="tableData[scope.$index][item.name]" placeholder=""></el-input>
-         <el-select v-else-if="item.type=='combox'" v-model="tableData[scope.$index][item.name]" placeholder="">
-            <el-option
-            v-for="opItem in item.data"
-            :key="opItem.id"
-            :label="opItem.name"
-            :value="opItem.id">
-            </el-option>
-        </el-select>
-      </template>
-    </el-table-column>
-  </el-table>
+    <form class="form-inline form" onsubmit='return false;' role="form">
+        <el-table
+            :data="tableData"
+            border
+            :show-overflow-tooltip="true"
+            @selection-change="handleSelectionChange"
+            style="width: 100%">
+            <el-table-column
+            type="selection"
+            width="55">
+            </el-table-column>
+            <el-table-column v-for="item in this.cfg.items" :key="item.name"
+            :label="item.title"
+            >
+            <template slot-scope="scope">
+                <el-input v-if="item.type=='text'" :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" ></el-input>
+                <el-select v-else-if="item.type=='combox'" v-model="tableData[scope.$index][item.name]" placeholder="">
+                    <el-option
+                    v-for="opItem in item.data"
+                    :key="opItem.id"
+                    :label="opItem.name"
+                    :value="opItem.id">
+                    </el-option>
+                </el-select>
+            </template>
+            </el-table-column>
+        </el-table>
+    </form>
 </div>
 </div>
 </template>
@@ -124,7 +126,112 @@ export default {
         return;
       }
       this.swapItems(arr, $index, $index + 1);
+    },
+    validateFrom: function(onSuccess, onFail) {
+      var self = this;
+      self.commiting = true;
+      var validateCfg = {
+        onfocusout: false,
+        onclick: false,
+        focusInvalid: false,
+        onkeyup: false,
+        onkeyup: function(element) {
+          $(element).valid();
+        },
+        errorPlacement: function(error, element) {
+          if (true) {
+            element.parent().parent().attr("data-toggle", "tooltip");
+            element.parent().parent().attr("data-placement", "right");
+            element.parent().parent().attr("data-original-title", error.text());
+            element.parent().parent().tooltip("show");
+            element.addClass("myerror");
+          }
+
+          if (element.attr("controltype") != "suggest") {
+            if (self.commiting && error.text()) {
+              self.$notify({
+                title: "验证未通过",
+                message: error.text(),
+                position: "bottom-right",
+                type: "warning"
+              });
+            }
+          }
+        },
+        success: function(error, element) {
+          $(element).parent().parent().tooltip("destroy");
+          $(element).removeClass("myerror");
+        },
+        submitHandler: function(form) {
+          if (!self.commiting) {
+            return;
+          }
+          var data = self.getData();
+
+          var isOk = true;
+          if (self.cfg.validate) {
+            //自定义验证
+            isOk = self.cfg.validate(data, self.saveData);
+          }
+
+          if (!isOk) {
+            return;
+          }
+          if (self.cfg.beforeCommit) {
+            self.cfg.beforeCommit(data);
+          }
+          // $(self.$el)
+          //   .find(".btn-commit")
+          //   .attr("disabled", "disabled");
+          // self.saveData(data, handler);
+          if (onSuccess) {
+            onSuccess(data);
+          }
+        }
+      };
+      var lastCfg = $.extend(true, validateCfg, self.cfg);
+      $(self.$el)
+        .find(".form")
+        .validate(lastCfg);
+      if (
+        $(self.$el)
+          .find(".form")
+          .valid()
+      ) {
+        if (!self.commiting) {
+          return;
+        }
+        var data = self.getData();
+
+        var isOk = true;
+        if (self.cfg.validate) {
+          //自定义验证
+          isOk = self.cfg.validate(data, self.saveData);
+        }
+
+        if (!isOk) {
+          return;
+        }
+        if (self.cfg.beforeCommit) {
+          self.cfg.beforeCommit(data);
+        }
+        // $(self.$el)
+        //   .find(".btn-commit")
+        //   .attr("disabled", "disabled");
+        // self.saveData(data, handler);
+        if (onSuccess) {
+          onSuccess(data);
+        }
+      }
+    },
+    getData: function() {
+      return [];
     }
   }
 };
 </script>
+<style>
+.myerror {
+  border-color: #a94442;
+}
+</style>

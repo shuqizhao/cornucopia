@@ -32,9 +32,13 @@ export default {
       }
     },
     btnSave: function() {
-      var save = this.$parent.save;
-      if(save){
-        save();
+      var children = this.$parent.$children
+      for(var i = 0;i < children.length;i++){
+        if(children[i].validateFrom){
+          children[i].validateFrom(function(data){
+            
+          });
+        }
       }
     }
   },

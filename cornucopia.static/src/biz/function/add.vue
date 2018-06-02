@@ -2,7 +2,7 @@
  <div>
      <mform ref="from" :cfg="cfg"></mform>
      <editList ref="editList" :cfg="cfg1"></editList>
-     <buttonBar :cfg="cfg1"></buttonBar>
+     <buttonBar :cfg="cfg2"></buttonBar>
  </div>
 </template>
 <script>
@@ -13,7 +13,6 @@ export default {
       cfg: {
         title: "添加函数",
         mode: "create",
-        save: this.getGlobalData().ApiBaseUrl + "/function/add",
         hideFooter: true,
         items: [
           {
@@ -38,42 +37,44 @@ export default {
         messages: {
           name: {
             required: "函数名必须填写"
+          },
+          desc: {
+            required: "描述名必须填写"
           }
         },
-        validate: function(data, saveData) {
-          //   $.ajax({
-          //     type: "POST",
-          //     xhrFields: {
-          //       withCredentials: true
-          //     },
-          //     url: self.getGlobalData().ApiBaseUrl + "/approve/exists",
-          //     data: data,
-          //     success: function(response) {
-          //       if (response.code == 200 && response.data == 0) {
-          //         saveData(data);
-          //       } else {
-          //         self.$message({
-          //           type: "warning",
-          //           message: "角色已经存在!"
-          //         });
-          //       }
-          //     }
-          //   });
-          return false;
-        }
+        // validate: function(data, saveData) {
+        //   //   $.ajax({
+        //   //     type: "POST",
+        //   //     xhrFields: {
+        //   //       withCredentials: true
+        //   //     },
+        //   //     url: self.getGlobalData().ApiBaseUrl + "/approve/exists",
+        //   //     data: data,
+        //   //     success: function(response) {
+        //   //       if (response.code == 200 && response.data == 0) {
+        //   //         saveData(data);
+        //   //       } else {
+        //   //         self.$message({
+        //   //           type: "warning",
+        //   //           message: "角色已经存在!"
+        //   //         });
+        //   //       }
+        //   //     }
+        //   //   });
+        //   return false;
+        // }
       },
       cfg1: {
         title: "参数列表",
         mode: "create",
-        save: this.getGlobalData().ApiBaseUrl + "/approve/add",
         items: [
           {
-            name: "var1",
+            name: "parameter",
             title: "参数名",
             type: "text"
           },
           {
-            name: "var1From",
+            name: "type",
             title: "参数类型",
             type: "combox",
             data: [
@@ -83,11 +84,11 @@ export default {
               },
               {
                 id: 2,
-                name: "表单xpath"
+                name: "数字"
               },
               {
                 id: 3,
-                name: "函数"
+                name: "日期"
               }
             ]
           },
@@ -98,13 +99,13 @@ export default {
           }
         ],
         rules: {
-          name: {
+          parameter: {
             required: true
           }
         },
         messages: {
-          name: {
-            required: "审批路径名必须填写"
+          parameter: {
+            required: "参数必填"
           }
         },
         validate: function(data, saveData) {
@@ -150,14 +151,15 @@ export default {
             }
           }
         ]
+      },
+      cfg2: {
+        title: "参数列表",
+        mode: "create",
+        save: this.getGlobalData().ApiBaseUrl + "/function/add",
       }
     };
   },
   methods: {
-    save: function() {
-        debugger;
-        var data = this.$refs.from.getData();
-    }
   }
 };
 </script>

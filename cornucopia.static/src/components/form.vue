@@ -173,12 +173,14 @@ export default {
   mounted: function() {
     var self = this;
     self.isMounted = true;
-    
+
     if (this.cfg.mode != "create") {
       self.openLoading();
       this.fillData();
     }
-    $(this.$el).find('input[type="file"]').hide();
+    $(this.$el)
+      .find('input[type="file"]')
+      .hide();
   },
   beforeUpdate: function() {
     // $(".el-transfer__button").click(function() {
@@ -201,51 +203,91 @@ export default {
       commiting: false,
       value1: {},
       data1: {},
-      changing:{},
+      changing: {},
       isMounted: false,
-      isShowDetail:true,
-      dialogImageUrl:"",
-      dialogImageName:"",
-      dialogVisible:false
+      isShowDetail: true,
+      dialogImageUrl: "",
+      dialogImageName: "",
+      dialogVisible: false
     };
   },
   methods: {
-     showDialog:function(){
-       var className = this.$parent.$parent.$el.className;
-       return className.indexOf('el-dialog__wrapper')!=-1;
-     },
-     handleRemove(file, fileList) {
-        for(var i=0;i<fileList.length;i++){
-          var item = fileList[i];
-          $(self.$el).parent().find("li:eq("+i+")").find('div').remove();
-          $(self.$el).parent().find("li:eq("+i+")").append('<div style="position: absolute; top: 0; left: 0;">'+item.name+'</div>');
-        }
-      },
-      handlePictureCardPreview(file) {
-        console.log(file)
-        this.dialogImageUrl = file.url;
-        this.dialogImageName = file.name;
-        this.dialogVisible = true;
-      },
-      onFileUpload:function(response,file,fileList){
-        if(response.code == 200){
-          $(self.$el).find("#"+response.message).val(response.data);
-          for(var i=0;i<fileList.length;i++){
-            var item = fileList[i];
-            $(self.$el).parent().find("li:eq("+i+")").find('div').remove();
-            $(self.$el).parent().find("li:eq("+i+")").append('<div style="position: absolute; top: 120px; left: 0;z-">'+item.name+'</div>');
-            $(self.$el).parent().find("li:eq("+i+")").find('div').attr("data-toggle", "tooltip");
-            $(self.$el).parent().find("li:eq("+i+")").find('div').attr("data-placement", "top");
-            $(self.$el).parent().find("li:eq("+i+")").find('div').attr("data-original-title", item.name);
-            $(self.$el).parent().find("li:eq("+i+")").find('div').tooltip();
-          }
-        }
+    showDialog: function() {
+      var className = this.$parent.$parent.$el.className;
+      return className.indexOf("el-dialog__wrapper") != -1;
     },
-    onLimited:function(){
-       self.$message({
-              message: "只能上传一个文件!",
-              type: "warning"
-        });
+    handleRemove(file, fileList) {
+      for (var i = 0; i < fileList.length; i++) {
+        var item = fileList[i];
+        $(self.$el)
+          .parent()
+          .find("li:eq(" + i + ")")
+          .find("div")
+          .remove();
+        $(self.$el)
+          .parent()
+          .find("li:eq(" + i + ")")
+          .append(
+            '<div style="position: absolute; top: 0; left: 0;">' +
+              item.name +
+              "</div>"
+          );
+      }
+    },
+    handlePictureCardPreview(file) {
+      console.log(file);
+      this.dialogImageUrl = file.url;
+      this.dialogImageName = file.name;
+      this.dialogVisible = true;
+    },
+    onFileUpload: function(response, file, fileList) {
+      if (response.code == 200) {
+        $(self.$el)
+          .find("#" + response.message)
+          .val(response.data);
+        for (var i = 0; i < fileList.length; i++) {
+          var item = fileList[i];
+          $(self.$el)
+            .parent()
+            .find("li:eq(" + i + ")")
+            .find("div")
+            .remove();
+          $(self.$el)
+            .parent()
+            .find("li:eq(" + i + ")")
+            .append(
+              '<div style="position: absolute; top: 120px; left: 0;z-">' +
+                item.name +
+                "</div>"
+            );
+          $(self.$el)
+            .parent()
+            .find("li:eq(" + i + ")")
+            .find("div")
+            .attr("data-toggle", "tooltip");
+          $(self.$el)
+            .parent()
+            .find("li:eq(" + i + ")")
+            .find("div")
+            .attr("data-placement", "top");
+          $(self.$el)
+            .parent()
+            .find("li:eq(" + i + ")")
+            .find("div")
+            .attr("data-original-title", item.name);
+          $(self.$el)
+            .parent()
+            .find("li:eq(" + i + ")")
+            .find("div")
+            .tooltip();
+        }
+      }
+    },
+    onLimited: function() {
+      self.$message({
+        message: "只能上传一个文件!",
+        type: "warning"
+      });
     },
     iframeLoad: function() {
       var iframes = document.getElementsByTagName("iframe");
@@ -281,8 +323,8 @@ export default {
       if (self.cfg.onCancel) {
         self.cfg.onCancel();
       } else if (self.showDialog()) {
-        self.$parent.$parent.$parent.dialogVisible=false;
-        self.$parent.$parent.$parent.currentComponent="";
+        self.$parent.$parent.$parent.dialogVisible = false;
+        self.$parent.$parent.$parent.currentComponent = "";
       } else {
         //$.fn.navigate();
         history.go(-1);
@@ -291,12 +333,12 @@ export default {
     btnEdit: function() {
       var self = this;
       this.cfg.detailEditMode = "edit";
-      self.isShowDetail=false;
+      self.isShowDetail = false;
     },
     btnDecancel: function() {
       var self = this;
       this.cfg.detailEditMode = "detail";
-      self.isShowDetail=true;
+      self.isShowDetail = true;
     },
     btnDecommit: function(event) {
       var target = event.currentTarget;
@@ -304,7 +346,7 @@ export default {
       self.commiting = true;
       self.btnCommit(target, function() {
         self.cfg.detailEditMode = "detail";
-        self.isShowDetail=true;
+        self.isShowDetail = true;
         self.commiting = false;
         self.fillData();
         // self.$forceUpdate();
@@ -448,6 +490,7 @@ export default {
             .removeClass("has-error");
         },
         submitHandler: function(form) {
+          debugger;
           if (!self.commiting) {
             return;
           }
@@ -475,6 +518,163 @@ export default {
       $(self.$el)
         .find(".form")
         .validate(lastCfg);
+    },
+    validateFrom: function(onSuccess, onFail) {
+      var self = this;
+      self.commiting = true;
+      var validateCfg = {
+        onfocusout: false,
+        onclick: false,
+        focusInvalid: false,
+        onkeyup: false,
+        onkeyup: function(element) {
+          $(element).valid();
+        },
+        errorPlacement: function(error, element) {
+          if (element.attr("controltype") == "suggest") {
+            element
+              .next()
+              .find("button")
+              .attr("data-toggle", "tooltip");
+            element
+              .next()
+              .find("button")
+              .parent()
+              .attr("data-placement", "right");
+            element
+              .next()
+              .find("button")
+              .parent()
+              .attr("data-original-title", error.text());
+            element
+              .next()
+              .find("button")
+              .parent()
+              .tooltip("show");
+          } else if (element.attr("controltype") == "upload") {
+            element
+              .parent()
+              .find("object")
+              .attr("data-toggle", "tooltip");
+            element
+              .parent()
+              .find("object")
+              .parent()
+              .attr("data-placement", "right");
+            element
+              .parent()
+              .find("object")
+              .parent()
+              .attr("data-original-title", error.text());
+            element
+              .parent()
+              .find("object")
+              .parent()
+              .tooltip("show");
+          } else if (element.attr("controltype") == "html5upload") {
+            element
+              .parent()
+              .find(".pekeupload-btn-file")
+              .attr("data-toggle", "tooltip");
+            element
+              .parent()
+              .find(".pekeupload-btn-file")
+              .attr("data-placement", "right");
+            element
+              .parent()
+              .find(".pekeupload-btn-file")
+              .attr("data-original-title", error.text());
+            element
+              .parent()
+              .find(".pekeupload-btn-file")
+              .tooltip("show");
+          } else {
+            element.attr("data-toggle", "tooltip");
+            element.attr("data-placement", "top");
+            element.attr("data-original-title", error.text());
+            element.tooltip("show");
+            element
+              .parent()
+              .parent()
+              .addClass("has-error");
+          }
+
+          if (element.attr("controltype") != "suggest") {
+            if (self.commiting && error.text()) {
+              self.$notify({
+                title: "验证未通过",
+                message: error.text(),
+                position: "bottom-right",
+                type: "warning"
+              });
+            }
+          }
+        },
+        success: function(error, element) {
+          $(element).tooltip("destroy");
+          $(element)
+            .parent()
+            .parent()
+            .removeClass("has-error");
+        },
+        submitHandler: function(form) {
+          debugger;
+          if (!self.commiting) {
+            return;
+          }
+          var data = self.getData();
+
+          var isOk = true;
+          if (self.cfg.validate) {
+            //自定义验证
+            isOk = self.cfg.validate(data, self.saveData);
+          }
+
+          if (!isOk) {
+            return;
+          }
+          if (self.cfg.beforeCommit) {
+            self.cfg.beforeCommit(data);
+          }
+          // $(self.$el)
+          //   .find(".btn-commit")
+          //   .attr("disabled", "disabled");
+          // self.saveData(data, handler);
+          if (onSuccess) {
+            onSuccess(data);
+          }
+        }
+      };
+      var lastCfg = $.extend(true, validateCfg, self.cfg);
+      $(self.$el)
+        .find(".form")
+        .validate(lastCfg);
+      if($(self.$el).find(".form").valid()){
+          if (!self.commiting) {
+            return;
+          }
+          var data = self.getData();
+
+          var isOk = true;
+          if (self.cfg.validate) {
+            //自定义验证
+            isOk = self.cfg.validate(data, self.saveData);
+          }
+
+          if (!isOk) {
+            return;
+          }
+          if (self.cfg.beforeCommit) {
+            self.cfg.beforeCommit(data);
+          }
+          // $(self.$el)
+          //   .find(".btn-commit")
+          //   .attr("disabled", "disabled");
+          // self.saveData(data, handler);
+          if (onSuccess) {
+            onSuccess(data);
+          }
+      }
     },
     btnButtons: function(e) {
       var name = e.target.name;
@@ -519,11 +719,11 @@ export default {
               .getContent()
               .replace("<video", "<video autoplay");
           } else if (item.attr("controltype") == "transfer") {
-            data[this.id] = self.value1[this.id]
-            if(data[this.id].length==0){
-              data[this.id].push(0)
+            data[this.id] = self.value1[this.id];
+            if (data[this.id].length == 0) {
+              data[this.id].push(0);
             }
-          }else {
+          } else {
             data[this.id] = item.val();
           }
         });
@@ -556,7 +756,6 @@ export default {
               message: successLang,
               type: "success"
             });
-            
           } else if (response.message) {
             $(self.$el)
               .find(".btn-commit")
@@ -571,12 +770,12 @@ export default {
               if (handler) {
                 handler(response);
               } else {
-                if(self.showDialog()){
-                  self.$parent.$parent.$parent.dialogVisible=false;
-                  self.$parent.$parent.$parent.currentComponent="";
+                if (self.showDialog()) {
+                  self.$parent.$parent.$parent.dialogVisible = false;
+                  self.$parent.$parent.$parent.currentComponent = "";
                   self.$parent.$parent.$parent.reloadSimpleData();
                   return;
-                }else{
+                } else {
                   history.go(-1);
                 }
               }
@@ -585,14 +784,14 @@ export default {
             if (handler) {
               handler(response);
             } else {
-               if(self.showDialog()){
-                  self.$parent.$parent.$parent.dialogVisible=false;
-                  self.$parent.$parent.$parent.currentComponent="";
-                  self.$parent.$parent.$parent.reloadSimpleData();
-                  return;
-                }else{
-                  history.go(-1);
-                }
+              if (self.showDialog()) {
+                self.$parent.$parent.$parent.dialogVisible = false;
+                self.$parent.$parent.$parent.currentComponent = "";
+                self.$parent.$parent.$parent.reloadSimpleData();
+                return;
+              } else {
+                history.go(-1);
+              }
             }
           }
         }
@@ -645,7 +844,7 @@ export default {
       if (!self.isMounted) {
         return [];
       }
-      if(self.changing[id]){
+      if (self.changing[id]) {
         self.changing[id] = false;
         return self.data1[id];
       }
@@ -686,7 +885,6 @@ export default {
           }
           // debugger;
           // self.$forceUpdate();
-         
         }
       });
       return self.data1[id];
@@ -695,15 +893,15 @@ export default {
       this.changing[id] = true;
       this.$forceUpdate();
     },
-    bindCombox:function(data,id){
-      if(data){
-        for(var i=0;i<data.length;i++){
+    bindCombox: function(data, id) {
+      if (data) {
+        for (var i = 0; i < data.length; i++) {
           var item = data[i];
-          if(item.id == id){
+          if (item.id == id) {
             return item.value;
           }
         }
-      }else{
+      } else {
         return id;
       }
     }
