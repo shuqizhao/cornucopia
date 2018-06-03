@@ -13,7 +13,7 @@ export default {
       cfg: {
         title: "审批路径",
         mode: "create",
-        save: this.getGlobalData().ApiBaseUrl + "/approve/add",
+        // save: this.getGlobalData().ApiBaseUrl + "/approve/add",
         hideFooter: true,
         items: [
           {
@@ -57,7 +57,7 @@ export default {
       cfg1: {
         title: "条件公式",
         mode: "create",
-        save: this.getGlobalData().ApiBaseUrl + "/approve/add",
+        // save: this.getGlobalData().ApiBaseUrl + "/approve/add",
         items: [
           {
             name: "boolOperation",
