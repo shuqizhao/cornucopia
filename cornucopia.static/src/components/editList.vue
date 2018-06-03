@@ -75,6 +75,12 @@ $(function() {
 });
 export default {
   props: ["cfg"],
+  mounted: function() {
+    if (this.cfg.mode != "create") {
+      this.openLoading();
+      this.fillData();
+    }
+  },
   data() {
     var self = this;
     return {
@@ -245,6 +251,28 @@ export default {
     },
     getData: function() {
       return this.tableData;
+    },
+    fillData: function() {
+      var self = this;
+      $.ajax({
+        type: "get",
+        xhrFields: {
+          withCredentials: true
+        },
+        url: self.cfg.get.url,
+        data: self.cfg.get.params,
+        // async: false,
+        success: function(result) {
+          if (result.code == "200") {
+            if (result.data && result.data.length > 0) {
+              for (var i = 0; i < result.data.length; i++) {
+                self.insertNew(result.data[i]);
+              }
+            }
+            self.closeLoading();
+          }
+        }
+      });
     }
   }
 };

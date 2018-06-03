@@ -46,6 +46,10 @@ public class FunctionService {
 	public int delete(int id) {
 		return funcdao.delete(id);
 	}
+	
+	public int deletePara(int id) {
+		return funcdao.deletePara(id);
+	}
 
 	public void insertFunctionParas(FunctionParameterEntity[] funcParaEntities) {
 		for (FunctionParameterEntity fp : funcParaEntities) {
@@ -55,5 +59,18 @@ public class FunctionService {
 
 	public FunctionEntity get(int id) {
 		return funcdao.get(id);
+	}
+
+	public List<FunctionParameterEntity> getParas(int id) {
+		return funcdao.getParas(id);
+	}
+
+	public void update(FunctionEntity function) {
+		 funcdao.update(function);
+	}
+
+	public void updateFunctionParas(int funcId,FunctionParameterEntity[] functionParas) {
+		deletePara(funcId);
+		insertFunctionParas(functionParas);
 	}
 }

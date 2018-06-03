@@ -14,7 +14,7 @@ export default {
         message: "请先选择函数!",
         type: "warning"
       });
-    //   this.$destroy();
+      //   this.$destroy();
       this.$parent.$parent.dialogVisible = false;
       this.$parent.$parent.currentComponent = "";
     }
@@ -34,6 +34,11 @@ export default {
         },
         name: "function",
         items: [
+          {
+            name: "id",
+            title: "id",
+            type: "hidden"
+          },
           {
             name: "name",
             title: "函数名",
@@ -104,13 +109,19 @@ export default {
           }
         ],
         rules: {
-          parameter: {
+          name: {
+            required: true
+          },
+          desc: {
             required: true
           }
         },
         messages: {
-          parameter: {
+          name: {
             required: "参数必填"
+          },
+          desc: {
+            required: "描述必填"
           }
         },
         validate: function(data, saveData) {

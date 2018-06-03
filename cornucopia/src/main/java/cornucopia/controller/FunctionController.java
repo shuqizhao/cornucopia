@@ -35,6 +35,15 @@ public class FunctionController {
 		jr.setData(functionEntity);
 		return jr;
 	}
+	
+	@RequestMapping(value = { "/getPara" }, method = RequestMethod.GET)
+	public JsonResult<List<FunctionParameterEntity>> getPara(int id) {
+		List<FunctionParameterEntity> functionParaEntities = FunctionService.getInstance().getParas(id);
+		JsonResult<List<FunctionParameterEntity>> jr = new JsonResult<List<FunctionParameterEntity>>();
+		jr.setCode(200);
+		jr.setData(functionParaEntities);
+		return jr;
+	}
 
 	@RequestMapping(value = { "/exists" }, method = RequestMethod.POST)
 	public JsonResult<Integer> exists(String name) {
@@ -46,13 +55,25 @@ public class FunctionController {
 	}
 
 	@RequestMapping(value = { "/add" }, method = RequestMethod.POST)
-
 	public JsonResult<Integer> add(@RequestBody FunctionViewModel funcVm) {
 		FunctionService.getInstance().insert(funcVm.getFunction());
 		for (FunctionParameterEntity fp : funcVm.getFunctionParas()) {
 			fp.setFuncId(funcVm.getFunction().getId());
 		}
 		FunctionService.getInstance().insertFunctionParas(funcVm.getFunctionParas());
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(funcVm.getFunction().getId());
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/update" }, method = RequestMethod.POST)
+	public JsonResult<Integer> update(@RequestBody FunctionViewModel funcVm) {
+		FunctionService.getInstance().update(funcVm.getFunction());
+		for (FunctionParameterEntity fp : funcVm.getFunctionParas()) {
+			fp.setFuncId(funcVm.getFunction().getId());
+		}
+		FunctionService.getInstance().updateFunctionParas(funcVm.getFunction().getId(),funcVm.getFunctionParas());
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(funcVm.getFunction().getId());

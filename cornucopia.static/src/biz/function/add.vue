@@ -14,7 +14,7 @@ export default {
         title: "添加函数",
         mode: "create",
         hideFooter: true,
-        name:'function',
+        name: "function",
         items: [
           {
             name: "name",
@@ -47,7 +47,7 @@ export default {
       cfg1: {
         title: "参数列表",
         mode: "create",
-        name:'functionParas',
+        name: "functionParas",
         items: [
           {
             name: "name",
@@ -80,13 +80,19 @@ export default {
           }
         ],
         rules: {
-          parameter: {
+          name: {
+            required: true
+          },
+          desc: {
             required: true
           }
         },
         messages: {
-          parameter: {
+          name: {
             required: "参数必填"
+          },
+          desc: {
+            required: "描述必填"
           }
         },
         validate: function(data, saveData) {
@@ -98,7 +104,7 @@ export default {
             type: "btn-success",
             icon: "el-icon-circle-plus",
             onClick: function() {
-              self.$refs.editList.insertNew({});
+              self.$refs.editList.insertNew({ type: 1 });
             }
           },
           {
@@ -130,11 +136,10 @@ export default {
       cfg2: {
         title: "参数列表",
         mode: "create",
-        save: this.getGlobalData().ApiBaseUrl + "/function/add",
+        save: this.getGlobalData().ApiBaseUrl + "/function/add"
       }
     };
   },
-  methods: {
-  }
+  methods: {}
 };
 </script>

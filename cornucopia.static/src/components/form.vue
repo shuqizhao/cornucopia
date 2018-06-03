@@ -809,7 +809,7 @@ export default {
         },
         url: self.cfg.get.url,
         data: self.cfg.get.params,
-        async: false,
+        // async: false,
         success: function(result) {
           if (result.code == "200") {
             self.detail = result.data;

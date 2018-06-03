@@ -2,6 +2,7 @@ package cornucopia.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -37,4 +38,13 @@ public interface FunctionDao {
 
 	@Select("call sp_function_get(#{id})")
 	public FunctionEntity get(@Param("id")int id);
+
+	@Select("call sp_function_para_get(#{id})")
+	public List<FunctionParameterEntity> getParas(int id);
+
+	@Update("call sp_function_update(#{func.id},#{func.name},#{func.desc})")
+	public void update(@Param("func") FunctionEntity function);
+	
+	@Delete("call sp_function_para_delete_by_func_id(#{id})")
+	public int deletePara(@Param("id")int id);
 }
