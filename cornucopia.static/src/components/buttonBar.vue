@@ -32,13 +32,18 @@ export default {
       }
     },
     btnSave: function() {
+      var self = this;
       var dataWillCommit = {};
       var children = this.$parent.$children;
       var willCommit = true;
       for (var i = 0; i < children.length; i++) {
         if (children[i].validateFrom) {
           var isPass = children[i].validateFrom(function(name, data) {
-            dataWillCommit[name] = data;
+            var data1 = data;
+            if(self.cfg.extraData){
+               data1 = $.extend(data, self.cfg.extraData[name]);
+            }
+            dataWillCommit[name] = data1;
           });
           willCommit = isPass && willCommit;
         }
@@ -46,6 +51,7 @@ export default {
       if (!willCommit) {
         return;
       }
+
       this.postUrl(dataWillCommit);
     },
     postUrl: function(data,handler) {

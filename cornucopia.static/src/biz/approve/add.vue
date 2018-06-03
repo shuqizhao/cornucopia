@@ -2,18 +2,23 @@
  <div>
      <mform :cfg="cfg"></mform>
      <editList ref="editList" :cfg="cfg1"></editList>
-     <buttonBar :cfg="cfg1"></buttonBar>
+     <buttonBar :cfg="cfg2"></buttonBar>
  </div>
 </template>
 <script>
 export default {
+  mounted:function(){
+
+    // var a = this.$parent.$parent;
+    // debugger;
+  },
   data() {
     var self = this;
     return {
       cfg: {
         title: "审批路径",
         mode: "create",
-        // save: this.getGlobalData().ApiBaseUrl + "/approve/add",
+        name:'approve',
         hideFooter: true,
         items: [
           {
@@ -51,13 +56,13 @@ export default {
           //       }
           //     }
           //   });
-          return false;
+          return true;
         }
       },
       cfg1: {
         title: "条件公式",
         mode: "create",
-        // save: this.getGlobalData().ApiBaseUrl + "/approve/add",
+        name:'approveConditions',
         items: [
           {
             name: "boolOperation",
@@ -200,17 +205,23 @@ export default {
           }
         ],
         rules: {
-          name: {
+          var1: {
+            required: true
+          },
+          var2: {
             required: true
           }
         },
         messages: {
-          name: {
-            required: "审批路径名必须填写"
+          var1: {
+            required: "变量1必须填写"
+          },
+          var2: {
+            required: "变量2必须填写"
           }
         },
         validate: function(data, saveData) {
-          return false;
+          return true;
         },
         functions: [
           {
@@ -246,6 +257,15 @@ export default {
             }
           }
         ]
+      },
+      cfg2:{
+        save:this.getGlobalData().ApiBaseUrl + "/approve/add",
+        extraData:{
+          approve:{
+            processId:self.$parent.$parent.value1,
+            processNodeId:self.$parent.$parent.value2
+          }
+        }
       }
     };
   }

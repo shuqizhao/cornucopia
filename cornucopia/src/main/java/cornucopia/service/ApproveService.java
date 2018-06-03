@@ -3,6 +3,7 @@ package cornucopia.service;
 import java.util.List;
 
 import cornucopia.dao.ApproveDao;
+import cornucopia.entity.ApproveConditionEntity;
 import cornucopia.entity.ApproveEntity;
 import cornucopia.util.MyBatisHelper;
 
@@ -29,6 +30,10 @@ public class ApproveService {
 	public int insert(ApproveEntity approveEntity) {
 		 return approvedao.insert(approveEntity);
 	}
+	
+	public int insertApproveCondition(ApproveConditionEntity approveEntity) {
+		 return approvedao.insertApproveCondition(approveEntity);
+	}
 
 	public int disable(int id) {
 		return approvedao.disable(id);
@@ -40,5 +45,11 @@ public class ApproveService {
 	
 	public int delete(int id) {
 		return approvedao.delete(id);
+	}
+
+	public void insertApproveConditions(ApproveConditionEntity[] approveConditions) {
+		for (ApproveConditionEntity fp : approveConditions) {
+			insertApproveCondition(fp);
+		}
 	}
 }

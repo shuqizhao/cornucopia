@@ -5,10 +5,11 @@ public class ApproveConditionEntity extends BaseEntity {
 	private int boolOperation;
 	private String var1;
 	private int var1From;
-	private int varType;
+	private int var1Type;
 	private int operation;
 	private String var2;
 	private int var2From;
+	private int var2Type;
 
 	public int getApproveId() {
 		return approveId;
@@ -42,12 +43,12 @@ public class ApproveConditionEntity extends BaseEntity {
 		this.var1From = var1From;
 	}
 
-	public int getVarType() {
-		return varType;
+	public int getVar1Type() {
+		return var1Type;
 	}
 
-	public void setVarType(int varType) {
-		this.varType = varType;
+	public void setVar1Type(int var1Type) {
+		this.var1Type = var1Type;
 	}
 
 	public int getOperation() {
@@ -72,6 +73,14 @@ public class ApproveConditionEntity extends BaseEntity {
 
 	public void setVar2From(int var2From) {
 		this.var2From = var2From;
+	}
+
+	public int getVar2Type() {
+		return var2Type;
+	}
+
+	public void setVar2Type(int var2Type) {
+		this.var2Type = var2Type;
 	}
 
 }

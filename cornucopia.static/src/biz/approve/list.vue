@@ -48,8 +48,8 @@ export default {
                 });
                 return;
               }
-              self.$refs.tree1.currentComponent = 'approveAdd';
-              self.$refs.tree1.dialogVisible = true;
+              self.$refs.tree.currentComponent = 'approveAdd';
+              self.$refs.tree.dialogVisible = true;
             }
           }
         ]

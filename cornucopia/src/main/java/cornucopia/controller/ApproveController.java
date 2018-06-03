@@ -2,14 +2,20 @@ package cornucopia.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
+import cornucopia.model.ApproveViewModel;
+import cornucopia.entity.ApproveConditionEntity;
 import cornucopia.entity.ApproveEntity;
 import cornucopia.service.ApproveService;
 
+@RestController
+@RequestMapping("/approve")
 public class ApproveController {
 	@RequestMapping(value = { "/alllist" }, method = RequestMethod.GET)
 	public JsonResult<List<ApproveEntity>> alllist() {
@@ -31,11 +37,15 @@ public class ApproveController {
 	}
 	
 	@RequestMapping(value = { "/add" }, method = RequestMethod.POST)
-	public JsonResult<Integer> add(ApproveEntity approveEntity) {
-		ApproveService.getInstance().insert(approveEntity);
+	public JsonResult<Integer> add(@RequestBody ApproveViewModel approveVm) {
+		ApproveService.getInstance().insert(approveVm.getApprove());
+		for (ApproveConditionEntity ac : approveVm.getApproveConditions()) {
+			ac.setApproveId(approveVm.getApprove().getId());
+		}
+		ApproveService.getInstance().insertApproveConditions(approveVm.getApproveConditions());
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
-		jr.setData(approveEntity.getId());
+		jr.setData(approveVm.getApprove().getId());
 		return jr;
 	}
 	
