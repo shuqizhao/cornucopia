@@ -31,7 +31,7 @@ public interface FunctionDao {
 	@Update("call sp_function_delete(#{id})")
 	public int delete(@Param("id")int id);
 
-	@Insert("call sp_function_para_insert(#{funcPara.funcId},#{funcPara.name},#{funcPara.desc})")
+	@Insert("call sp_function_para_insert(#{funcPara.funcId},#{funcPara.name},#{funcPara.desc},#{funcPara.type})")
 	@SelectKey(statement="Select LAST_INSERT_ID()", keyProperty="funcPara.id", before=false, resultType=int.class)
 	public int insertPara(@Param("funcPara") FunctionParameterEntity funcParaEntity);
 }

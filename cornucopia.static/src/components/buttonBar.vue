@@ -68,7 +68,7 @@ export default {
           }
           if (response.code == "200") {
             self.$message({
-              message: "添加成功!",
+              message: "成功!",
               type: "success"
             });
           } else if (response.message) {

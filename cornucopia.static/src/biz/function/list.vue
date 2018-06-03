@@ -41,9 +41,9 @@ export default {
         idName: "id",
         fnRowCallback: function(row, data) {
           if (data.isEnabled) {
-            $("td:eq(1)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
+            $("td:eq(2)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
           } else {
-            $("td:eq(1)", row).html('<i class="el-icon-close"></i>');
+            $("td:eq(2)", row).html('<i class="el-icon-close"></i>');
           }
         },
         functions: {
