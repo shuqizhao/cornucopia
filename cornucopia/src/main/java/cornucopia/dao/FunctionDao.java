@@ -34,4 +34,7 @@ public interface FunctionDao {
 	@Insert("call sp_function_para_insert(#{funcPara.funcId},#{funcPara.name},#{funcPara.desc},#{funcPara.type})")
 	@SelectKey(statement="Select LAST_INSERT_ID()", keyProperty="funcPara.id", before=false, resultType=int.class)
 	public int insertPara(@Param("funcPara") FunctionParameterEntity funcParaEntity);
+
+	@Select("call sp_function_get(#{id})")
+	public FunctionEntity get(@Param("id")int id);
 }

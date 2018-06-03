@@ -52,4 +52,8 @@ public class FunctionService {
 			insertPara(fp);
 		}
 	}
+
+	public FunctionEntity get(int id) {
+		return funcdao.get(id);
+	}
 }

@@ -52,6 +52,11 @@ export default {
               text: "添加函数",
               url: "functionAdd",
               mode: "modal"
+            },
+            {
+              text: "编辑函数",
+              url: "functionEdit",
+              mode: "modal"
             }
           ],
           more: [
@@ -70,32 +75,10 @@ export default {
           ]
         },
         onClickRow: function(data, target) {
-          self.$refs.tree.cfg.title = data.name;
-          self.openLoading($("#resTree")[0]);
-          $.ajax({
-            type: "GET",
-            xhrFields: {
-              withCredentials: true
-            },
-            url:
-              self.getGlobalData().ApiBaseUrl +
-              "/auth/getCheckedList?roleId=" +
-              data.id,
-            success: function(response) {
-              if (response.code == "200") {
-                self.$refs.tree.setCheckedKeys(response.data);
-                self.closeLoading();
-                self.currentRoleId = data.id;
-              } else if (response.message) {
-                self.$message({
-                  type: "warning",
-                  message: response.message
-                });
-              }
-            }
-          });
+          self.id = data.id;
         }
-      }
+      },
+      id:0
     };
   },
   updated: function() {

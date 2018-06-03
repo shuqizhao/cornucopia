@@ -26,6 +26,15 @@ public class FunctionController {
 		jr.setData(funcs);
 		return jr;
 	}
+	
+	@RequestMapping(value = { "/get" }, method = RequestMethod.GET)
+	public JsonResult<FunctionEntity> get(int id) {
+		FunctionEntity functionEntity = FunctionService.getInstance().get(id);
+		JsonResult<FunctionEntity> jr = new JsonResult<FunctionEntity>();
+		jr.setCode(200);
+		jr.setData(functionEntity);
+		return jr;
+	}
 
 	@RequestMapping(value = { "/exists" }, method = RequestMethod.POST)
 	public JsonResult<Integer> exists(String name) {
