@@ -36,6 +36,10 @@ export default {
           {
             title: "创建时间",
             name: "createTime"
+          },
+          {
+            title: "修改时间",
+            name: "updateTime"
           }
         ],
         idName: "id",
