@@ -14,6 +14,7 @@ export default {
         title: "添加函数",
         mode: "create",
         hideFooter: true,
+        name:'function',
         items: [
           {
             name: "name",
@@ -67,6 +68,7 @@ export default {
       cfg1: {
         title: "参数列表",
         mode: "create",
+        name:'functionPara',
         items: [
           {
             name: "parameter",
@@ -109,7 +111,7 @@ export default {
           }
         },
         validate: function(data, saveData) {
-          return false;
+          return true;
         },
         functions: [
           {

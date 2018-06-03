@@ -32,14 +32,83 @@ export default {
       }
     },
     btnSave: function() {
-      var children = this.$parent.$children
-      for(var i = 0;i < children.length;i++){
-        if(children[i].validateFrom){
-          children[i].validateFrom(function(data){
-            
+      var dataWillCommit = {};
+      var children = this.$parent.$children;
+      for (var i = 0; i < children.length; i++) {
+        if (children[i].validateFrom) {
+          var isPass = children[i].validateFrom(function(name, data) {
+            dataWillCommit[name] = data;
           });
+          if(!isPass){
+            return;
+          }
         }
       }
+      this.postUrl(dataWillCommit);
+    },
+    postUrl: function(data) {
+      var self = this;
+      $.ajax({
+        type: "POST",
+        // contentType: "application/json;charset=utf-8",
+        // dataType: "json",
+        xhrFields: {
+          withCredentials: true
+        },
+        url: self.cfg.save,
+        data: data,
+        success: function(response) {
+          if (response.code && response.code == "201") {
+            window.open(response.data);
+          } else if (response.code && response.code == "203") {
+            alert("查看console.log");
+            console.log(response.data);
+          }
+          if (response.code == "200") {
+            self.$message({
+              message: successLang,
+              type: "success"
+            });
+          } else if (response.message) {
+            $(self.$el)
+              .find(".btn-commit")
+              .removeAttr("disabled");
+            self.$message({
+              type: "warning",
+              message: response.message
+            });
+          }
+          if (self.cfg.onSuccess) {
+            if (self.cfg.onSuccess(self.cfg.mode, response)) {
+              if (handler) {
+                handler(response);
+              } else {
+                if (self.showDialog()) {
+                  self.$parent.$parent.$parent.dialogVisible = false;
+                  self.$parent.$parent.$parent.currentComponent = "";
+                  self.$parent.$parent.$parent.reloadSimpleData();
+                  return;
+                } else {
+                  history.go(-1);
+                }
+              }
+            }
+          } else {
+            if (handler) {
+              handler(response);
+            } else {
+              if (self.showDialog()) {
+                self.$parent.$parent.$parent.dialogVisible = false;
+                self.$parent.$parent.$parent.currentComponent = "";
+                self.$parent.$parent.$parent.reloadSimpleData();
+                return;
+              } else {
+                history.go(-1);
+              }
+            }
+          }
+        }
+      });
     }
   },
   data() {

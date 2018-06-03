@@ -662,7 +662,7 @@ export default {
           }
 
           if (!isOk) {
-            return;
+            return false;
           }
           if (self.cfg.beforeCommit) {
             self.cfg.beforeCommit(data);
@@ -672,8 +672,11 @@ export default {
           //   .attr("disabled", "disabled");
           // self.saveData(data, handler);
           if (onSuccess) {
-            onSuccess(data);
+            onSuccess(self.cfg.name,data);
           }
+          return true;
+      }else{
+        return false;
       }
     },
     btnButtons: function(e) {

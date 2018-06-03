@@ -165,22 +165,22 @@ export default {
             element
               .parent()
               .parent()
-               .parent()
+              .parent()
               .attr("data-toggle", "tooltip");
             element
               .parent()
               .parent()
-               .parent()
+              .parent()
               .attr("data-placement", "right");
             element
               .parent()
               .parent()
-               .parent()
+              .parent()
               .attr("data-original-title", error.text());
             element
               .parent()
               .parent()
-               .parent()
+              .parent()
               .tooltip("show");
             element.addClass("myerror");
           }
@@ -200,35 +200,9 @@ export default {
           $(element)
             .parent()
             .parent()
-             .parent()
+            .parent()
             .tooltip("destroy");
           $(element).removeClass("myerror");
-        },
-        submitHandler: function(form) {
-          if (!self.commiting) {
-            return;
-          }
-          var data = self.getData();
-
-          var isOk = true;
-          if (self.cfg.validate) {
-            //自定义验证
-            isOk = self.cfg.validate(data, self.saveData);
-          }
-
-          if (!isOk) {
-            return;
-          }
-          if (self.cfg.beforeCommit) {
-            self.cfg.beforeCommit(data);
-          }
-          // $(self.$el)
-          //   .find(".btn-commit")
-          //   .attr("disabled", "disabled");
-          // self.saveData(data, handler);
-          if (onSuccess) {
-            onSuccess(data);
-          }
         }
       };
       var lastCfg = $.extend(true, validateCfg, self.cfg);
@@ -252,7 +226,7 @@ export default {
         }
 
         if (!isOk) {
-          return;
+          return isOk;
         }
         if (self.cfg.beforeCommit) {
           self.cfg.beforeCommit(data);
@@ -262,12 +236,15 @@ export default {
         //   .attr("disabled", "disabled");
         // self.saveData(data, handler);
         if (onSuccess) {
-          onSuccess(data);
+          onSuccess(self.cfg.name, data);
         }
+        return true;
+      } else {
+        return false;
       }
     },
     getData: function() {
-      return [];
+      return this.tableData;
     }
   }
 };
