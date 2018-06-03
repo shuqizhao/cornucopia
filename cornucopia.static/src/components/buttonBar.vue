@@ -48,17 +48,17 @@ export default {
       }
       this.postUrl(dataWillCommit);
     },
-    postUrl: function(data) {
+    postUrl: function(data,handler) {
       var self = this;
       $.ajax({
         type: "POST",
-        // contentType: "application/json;charset=utf-8",
-        // dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
         xhrFields: {
           withCredentials: true
         },
         url: self.cfg.save,
-        data: data,
+        data: JSON.stringify(data),
         success: function(response) {
           if (response.code && response.code == "201") {
             window.open(response.data);
@@ -68,7 +68,7 @@ export default {
           }
           if (response.code == "200") {
             self.$message({
-              message: successLang,
+              message: "添加成功!",
               type: "success"
             });
           } else if (response.message) {

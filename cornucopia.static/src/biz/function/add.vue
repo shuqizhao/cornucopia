@@ -68,10 +68,10 @@ export default {
       cfg1: {
         title: "参数列表",
         mode: "create",
-        name:'functionPara',
+        name:'functionParas',
         items: [
           {
-            name: "parameter",
+            name: "name",
             title: "参数名",
             type: "text"
           },
