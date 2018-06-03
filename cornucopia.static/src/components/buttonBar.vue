@@ -34,15 +34,17 @@ export default {
     btnSave: function() {
       var dataWillCommit = {};
       var children = this.$parent.$children;
+      var willCommit = true;
       for (var i = 0; i < children.length; i++) {
         if (children[i].validateFrom) {
           var isPass = children[i].validateFrom(function(name, data) {
             dataWillCommit[name] = data;
           });
-          if(!isPass){
-            return;
-          }
+          willCommit = isPass && willCommit;
         }
+      }
+      if (!willCommit) {
+        return;
       }
       this.postUrl(dataWillCommit);
     },
