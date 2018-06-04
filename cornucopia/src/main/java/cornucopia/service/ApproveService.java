@@ -46,6 +46,10 @@ public class ApproveService {
 	public int delete(int id) {
 		return approvedao.delete(id);
 	}
+	
+	public int deleteCondition(int id) {
+		return approvedao.deleteCondition(id);
+	}
 
 	public void insertApproveConditions(ApproveConditionEntity[] approveConditions) {
 		for (ApproveConditionEntity fp : approveConditions) {
@@ -59,5 +63,14 @@ public class ApproveService {
 
 	public List<ApproveConditionEntity> getConditions(int id) {
 		return approvedao.getConditions(id);
+	}
+
+	public void update(ApproveEntity approve) {
+		approvedao.update(approve);
+	}
+
+	public void updateFunctionParas(int id, ApproveConditionEntity[] approveConditions) {
+		deleteCondition(id);
+		insertApproveConditions(approveConditions);
 	}
 }

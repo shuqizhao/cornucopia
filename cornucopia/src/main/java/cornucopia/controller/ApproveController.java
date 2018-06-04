@@ -93,4 +93,17 @@ public class ApproveController {
 		jr.setData(conditions);
 		return jr;
 	}
+	
+	@RequestMapping(value = { "/update" }, method = RequestMethod.POST)
+	public JsonResult<Integer> update(@RequestBody ApproveViewModel approveVm) {
+		ApproveService.getInstance().update(approveVm.getApprove());
+		for (ApproveConditionEntity ac : approveVm.getApproveConditions()) {
+			ac.setApproveId(approveVm.getApprove().getId());
+		}
+		ApproveService.getInstance().updateFunctionParas(approveVm.getApprove().getId(),approveVm.getApproveConditions());
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(approveVm.getApprove().getId());
+		return jr;
+	}
 }

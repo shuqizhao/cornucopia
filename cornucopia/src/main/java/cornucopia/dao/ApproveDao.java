@@ -2,6 +2,7 @@ package cornucopia.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -40,4 +41,10 @@ public interface ApproveDao {
 
 	@Select("call sp_approve_condition_get_by_aprove_id(#{approveId})")
 	public List<ApproveConditionEntity> getConditions(@Param("approveId") int id);
+
+	@Delete("call sp_approve_condition_delete_by_aprove_id(#{approveId})")
+	public int deleteCondition(@Param("approveId") int id);
+
+	@Update("call sp_approve_update(#{approve.id},#{approve.name})")
+	public void update(@Param("approve") ApproveEntity approve);
 }
