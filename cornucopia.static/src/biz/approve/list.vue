@@ -134,6 +134,7 @@ export default {
         sDom: 'f<"dataTables_function"/>',
         bServerSide: false,
         hideCheckBox: true,
+        dialogWidth: "70%",
         showSelectedRowColor: true,
         columns: [
           {
@@ -144,6 +145,14 @@ export default {
           {
             title: "岗位名",
             name: "name"
+          },
+          {
+            title: "岗位类型",
+            name: "type"
+          },
+          {
+            title: "岗位规则",
+            name: "rule"
           },
           {
             title: "是否启用",
@@ -166,9 +175,9 @@ export default {
           common: [
             {
               text: "添加岗位",
-              url: "processAdd",
+              url: "approvePositionAdd",
               mode: "modal",
-              functionName: "processAdd"
+              functionName: "approvePositionAdd"
             }
           ],
           more: [
