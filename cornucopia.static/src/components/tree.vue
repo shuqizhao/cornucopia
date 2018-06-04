@@ -78,10 +78,14 @@ export default {
       if (!value) return true;
       return data.name.indexOf(value) !== -1;
     },
-    loadUrl: function(handler) {
+    loadUrl: function(type, id, handler) {
       var self = this;
-      if (!self.cfg.url) {
+      if (type == 0 && (self.cfg.filterType=='combox' || !self.cfg.url)) {
         return;
+      }
+      var url = self.cfg.url;
+      if (id) {
+        url += id;
       }
       self.openLoading();
       $.ajax({
@@ -89,7 +93,7 @@ export default {
         xhrFields: {
           withCredentials: true
         },
-        url: self.cfg.url,
+        url: url,
         success: function(response) {
           if (response.code == "200") {
             self.data2 = response.data;
@@ -188,7 +192,7 @@ export default {
       this.loadOption2Url(s1);
     },
     option2Change: function(s1) {
-      
+      this.loadUrl(1,s1);
     },
     setCheckedKeys: function(checkList) {
       var self = this;
@@ -224,8 +228,8 @@ export default {
       value2: "",
       options1: [],
       options2: [],
-      dialogVisible:false,
-      currentComponent:''
+      dialogVisible: false,
+      currentComponent: ""
     };
   },
   mounted: function() {
@@ -250,7 +254,7 @@ export default {
       });
     }
 
-    this.loadUrl();
+    this.loadUrl(0);
     this.loadOption1Url();
   }
 };

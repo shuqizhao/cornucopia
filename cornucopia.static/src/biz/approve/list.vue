@@ -19,6 +19,7 @@ export default {
         dialogWidth:"95%",
         option1Url: this.getGlobalData().ApiBaseUrl + "/process/alllist",
         option2Url: this.getGlobalData().ApiBaseUrl + "/processnode/alllist?processId=",
+        url: this.getGlobalData().ApiBaseUrl + "/approve/alllist?processNodeId=",
         functions: [
           {
             text: "新增",

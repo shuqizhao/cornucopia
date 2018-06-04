@@ -19,8 +19,8 @@ public class ApproveService {
 
 	ApproveDao approvedao = MyBatisHelper.getMapper(ApproveDao.class);
 	
-	public List<ApproveEntity> getAll() {
-		return approvedao.getAll();
+	public List<ApproveEntity> getAll(int processNodeId) {
+		return approvedao.getAll(processNodeId);
 	}
 
 	public int exists(String roleName) {

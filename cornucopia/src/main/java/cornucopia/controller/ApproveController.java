@@ -18,8 +18,8 @@ import cornucopia.service.ApproveService;
 @RequestMapping("/approve")
 public class ApproveController {
 	@RequestMapping(value = { "/alllist" }, method = RequestMethod.GET)
-	public JsonResult<List<ApproveEntity>> alllist() {
-		List<ApproveEntity> approves = ApproveService.getInstance().getAll();
+	public JsonResult<List<ApproveEntity>> alllist(int processNodeId) {
+		List<ApproveEntity> approves = ApproveService.getInstance().getAll(processNodeId);
 		
 		JsonResult<List<ApproveEntity>> jr = new JsonResult<List<ApproveEntity>>();
 		jr.setCode(200);

@@ -12,8 +12,8 @@ import cornucopia.entity.ApproveConditionEntity;
 import cornucopia.entity.ApproveEntity;
 
 public interface ApproveDao {
-	@Select("call sp_approve_all()")
-	public List<ApproveEntity> getAll();
+	@Select("call sp_approve_all(#{processNodeId})")
+	public List<ApproveEntity> getAll(@Param("processNodeId")int processNodeId);
 
 	@Select("call sp_approve_exists(#{approveName})")
 	public int exists(@Param("approveName") String approveName);
