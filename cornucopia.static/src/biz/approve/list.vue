@@ -66,6 +66,7 @@ export default {
         ],
         onNodeClick: function(data) {
           self.currentApproveId = data.id;
+          self.currentApproveId2 = 0;
           self.$refs.tree1.loadUrl(1, data.id);
         },
         option1Change: function() {
