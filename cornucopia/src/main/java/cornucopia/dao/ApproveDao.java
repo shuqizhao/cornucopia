@@ -19,7 +19,7 @@ public interface ApproveDao {
 	@Select("call sp_approve_exists(#{approveName})")
 	public int exists(@Param("approveName") String approveName);
 
-	@Insert("call sp_approve_insert(#{approve.name},#{approve.processId},#{approve.processNodeId})")
+	@Insert("call sp_approve_insert(#{approve.parentId},#{approve.name},#{approve.processId},#{approve.processNodeId})")
 	@SelectKey(statement="Select LAST_INSERT_ID()", keyProperty="approve.id", before=false, resultType=int.class)
 	public int insert(@Param("approve") ApproveEntity approveEntity);
 
@@ -47,4 +47,7 @@ public interface ApproveDao {
 
 	@Update("call sp_approve_update(#{approve.id},#{approve.name})")
 	public void update(@Param("approve") ApproveEntity approve);
+
+	@Select("call sp_approve_all_children(#{approveId})")
+	public List<ApproveEntity> getAllChildren(@Param("approveId") int approveId);
 }

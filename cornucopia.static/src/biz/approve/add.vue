@@ -8,15 +8,16 @@
 <script>
 export default {
   mounted:function(){
-
     // var a = this.$parent.$parent;
+    // var b =this.$parent.$parent.$parent.$parent.$parent.currentApproveId;
+    // var c =this.$parent.$parent.title;
     // debugger;
   },
   data() {
     var self = this;
     return {
       cfg: {
-        title: "审批路径",
+        title: "审批路线",
         mode: "create",
         name:'approve',
         hideFooter: true,
@@ -262,8 +263,9 @@ export default {
         save:this.getGlobalData().ApiBaseUrl + "/approve/add",
         extraData:{
           approve:{
-            processId:self.$parent.$parent.value1,
-            processNodeId:self.$parent.$parent.value2
+            processId:self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value1,
+            processNodeId:self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2,
+            parentId:self.$parent.$parent.cfg.title=='审批路线(二)'?self.$parent.$parent.$parent.$parent.$parent.currentApproveId:0
           }
         }
       }

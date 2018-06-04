@@ -8,21 +8,19 @@
 <script>
 export default {
   mounted: function() {
-    // this.id = this.$parent.$parent.$parent.$parent.$parent.$refs.tree.getCheckedKeys()[0];
-    // debugger;
   },
   data() {
     var self = this;
     return {
       cfg: {
-        title: "审批路径",
+        title: "审批路线",
         mode: "edit",
         name: "approve",
         hideFooter: true,
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/approve/get",
           params: {
-            id: self.$parent.$parent.$parent.$parent.$parent.$refs.tree.getCheckedKeys()[0]
+            id: self.$parent.$parent.cfg.title=='审批路线(二)'?self.$parent.$parent.$parent.$parent.$parent.$refs.tree1.getCurrentKey():self.$parent.$parent.$parent.$parent.$parent.$refs.tree.getCurrentKey()
           }
         },
         items: [
@@ -76,7 +74,7 @@ export default {
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/approve/getConditions",
           params: {
-            id: self.$parent.$parent.$parent.$parent.$parent.$refs.tree.getCheckedKeys()[0]
+            id: self.$parent.$parent.cfg.title=='审批路线(二)'?self.$parent.$parent.$parent.$parent.$parent.$refs.tree1.getCurrentKey():self.$parent.$parent.$parent.$parent.$parent.$refs.tree.getCurrentKey()
           }
         },
         items: [

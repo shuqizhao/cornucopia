@@ -17,6 +17,7 @@ export default {
         filterType: "combox",
         hideToolBar: true,
         dialogWidth: "95%",
+        hideCheckBox: true,
         option1Url: this.getGlobalData().ApiBaseUrl + "/process/alllist",
         option2Url:
           this.getGlobalData().ApiBaseUrl + "/processnode/alllist?processId=",
@@ -51,17 +52,9 @@ export default {
                 });
                 return;
               }
-              var ids = self.$refs.tree.getCheckedKeys();
-              var id = ids[0];
-              if (id == 0) {
+              if (self.currentApproveId == 0) {
                 self.$message({
-                  message: "请先选择审批路径!",
-                  type: "warning"
-                });
-                return;
-              } else if (ids.length > 1) {
-                self.$message({
-                  message: "只能选择一个审批路径!",
+                  message: "请先选择审批路线(一)!",
                   type: "warning"
                 });
                 return;
@@ -70,23 +63,43 @@ export default {
               self.$refs.tree.dialogVisible = true;
             }
           }
-        ]
+        ],
+        onNodeClick: function(data) {
+          self.currentApproveId = data.id;
+          self.$refs.tree1.loadUrl(1, data.id);
+        },
+        option1Change: function() {
+          self.currentApproveId = 0;
+          self.currentApproveId2 = 0;
+          self.$refs.tree1.loadUrl(1, 0);
+        },
+        option2Change: function() {
+          self.currentApproveId = 0;
+          self.currentApproveId2 = 0;
+          self.$refs.tree1.loadUrl(1, 0);
+        }
       },
       treeCfg1: {
         title: "审批路线(二)",
         parentTitle: "流程管理",
         filterType: "combox",
+        dialogWidth: "95%",
+        hideCheckBox: true,
         hideToolBar: true,
-        // url: this.getGlobalData().ApiBaseUrl + "/auth/allResource",
+        url:
+          this.getGlobalData().ApiBaseUrl + "/approve/allchildren?approveId=",
+        onNodeClick: function(data) {
+          self.currentApproveId2 = data.id;
+        },
         functions: [
           {
             text: "新增",
             type: "btn-success",
             icon: "el-icon-circle-plus",
             onClick: function() {
-              if (!self.$refs.tree1.value2) {
+              if (self.currentApproveId == 0) {
                 self.$message({
-                  message: "请先选择流程节点!",
+                  message: "请先选择审批路线(一)!",
                   type: "warning"
                 });
                 return;
@@ -100,24 +113,9 @@ export default {
             type: "btn-success",
             icon: "el-icon-edit",
             onClick: function() {
-              if (!self.$refs.tree1.value2) {
+              if (self.currentApproveId2 == 0) {
                 self.$message({
-                  message: "请先选择流程节点!",
-                  type: "warning"
-                });
-                return;
-              }
-              var ids = self.$refs.tree1.getCheckedKeys();
-              var id = ids[0];
-              if (id == 0) {
-                self.$message({
-                  message: "请先选择审批路径!",
-                  type: "warning"
-                });
-                return;
-              } else if (ids.length > 1) {
-                self.$message({
-                  message: "只能选择一个审批路径!",
+                  message: "请先选择审批路线(二)!",
                   type: "warning"
                 });
                 return;
@@ -131,7 +129,6 @@ export default {
       cfg1: {
         title: "审批岗位",
         parentTitle: "流程管理",
-        // simpleUrl: this.getGlobalData().ApiBaseUrl + "/process/alllist",
         lengthMenu: [[-1], ["ALL"]],
         sDom: 'f<"dataTables_function"/>',
         bServerSide: false,
@@ -188,34 +185,10 @@ export default {
             }
           ]
         },
-        onClickRow: function(data, target) {
-          self.$refs.tree.cfg.title = data.name;
-          self.openLoading($("#resTree")[0]);
-          $.ajax({
-            type: "GET",
-            xhrFields: {
-              withCredentials: true
-            },
-            url:
-              self.getGlobalData().ApiBaseUrl +
-              "/auth/getCheckedList?roleId=" +
-              data.id,
-            success: function(response) {
-              if (response.code == "200") {
-                self.$refs.tree.setCheckedKeys(response.data);
-                self.closeLoading();
-                self.currentRoleId = data.id;
-              } else if (response.message) {
-                self.$message({
-                  type: "warning",
-                  message: response.message
-                });
-              }
-            }
-          });
-        }
+        onClickRow: function(data, target) {}
       },
-      id: 0
+      currentApproveId: 0,
+      currentApproveId2: 0
     };
   },
   updated: function() {

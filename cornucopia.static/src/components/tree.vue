@@ -44,13 +44,16 @@
         class="filter-tree"
          node-key="id"
         :data="data2"
+        :highlight-current="true"
         :check-on-click-node="true"
         :props="defaultProps"
         :check-strictly="true"
-        :indent="24"
+        :indent="30"
         default-expand-all
-        show-checkbox
+        :show-checkbox="!this.cfg.hideCheckBox"
         :filter-node-method="filterNode"
+        @node-click="onNodeClick"
+        style="font-size:18px"
         ref="tree2">
 
           <span class="custom-tree-node" slot-scope="{ node, data }">
@@ -81,15 +84,15 @@ export default {
     },
     loadUrl: function(type, id, handler) {
       var self = this;
-      if (type == 0 && (self.cfg.filterType=='combox' || !self.cfg.url)) {
+      if (type == 0 && (self.cfg.filterType == "combox" || !self.cfg.url)) {
         return;
       }
       var url = self.cfg.url;
-      if (id) {
+      if (id||id==0) {
         url += id;
         self.currentId = id;
       }
-      if(type == 2){
+      if (type == 2) {
         url += self.currentId;
       }
       self.openLoading();
@@ -195,9 +198,17 @@ export default {
     },
     option1Change: function(s1) {
       this.loadOption2Url(s1);
+
+      if(this.cfg.option1Change){
+        this.cfg.option1Change(s1)
+      }
     },
     option2Change: function(s1) {
-      this.loadUrl(1,s1);
+      this.loadUrl(1, s1);
+
+      if(this.cfg.option2Change){
+        this.cfg.option2Change(s1)
+      }
     },
     setCheckedKeys: function(checkList) {
       var self = this;
@@ -211,6 +222,11 @@ export default {
       }
       return checkedList;
     },
+    getCurrentKey: function() {
+      var self = this;
+      var checkedList = self.$refs.tree2.getCurrentKey();
+      return checkedList;
+    },
     checkAll: function() {
       var self = this;
       self.$refs.tree2.setCheckedNodes(self.data2);
@@ -218,6 +234,11 @@ export default {
     clearAll: function() {
       var self = this;
       self.$refs.tree2.setCheckedKeys([0]);
+    },
+    onNodeClick: function(data) {
+      if (this.cfg.onNodeClick) {
+        this.cfg.onNodeClick(data);
+      }
     }
   },
 
@@ -235,7 +256,7 @@ export default {
       options2: [],
       dialogVisible: false,
       currentComponent: "",
-      currentId:0
+      currentId: 0
     };
   },
   mounted: function() {

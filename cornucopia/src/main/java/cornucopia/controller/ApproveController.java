@@ -27,6 +27,16 @@ public class ApproveController {
 		return jr;
 	}
 	
+	@RequestMapping(value = { "/allchildren" }, method = RequestMethod.GET)
+	public JsonResult<List<ApproveEntity>> allchildren(int approveId) {
+		List<ApproveEntity> approves = ApproveService.getInstance().getAllChildren(approveId);
+		
+		JsonResult<List<ApproveEntity>> jr = new JsonResult<List<ApproveEntity>>();
+		jr.setCode(200);
+		jr.setData(approves);
+		return jr;
+	}
+	
 	@RequestMapping(value = { "/exists" }, method = RequestMethod.POST)
 	public JsonResult<Integer> exists(String name) {
 		int isExists = ApproveService.getInstance().exists(name);

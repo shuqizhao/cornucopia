@@ -73,4 +73,8 @@ public class ApproveService {
 		deleteCondition(id);
 		insertApproveConditions(approveConditions);
 	}
+
+	public List<ApproveEntity> getAllChildren(int approveId) {
+		return approvedao.getAllChildren(approveId);
+	}
 }
