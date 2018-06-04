@@ -44,6 +44,7 @@
         class="filter-tree"
          node-key="id"
         :data="data2"
+        :check-on-click-node="true"
         :props="defaultProps"
         :check-strictly="true"
         :indent="24"

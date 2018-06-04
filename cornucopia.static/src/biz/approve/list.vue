@@ -75,14 +75,56 @@ export default {
       treeCfg1: {
         title: "审批路线(二)",
         parentTitle: "流程管理",
+        filterType: "combox",
         hideToolBar: true,
         // url: this.getGlobalData().ApiBaseUrl + "/auth/allResource",
         functions: [
           {
-            text: "保存",
+            text: "新增",
             type: "btn-success",
-            icon: "el-icon-success",
-            onClick: function() {}
+            icon: "el-icon-circle-plus",
+            onClick: function() {
+              if (!self.$refs.tree1.value2) {
+                self.$message({
+                  message: "请先选择流程节点!",
+                  type: "warning"
+                });
+                return;
+              }
+              self.$refs.tree1.currentComponent = "approveAdd";
+              self.$refs.tree1.dialogVisible = true;
+            }
+          },
+          {
+            text: "编辑",
+            type: "btn-success",
+            icon: "el-icon-edit",
+            onClick: function() {
+              if (!self.$refs.tree1.value2) {
+                self.$message({
+                  message: "请先选择流程节点!",
+                  type: "warning"
+                });
+                return;
+              }
+              var ids = self.$refs.tree1.getCheckedKeys();
+              var id = ids[0];
+              if (id == 0) {
+                self.$message({
+                  message: "请先选择审批路径!",
+                  type: "warning"
+                });
+                return;
+              } else if (ids.length > 1) {
+                self.$message({
+                  message: "只能选择一个审批路径!",
+                  type: "warning"
+                });
+                return;
+              }
+              self.$refs.tree1.currentComponent = "approveEdit";
+              self.$refs.tree1.dialogVisible = true;
+            }
           }
         ]
       },
@@ -102,7 +144,7 @@ export default {
             isHide: true
           },
           {
-            title: "节点名",
+            title: "岗位名",
             name: "name"
           },
           {
