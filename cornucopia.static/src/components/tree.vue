@@ -86,6 +86,10 @@ export default {
       var url = self.cfg.url;
       if (id) {
         url += id;
+        self.currentId = id;
+      }
+      if(type == 2){
+        url += self.currentId;
       }
       self.openLoading();
       $.ajax({
@@ -229,7 +233,8 @@ export default {
       options1: [],
       options2: [],
       dialogVisible: false,
-      currentComponent: ""
+      currentComponent: "",
+      currentId:0
     };
   },
   mounted: function() {

@@ -40,8 +40,8 @@ export default {
         if (children[i].validateFrom) {
           var isPass = children[i].validateFrom(function(name, data) {
             var data1 = data;
-            if(self.cfg.extraData){
-               data1 = $.extend(data, self.cfg.extraData[name]);
+            if (self.cfg.extraData) {
+              data1 = $.extend(data, self.cfg.extraData[name]);
             }
             dataWillCommit[name] = data1;
           });
@@ -54,7 +54,7 @@ export default {
 
       this.postUrl(dataWillCommit);
     },
-    postUrl: function(data,handler) {
+    postUrl: function(data, handler) {
       var self = this;
       $.ajax({
         type: "POST",
@@ -94,7 +94,11 @@ export default {
                 if (self.showDialog()) {
                   self.$parent.$parent.$parent.dialogVisible = false;
                   self.$parent.$parent.$parent.currentComponent = "";
-                  self.$parent.$parent.$parent.reloadSimpleData();
+                  if (self.$parent.$parent.$parent.reloadSimpleData) {
+                    self.$parent.$parent.$parent.reloadSimpleData();
+                  } else if (self.$parent.$parent.$parent.loadUrl) {
+                    self.$parent.$parent.$parent.loadUrl(2);
+                  }
                   return;
                 } else {
                   history.go(-1);
@@ -108,7 +112,11 @@ export default {
               if (self.showDialog()) {
                 self.$parent.$parent.$parent.dialogVisible = false;
                 self.$parent.$parent.$parent.currentComponent = "";
-                self.$parent.$parent.$parent.reloadSimpleData();
+                if (self.$parent.$parent.$parent.reloadSimpleData) {
+                  self.$parent.$parent.$parent.reloadSimpleData();
+                } else if (self.$parent.$parent.$parent.loadUrl) {
+                  self.$parent.$parent.$parent.loadUrl(2);
+                }
                 return;
               } else {
                 history.go(-1);
