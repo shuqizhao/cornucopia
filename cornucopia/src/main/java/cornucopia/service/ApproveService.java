@@ -52,4 +52,12 @@ public class ApproveService {
 			insertApproveCondition(fp);
 		}
 	}
+
+	public ApproveEntity get(int id) {
+		return approvedao.get(id);
+	}
+
+	public List<ApproveConditionEntity> getConditions(int id) {
+		return approvedao.getConditions(id);
+	}
 }

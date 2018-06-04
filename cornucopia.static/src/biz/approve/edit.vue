@@ -1,0 +1,297 @@
+<template>
+ <div>
+     <mform :cfg="cfg"></mform>
+     <editList ref="editList" :cfg="cfg1"></editList>
+     <buttonBar :cfg="cfg2"></buttonBar>
+ </div>
+</template>
+<script>
+export default {
+  mounted: function() {
+    // this.id = this.$parent.$parent.$parent.$parent.$parent.$refs.tree.getCheckedKeys()[0];
+    // debugger;
+  },
+  data() {
+    var self = this;
+    return {
+      cfg: {
+        title: "审批路径",
+        mode: "edit",
+        name: "approve",
+        hideFooter: true,
+        get: {
+          url: this.getGlobalData().ApiBaseUrl + "/approve/get",
+          params: {
+            id: self.$parent.$parent.$parent.$parent.$parent.$refs.tree.getCheckedKeys()[0]
+          }
+        },
+        items: [
+          {
+            name: "id",
+            title: "id",
+            type: "hidden"
+          },
+          {
+            name: "name",
+            title: "路径名",
+            type: "text"
+          }
+        ],
+        rules: {
+          name: {
+            required: true
+          }
+        },
+        messages: {
+          name: {
+            required: "审批路径名必须填写"
+          }
+        },
+        validate: function(data, saveData) {
+          //   $.ajax({
+          //     type: "POST",
+          //     xhrFields: {
+          //       withCredentials: true
+          //     },
+          //     url: self.getGlobalData().ApiBaseUrl + "/approve/exists",
+          //     data: data,
+          //     success: function(response) {
+          //       if (response.code == 200 && response.data == 0) {
+          //         saveData(data);
+          //       } else {
+          //         self.$message({
+          //           type: "warning",
+          //           message: "角色已经存在!"
+          //         });
+          //       }
+          //     }
+          //   });
+          return true;
+        }
+      },
+      cfg1: {
+        title: "条件公式",
+        mode: "edit",
+        name: "approveConditions",
+        get: {
+          url: this.getGlobalData().ApiBaseUrl + "/approve/getConditions",
+          params: {
+            id: self.$parent.$parent.$parent.$parent.$parent.$refs.tree.getCheckedKeys()[0]
+          }
+        },
+        items: [
+          {
+            name: "boolOperation",
+            title: "布尔运算符",
+            type: "combox",
+            data: [
+              {
+                id: 1,
+                name: "and"
+              },
+              {
+                id: 2,
+                name: "or"
+              }
+            ]
+          },
+          {
+            name: "var1",
+            title: "变量1",
+            type: "text"
+          },
+          {
+            name: "var1From",
+            title: "变量1来源",
+            type: "combox",
+            data: [
+              {
+                id: 1,
+                name: "文本"
+              },
+              {
+                id: 2,
+                name: "表单xpath"
+              },
+              {
+                id: 3,
+                name: "函数"
+              }
+            ]
+          },
+          {
+            name: "var1Type",
+            title: "变量1类型",
+            type: "combox",
+            data: [
+              {
+                id: 1,
+                name: "字符串"
+              },
+              {
+                id: 2,
+                name: "整数"
+              },
+              {
+                id: 3,
+                name: "浮点型"
+              },
+              {
+                id: 4,
+                name: "日期型"
+              }
+            ]
+          },
+          {
+            name: "operation",
+            title: "比较运算符",
+            type: "combox",
+            data: [
+              {
+                id: 1,
+                name: "=="
+              },
+              {
+                id: 2,
+                name: ">"
+              },
+              {
+                id: 3,
+                name: ">="
+              },
+              {
+                id: 4,
+                name: "<"
+              },
+              {
+                id: 5,
+                name: "<="
+              },
+              {
+                id: 6,
+                name: "!="
+              }
+            ]
+          },
+          {
+            name: "var2",
+            title: "变量2",
+            type: "text"
+          },
+          {
+            name: "var2From",
+            title: "变量2来源",
+            type: "combox",
+            data: [
+              {
+                id: 1,
+                name: "文本"
+              },
+              {
+                id: 2,
+                name: "表单xpath"
+              },
+              {
+                id: 3,
+                name: "函数"
+              }
+            ]
+          },
+          {
+            name: "var2Type",
+            title: "变量2类型",
+            type: "combox",
+            data: [
+              {
+                id: 1,
+                name: "字符串"
+              },
+              {
+                id: 2,
+                name: "整数"
+              },
+              {
+                id: 3,
+                name: "浮点型"
+              },
+              {
+                id: 4,
+                name: "日期型"
+              }
+            ]
+          }
+        ],
+        rules: {
+          var1: {
+            required: true
+          },
+          var2: {
+            required: true
+          }
+        },
+        messages: {
+          var1: {
+            required: "变量1必须填写"
+          },
+          var2: {
+            required: "变量2必须填写"
+          }
+        },
+        validate: function(data, saveData) {
+          return true;
+        },
+        functions: [
+          {
+            text: "新增",
+            type: "btn-success",
+            icon: "el-icon-circle-plus",
+            onClick: function() {
+              self.$refs.editList.insertNew({
+                boolOperation: 1,
+                var1From: 2,
+                var1Type: 1,
+                var2From: 1,
+                var2Type: 1
+              });
+            }
+          },
+          {
+            text: "删除",
+            type: "btn-success",
+            icon: "el-icon-edit",
+            onClick: function() {
+              self.$refs.editList.deleteSelected();
+            }
+          },
+          {
+            text: "上移",
+            type: "btn-success",
+            icon: "el-icon-edit",
+            onClick: function() {
+              self.$refs.editList.upSelected();
+            }
+          },
+          {
+            text: "下移",
+            type: "btn-success",
+            icon: "el-icon-edit",
+            onClick: function() {
+              self.$refs.editList.downSelected();
+            }
+          }
+        ]
+      },
+      cfg2: {
+        save: this.getGlobalData().ApiBaseUrl + "/approve/update",
+        extraData: {
+          approve: {
+            processId: self.$parent.$parent.value1,
+            processNodeId: self.$parent.$parent.value2
+          }
+        }
+      },
+      id:0
+    };
+  }
+};
+</script>

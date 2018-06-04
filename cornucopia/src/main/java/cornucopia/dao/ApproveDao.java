@@ -34,4 +34,10 @@ public interface ApproveDao {
 	@Insert("call sp_approve_condition_insert(#{approveCondition.approveId},#{approveCondition.boolOperation},#{approveCondition.var1},#{approveCondition.var1From},#{approveCondition.var1Type},#{approveCondition.operation},#{approveCondition.var2},#{approveCondition.var2From},#{approveCondition.var2Type})")
 	@SelectKey(statement="Select LAST_INSERT_ID()", keyProperty="approveCondition.id", before=false, resultType=int.class)
 	public int insertApproveCondition(@Param("approveCondition") ApproveConditionEntity approveEntity);
+
+	@Select("call sp_approve_get(#{id})")
+	public ApproveEntity get(@Param("id") int id);
+
+	@Select("call sp_approve_condition_get_by_aprove_id(#{approveId})")
+	public List<ApproveConditionEntity> getConditions(@Param("approveId") int id);
 }

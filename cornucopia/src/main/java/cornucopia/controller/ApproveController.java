@@ -75,4 +75,22 @@ public class ApproveController {
 		jr.setData(result);
 		return jr;
 	}
+	
+	@RequestMapping(value = { "/get" }, method = RequestMethod.GET)
+	public JsonResult<ApproveEntity> get(int id) {
+		ApproveEntity approveEntity = ApproveService.getInstance().get(id);
+		JsonResult<ApproveEntity> jr = new JsonResult<ApproveEntity>();
+		jr.setCode(200);
+		jr.setData(approveEntity);
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/getConditions" }, method = RequestMethod.GET)
+	public JsonResult<List<ApproveConditionEntity>> getConditions(int id) {
+		List<ApproveConditionEntity> conditions = ApproveService.getInstance().getConditions(id);
+		JsonResult<List<ApproveConditionEntity>> jr = new JsonResult<List<ApproveConditionEntity>>();
+		jr.setCode(200);
+		jr.setData(conditions);
+		return jr;
+	}
 }

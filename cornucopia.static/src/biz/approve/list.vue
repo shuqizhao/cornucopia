@@ -16,10 +16,12 @@ export default {
         parentTitle: "流程管理",
         filterType: "combox",
         hideToolBar: true,
-        dialogWidth:"95%",
+        dialogWidth: "95%",
         option1Url: this.getGlobalData().ApiBaseUrl + "/process/alllist",
-        option2Url: this.getGlobalData().ApiBaseUrl + "/processnode/alllist?processId=",
-        url: this.getGlobalData().ApiBaseUrl + "/approve/alllist?processNodeId=",
+        option2Url:
+          this.getGlobalData().ApiBaseUrl + "/processnode/alllist?processId=",
+        url:
+          this.getGlobalData().ApiBaseUrl + "/approve/alllist?processNodeId=",
         functions: [
           {
             text: "新增",
@@ -33,7 +35,7 @@ export default {
                 });
                 return;
               }
-              self.$refs.tree.currentComponent = 'approveAdd';
+              self.$refs.tree.currentComponent = "approveAdd";
               self.$refs.tree.dialogVisible = true;
             }
           },
@@ -49,7 +51,22 @@ export default {
                 });
                 return;
               }
-              self.$refs.tree.currentComponent = 'approveAdd';
+              var ids = self.$refs.tree.getCheckedKeys();
+              var id = ids[0];
+              if (id == 0) {
+                self.$message({
+                  message: "请先选择审批路径!",
+                  type: "warning"
+                });
+                return;
+              } else if (ids.length > 1) {
+                self.$message({
+                  message: "只能选择一个审批路径!",
+                  type: "warning"
+                });
+                return;
+              }
+              self.$refs.tree.currentComponent = "approveEdit";
               self.$refs.tree.dialogVisible = true;
             }
           }
@@ -65,9 +82,7 @@ export default {
             text: "保存",
             type: "btn-success",
             icon: "el-icon-success",
-            onClick: function() {
-              
-            }
+            onClick: function() {}
           }
         ]
       },
@@ -157,7 +172,8 @@ export default {
             }
           });
         }
-      }
+      },
+      id: 0
     };
   },
   updated: function() {
