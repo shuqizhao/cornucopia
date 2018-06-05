@@ -7,8 +7,7 @@
 </template>
 <script>
 export default {
-  mounted: function() {
-  },
+  mounted: function() {},
   data() {
     var self = this;
     return {
@@ -20,7 +19,10 @@ export default {
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/approve/get",
           params: {
-            id: self.$parent.$parent.cfg.title=='审批路线(二)'?self.$parent.$parent.$parent.$parent.$parent.$refs.tree1.getCurrentKey():self.$parent.$parent.$parent.$parent.$parent.$refs.tree.getCurrentKey()
+            id:
+              self.$parent.$parent.cfg.title == "审批路线(二)"
+                ? self.$parent.$parent.$parent.$parent.$parent.$refs.tree1.getCurrentKey()
+                : self.$parent.$parent.$parent.$parent.$parent.$refs.tree.getCurrentKey()
           }
         },
         items: [
@@ -74,7 +76,10 @@ export default {
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/approve/getConditions",
           params: {
-            id: self.$parent.$parent.cfg.title=='审批路线(二)'?self.$parent.$parent.$parent.$parent.$parent.$refs.tree1.getCurrentKey():self.$parent.$parent.$parent.$parent.$parent.$refs.tree.getCurrentKey()
+            id:
+              self.$parent.$parent.cfg.title == "审批路线(二)"
+                ? self.$parent.$parent.$parent.$parent.$parent.$refs.tree1.getCurrentKey()
+                : self.$parent.$parent.$parent.$parent.$parent.$refs.tree.getCurrentKey()
           }
         },
         items: [
@@ -174,7 +179,8 @@ export default {
           {
             name: "var2",
             title: "变量2",
-            type: "text"
+            type: "popup",
+            url:"functionPopup",
           },
           {
             name: "var2From",
@@ -193,7 +199,12 @@ export default {
                 id: 3,
                 name: "函数"
               }
-            ]
+            ],
+            onChange: function(index, name, s1) {
+              if (s1 == 3) {
+
+              }
+            }
           },
           {
             name: "var2Type",
@@ -288,7 +299,7 @@ export default {
           }
         }
       },
-      id:0
+      id: 0
     };
   }
 };

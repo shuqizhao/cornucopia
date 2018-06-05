@@ -22,7 +22,6 @@
         <el-table
             :data="tableData"
             border
-            :show-overflow-tooltip="true"
             @selection-change="handleSelectionChange"
             style="width: 100%">
             <el-table-column
@@ -30,11 +29,13 @@
             width="55">
             </el-table-column>
             <el-table-column v-for="item in this.cfg.items" :key="item.name"
+            :show-overflow-tooltip="true"
             :label="item.title"
             >
             <template slot-scope="scope">
                 <el-input v-if="item.type=='text'" :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" ></el-input>
-                <el-select v-else-if="item.type=='combox'" :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="">
+                <el-select v-else-if="item.type=='combox'" :name="item.name" v-model="tableData[scope.$index][item.name]"
+                 @change="item.onChange?item.onChange(scope.$index,item.name,tableData[scope.$index][item.name],tableData):''" placeholder="">
                     <el-option
                     v-for="opItem in item.data"
                     :key="opItem.id"
@@ -42,11 +43,19 @@
                     :value="opItem.id">
                     </el-option>
                 </el-select>
+                <div v-else-if="item.type=='popup'">
+                  <el-input :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" >
+                    <el-button slot="append" icon="el-icon-search" @click="onClick(scope.$index,item)"></el-button>
+                  </el-input>
+                </div>
             </template>
             </el-table-column>
         </el-table>
     </form>
 </div>
+<el-dialog append-to-body :visible.sync="dialogVisible" :width="this.cfg.dialogWidth?this.cfg.dialogWidth:'65%'" >
+    <component  style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
+  </el-dialog>
 </div>
 </template>
 
@@ -85,7 +94,9 @@ export default {
     var self = this;
     return {
       tableData: [],
-      multipleSelection: []
+      multipleSelection: [],
+      currentComponent:'',
+      dialogVisible: false,
     };
   },
   methods: {
@@ -273,6 +284,10 @@ export default {
           }
         }
       });
+    },
+    onClick:function(index,item){
+      this.dialogVisible = true;
+      this.currentComponent = item.url;
     }
   }
 };
