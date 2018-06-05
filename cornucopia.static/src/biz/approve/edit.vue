@@ -179,7 +179,7 @@ export default {
           {
             name: "var2",
             title: "变量2",
-            type: "popup",
+            type: "text",
             url:"functionPopup",
           },
           {
@@ -200,9 +200,13 @@ export default {
                 name: "函数"
               }
             ],
-            onChange: function(index, name, s1) {
+            onChange: function(index, item, s1,tableCell) {
               if (s1 == 3) {
-
+                tableCell[index]={};
+                tableCell[index]['var2'] = "popup";
+              }else{
+                tableCell[index]={};
+                tableCell[index]['var2'] = "text";
               }
             }
           },

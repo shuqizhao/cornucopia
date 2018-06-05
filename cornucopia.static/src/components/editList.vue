@@ -33,20 +33,39 @@
             :label="item.title"
             >
             <template slot-scope="scope">
-                <el-input v-if="item.type=='text'" :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" ></el-input>
-                <el-select v-else-if="item.type=='combox'" :name="item.name" v-model="tableData[scope.$index][item.name]"
-                 @change="item.onChange?item.onChange(scope.$index,item.name,tableData[scope.$index][item.name],tableData):''" placeholder="">
-                    <el-option
-                    v-for="opItem in item.data"
-                    :key="opItem.id"
-                    :label="opItem.name"
-                    :value="opItem.id">
-                    </el-option>
-                </el-select>
-                <div v-else-if="item.type=='popup'">
-                  <el-input :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" >
-                    <el-button slot="append" icon="el-icon-search" @click="onClick(scope.$index,item)"></el-button>
-                  </el-input>
+              <div v-if="tableCell[scope.$index]&&tableCell[scope.$index][item.name]">
+                  <el-input v-if="tableCell[scope.$index]&&tableCell[scope.$index][item.name]=='text'" :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" ></el-input>
+                  <el-select v-else-if="tableCell[scope.$index]&&tableCell[scope.$index][item.name]=='combox'" :name="item.name" v-model="tableData[scope.$index][item.name]"
+                  @change="item.onChange?item.onChange(scope.$index,item,tableData[scope.$index][item.name],tableCell,tableData):''" placeholder="">
+                      <el-option
+                      v-for="opItem in item.data"
+                      :key="opItem.id"
+                      :label="opItem.name"
+                      :value="opItem.id">
+                      </el-option>
+                  </el-select>
+                  <div v-else-if="tableCell[scope.$index]&&tableCell[scope.$index][item.name]=='popup'">
+                    <el-input :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" >
+                      <el-button slot="append" icon="el-icon-search" @click="onClick(scope.$index,item)"></el-button>
+                    </el-input>
+                  </div>
+                </div>
+                <div v-else>
+                    <el-input v-if="item.type=='text'" :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" ></el-input>
+                    <el-select v-else-if="item.type=='combox'" :name="item.name" v-model="tableData[scope.$index][item.name]"
+                    @change="item.onChange?item.onChange(scope.$index,item,tableData[scope.$index][item.name],tableCell,tableData):''" placeholder="">
+                        <el-option
+                        v-for="opItem in item.data"
+                        :key="opItem.id"
+                        :label="opItem.name"
+                        :value="opItem.id">
+                        </el-option>
+                    </el-select>
+                    <div v-else-if="item.type=='popup'">
+                      <el-input :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" >
+                        <el-button slot="append" icon="el-icon-search" @click="onClick(scope.$index,item)"></el-button>
+                      </el-input>
+                    </div>
                 </div>
             </template>
             </el-table-column>
@@ -94,6 +113,7 @@ export default {
     var self = this;
     return {
       tableData: [],
+      tableCell: [],
       multipleSelection: [],
       currentComponent:'',
       dialogVisible: false,
