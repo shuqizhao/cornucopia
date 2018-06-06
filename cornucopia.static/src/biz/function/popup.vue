@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-col :span="12"><list :cfg="cfg"></list></el-col>
-    <el-col :span="12"><mform :cfg="cfg1"></mform></el-col>
+    <el-col :span="12"><mform ref="para" :cfg="cfg1"></mform></el-col>
   </el-row>
 </template>
 <script>
@@ -43,52 +43,64 @@ export default {
         },
         onClickRow: function(data, target) {
           self.id = data.id;
-        }
-      },
-      cfg1: {
-        title: "添加角色",
-        mode: "create",
-        save: this.getGlobalData().ApiBaseUrl + "/role/add",
-        items: [
-          {
-            name: "name",
-            title: "角色名",
-            type: "text"
-          }
-        ],
-        rules: {
-          name: {
-            required: true
-          }
-        },
-        messages: {
-          name: {
-            required: "角色名必须填写"
-          }
-        },
-        validate: function(data, saveData) {
+
           $.ajax({
-            type: "POST",
+            type: "GET",
             xhrFields: {
               withCredentials: true
             },
-            url: self.getGlobalData().ApiBaseUrl + "/role/exists",
-            data: data,
+            url:
+              self.getGlobalData().ApiBaseUrl +
+              "/function/getPara?id=" +
+              data.id,
+            // data: data,
             success: function(response) {
-              if (response.code == 200 && response.data == 0) {
-                saveData(data);
-              } else {
-                self.$message({
-                  type: "warning",
-                  message: "角色已经存在!"
-                });
+              if (response.code == 200) {
+                self.cfg1.items = [];
+                for (var i = 0; i < response.data.length; i++) {
+                  var dataItem = response.data[i];
+                  self.cfg1.items.push({
+                    lableWidth:"150px",
+                    width:"80%",
+                    isRequire:true,
+                    name: dataItem.name,
+                    title: dataItem.desc,
+                    type: "text"
+                  });
+                  self.cfg1.rules[dataItem.name] = {
+                    required: true
+                  };
+                  self.cfg1.messages[dataItem.name] = {
+                    required: dataItem.desc+"必须填写"
+                  };
+                }
               }
             }
           });
-          return false;
         }
       },
-      id:0
+      cfg1: {
+        title: "参数",
+        mode: "create",
+        // save: this.getGlobalData().ApiBaseUrl + "/approve/add",
+        items: [
+          // {
+          //   name: "name",
+          //   title: "角色名",
+          //   type: "text"
+          // }
+        ],
+        rules: {
+          
+        },
+        messages: {
+          
+        },
+        validate: function(data, saveData) {
+          return true;
+        }
+      },
+      id: 0
     };
   },
   updated: function() {

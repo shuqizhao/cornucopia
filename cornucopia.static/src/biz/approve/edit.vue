@@ -73,6 +73,7 @@ export default {
         title: "条件公式",
         mode: "edit",
         name: "approveConditions",
+        dialogWidth: "95%",
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/approve/getConditions",
           params: {
