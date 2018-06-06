@@ -6,6 +6,27 @@
 </template>
 <script>
 export default {
+  mounted: function() {
+    var self = this;
+    if (self.parainst.parainstId) {
+      $.ajax({
+        type: "GET",
+        xhrFields: {
+          withCredentials: true
+        },
+        url:
+          self.getGlobalData().ApiBaseUrl +
+          "/function/getParainst?id=" +
+          self.parainst.parainstId,
+        // data: data,
+        success: function(response) {
+          if (response.code == 200) {
+            parainst = response.data;
+          }
+        }
+      });
+    }
+  },
   data() {
     var self = this;
     return {
@@ -95,7 +116,11 @@ export default {
         beforeCommit: function(data) {
           data.functionId = self.id;
           data.parainstJson = JSON.stringify(data);
-          data.parainstId = self.newGuid();
+          if (self.parainst.parainstId) {
+            data.parainstId = self.parainst.parainstId;
+          } else {
+            data.parainstId = self.newGuid();
+          }
         },
         validate: function(data, saveData) {
           if (self.id == 0) {
@@ -108,7 +133,8 @@ export default {
           return true;
         }
       },
-      id: 0
+      id: 0,
+      parainst: {}
     };
   },
   updated: function() {
