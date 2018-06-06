@@ -45,7 +45,7 @@
                       </el-option>
                   </el-select>
                   <div v-else-if="tableCell[scope.$index]&&tableCell[scope.$index][item.name]=='popup'">
-                    <el-input :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" >
+                    <el-input :name="item.name" v-model="tableData[scope.$index][item.name]" disabled placeholder="" >
                       <el-button slot="append" icon="el-icon-search" @click="onClick(scope.$index,item)"></el-button>
                     </el-input>
                   </div>
@@ -104,9 +104,26 @@ $(function() {
 export default {
   props: ["cfg"],
   mounted: function() {
+    var self = this;
     if (this.cfg.mode != "create") {
       this.openLoading();
-      this.fillData();
+      this.fillData(function() {
+        for (var i = 0; i < self.tableData.length; i++) {
+          self.tableCell[i] = {};
+          for (var j = 0; j < self.cfg.items.length; j++) {
+            var item = self.cfg.items[j];
+            if (item.onChange) {
+              item.onChange(
+                i,
+                item,
+                self.tableData[i][item.name],
+                self.tableCell,
+                self.tableData
+              );
+            }
+          }
+        }
+      });
     }
   },
   data() {
@@ -300,7 +317,7 @@ export default {
     getData: function() {
       return this.tableData;
     },
-    fillData: function() {
+    fillData: function(onSuccess) {
       var self = this;
       $.ajax({
         type: "get",
@@ -318,6 +335,9 @@ export default {
               }
             }
             self.closeLoading();
+            if (onSuccess) {
+              onSuccess();
+            }
           }
         }
       });

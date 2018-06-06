@@ -202,10 +202,8 @@ export default {
             ],
             onChange: function(index, item, s1,tableCell) {
               if (s1 == 3) {
-                tableCell[index]={};
                 tableCell[index]['var2'] = "popup";
               }else{
-                tableCell[index]={};
                 tableCell[index]['var2'] = "text";
               }
             }
