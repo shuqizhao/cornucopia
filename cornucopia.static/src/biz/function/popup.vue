@@ -60,9 +60,9 @@ export default {
                 for (var i = 0; i < response.data.length; i++) {
                   var dataItem = response.data[i];
                   self.cfg1.items.push({
-                    lableWidth:"150px",
-                    width:"80%",
-                    isRequire:true,
+                    lableWidth: "150px",
+                    width: "80%",
+                    isRequire: true,
                     name: dataItem.name,
                     title: dataItem.desc,
                     type: "text"
@@ -71,7 +71,7 @@ export default {
                     required: true
                   };
                   self.cfg1.messages[dataItem.name] = {
-                    required: dataItem.desc+"必须填写"
+                    required: dataItem.desc + "必须填写"
                   };
                 }
               }
@@ -82,7 +82,7 @@ export default {
       cfg1: {
         title: "参数",
         mode: "create",
-        // save: this.getGlobalData().ApiBaseUrl + "/approve/add",
+        save: this.getGlobalData().ApiBaseUrl + "/function/addOrUpdateParainst",
         items: [
           // {
           //   name: "name",
@@ -90,13 +90,21 @@ export default {
           //   type: "text"
           // }
         ],
-        rules: {
-          
-        },
-        messages: {
-          
+        rules: {},
+        messages: {},
+        beforeCommit: function(data) {
+          data.functionId = self.id;
+          data.parainstJson = JSON.stringify(data);
+          data.parainstId = self.newGuid();
         },
         validate: function(data, saveData) {
+          if (self.id == 0) {
+            self.$message({
+              type: "warning",
+              message: "请先选择一个函数!"
+            });
+            return false;
+          }
           return true;
         }
       },

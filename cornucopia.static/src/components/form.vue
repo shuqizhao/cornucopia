@@ -490,7 +490,6 @@ export default {
             .removeClass("has-error");
         },
         submitHandler: function(form) {
-          debugger;
           if (!self.commiting) {
             return;
           }
@@ -618,7 +617,6 @@ export default {
             .removeClass("has-error");
         },
         submitHandler: function(form) {
-          debugger;
           if (!self.commiting) {
             return;
           }
@@ -784,6 +782,7 @@ export default {
               }
             }
           } else {
+            debugger;
             if (handler) {
               handler(response);
             } else {

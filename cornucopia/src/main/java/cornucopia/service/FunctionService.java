@@ -5,6 +5,7 @@ import java.util.List;
 import cornucopia.dao.FunctionDao;
 import cornucopia.entity.FunctionEntity;
 import cornucopia.entity.FunctionParameterEntity;
+import cornucopia.entity.ParainstEntity;
 import cornucopia.util.MyBatisHelper;
 
 public class FunctionService {
@@ -72,5 +73,13 @@ public class FunctionService {
 	public void updateFunctionParas(int funcId,FunctionParameterEntity[] functionParas) {
 		deletePara(funcId);
 		insertFunctionParas(functionParas);
+	}
+
+	public int addOrUpdateParainst(String parainstId, int functionId, String parainstJson) {
+		return funcdao.addOrUpdateParainst(parainstId,functionId,parainstJson);
+	}
+
+	public ParainstEntity getParainst(String parainstId) {
+		return funcdao.getParainst(parainstId);
 	}
 }

@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Update;
 
 import cornucopia.entity.FunctionEntity;
 import cornucopia.entity.FunctionParameterEntity;
+import cornucopia.entity.ParainstEntity;
 
 public interface FunctionDao {
 	@Select("call sp_function_all()")
@@ -47,4 +48,10 @@ public interface FunctionDao {
 	
 	@Delete("call sp_function_para_delete_by_func_id(#{id})")
 	public int deletePara(@Param("id")int id);
+
+	@Update("call sp_function_parainst_addorupdate(#{parainstId},#{functionId},#{parainstJson})")
+	public int addOrUpdateParainst(@Param("parainstId")String parainstId, @Param("functionId")int functionId, @Param("parainstJson")String parainstJson);
+
+	@Select("call sp_function_parainst_get(#{id})")
+	public ParainstEntity getParainst(@Param("id")String parainstId);
 }
