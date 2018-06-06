@@ -2,7 +2,7 @@
 <div>
   <div class="box" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
   
-      <div v-if="this.cfg.title" class="box-header">
+      <div v-if="this.cfg.title&&!this.showDialog()" class="box-header">
         <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item><i class="fa fa-dashboard"></i> 首页</el-breadcrumb-item>
         <el-breadcrumb-item>{{this.cfg.parentTitle}}</el-breadcrumb-item>
@@ -460,6 +460,15 @@ export default {
     };
   },
   methods: {
+    showDialog: function() {
+      if(this.$parent.$parent.$el){
+        var className = this.$parent.$parent.$el.className;
+        return className.indexOf("el-dialog__wrapper") != -1;
+      }else{
+        return false;
+      }
+      
+    },
     onSelectChange:function(val,id){
       $('#'+id).val(val);
     },
