@@ -115,8 +115,8 @@ export default {
       tableData: [],
       tableCell: [],
       multipleSelection: [],
-      currentComponent:'',
-      dialogVisible: false,
+      currentComponent: "",
+      dialogVisible: false
     };
   },
   methods: {
@@ -131,25 +131,36 @@ export default {
     },
     deleteSelected: function() {
       for (var i = 0; i < this.multipleSelection.length; i++) {
-        this.removeObjWithArr(this.tableData, this.multipleSelection[i]);
+        var index = this.getIndexWithArr(
+          this.tableData,
+          this.multipleSelection[i]
+        );
+        this.tableData.splice(index, 1);
+        this.tableCell.splice(index, 1);
       }
     },
     upSelected: function() {
+      var self = this;
       for (var i = 0; i < this.multipleSelection.length; i++) {
         var index = this.getIndexWithArr(
           this.tableData,
           this.multipleSelection[i]
         );
-        this.upRecord(this.tableData, index);
+        this.upRecord(this.tableData, index, function() {
+          self.swapItems(self.tableCell, index, index - 1);
+        });
       }
     },
     downSelected: function() {
+      var self = this;
       for (var i = 0; i < this.multipleSelection.length; i++) {
         var index = this.getIndexWithArr(
           this.tableData,
           this.multipleSelection[i]
         );
-        this.downRecord(this.tableData, index);
+        this.downRecord(this.tableData, index, function() {
+          self.swapItems(self.tableCell, index, index + 1);
+        });
       }
     },
     handleSelectionChange(val) {
@@ -173,18 +184,24 @@ export default {
       return arr;
     },
     // 上移
-    upRecord: function(arr, $index) {
+    upRecord: function(arr, $index, onSuccess) {
       if ($index == 0) {
         return;
       }
       this.swapItems(arr, $index, $index - 1);
+      if (onSuccess) {
+        onSuccess();
+      }
     },
     // 下移
-    downRecord: function(arr, $index) {
+    downRecord: function(arr, $index, onSuccess) {
       if ($index == arr.length - 1) {
         return;
       }
       this.swapItems(arr, $index, $index + 1);
+      if (onSuccess) {
+        onSuccess();
+      }
     },
     validateFrom: function(onSuccess, onFail) {
       var self = this;
@@ -305,7 +322,7 @@ export default {
         }
       });
     },
-    onClick:function(index,item){
+    onClick: function(index, item) {
       this.dialogVisible = true;
       this.currentComponent = item.url;
     }
