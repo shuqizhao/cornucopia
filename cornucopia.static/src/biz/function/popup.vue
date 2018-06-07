@@ -8,7 +8,8 @@
 export default {
   mounted: function() {
     var self = this;
-    if (self.parainst.parainstId) {
+    var parainstId = self.$parent.$parent.getPopupValue();
+    if (parainstId) {
       $.ajax({
         type: "GET",
         xhrFields: {
@@ -17,8 +18,7 @@ export default {
         url:
           self.getGlobalData().ApiBaseUrl +
           "/function/getParainst?id=" +
-          self.parainst.parainstId,
-        // data: data,
+          parainstId,
         success: function(response) {
           if (response.code == 200) {
             parainst = response.data;
@@ -113,15 +113,15 @@ export default {
         ],
         rules: {},
         messages: {},
-        beforeCommit: function(data) {
-          data.functionId = self.id;
-          data.parainstJson = JSON.stringify(data);
-          if (self.parainst.parainstId) {
-            data.parainstId = self.parainst.parainstId;
-          } else {
-            data.parainstId = self.newGuid();
-          }
-        },
+        // beforeCommit: function(data) {
+        //   data.functionId = self.id;
+        //   data.parainstJson = JSON.stringify(data);
+        //   if (self.parainst.parainstId) {
+        //     data.parainstId = self.parainst.parainstId;
+        //   } else {
+        //     data.parainstId = self.newGuid();
+        //   }
+        // },
         validate: function(data, saveData) {
           if (self.id == 0) {
             self.$message({
@@ -130,7 +130,23 @@ export default {
             });
             return false;
           }
-          return true;
+          data.functionId = self.id;
+          data.parainstJson = JSON.stringify(data);
+          if (self.parainst.parainstId) {
+            data.parainstId = self.parainst.parainstId;
+          } else {
+            data.parainstId = self.newGuid();
+          }
+          saveData(data, function() {
+            self.$parent.$parent.setPopupValue(data.parainstId);
+            self.$parent.$parent.$parent.dialogVisible = false;
+            self.$parent.$parent.$parent.currentComponent = "";
+          });
+          return false;
+        },
+        onCancel: function() {
+          self.$parent.$parent.$parent.dialogVisible = false;
+          self.$parent.$parent.$parent.currentComponent = "";
         }
       },
       id: 0,

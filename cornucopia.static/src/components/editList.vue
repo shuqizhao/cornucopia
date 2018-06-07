@@ -133,7 +133,10 @@ export default {
       tableCell: [],
       multipleSelection: [],
       currentComponent: "",
-      dialogVisible: false
+      dialogVisible: false,
+      popUpValue: "",
+      popUpIndex: "",
+      popUpItem: {}
     };
   },
   methods: {
@@ -345,6 +348,15 @@ export default {
     onClick: function(index, item) {
       this.dialogVisible = true;
       this.currentComponent = item.url;
+      this.popUpValue = this.tableData[index][item.popUpValueName];
+      this.popUpIndex = index;
+      this.popUpItem = item;
+    },
+    getPopupValue: function() {
+      return this.popUpValue;
+    },
+    setPopupValue: function(value) {
+      this.tableData[this.popUpIndex][this.popUpItem.popUpValueName] = value;
     }
   }
 };

@@ -782,7 +782,6 @@ export default {
               }
             }
           } else {
-            debugger;
             if (handler) {
               handler(response);
             } else {

@@ -181,12 +181,13 @@ export default {
             name: "var2",
             title: "变量2",
             type: "text",
-            url:"functionPopup",
+            url: "functionPopup"
           },
           {
             name: "var2From",
             title: "变量2来源",
             type: "combox",
+            popUpValueName:"var2",
             data: [
               {
                 id: 1,
@@ -201,15 +202,17 @@ export default {
                 name: "函数"
               }
             ],
-            onChange: function(index, item, s1,tableCell) {
-              if(!tableCell[index]){
-                tableCell[index]={};
+            onChange: function(index, item, s1, tableCell,tableData) {
+              if (!tableCell[index]) {
+                tableCell[index] = {};
               }
               if (s1 == 3) {
-                tableCell[index]['var2'] = "popup";
-              }else{
-                tableCell[index]['var2'] = "text";
+                tableCell[index]["var2"] = "popup";
+                // this.parainstId = tableData[index][var2];
+              } else {
+                tableCell[index]["var2"] = "text";
               }
+
             }
           },
           {
@@ -307,6 +310,8 @@ export default {
       },
       id: 0
     };
+  },
+  methods: {
   }
 };
 </script>
