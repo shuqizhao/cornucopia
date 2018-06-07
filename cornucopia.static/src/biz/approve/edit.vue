@@ -187,7 +187,6 @@ export default {
             name: "var2From",
             title: "变量2来源",
             type: "combox",
-            popUpValueName:"var2",
             data: [
               {
                 id: 1,

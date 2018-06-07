@@ -17,11 +17,12 @@ export default {
         },
         url:
           self.getGlobalData().ApiBaseUrl +
-          "/function/getParainst?id=" +
+          "/function/getParainst?parainstId=" +
           parainstId,
         success: function(response) {
           if (response.code == 200) {
-            parainst = response.data;
+            self.parainst = response.data;
+            self.getPara(self.parainst.functionId);
           }
         }
       });
@@ -65,63 +66,16 @@ export default {
         onClickRow: function(data, target) {
           self.id = data.id;
 
-          $.ajax({
-            type: "GET",
-            xhrFields: {
-              withCredentials: true
-            },
-            url:
-              self.getGlobalData().ApiBaseUrl +
-              "/function/getPara?id=" +
-              data.id,
-            // data: data,
-            success: function(response) {
-              if (response.code == 200) {
-                self.cfg1.items = [];
-                for (var i = 0; i < response.data.length; i++) {
-                  var dataItem = response.data[i];
-                  self.cfg1.items.push({
-                    lableWidth: "150px",
-                    width: "80%",
-                    isRequire: true,
-                    name: dataItem.name,
-                    title: dataItem.desc,
-                    type: "text"
-                  });
-                  self.cfg1.rules[dataItem.name] = {
-                    required: true
-                  };
-                  self.cfg1.messages[dataItem.name] = {
-                    required: dataItem.desc + "必须填写"
-                  };
-                }
-              }
-            }
-          });
+          self.getPara(data.id);
         }
       },
       cfg1: {
         title: "参数",
         mode: "create",
         save: this.getGlobalData().ApiBaseUrl + "/function/addOrUpdateParainst",
-        items: [
-          // {
-          //   name: "name",
-          //   title: "角色名",
-          //   type: "text"
-          // }
-        ],
+        items: [],
         rules: {},
         messages: {},
-        // beforeCommit: function(data) {
-        //   data.functionId = self.id;
-        //   data.parainstJson = JSON.stringify(data);
-        //   if (self.parainst.parainstId) {
-        //     data.parainstId = self.parainst.parainstId;
-        //   } else {
-        //     data.parainstId = self.newGuid();
-        //   }
-        // },
         validate: function(data, saveData) {
           if (self.id == 0) {
             self.$message({
@@ -139,14 +93,14 @@ export default {
           }
           saveData(data, function() {
             self.$parent.$parent.setPopupValue(data.parainstId);
-            self.$parent.$parent.$parent.dialogVisible = false;
-            self.$parent.$parent.$parent.currentComponent = "";
+            self.$parent.$parent.dialogVisible = false;
+            self.$parent.$parent.currentComponent = "";
           });
           return false;
         },
         onCancel: function() {
-          self.$parent.$parent.$parent.dialogVisible = false;
-          self.$parent.$parent.$parent.currentComponent = "";
+          self.$parent.$parent.dialogVisible = false;
+          self.$parent.$parent.currentComponent = "";
         }
       },
       id: 0,
@@ -155,6 +109,41 @@ export default {
   },
   updated: function() {
     var self = this;
+  },
+  methods: {
+    getPara: function(id) {
+      var self = this;
+      $.ajax({
+        type: "GET",
+        xhrFields: {
+          withCredentials: true
+        },
+        url: self.getGlobalData().ApiBaseUrl + "/function/getPara?id=" + id,
+        success: function(response) {
+          if (response.code == 200) {
+            self.$refs.para.detail = JSON.parse(self.parainst.parainstJson);
+            self.cfg1.items = [];
+            for (var i = 0; i < response.data.length; i++) {
+              var dataItem = response.data[i];
+              self.cfg1.items.push({
+                lableWidth: "150px",
+                width: "80%",
+                isRequire: true,
+                name: dataItem.name,
+                title: dataItem.desc,
+                type: "text"
+              });
+              self.cfg1.rules[dataItem.name] = {
+                required: true
+              };
+              self.cfg1.messages[dataItem.name] = {
+                required: dataItem.desc + "必须填写"
+              };
+            }
+          }
+        }
+      });
+    }
   }
 };
 </script>
