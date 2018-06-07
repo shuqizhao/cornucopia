@@ -429,6 +429,7 @@ export default {
           self.cfg.onClickRow(data,this);
         }
     } );
+    $(self.dataTable.row(1)).css('background-color', "#D6D5C3");
   },
   updated: function() {
     var searchDataTableTop = $(this.$el).find(".searchDataTableTop");

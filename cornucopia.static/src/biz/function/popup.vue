@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-col :span="12"><list :cfg="cfg"></list></el-col>
+    <el-col :span="12"><list ref="func" :cfg="cfg"></list></el-col>
     <el-col :span="12"><mform ref="para" :cfg="cfg1"></mform></el-col>
   </el-row>
 </template>
@@ -23,6 +23,7 @@ export default {
           if (response.code == 200) {
             self.parainst = response.data;
             self.getPara(self.parainst.functionId);
+            self.$refs.func.dataTable.draw(false);
           }
         }
       });
@@ -57,15 +58,13 @@ export default {
         ],
         idName: "id",
         fnRowCallback: function(row, data) {
-          if (data.isEnabled) {
-            $("td:eq(2)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
-          } else {
-            $("td:eq(2)", row).html('<i class="el-icon-close"></i>');
+          if (data.id == self.parainst.functionId) {
+            self.id = data.id;
+            $(row).css("background-color", "#D6D5C3");
           }
         },
         onClickRow: function(data, target) {
           self.id = data.id;
-
           self.getPara(data.id);
         }
       },
@@ -86,7 +85,7 @@ export default {
           }
           data.functionId = self.id;
           data.parainstJson = JSON.stringify(data);
-          if (self.parainst.parainstId) {
+          if (self.parainst.parainstId && self.id == self.parainst.functionId) {
             data.parainstId = self.parainst.parainstId;
           } else {
             data.parainstId = self.newGuid();
