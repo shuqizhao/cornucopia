@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-col :span="12"><list :cfg="cfg"></list></el-col>
-    <el-col :span="12" id="resTree"><tree  ref="tree" :cfg="treeCfg"></tree></el-col>
+    <el-col :span="12"><tree  ref="tree" :cfg="treeCfg"></tree></el-col>
   </el-row>
 </template>
 <script>
@@ -70,7 +70,7 @@ export default {
         },
         onClickRow: function(data, target) {
           self.$refs.tree.cfg.title = data.name;
-          self.openLoading($("#resTree")[0]);
+          self.openLoading(self.$refs.tree);
           $.ajax({
             type: "GET",
             xhrFields: {
@@ -83,7 +83,7 @@ export default {
             success: function(response) {
               if (response.code == "200") {
                 self.$refs.tree.setCheckedKeys(response.data);
-                self.closeLoading();
+                self.closeLoading(self.$refs.tree);
                 self.currentRoleId = data.id;
               } else if (response.message) {
                 self.$message({
