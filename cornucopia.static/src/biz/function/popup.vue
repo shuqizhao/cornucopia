@@ -71,6 +71,7 @@ export default {
           self.closeLoading("func");
         },
         onClickRow: function(data, target) {
+          self.openLoading(self.$refs.para.$el,"para");
           self.id = data.id;
           self.getPara(data.id);
         }
