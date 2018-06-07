@@ -375,6 +375,7 @@ export default {
     };
     self.lastCfg = $.extend(true, dataTableCfg, this.cfg);
     if(!self.lastCfg.bServerSide){
+      self.openLoading();
       self.lastCfg.data=self.getSimpleData();
     }
     self.dataTable = $("#"+self.tableListId).DataTable(self.lastCfg);
@@ -697,6 +698,7 @@ export default {
               message: response.message
             });
           }
+          self.closeLoading();
         }
       });
       return data;

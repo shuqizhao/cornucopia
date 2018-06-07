@@ -123,27 +123,38 @@ Vue.prototype.clearCookie = function(cname, domain) {
 
 Vue.prototype.openLoading = function(el, id) {
     let self = this;
-    let targetTemp = self.$el;
+    let targetTemp = self;
     if (el) {
         targetTemp = el;
     }
-    let idTemp = id;
+    let idTemp = targetTemp.$vnode.tag;
+    if (id) {
+        idTemp = id;
+    }
     self[idTemp] = self.$loading({
         lock: true,
         text: '拼命加载中...',
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)',
-        target: targetTemp
+        target: targetTemp.$el
     });
     setTimeout(() => {
         self[idTemp].close();
     }, 5000);
 }
 
-Vue.prototype.closeLoading = function(id) {
-    var self = this;
-    if (self[id]) {
-        self[id].close();
+Vue.prototype.closeLoading = function(el, id) {
+    let self = this;
+    let targetTemp = self;
+    if (el) {
+        targetTemp = el;
+    }
+    let idTemp = targetTemp.$vnode.tag;
+    if (id) {
+        idTemp = id;
+    }
+    if (self[idTemp]) {
+        self[idTemp].close();
     }
 }
 

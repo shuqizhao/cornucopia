@@ -86,8 +86,8 @@ export default {
               data.id,
             success: function(response) {
               if (response.code == "200") {
-                self.closeLoading("id1");
-                self.closeLoading("id2");
+                self.closeLoading(self,"id1");
+                self.closeLoading(self,"id2");
                 $("#id1").attr('processId',data.id);
                 self.$refs.nodeList.loadSimpleData(response.data);
               } else if (response.message) {

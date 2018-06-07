@@ -8,10 +8,10 @@
 export default {
   mounted: function() {
     var self = this;
-    this.openLoading(self.$refs.func.$el,"func");
+    // this.openLoading(self.$refs.func,"func");
     var parainstId = self.$parent.$parent.getPopupValue();
     if (parainstId) {
-      this.openLoading(self.$refs.para.$el,"para");
+      this.openLoading(self.$refs.para,"para");
       $.ajax({
         type: "GET",
         xhrFields: {
@@ -68,10 +68,10 @@ export default {
             self.id = data.id;
             $(row).css("background-color", "#D6D5C3");
           }
-          self.closeLoading("func");
+          self.closeLoading(self,"func");
         },
         onClickRow: function(data, target) {
-          self.openLoading(self.$refs.para.$el,"para");
+          self.openLoading(self.$refs.para,"para");
           self.id = data.id;
           self.getPara(data.id);
         }
@@ -149,7 +149,7 @@ export default {
                 required: dataItem.desc + "必须填写"
               };
             }
-            self.closeLoading("para");
+            self.closeLoading(self,"para");
           }
         }
       });
