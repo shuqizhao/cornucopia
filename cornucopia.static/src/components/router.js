@@ -142,7 +142,9 @@ Vue.prototype.openLoading = function(el, id) {
 
 Vue.prototype.closeLoading = function(id) {
     var self = this;
-    self[id].close();
+    if (self[id]) {
+        self[id].close();
+    }
 }
 
 /**

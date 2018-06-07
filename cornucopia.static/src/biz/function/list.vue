@@ -9,7 +9,7 @@ export default {
       cfg: {
         title: "函数管理",
         parentTitle: "权限管理",
-        simpleUrl: this.getGlobalData().ApiBaseUrl + "/function/alllist",
+        simpleUrl: this.getGlobalData().ApiBaseUrl + "/function/alllist?id=0",
         lengthMenu: [[-1], ["ALL"]],
         sDom: 'f<"dataTables_function"/>',
         bServerSide: false,
