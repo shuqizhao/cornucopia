@@ -20,8 +20,8 @@ public class FunctionService {
 
 	FunctionDao funcdao = MyBatisHelper.getMapper(FunctionDao.class);
 
-	public List<FunctionEntity> getAll() {
-		return funcdao.getAll();
+	public List<FunctionEntity> getAll(int id) {
+		return funcdao.getAll(id);
 	}
 
 	public int exists(String funcName) {

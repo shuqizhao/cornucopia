@@ -658,7 +658,7 @@ export default {
       self.dataTable.search(JSON.stringify(data)).draw();
     }
     ,
-    getSimpleData: function() {
+    getSimpleData: function(simpleUrl) {
       var self = this;
       if(!self.cfg.simpleUrl){
         return;
@@ -670,7 +670,7 @@ export default {
         xhrFields: {
           withCredentials: true
         },
-        url: self.cfg.simpleUrl,
+        url: simpleUrl||self.cfg.simpleUrl,
         success: function(response) {
           if (response.code == "200") {
             data = response.data;
@@ -684,10 +684,10 @@ export default {
       });
       return data;
     },
-    reloadSimpleData:function(){
+    reloadSimpleData:function(getSimpleData){
       var self = this;
       if(!self.lastCfg.bServerSide){
-        self.lastCfg.data=self.getSimpleData();
+        self.lastCfg.data=self.getSimpleData(getSimpleData);
         self.dataTable.clear().rows.add(self.lastCfg.data).draw()
       }
     },

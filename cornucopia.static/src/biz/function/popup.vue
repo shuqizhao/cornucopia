@@ -23,7 +23,11 @@ export default {
           if (response.code == 200) {
             self.parainst = response.data;
             self.getPara(self.parainst.functionId);
-            self.$refs.func.dataTable.draw(false);
+            self.$refs.func.reloadSimpleData(
+              self.getGlobalData().ApiBaseUrl +
+                "/function/alllist?id=" +
+                self.parainst.functionId
+            );
           }
         }
       });
@@ -35,7 +39,7 @@ export default {
       cfg: {
         title: "选择函数",
         // parentTitle: "权限管理",
-        simpleUrl: this.getGlobalData().ApiBaseUrl + "/function/alllist",
+        simpleUrl: this.getGlobalData().ApiBaseUrl + "/function/alllist?id=0",
         lengthMenu: [[-1], ["ALL"]],
         sDom: 'f<"dataTables_function"/>',
         bServerSide: false,
@@ -120,7 +124,7 @@ export default {
         url: self.getGlobalData().ApiBaseUrl + "/function/getPara?id=" + id,
         success: function(response) {
           if (response.code == 200) {
-            if(self.parainst.parainstJson){
+            if (self.parainst.parainstJson) {
               self.$refs.para.detail = JSON.parse(self.parainst.parainstJson);
             }
             self.cfg1.items = [];

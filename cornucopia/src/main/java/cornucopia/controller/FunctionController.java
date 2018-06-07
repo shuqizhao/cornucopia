@@ -19,8 +19,8 @@ import cornucopia.service.FunctionService;
 @RequestMapping("/function")
 public class FunctionController {
 	@RequestMapping(value = { "/alllist" }, method = RequestMethod.GET)
-	public JsonResult<List<FunctionEntity>> alllist() {
-		List<FunctionEntity> funcs = FunctionService.getInstance().getAll();
+	public JsonResult<List<FunctionEntity>> alllist(int id) {
+		List<FunctionEntity> funcs = FunctionService.getInstance().getAll(id);
 
 		JsonResult<List<FunctionEntity>> jr = new JsonResult<List<FunctionEntity>>();
 		jr.setCode(200);

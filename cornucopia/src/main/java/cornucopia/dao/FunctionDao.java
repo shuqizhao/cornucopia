@@ -14,8 +14,8 @@ import cornucopia.entity.FunctionParameterEntity;
 import cornucopia.entity.ParainstEntity;
 
 public interface FunctionDao {
-	@Select("call sp_function_all()")
-	public List<FunctionEntity> getAll();
+	@Select("call sp_function_all(#{id})")
+	public List<FunctionEntity> getAll(@Param("id")int id);
 
 	@Select("call sp_function_exists(#{funcName})")
 	public int exists(@Param("funcName") String funcName);
