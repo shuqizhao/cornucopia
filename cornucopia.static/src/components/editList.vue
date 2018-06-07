@@ -6,7 +6,10 @@
         <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item v-if="this.cfg.parentTitle"><i class="fa fa-dashboard"></i> 首页</el-breadcrumb-item>
         <el-breadcrumb-item v-if="this.cfg.parentTitle">{{this.cfg.parentTitle}}</el-breadcrumb-item>
-        <el-breadcrumb-item> <i class="el-icon-circle-plus" />{{this.cfg.title}}</el-breadcrumb-item>
+        <el-breadcrumb-item> 
+          <i v-if="cfg.mode=='edit'" class="el-icon-edit" />
+          <i v-else class="el-icon-circle-plus" />
+          {{this.cfg.title}}</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>

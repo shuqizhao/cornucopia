@@ -48,24 +48,6 @@ export default {
           }
         },
         validate: function(data, saveData) {
-          //   $.ajax({
-          //     type: "POST",
-          //     xhrFields: {
-          //       withCredentials: true
-          //     },
-          //     url: self.getGlobalData().ApiBaseUrl + "/approve/exists",
-          //     data: data,
-          //     success: function(response) {
-          //       if (response.code == 200 && response.data == 0) {
-          //         saveData(data);
-          //       } else {
-          //         self.$message({
-          //           type: "warning",
-          //           message: "角色已经存在!"
-          //         });
-          //       }
-          //     }
-          //   });
           return true;
         }
       },

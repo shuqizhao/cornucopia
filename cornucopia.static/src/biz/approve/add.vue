@@ -39,24 +39,6 @@ export default {
           }
         },
         validate: function(data, saveData) {
-          //   $.ajax({
-          //     type: "POST",
-          //     xhrFields: {
-          //       withCredentials: true
-          //     },
-          //     url: self.getGlobalData().ApiBaseUrl + "/approve/exists",
-          //     data: data,
-          //     success: function(response) {
-          //       if (response.code == 200 && response.data == 0) {
-          //         saveData(data);
-          //       } else {
-          //         self.$message({
-          //           type: "warning",
-          //           message: "角色已经存在!"
-          //         });
-          //       }
-          //     }
-          //   });
           return true;
         }
       },
@@ -64,6 +46,7 @@ export default {
         title: "条件公式",
         mode: "create",
         name:'approveConditions',
+        dialogWidth: "95%",
         items: [
           {
             name: "boolOperation",
@@ -83,7 +66,8 @@ export default {
           {
             name: "var1",
             title: "变量1",
-            type: "text"
+            type: "text",
+            url: "functionPopup"
           },
           {
             name: "var1From",
@@ -97,11 +81,27 @@ export default {
               {
                 id: 2,
                 name: "表单xpath"
-              } ,{
+              },
+              {
                 id: 3,
                 name: "函数"
-              },
-            ]
+              }
+            ],
+            onChange: function(index, item, s1, tableCell,tableData,status) {
+              if (!tableCell[index]) {
+                tableCell[index] = {};
+              }
+              if(status!=1){
+                tableData[index]["var1"]="";
+              }
+              
+              if (s1 == 3) {
+                tableCell[index]["var1"] = "popup";
+                // this.parainstId = tableData[index][var2];
+              } else {
+                tableCell[index]["var1"] = "text";
+              }
+            }
           },
           {
             name: "var1Type",
@@ -160,7 +160,8 @@ export default {
           {
             name: "var2",
             title: "变量2",
-            type: "text"
+            type: "text",
+            url: "functionPopup"
           },
           {
             name: "var2From",
@@ -175,11 +176,27 @@ export default {
                 id: 2,
                 name: "表单xpath"
               },
-               {
+              {
                 id: 3,
                 name: "函数"
-              },
-            ]
+              }
+            ],
+            onChange: function(index, item, s1, tableCell,tableData,status) {
+              if (!tableCell[index]) {
+                tableCell[index] = {};
+              }
+              if(status!=1){
+                tableData[index]["var2"]="";
+              }
+              
+              if (s1 == 3) {
+                tableCell[index]["var2"] = "popup";
+                // this.parainstId = tableData[index][var2];
+              } else {
+                tableCell[index]["var2"] = "text";
+              }
+
+            }
           },
           {
             name: "var2Type",
@@ -230,21 +247,27 @@ export default {
             type: "btn-success",
             icon: "el-icon-circle-plus",
             onClick: function() {
-              self.$refs.editList.insertNew({boolOperation:1,var1From:2,var1Type:1,var2From:1,var2Type:1});
+              self.$refs.editList.insertNew({
+                boolOperation: 1,
+                var1From: 2,
+                var1Type: 1,
+                var2From: 1,
+                var2Type: 1
+              });
             }
           },
           {
             text: "删除",
             type: "btn-success",
-            icon: "el-icon-edit",
+            icon: "el-icon-delete",
             onClick: function() {
-             self.$refs.editList.deleteSelected();
+              self.$refs.editList.deleteSelected();
             }
           },
           {
             text: "上移",
             type: "btn-success",
-            icon: "el-icon-edit",
+            icon: "el-icon-arrow-up",
             onClick: function() {
               self.$refs.editList.upSelected();
             }
@@ -252,7 +275,7 @@ export default {
           {
             text: "下移",
             type: "btn-success",
-            icon: "el-icon-edit",
+            icon: "el-icon-arrow-down",
             onClick: function() {
               self.$refs.editList.downSelected();
             }

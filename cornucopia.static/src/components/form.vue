@@ -5,6 +5,7 @@
         <div class="box-header with-border">
             <i v-if="cfg.mode=='detailEdit'&&cfg.detailEditMode!='edit'" class="el-icon-view" />
             <i v-else-if="cfg.mode=='detailEdit'&&cfg.detailEditMode=='edit'" class="el-icon-edit" />
+            <i v-else-if="cfg.mode=='edit'" class="el-icon-edit" />
             <i v-else class="el-icon-circle-plus" />
             <h3 v-if="cfg.mode=='detailEdit'&&cfg.detailEditMode!='edit'" class="box-title">{{cfg.detailTitle}}</h3>
             <h3 v-else-if="cfg.mode=='detailEdit'&&cfg.detailEditMode=='edit'" class="box-title">{{cfg.editTitle}}</h3>
