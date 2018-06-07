@@ -15,6 +15,16 @@
         </div>
         <hr v-if="SearchItemsCount==0"/>
       </div>
+      <div v-if="this.cfg.title&&this.showDialog()" class="box-header">
+        <i class="el-icon-circle-plus" />
+        <h3 class="box-title">{{cfg.title}}</h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+          </button>
+          <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+        </div>
+        <hr v-if="SearchItemsCount==0"/>
+      </div>
 
       <div v-show="SearchItemsCount!=0" class="box-header searchDataTableTop">
         <el-collapse v-model="activeName"  @change="onCollapseChange">
@@ -462,6 +472,13 @@ export default {
   },
   methods: {
     showDialog: function() {
+      var parents = $(this.$el).parents("div");
+      for(var i=0;i<parents.length;i++){
+        var parent = parents[i];
+        if(parents[i].className.indexOf("el-dialog__wrapper") != -1){
+          return true;
+        }
+      }
       if(this.$parent.$parent.$el){
         var className = this.$parent.$parent.$el.className;
         return className.indexOf("el-dialog__wrapper") != -1;
