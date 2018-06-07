@@ -53,7 +53,6 @@
         :show-checkbox="!this.cfg.hideCheckBox"
         :filter-node-method="filterNode"
         @node-click="onNodeClick"
-        style="font-size:18px"
         ref="tree2">
 
           <span class="custom-tree-node" slot-scope="{ node, data }">
@@ -287,7 +286,4 @@ export default {
 };
 </script>
 <style>
-.el-tree {
-  font-size: 24;
-}
 </style>
