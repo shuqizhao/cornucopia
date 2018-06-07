@@ -275,7 +275,7 @@ export default {
           {
             text: "删除",
             type: "btn-success",
-            icon: "el-icon-edit",
+            icon: "el-icon-delete",
             onClick: function() {
               self.$refs.editList.deleteSelected();
             }
@@ -283,7 +283,7 @@ export default {
           {
             text: "上移",
             type: "btn-success",
-            icon: "el-icon-edit",
+            icon: "el-icon-arrow-up",
             onClick: function() {
               self.$refs.editList.upSelected();
             }
@@ -291,7 +291,7 @@ export default {
           {
             text: "下移",
             type: "btn-success",
-            icon: "el-icon-edit",
+            icon: "el-icon-arrow-down",
             onClick: function() {
               self.$refs.editList.downSelected();
             }
