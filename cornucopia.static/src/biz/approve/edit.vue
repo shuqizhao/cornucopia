@@ -102,7 +102,8 @@ export default {
           {
             name: "var1",
             title: "变量1",
-            type: "text"
+            type: "text",
+            url: "functionPopup"
           },
           {
             name: "var1From",
@@ -121,7 +122,22 @@ export default {
                 id: 3,
                 name: "函数"
               }
-            ]
+            ],
+            onChange: function(index, item, s1, tableCell,tableData,status) {
+              if (!tableCell[index]) {
+                tableCell[index] = {};
+              }
+              if(status!=1){
+                tableData[index]["var1"]="";
+              }
+              
+              if (s1 == 3) {
+                tableCell[index]["var1"] = "popup";
+                // this.parainstId = tableData[index][var2];
+              } else {
+                tableCell[index]["var1"] = "text";
+              }
+            }
           },
           {
             name: "var1Type",
@@ -201,10 +217,14 @@ export default {
                 name: "函数"
               }
             ],
-            onChange: function(index, item, s1, tableCell,tableData) {
+            onChange: function(index, item, s1, tableCell,tableData,status) {
               if (!tableCell[index]) {
                 tableCell[index] = {};
               }
+              if(status!=1){
+                tableData[index]["var2"]="";
+              }
+              
               if (s1 == 3) {
                 tableCell[index]["var2"] = "popup";
                 // this.parainstId = tableData[index][var2];

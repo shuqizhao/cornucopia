@@ -118,7 +118,8 @@ export default {
                 item,
                 self.tableData[i][item.name],
                 self.tableCell,
-                self.tableData
+                self.tableData,
+                1
               );
             }
           }

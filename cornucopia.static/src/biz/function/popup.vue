@@ -120,7 +120,9 @@ export default {
         url: self.getGlobalData().ApiBaseUrl + "/function/getPara?id=" + id,
         success: function(response) {
           if (response.code == 200) {
-            self.$refs.para.detail = JSON.parse(self.parainst.parainstJson);
+            if(self.parainst.parainstJson){
+              self.$refs.para.detail = JSON.parse(self.parainst.parainstJson);
+            }
             self.cfg1.items = [];
             for (var i = 0; i < response.data.length; i++) {
               var dataItem = response.data[i];
