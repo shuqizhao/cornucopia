@@ -78,7 +78,11 @@ export default {
           self.currentApproveId = 0;
           self.currentApproveId2 = 0;
           self.$refs.tree1.loadUrl(1, 0);
-          self.$refs.positionList.reloadSimpleData(self.getGlobalData().ApiBaseUrl + "/approve/positionlist?processNodeId="+(self.$refs.tree.value2||0));
+          self.$refs.positionList.reloadSimpleData(
+            self.getGlobalData().ApiBaseUrl +
+              "/approve/positionlist?processNodeId=" +
+              (self.$refs.tree.value2 || 0)
+          );
         }
       },
       treeCfg1: {
@@ -196,7 +200,8 @@ export default {
             }
           ]
         },
-        onClickRow: function(data, target) {}
+        onClickRow: function(data, target) {},
+        
       },
       currentApproveId: 0,
       currentApproveId2: 0

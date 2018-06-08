@@ -783,17 +783,17 @@ export default {
               }
             }
           } else {
+            if (self.showDialog()) {
+              self.$parent.$parent.$parent.dialogVisible = false;
+              self.$parent.$parent.$parent.currentComponent = "";
+              debugger;
+              self.$parent.$parent.$parent.reloadSimpleData();
+              return;
+            }
             if (handler) {
               handler(response);
             } else {
-              if (self.showDialog()) {
-                self.$parent.$parent.$parent.dialogVisible = false;
-                self.$parent.$parent.$parent.currentComponent = "";
-                self.$parent.$parent.$parent.reloadSimpleData();
-                return;
-              } else {
-                history.go(-1);
-              }
+              history.go(-1);
             }
           }
         }

@@ -128,4 +128,13 @@ public class ApproveController {
 		jr.setData(poses);
 		return jr;
 	}
+	
+	@RequestMapping(value = { "/positionAdd" }, method = RequestMethod.POST)
+	public JsonResult<Integer> positionAdd(ApprovePositionEntity pos) {
+		int id = ApprovePositionService.getInstance().insert(pos);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(id);
+		return jr;
+	}
 }

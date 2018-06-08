@@ -6,7 +6,7 @@ export default {
   mounted: function() {
     var self = this;
     if (!self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2) {
-        this.$message({
+      this.$message({
         message: "请先选择流程节点!",
         type: "warning"
       });
@@ -50,8 +50,20 @@ export default {
           }
         },
         validate: function(data, saveData) {
-          data.processNodeId = self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2;
+          data.processNodeId =
+            self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2;
           return true;
+        },
+        onSuccess: function() {
+          self.$parent.$parent.$parent.$parent.$parent.$refs.positionList.dialogVisible = false;
+          self.$parent.$parent.$parent.$parent.$parent.$refs.positionList.currentComponent =
+            "";
+          self.$parent.$parent.$parent.$parent.$parent.$refs.positionList.reloadSimpleData(
+            self.getGlobalData().ApiBaseUrl +
+              "/approve/positionlist?processNodeId=" +
+              (self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2 || 0)
+          );
+          return false;
         }
       }
     };
