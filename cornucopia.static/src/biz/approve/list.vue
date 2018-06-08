@@ -171,10 +171,17 @@ export default {
         idName: "id",
         fnRowCallback: function(row, data) {
           if (data.isEnabled) {
-            $("td:eq(1)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
+            $("td:eq(3)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
           } else {
-            $("td:eq(1)", row).html('<i class="el-icon-close"></i>');
+            $("td:eq(3)", row).html('<i class="el-icon-close"></i>');
           }
+
+          if (data.type==1) {
+            $("td:eq(1)", row).html('角色');
+          } else {
+            $("td:eq(1)", row).html('规则');
+          }
+
         },
         functions: {
           common: [
