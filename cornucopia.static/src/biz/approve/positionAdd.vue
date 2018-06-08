@@ -50,6 +50,7 @@ export default {
           }
         },
         validate: function(data, saveData) {
+          data.processNodeId = self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2;
           return true;
         }
       }

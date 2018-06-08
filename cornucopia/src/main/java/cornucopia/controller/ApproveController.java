@@ -12,6 +12,8 @@ import cornucopia.entity.JsonResult;
 import cornucopia.model.ApproveViewModel;
 import cornucopia.entity.ApproveConditionEntity;
 import cornucopia.entity.ApproveEntity;
+import cornucopia.entity.ApprovePositionEntity;
+import cornucopia.service.ApprovePositionService;
 import cornucopia.service.ApproveService;
 
 @RestController
@@ -118,12 +120,12 @@ public class ApproveController {
 	}
 	
 	@RequestMapping(value = { "/positionlist" }, method = RequestMethod.GET)
-	public JsonResult<List<ApproveEntity>> positionlist(int processNodeId) {
-		List<ApproveEntity> approves = ApproveService.getInstance().getAll(processNodeId);
+	public JsonResult<List<ApprovePositionEntity>> positionlist(int processNodeId) {
+		List<ApprovePositionEntity> poses = ApprovePositionService.getInstance().getAll(processNodeId);
 		
-		JsonResult<List<ApproveEntity>> jr = new JsonResult<List<ApproveEntity>>();
+		JsonResult<List<ApprovePositionEntity>> jr = new JsonResult<List<ApprovePositionEntity>>();
 		jr.setCode(200);
-		jr.setData(approves);
+		jr.setData(poses);
 		return jr;
 	}
 }
