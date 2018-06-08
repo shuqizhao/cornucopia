@@ -3,8 +3,8 @@
 <div class="box-header">
   <div v-if="this.cfg.title">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item><i class="fa fa-dashboard"></i> 首页</el-breadcrumb-item>
-        <el-breadcrumb-item>{{this.cfg.parentTitle}}</el-breadcrumb-item>
+        <el-breadcrumb-item v-if="this.cfg.parentTitle"><i class="fa fa-dashboard"></i> 首页</el-breadcrumb-item>
+        <el-breadcrumb-item v-if="this.cfg.parentTitle">{{this.cfg.parentTitle}}</el-breadcrumb-item>
         <el-breadcrumb-item>{{this.cfg.title}}</el-breadcrumb-item>
         </el-breadcrumb>
         <hr/>

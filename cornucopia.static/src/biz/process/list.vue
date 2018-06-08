@@ -73,8 +73,8 @@ export default {
         },
         onClickRow: function(data, target) {
           // self.$refs.tree.cfg.title = data.name;
-          self.openLoading($("#id1")[0],"id1");
-          self.openLoading($("#id2")[0],"id2");
+          self.openLoading(self.$refs.nodeList);
+          // self.openLoading($("#id2")[0],"id2");
           $.ajax({
             type: "GET",
             xhrFields: {
@@ -86,8 +86,8 @@ export default {
               data.id,
             success: function(response) {
               if (response.code == "200") {
-                self.closeLoading(self,"id1");
-                self.closeLoading(self,"id2");
+                self.closeLoading(self.$refs.nodeList);
+                // self.closeLoading(self,"id2");
                 $("#id1").attr('processId',data.id);
                 self.$refs.nodeList.loadSimpleData(response.data);
               } else if (response.message) {

@@ -13,7 +13,7 @@ export default {
     return {
       treeCfg: {
         title: "审批路线(一)",
-        parentTitle: "流程管理",
+        // parentTitle: "流程管理",
         filterType: "combox",
         hideToolBar: true,
         dialogWidth: "95%",
@@ -82,7 +82,7 @@ export default {
       },
       treeCfg1: {
         title: "审批路线(二)",
-        parentTitle: "流程管理",
+        // parentTitle: "流程管理",
         filterType: "combox",
         dialogWidth: "95%",
         hideCheckBox: true,
@@ -129,7 +129,7 @@ export default {
       },
       cfg1: {
         title: "审批岗位",
-        parentTitle: "流程管理",
+        // parentTitle: "流程管理",
         lengthMenu: [[-1], ["ALL"]],
         sDom: 'f<"dataTables_function"/>',
         bServerSide: false,
@@ -203,8 +203,6 @@ export default {
   },
   updated: function() {
     var self = this;
-    // self.$parent.title = self.cfg.title;
-    // self.$parent.parentTitle = self.cfg.parentTitle;
   }
 };
 </script>
