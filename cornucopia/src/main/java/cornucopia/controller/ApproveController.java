@@ -116,4 +116,14 @@ public class ApproveController {
 		jr.setData(approveVm.getApprove().getId());
 		return jr;
 	}
+	
+	@RequestMapping(value = { "/positionlist" }, method = RequestMethod.GET)
+	public JsonResult<List<ApproveEntity>> positionlist(int processNodeId) {
+		List<ApproveEntity> approves = ApproveService.getInstance().getAll(processNodeId);
+		
+		JsonResult<List<ApproveEntity>> jr = new JsonResult<List<ApproveEntity>>();
+		jr.setCode(200);
+		jr.setData(approves);
+		return jr;
+	}
 }

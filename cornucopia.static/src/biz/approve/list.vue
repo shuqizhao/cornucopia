@@ -2,7 +2,7 @@
   <el-row>
     <el-col :span="6"><tree  ref="tree" :cfg="treeCfg"></tree></el-col>
     <el-col :span="6"><tree  ref="tree1" :cfg="treeCfg1"></tree></el-col>
-    <el-col :span="12"><list :cfg="cfg1"></list></el-col>
+    <el-col :span="12"><list ref="positionList" :cfg="cfg1"></list></el-col>
   </el-row>
 </template>
 <script>
@@ -78,6 +78,7 @@ export default {
           self.currentApproveId = 0;
           self.currentApproveId2 = 0;
           self.$refs.tree1.loadUrl(1, 0);
+          self.$refs.positionList.reloadSimpleData(self.getGlobalData().ApiBaseUrl + "/approve/positionlist?processNodeId="+(self.$refs.tree.value2||0));
         }
       },
       treeCfg1: {

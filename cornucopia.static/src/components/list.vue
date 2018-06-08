@@ -374,10 +374,13 @@ export default {
       "lengthMenu": [[5,10, 25, 50, 100,300], [5,10, 25, 50, 100,300]]
     };
     self.lastCfg = $.extend(true, dataTableCfg, this.cfg);
-    if(!self.lastCfg.bServerSide){
-      self.lastCfg.data=self.getSimpleData();
-    }
+    
     self.dataTable = $("#"+self.tableListId).DataTable(self.lastCfg);
+
+    if(!self.lastCfg.bServerSide){
+      self.reloadSimpleData();
+    }
+
     self.dataTable.on("draw", function() {
       $(self.$el)
         .find(".dataTables_paginate")
@@ -675,16 +678,16 @@ export default {
       self.dataTable.search(JSON.stringify(data)).draw();
     }
     ,
-    getSimpleData: function(simpleUrl) {
+    getSimpleData: function(simpleUrl,onSuccess) {
       var self = this;
-      if(!self.cfg.simpleUrl){
+      if(!self.cfg.simpleUrl&&!simpleUrl){
         return;
       }
       self.openLoading();
       var data = [];
       $.ajax({
         type: "GET",
-        async:false,
+        // async:false,
         xhrFields: {
           withCredentials: true
         },
@@ -692,6 +695,9 @@ export default {
         success: function(response) {
           if (response.code == "200") {
             data = response.data;
+            if(onSuccess){
+              onSuccess(data);
+            }
           } else if (response.message) {
             self.$message({
               type: "warning",
@@ -706,8 +712,10 @@ export default {
     reloadSimpleData:function(simpleUrl){
       var self = this;
       if(!self.lastCfg.bServerSide){
-        self.lastCfg.data=self.getSimpleData(simpleUrl);
-        self.dataTable.clear().rows.add(self.lastCfg.data).draw()
+        self.getSimpleData(simpleUrl,function(data){
+          self.dataTable.clear().rows.add(data).draw()
+        });
+        
       }
     },
     loadSimpleData:function(data){
