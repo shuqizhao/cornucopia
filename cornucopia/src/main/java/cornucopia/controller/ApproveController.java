@@ -137,4 +137,22 @@ public class ApproveController {
 		jr.setData(id);
 		return jr;
 	}
+	
+	@RequestMapping(value = { "/positionUpdate" }, method = RequestMethod.POST)
+	public JsonResult<Integer> positionUpdate(ApprovePositionEntity pos) {
+		int id = ApprovePositionService.getInstance().update(pos);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(id);
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/getPosition" }, method = RequestMethod.GET)
+	public JsonResult<ApprovePositionEntity> getPosition(int id) {
+		ApprovePositionEntity approvePositionEntity = ApprovePositionService.getInstance().getPosition(id);
+		JsonResult<ApprovePositionEntity> jr = new JsonResult<ApprovePositionEntity>();
+		jr.setCode(200);
+		jr.setData(approvePositionEntity);
+		return jr;
+	}
 }

@@ -6,8 +6,16 @@ export default {
   mounted: function() {
     var self = this;
     if (!self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2) {
-        this.$message({
+      this.$message({
         message: "请先选择流程节点!",
+        type: "warning"
+      });
+      this.$parent.$parent.dialogVisible = false;
+      this.$parent.$parent.currentComponent = "";
+    }
+    if (self.$parent.$parent.$parent.$parent.$parent.currentPositionId == 0) {
+      this.$message({
+        message: "请先选择审批岗位!",
         type: "warning"
       });
       this.$parent.$parent.dialogVisible = false;
@@ -19,9 +27,20 @@ export default {
     return {
       cfg: {
         title: "添加审批岗位",
-        mode: "create",
-        save: this.getGlobalData().ApiBaseUrl + "/approve/positionAdd",
+        mode: "edit",
+        save: this.getGlobalData().ApiBaseUrl + "/approve/positionUpdate",
+        get: {
+          url: this.getGlobalData().ApiBaseUrl + "/approve/getPosition",
+          params: {
+            id: self.$parent.$parent.$parent.$parent.$parent.currentPositionId
+          }
+        },
         items: [
+          {
+            name: "id",
+            title: "id",
+            type: "hidden"
+          },
           {
             name: "name",
             title: "岗位名",
@@ -51,6 +70,17 @@ export default {
         },
         validate: function(data, saveData) {
           return true;
+        },
+        onSuccess: function() {
+          self.$parent.$parent.$parent.$parent.$parent.$refs.positionList.dialogVisible = false;
+          self.$parent.$parent.$parent.$parent.$parent.$refs.positionList.currentComponent =
+            "";
+          self.$parent.$parent.$parent.$parent.$parent.$refs.positionList.reloadSimpleData(
+            self.getGlobalData().ApiBaseUrl +
+              "/approve/positionlist?processNodeId=" +
+              (self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2 || 0)
+          );
+          return false;
         }
       }
     };

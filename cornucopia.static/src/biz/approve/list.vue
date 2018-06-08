@@ -190,6 +190,12 @@ export default {
               url: "approvePositionAdd",
               mode: "modal",
               functionName: "approvePositionAdd"
+            },
+            {
+              text: "编辑岗位",
+              url: "approvePositionEdit",
+              mode: "modal",
+              functionName: "approvePositionEdit"
             }
           ],
           more: [
@@ -207,11 +213,14 @@ export default {
             }
           ]
         },
-        onClickRow: function(data, target) {},
+        onClickRow: function(data, target) {
+          self.currentPositionId = data.id;
+        },
         
       },
       currentApproveId: 0,
-      currentApproveId2: 0
+      currentApproveId2: 0,
+      currentPositionId:0
     };
   },
   updated: function() {

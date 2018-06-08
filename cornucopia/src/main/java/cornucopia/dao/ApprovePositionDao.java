@@ -27,4 +27,10 @@ public interface ApprovePositionDao {
 	
 	@Update("call sp_approve_position_delete(#{id})")
 	public int delete(@Param("id")int id);
+
+	@Select("call sp_approve_position_get(#{id})")
+	public ApprovePositionEntity getPosition(@Param("id")int id);
+
+	@Update("call sp_approve_position_update(#{pos.id},#{pos.name},#{pos.type},#{pos.rule})")
+	public int update(@Param("pos") ApprovePositionEntity pos);
 }

@@ -37,4 +37,12 @@ public class ApprovePositionService {
 	public int delete(int id) {
 		return posdao.delete(id);
 	}
+
+	public ApprovePositionEntity getPosition(int id) {
+		return posdao.getPosition(id);
+	}
+
+	public int update(ApprovePositionEntity pos) {
+		return posdao.update(pos);
+	}
 }
