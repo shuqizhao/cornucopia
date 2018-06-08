@@ -703,10 +703,10 @@ export default {
       });
       return data;
     },
-    reloadSimpleData:function(getSimpleData){
+    reloadSimpleData:function(simpleUrl){
       var self = this;
       if(!self.lastCfg.bServerSide){
-        self.lastCfg.data=self.getSimpleData(getSimpleData);
+        self.lastCfg.data=self.getSimpleData(simpleUrl);
         self.dataTable.clear().rows.add(self.lastCfg.data).draw()
       }
     },
