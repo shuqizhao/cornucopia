@@ -214,4 +214,13 @@ public class ApproveController {
 		jr.setData(ruleEnity);
 		return jr;
 	}
+	
+	@RequestMapping(value = { "/getRuleChildren" }, method = RequestMethod.GET)
+	public JsonResult<List<RuleEntity>> getRuleChildren(int ruleId) {
+		List<RuleEntity> rules = RuleService.getInstance().getRuleChildren(ruleId);
+		JsonResult<List<RuleEntity>> jr = new JsonResult<List<RuleEntity>>();
+		jr.setCode(200);
+		jr.setData(rules);
+		return jr;
+	}
 }

@@ -33,4 +33,7 @@ public interface RuleDao {
 
 	@Select("call sp_rule_get(#{id})")
 	public RuleEntity get(@Param("id")int id);
+
+	@Select("call sp_rule_get_children(#{ruleId})")
+	public List<RuleEntity> getRuleChildren(@Param("ruleId")int ruleId);
 }

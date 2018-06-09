@@ -45,4 +45,8 @@ public class RuleService {
 	public RuleEntity get(int id) {
 		return ruledao.get(id);
 	}
+
+	public List<RuleEntity> getRuleChildren(int ruleId) {
+		return ruledao.getRuleChildren(ruleId);
+	}
 }

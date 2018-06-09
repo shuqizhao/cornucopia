@@ -48,19 +48,19 @@ export default {
         ],
         onNodeClick: function(data) {
           self.currentRuleId = data.id;
+          self.$refs.tree1.loadUrl(1, data.id);
         }
       },
       treeCfg1: {
-        title: "条件列表",
-        // parentTitle: "流程管理",
+        title: "岗位子规则",
         filterType: "combox",
         dialogWidth: "95%",
         hideCheckBox: true,
         hideToolBar: true,
         url:
-          this.getGlobalData().ApiBaseUrl + "/approve/allchildren?approveId=",
+          this.getGlobalData().ApiBaseUrl + "/approve/getRuleChildren?ruleId=",
         onNodeClick: function(data) {
-          self.currentApproveId2 = data.id;
+          self.currentRuleId2 = data.id;
         },
         functions: [
           {
@@ -68,14 +68,14 @@ export default {
             type: "btn-success",
             icon: "el-icon-circle-plus",
             onClick: function() {
-              if (self.currentApproveId == 0) {
+              if (self.currentRuleId == 0) {
                 self.$message({
-                  message: "请先选择审批路线(一)!",
+                  message: "请先选择岗位规则!",
                   type: "warning"
                 });
                 return;
               }
-              self.$refs.tree1.currentComponent = "approveAdd";
+              self.$refs.tree1.currentComponent = "ruleChildAdd";
               self.$refs.tree1.dialogVisible = true;
             }
           },
@@ -84,20 +84,21 @@ export default {
             type: "btn-success",
             icon: "el-icon-edit",
             onClick: function() {
-              if (self.currentApproveId2 == 0) {
+              if (self.currentRuleId2 == 0) {
                 self.$message({
-                  message: "请先选择审批路线(二)!",
+                  message: "请先选择岗位子规则!",
                   type: "warning"
                 });
                 return;
               }
-              self.$refs.tree1.currentComponent = "approveEdit";
+              self.$refs.tree1.currentComponent = "ruleChildEdit";
               self.$refs.tree1.dialogVisible = true;
             }
           }
         ]
       },
-      currentRuleId:0
+      currentRuleId:0,
+      currentRuleId2:0
     };
   },
   updated: function() {
