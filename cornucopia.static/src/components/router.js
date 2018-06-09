@@ -277,6 +277,23 @@ Vue.prototype.get = function(url, params, onSuccess) {
     });
 }
 
+Vue.prototype.getSync = function(url, params, onSuccess) {
+    $.ajax({
+        type: 'GET',
+        xhrFields: {
+            withCredentials: true
+        },
+        async: false,
+        url: url,
+        data: params,
+        success: function(result) {
+            if (onSuccess) {
+                onSuccess(result);
+            }
+        }
+    });
+}
+
 const router = new VueRouter({
     routes: systemRouters
 });

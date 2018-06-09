@@ -2,6 +2,7 @@
  <mform ref="form" :cfg="cfg"></mform>
 </template>
 <script>
+import Vue from "vue";
 export default {
   mounted: function() {
     var self = this;
@@ -21,21 +22,6 @@ export default {
       this.$parent.$parent.dialogVisible = false;
       this.$parent.$parent.currentComponent = "";
     }
-    self.get(this.getGlobalData().ApiBaseUrl + "/approve/getAllRoles", "", function(
-      response
-    ) {
-      if ((response.code = 200)) {
-        self.roles = response.data;
-      }
-    });
-
-    self.get(this.getGlobalData().ApiBaseUrl + "/role/alllist", "", function(
-      response
-    ) {
-      if ((response.code = 200)) {
-        self.pals = response.data;
-      }
-    });
   },
   data() {
     var self = this;
@@ -59,24 +45,20 @@ export default {
           {
             name: "name",
             title: "岗位名",
-            type: "text"
+            type: "text",
+            data: []
           },
           {
             name: "type",
             title: "岗位类型",
             type: "select",
             data: [{ id: 1, value: "角色" }, { id: 2, value: "规则" }],
-            onChange: function(s1,loading) {
-              if(!loading){
-                self.$refs.form.detail.rule = "";
-              }
+            onChange: function(s1) {
+              self.$refs.form.detail.rule = "";
               if (s1 == 1) {
                 self.cfg.items[3].data = self.roles;
               } else {
-                self.cfg.items[3].data = [
-                  { id: "1", value: "角色" },
-                  { id: "2", value: "规则" }
-                ];
+                self.cfg.items[3].data = self.pals;
               }
             }
           },
@@ -110,6 +92,38 @@ export default {
                 0)
           );
           return false;
+        },
+        onLoaded: function(detail) {
+          var s1 = detail.type;
+          var s2 = detail.rule;
+          detail.rule = "";
+          self.get(
+            self.getGlobalData().ApiBaseUrl + "/approve/getAllRoles",
+            "",
+            function(response) {
+              if ((response.code = 200)) {
+                self.roles = response.data;
+                if (s1 == 1) {
+                  self.cfg.items[3].data = self.roles;
+                  detail.rule = s2;
+                }
+              }
+            }
+          );
+
+          self.get(
+            self.getGlobalData().ApiBaseUrl + "/role/alllist",
+            "",
+            function(response) {
+              if ((response.code = 200)) {
+                self.pals = response.data;
+                if (s1 == 2) {
+                  self.cfg.items[3].data = self.pals;
+                  detail.rule = s2;
+                }
+              }
+            }
+          );
         }
       },
       roles: [],

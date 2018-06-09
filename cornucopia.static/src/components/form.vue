@@ -191,12 +191,15 @@ export default {
     if (this.cfg.mode != "create") {
       self.openLoading();
       this.fillData(function(){
-        for (var j = 0; j < self.cfg.items.length; j++) {
-            var item = self.cfg.items[j];
-            if (item.onChange) {
-              item.onChange(self.detail[item.name],1);
-            }
-          }
+        if(self.cfg.onLoaded){
+          self.cfg.onLoaded(self.detail);
+        }
+        // for (var j = 0; j < self.cfg.items.length; j++) {
+        //     var item = self.cfg.items[j];
+        //     if (item.onChange) {
+        //       item.onChange(self.detail[item.name],1);
+        //     }
+        //   }
       });
     }
     $(this.$el)
