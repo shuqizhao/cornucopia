@@ -46,8 +46,7 @@ export default {
             name: "name",
             title: "岗位名",
             type: "text",
-            width:"90%",
-            data: []
+            width:"90%"
           },
           {
             name: "type",
@@ -68,7 +67,8 @@ export default {
             name: "rule",
             title: "岗位计算",
             width:"90%",
-            type: "select"
+            type: "select",
+            data:[]
           }
         ],
         rules: {

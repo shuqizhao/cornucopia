@@ -31,30 +31,40 @@ export default {
             name: "name",
             title: "岗位名",
             type: "text",
-            width:"90%",
-            data: []
+            width: "90%"
           },
           {
             name: "type",
             title: "岗位类型",
-            width:"90%",
+            width: "90%",
             type: "select",
             data: [{ id: 1, value: "角色" }, { id: 2, value: "规则" }],
             onChange: function(s1) {
               self.$refs.form.detail.rule = "";
               if (s1 == 1) {
-                self.cfg.items[3].data = self.roles;
+                self.$set(self.cfg.items, 3, {
+                  name: "rule",
+                  title: "角色",
+                  width: "90%",
+                  type: "select",
+                  data: self.roles
+                });
               } else {
-                self.cfg.items[3].data = self.pals;
+                self.$set(self.cfg.items, 3, {
+                  name: "rule",
+                  title: "规则",
+                  width: "90%",
+                  type: "select",
+                  data: self.pals
+                });
               }
             }
           },
           {
             name: "rule",
             title: "岗位计算",
-            width:"90%",
-            type: "select",
-            data:[]
+            width: "90%",
+            type: "select"
           }
         ],
         rules: {
@@ -79,11 +89,12 @@ export default {
           self.$parent.$parent.$parent.$parent.$parent.$refs.positionList.reloadSimpleData(
             self.getGlobalData().ApiBaseUrl +
               "/approve/positionlist?processNodeId=" +
-              (self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2 || 0)
+              (self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2 ||
+                0)
           );
           return false;
         },
-        onLoaded: function(detail) {
+        onLoaded: function() {
           self.get(
             self.getGlobalData().ApiBaseUrl + "/approve/getAllRoles",
             "",

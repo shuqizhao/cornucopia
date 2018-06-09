@@ -184,27 +184,28 @@ let Base64 = require("js-base64").Base64;
 import "jquery-validation";
 export default {
   props: ["cfg"],
+  created: function() {
+    self = this;
+    for (var i = 0; i < self.cfg.items.length; i++) {
+      var item = self.cfg.items[i];
+      self.$set(self.detail,item.name,"")
+    }
+  },
   mounted: function() {
     var self = this;
     self.isMounted = true;
 
     if (this.cfg.mode != "create") {
       self.openLoading();
-      this.fillData(function(){
-        if(self.cfg.onLoaded){
+      this.fillData(function() {
+        if (self.cfg.onLoaded) {
           self.cfg.onLoaded(self.detail);
         }
-        // for (var j = 0; j < self.cfg.items.length; j++) {
-        //     var item = self.cfg.items[j];
-        //     if (item.onChange) {
-        //       item.onChange(self.detail[item.name],1);
-        //     }
-        //   }
       });
-    }else{
-      if(self.cfg.onLoaded){
-          self.cfg.onLoaded(self.detail);
-        }
+    } else {
+      if (self.cfg.onLoaded) {
+        self.cfg.onLoaded(self.detail);
+      }
     }
     $(this.$el)
       .find('input[type="file"]')
@@ -675,33 +676,37 @@ export default {
       $(self.$el)
         .find(".form")
         .validate(lastCfg);
-      if($(self.$el).find(".form").valid()){
-          if (!self.commiting) {
-            return;
-          }
-          var data = self.getData();
+      if (
+        $(self.$el)
+          .find(".form")
+          .valid()
+      ) {
+        if (!self.commiting) {
+          return;
+        }
+        var data = self.getData();
 
-          var isOk = true;
-          if (self.cfg.validate) {
-            //自定义验证
-            isOk = self.cfg.validate(data, self.saveData);
-          }
+        var isOk = true;
+        if (self.cfg.validate) {
+          //自定义验证
+          isOk = self.cfg.validate(data, self.saveData);
+        }
 
-          if (!isOk) {
-            return false;
-          }
-          if (self.cfg.beforeCommit) {
-            self.cfg.beforeCommit(data);
-          }
-          // $(self.$el)
-          //   .find(".btn-commit")
-          //   .attr("disabled", "disabled");
-          // self.saveData(data, handler);
-          if (onSuccess) {
-            onSuccess(self.cfg.name,data);
-          }
-          return true;
-      }else{
+        if (!isOk) {
+          return false;
+        }
+        if (self.cfg.beforeCommit) {
+          self.cfg.beforeCommit(data);
+        }
+        // $(self.$el)
+        //   .find(".btn-commit")
+        //   .attr("disabled", "disabled");
+        // self.saveData(data, handler);
+        if (onSuccess) {
+          onSuccess(self.cfg.name, data);
+        }
+        return true;
+      } else {
         return false;
       }
     },
@@ -752,7 +757,7 @@ export default {
             if (data[this.id].length == 0) {
               data[this.id].push(0);
             }
-          }else if (item.attr("controltype") == "select") {
+          } else if (item.attr("controltype") == "select") {
             data[this.id] = self.detail[this.id];
           } else {
             data[this.id] = item.val();
@@ -830,15 +835,15 @@ export default {
     },
     fillData: function(onSuccess) {
       self = this;
-      self.get(self.cfg.get.url,self.cfg.get.params,function(result){
+      self.get(self.cfg.get.url, self.cfg.get.params, function(result) {
         if (result.code == "200") {
-            self.detail = result.data;
-            if(onSuccess){
-              onSuccess()
-            }
-            self.closeLoading();
+          self.detail = result.data;
+          if (onSuccess) {
+            onSuccess();
           }
-      })
+          self.closeLoading();
+        }
+      });
     },
     bindSelect2Select: function(id, url) {
       var self = this;
