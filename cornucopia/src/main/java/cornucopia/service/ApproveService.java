@@ -69,7 +69,7 @@ public class ApproveService {
 		approvedao.update(approve);
 	}
 
-	public void updateFunctionParas(int id, ApproveConditionEntity[] approveConditions) {
+	public void updateApproveConditions(int id, ApproveConditionEntity[] approveConditions) {
 		deleteCondition(id);
 		insertApproveConditions(approveConditions);
 	}

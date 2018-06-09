@@ -13,15 +13,21 @@ export default {
     var self = this;
     return {
       cfg: {
-        title: "规则",
+        title: "岗位子规则",
         mode: "create",
-        name:'approve',
+        name:'rule',
         hideFooter: true,
         items: [
           {
             name: "name",
-            title: "路径名",
+            title: "规则名",
             type: "text"
+          },
+          {
+            name: "jobId",
+            title: "职位",
+            type: "select",
+            data:[]
           }
         ],
         rules: {
@@ -31,17 +37,33 @@ export default {
         },
         messages: {
           name: {
-            required: "审批路径名必须填写"
+            required: "规则名名必须填写"
           }
         },
         validate: function(data, saveData) {
           return true;
+        },
+        onLoaded: function() {
+          self.get(
+            self.getGlobalData().ApiBaseUrl + "/approve/getAllRoles",
+            "",
+            function(response) {
+              if ((response.code = 200)) {
+                self.$set(self.cfg.items, 1, {
+                  name: "jobId",
+                  title: "职位",
+                  type: "select",
+                  data: response.data
+                });
+              }
+            }
+          );
         }
       },
       cfg1: {
         title: "条件公式",
         mode: "create",
-        name:'approveConditions',
+        name:'ruleConditions',
         dialogWidth: "95%",
         items: [
           {
@@ -93,7 +115,6 @@ export default {
               
               if (s1 == 3) {
                 tableCell[index]["var1"] = "popup";
-                // this.parainstId = tableData[index][var2];
               } else {
                 tableCell[index]["var1"] = "text";
               }
@@ -187,7 +208,6 @@ export default {
               
               if (s1 == 3) {
                 tableCell[index]["var2"] = "popup";
-                // this.parainstId = tableData[index][var2];
               } else {
                 tableCell[index]["var2"] = "text";
               }
@@ -279,12 +299,10 @@ export default {
         ]
       },
       cfg2:{
-        save:this.getGlobalData().ApiBaseUrl + "/approve/add",
+        save:this.getGlobalData().ApiBaseUrl + "/approve/ruleChildAdd",
         extraData:{
-          approve:{
-            processId:self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value1,
-            processNodeId:self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2,
-            parentId:self.$parent.$parent.cfg.title=='审批路线(二)'?self.$parent.$parent.$parent.$parent.$parent.currentApproveId:0
+          rule:{
+            parentId:self.$parent.$parent.$parent.$parent.$parent.currentRuleId
           }
         }
       }

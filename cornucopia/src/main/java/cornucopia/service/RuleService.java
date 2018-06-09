@@ -3,6 +3,7 @@ package cornucopia.service;
 import java.util.List;
 
 import cornucopia.dao.RuleDao;
+import cornucopia.entity.RuleConditionEntity;
 import cornucopia.entity.RuleEntity;
 import cornucopia.util.MyBatisHelper;
 
@@ -48,5 +49,24 @@ public class RuleService {
 
 	public List<RuleEntity> getRuleChildren(int ruleId) {
 		return ruledao.getRuleChildren(ruleId);
+	}
+
+	public int deleteCondition(int id) {
+		return ruledao.deleteCondition(id);
+	}
+	
+	public void updateRuleConditions(int id, RuleConditionEntity[] ruleConditions) {
+		deleteCondition(id);
+		insertRuleConditions(ruleConditions);
+	}
+
+	public int insertRuleCondition(RuleConditionEntity approveEntity) {
+		 return ruledao.insertApproveCondition(approveEntity);
+	}
+	
+	public void insertRuleConditions(RuleConditionEntity[] ruleConditions) {
+		for (RuleConditionEntity re : ruleConditions) {
+			insertRuleCondition(re);
+		}
 	}
 }

@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
 import cornucopia.entity.RoleEntity;
+import cornucopia.entity.RuleConditionEntity;
 import cornucopia.entity.RuleEntity;
 import cornucopia.model.ApproveViewModel;
+import cornucopia.model.RuleViewModel;
 import cornucopia.model.SelectViewModel;
 import cornucopia.entity.ApproveConditionEntity;
 import cornucopia.entity.ApproveEntity;
@@ -118,7 +120,7 @@ public class ApproveController {
 		for (ApproveConditionEntity ac : approveVm.getApproveConditions()) {
 			ac.setApproveId(approveVm.getApprove().getId());
 		}
-		ApproveService.getInstance().updateFunctionParas(approveVm.getApprove().getId(),approveVm.getApproveConditions());
+		ApproveService.getInstance().updateApproveConditions(approveVm.getApprove().getId(),approveVm.getApproveConditions());
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(approveVm.getApprove().getId());
@@ -221,6 +223,32 @@ public class ApproveController {
 		JsonResult<List<RuleEntity>> jr = new JsonResult<List<RuleEntity>>();
 		jr.setCode(200);
 		jr.setData(rules);
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/ruleChildUpdate" }, method = RequestMethod.POST)
+	public JsonResult<Integer> ruleChildUpdate(@RequestBody RuleViewModel ruleVm) {
+		RuleService.getInstance().update(ruleVm.getRule());
+		for (RuleConditionEntity rc : ruleVm.getRuleConditions()) {
+			rc.setRuleId(ruleVm.getRule().getId());
+		}
+		RuleService.getInstance().updateRuleConditions(ruleVm.getRule().getId(),ruleVm.getRuleConditions());
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(ruleVm.getRule().getId());
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/ruleChildAdd" }, method = RequestMethod.POST)
+	public JsonResult<Integer> ruleChildAdd(@RequestBody RuleViewModel ruleVm) {
+		RuleService.getInstance().insert(ruleVm.getRule());
+		for (RuleConditionEntity rc : ruleVm.getRuleConditions()) {
+			rc.setRuleId(ruleVm.getRule().getId());
+		}
+		RuleService.getInstance().insertRuleConditions(ruleVm.getRuleConditions());
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(ruleVm.getRule().getId());
 		return jr;
 	}
 }
