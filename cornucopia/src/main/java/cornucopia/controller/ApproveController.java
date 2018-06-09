@@ -184,6 +184,26 @@ public class ApproveController {
 		return jr;
 	}
 	
+	@RequestMapping(value = { "/getAllRules" }, method = RequestMethod.GET)
+	public JsonResult<List<SelectViewModel>> getAllRules() {
+		List<SelectViewModel> svms = new ArrayList<SelectViewModel>();
+		List<RuleEntity> ruleEntities = RuleService.getInstance().getAll();
+		for(RuleEntity re : ruleEntities) {
+			if(re.getIsDeleted()==1 || re.getIsEnabled()==0) {
+				continue;
+			}
+			SelectViewModel svm = new SelectViewModel();
+			svm.setId(re.getId());
+			svm.setValue(re.getName());
+			svm.setDesc(re.getIsDeleted()+"");
+			svms.add(svm);
+		}
+		JsonResult<List<SelectViewModel>> jr = new JsonResult<List<SelectViewModel>>();
+		jr.setCode(200);
+		jr.setData(svms);
+		return jr;
+	}
+	
 	@RequestMapping(value = { "/rulelist" }, method = RequestMethod.GET)
 	public JsonResult<List<RuleEntity>> ruleList() {
 		List<RuleEntity> ruleEntities = RuleService.getInstance().getAll();

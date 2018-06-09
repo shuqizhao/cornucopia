@@ -115,7 +115,7 @@ export default {
           );
 
           self.get(
-            self.getGlobalData().ApiBaseUrl + "/role/alllist",
+            self.getGlobalData().ApiBaseUrl + "/approve/getAllRules",
             "",
             function(response) {
               if ((response.code = 200)) {
