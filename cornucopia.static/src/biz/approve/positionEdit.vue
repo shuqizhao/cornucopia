@@ -46,11 +46,13 @@ export default {
             name: "name",
             title: "岗位名",
             type: "text",
+            width:"90%",
             data: []
           },
           {
             name: "type",
             title: "岗位类型",
+            width:"90%",
             type: "select",
             data: [{ id: 1, value: "角色" }, { id: 2, value: "规则" }],
             onChange: function(s1) {
@@ -65,6 +67,7 @@ export default {
           {
             name: "rule",
             title: "岗位计算",
+            width:"90%",
             type: "select"
           }
         ],
