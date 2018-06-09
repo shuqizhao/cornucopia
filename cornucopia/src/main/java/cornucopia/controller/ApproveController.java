@@ -13,6 +13,7 @@ import cornucopia.entity.JsonResult;
 import cornucopia.entity.RoleEntity;
 import cornucopia.entity.RuleConditionEntity;
 import cornucopia.entity.RuleEntity;
+import cornucopia.model.ApprovePositionViewModel;
 import cornucopia.model.ApproveViewModel;
 import cornucopia.model.RuleViewModel;
 import cornucopia.model.SelectViewModel;
@@ -30,23 +31,23 @@ public class ApproveController {
 	@RequestMapping(value = { "/alllist" }, method = RequestMethod.GET)
 	public JsonResult<List<ApproveEntity>> alllist(int processNodeId) {
 		List<ApproveEntity> approves = ApproveService.getInstance().getAll(processNodeId);
-		
+
 		JsonResult<List<ApproveEntity>> jr = new JsonResult<List<ApproveEntity>>();
 		jr.setCode(200);
 		jr.setData(approves);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/allchildren" }, method = RequestMethod.GET)
 	public JsonResult<List<ApproveEntity>> allchildren(int approveId) {
 		List<ApproveEntity> approves = ApproveService.getInstance().getAllChildren(approveId);
-		
+
 		JsonResult<List<ApproveEntity>> jr = new JsonResult<List<ApproveEntity>>();
 		jr.setCode(200);
 		jr.setData(approves);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/exists" }, method = RequestMethod.POST)
 	public JsonResult<Integer> exists(String name) {
 		int isExists = ApproveService.getInstance().exists(name);
@@ -55,7 +56,7 @@ public class ApproveController {
 		jr.setData(isExists);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/add" }, method = RequestMethod.POST)
 	public JsonResult<Integer> add(@RequestBody ApproveViewModel approveVm) {
 		ApproveService.getInstance().insert(approveVm.getApprove());
@@ -68,7 +69,7 @@ public class ApproveController {
 		jr.setData(approveVm.getApprove().getId());
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/disable" }, method = RequestMethod.POST)
 	public JsonResult<Integer> disable(@RequestParam(value = "Ids") int id) {
 		int result = ApproveService.getInstance().disable(id);
@@ -77,7 +78,7 @@ public class ApproveController {
 		jr.setData(result);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/enable" }, method = RequestMethod.POST)
 	public JsonResult<Integer> enable(@RequestParam(value = "Ids") int id) {
 		int result = ApproveService.getInstance().enable(id);
@@ -86,7 +87,7 @@ public class ApproveController {
 		jr.setData(result);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/delete" }, method = RequestMethod.POST)
 	public JsonResult<Integer> delete(@RequestParam(value = "Ids") int id) {
 		int result = ApproveService.getInstance().delete(id);
@@ -95,7 +96,7 @@ public class ApproveController {
 		jr.setData(result);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/get" }, method = RequestMethod.GET)
 	public JsonResult<ApproveEntity> get(int id) {
 		ApproveEntity approveEntity = ApproveService.getInstance().get(id);
@@ -104,7 +105,7 @@ public class ApproveController {
 		jr.setData(approveEntity);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/getConditions" }, method = RequestMethod.GET)
 	public JsonResult<List<ApproveConditionEntity>> getConditions(int id) {
 		List<ApproveConditionEntity> conditions = ApproveService.getInstance().getConditions(id);
@@ -113,30 +114,52 @@ public class ApproveController {
 		jr.setData(conditions);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/update" }, method = RequestMethod.POST)
 	public JsonResult<Integer> update(@RequestBody ApproveViewModel approveVm) {
 		ApproveService.getInstance().update(approveVm.getApprove());
 		for (ApproveConditionEntity ac : approveVm.getApproveConditions()) {
 			ac.setApproveId(approveVm.getApprove().getId());
 		}
-		ApproveService.getInstance().updateApproveConditions(approveVm.getApprove().getId(),approveVm.getApproveConditions());
+		ApproveService.getInstance().updateApproveConditions(approveVm.getApprove().getId(),
+				approveVm.getApproveConditions());
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(approveVm.getApprove().getId());
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/positionlist" }, method = RequestMethod.GET)
-	public JsonResult<List<ApprovePositionEntity>> positionlist(int processNodeId) {
+	public JsonResult<List<ApprovePositionViewModel>> positionlist(int processNodeId) {
 		List<ApprovePositionEntity> poses = ApprovePositionService.getInstance().getAll(processNodeId);
-		
-		JsonResult<List<ApprovePositionEntity>> jr = new JsonResult<List<ApprovePositionEntity>>();
+		List<ApprovePositionViewModel> posvms = new ArrayList<ApprovePositionViewModel>();
+		for (ApprovePositionEntity pos : poses) {
+			ApprovePositionViewModel posvm = new ApprovePositionViewModel();
+			posvm.setId(pos.getId());
+			posvm.setName(pos.getName());
+			posvm.setType(pos.getType());
+			posvm.setRule(pos.getRule());
+			posvm.setIsEnabled(pos.getIsEnabled());
+			posvm.setCreateTime(pos.getCreateTime());
+			if (pos.getType() == 2) {
+				RuleEntity rule = RuleService.getInstance().get(pos.getRule());
+				if (rule != null) {
+					posvm.setRuleStr(rule.getName());
+				}
+			} else {
+				RoleEntity role = RoleService.getInstance().get(pos.getRule());
+				if (role != null) {
+					posvm.setRuleStr(role.getName());
+				}
+			}
+			posvms.add(posvm);
+		}
+		JsonResult<List<ApprovePositionViewModel>> jr = new JsonResult<List<ApprovePositionViewModel>>();
 		jr.setCode(200);
-		jr.setData(poses);
+		jr.setData(posvms);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/positionAdd" }, method = RequestMethod.POST)
 	public JsonResult<Integer> positionAdd(ApprovePositionEntity pos) {
 		int id = ApprovePositionService.getInstance().insert(pos);
@@ -145,7 +168,7 @@ public class ApproveController {
 		jr.setData(id);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/positionUpdate" }, method = RequestMethod.POST)
 	public JsonResult<Integer> positionUpdate(ApprovePositionEntity pos) {
 		int id = ApprovePositionService.getInstance().update(pos);
@@ -154,7 +177,7 @@ public class ApproveController {
 		jr.setData(id);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/getPosition" }, method = RequestMethod.GET)
 	public JsonResult<ApprovePositionEntity> getPosition(int id) {
 		ApprovePositionEntity approvePositionEntity = ApprovePositionService.getInstance().getPosition(id);
@@ -163,19 +186,19 @@ public class ApproveController {
 		jr.setData(approvePositionEntity);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/getAllRoles" }, method = RequestMethod.GET)
 	public JsonResult<List<SelectViewModel>> getAllRoles() {
 		List<SelectViewModel> svms = new ArrayList<SelectViewModel>();
 		List<RoleEntity> roleEntities = RoleService.getInstance().getAllRoles();
-		for(RoleEntity re : roleEntities) {
-			if(re.getIsDeleted()==1 || re.getIsEnabled()==0) {
+		for (RoleEntity re : roleEntities) {
+			if (re.getIsDeleted() == 1 || re.getIsEnabled() == 0) {
 				continue;
 			}
 			SelectViewModel svm = new SelectViewModel();
 			svm.setId(re.getId());
 			svm.setValue(re.getName());
-			svm.setDesc(re.getIsDeleted()+"");
+			svm.setDesc(re.getIsDeleted() + "");
 			svms.add(svm);
 		}
 		JsonResult<List<SelectViewModel>> jr = new JsonResult<List<SelectViewModel>>();
@@ -183,19 +206,19 @@ public class ApproveController {
 		jr.setData(svms);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/getAllRules" }, method = RequestMethod.GET)
 	public JsonResult<List<SelectViewModel>> getAllRules() {
 		List<SelectViewModel> svms = new ArrayList<SelectViewModel>();
 		List<RuleEntity> ruleEntities = RuleService.getInstance().getAll();
-		for(RuleEntity re : ruleEntities) {
-			if(re.getIsDeleted()==1 || re.getIsEnabled()==0) {
+		for (RuleEntity re : ruleEntities) {
+			if (re.getIsDeleted() == 1 || re.getIsEnabled() == 0) {
 				continue;
 			}
 			SelectViewModel svm = new SelectViewModel();
 			svm.setId(re.getId());
 			svm.setValue(re.getName());
-			svm.setDesc(re.getIsDeleted()+"");
+			svm.setDesc(re.getIsDeleted() + "");
 			svms.add(svm);
 		}
 		JsonResult<List<SelectViewModel>> jr = new JsonResult<List<SelectViewModel>>();
@@ -203,7 +226,7 @@ public class ApproveController {
 		jr.setData(svms);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/rulelist" }, method = RequestMethod.GET)
 	public JsonResult<List<RuleEntity>> ruleList() {
 		List<RuleEntity> ruleEntities = RuleService.getInstance().getAll();
@@ -212,6 +235,7 @@ public class ApproveController {
 		jr.setData(ruleEntities);
 		return jr;
 	}
+
 	@RequestMapping(value = { "/ruleadd" }, method = RequestMethod.POST)
 	public JsonResult<Integer> ruleAdd(RuleEntity ruleEntity) {
 		int result = RuleService.getInstance().insert(ruleEntity);
@@ -220,6 +244,7 @@ public class ApproveController {
 		jr.setData(result);
 		return jr;
 	}
+
 	@RequestMapping(value = { "/ruleUpdate" }, method = RequestMethod.POST)
 	public JsonResult<Integer> ruleUpdate(RuleEntity ruleEntity) {
 		int result = RuleService.getInstance().update(ruleEntity);
@@ -228,6 +253,7 @@ public class ApproveController {
 		jr.setData(result);
 		return jr;
 	}
+
 	@RequestMapping(value = { "/getRule" }, method = RequestMethod.GET)
 	public JsonResult<RuleEntity> getRule(int id) {
 		RuleEntity ruleEnity = RuleService.getInstance().get(id);
@@ -236,7 +262,7 @@ public class ApproveController {
 		jr.setData(ruleEnity);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/getRuleChildren" }, method = RequestMethod.GET)
 	public JsonResult<List<RuleEntity>> getRuleChildren(int ruleId) {
 		List<RuleEntity> rules = RuleService.getInstance().getRuleChildren(ruleId);
@@ -245,20 +271,20 @@ public class ApproveController {
 		jr.setData(rules);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/ruleChildUpdate" }, method = RequestMethod.POST)
 	public JsonResult<Integer> ruleChildUpdate(@RequestBody RuleViewModel ruleVm) {
 		RuleService.getInstance().update(ruleVm.getRule());
 		for (RuleConditionEntity rc : ruleVm.getRuleConditions()) {
 			rc.setRuleId(ruleVm.getRule().getId());
 		}
-		RuleService.getInstance().updateRuleConditions(ruleVm.getRule().getId(),ruleVm.getRuleConditions());
+		RuleService.getInstance().updateRuleConditions(ruleVm.getRule().getId(), ruleVm.getRuleConditions());
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(ruleVm.getRule().getId());
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/ruleChildAdd" }, method = RequestMethod.POST)
 	public JsonResult<Integer> ruleChildAdd(@RequestBody RuleViewModel ruleVm) {
 		RuleService.getInstance().insert(ruleVm.getRule());
@@ -271,6 +297,7 @@ public class ApproveController {
 		jr.setData(ruleVm.getRule().getId());
 		return jr;
 	}
+
 	@RequestMapping(value = { "/getRuleCondititons" }, method = RequestMethod.GET)
 	public JsonResult<List<RuleConditionEntity>> getRuleCondititons(int id) {
 		List<RuleConditionEntity> conditions = RuleService.getInstance().getRuleConditions(id);

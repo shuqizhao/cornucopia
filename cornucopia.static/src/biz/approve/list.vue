@@ -157,7 +157,7 @@ export default {
           },
           {
             title: "岗位规则",
-            name: "rule"
+            name: "ruleStr"
           },
           {
             title: "是否启用",

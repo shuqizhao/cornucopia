@@ -46,4 +46,8 @@ public class RoleService {
 	public int delete(int id) {
 		return roledao.delete(id);
 	}
+	
+	public RoleEntity get(int id) {
+		return roledao.get(id);
+	}
 }

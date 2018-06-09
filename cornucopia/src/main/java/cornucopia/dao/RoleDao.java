@@ -37,4 +37,7 @@ public interface RoleDao {
 	
 	@Update("call sp_role_delete(#{id})")
 	public int delete(@Param("id")int id);
+
+	@Select("call sp_role_get(#{id})")
+	public RoleEntity get(@Param("id")int id);
 }
