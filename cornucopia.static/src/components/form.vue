@@ -820,8 +820,12 @@ export default {
             if (self.showDialog()) {
               self.$parent.$parent.$parent.dialogVisible = false;
               self.$parent.$parent.$parent.currentComponent = "";
-              debugger;
-              self.$parent.$parent.$parent.reloadSimpleData();
+              if(self.$parent.$parent.$parent.reloadSimpleData){
+                self.$parent.$parent.$parent.reloadSimpleData();
+              }
+              if(self.$parent.$parent.$parent.loadUrl){
+                self.$parent.$parent.$parent.loadUrl(1);
+              }
               return;
             }
             if (handler) {

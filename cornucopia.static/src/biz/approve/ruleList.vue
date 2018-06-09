@@ -18,7 +18,7 @@ export default {
         // dialogWidth: "95%",
         hideCheckBox: true,
         url:
-          this.getGlobalData().ApiBaseUrl + "/approve/alllist?processNodeId=0",
+          this.getGlobalData().ApiBaseUrl + "/approve/rulelist",
         functions: [
           {
             text: "新增",
@@ -51,7 +51,7 @@ export default {
         }
       },
       treeCfg1: {
-        title: "岗位条件",
+        title: "条件列表",
         // parentTitle: "流程管理",
         filterType: "combox",
         dialogWidth: "95%",

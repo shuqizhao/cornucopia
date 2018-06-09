@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
 import cornucopia.entity.RoleEntity;
+import cornucopia.entity.RuleEntity;
 import cornucopia.model.ApproveViewModel;
 import cornucopia.model.SelectViewModel;
 import cornucopia.entity.ApproveConditionEntity;
@@ -19,6 +20,7 @@ import cornucopia.entity.ApprovePositionEntity;
 import cornucopia.service.ApprovePositionService;
 import cornucopia.service.ApproveService;
 import cornucopia.service.RoleService;
+import cornucopia.service.RuleService;
 
 @RestController
 @RequestMapping("/approve")
@@ -177,6 +179,31 @@ public class ApproveController {
 		JsonResult<List<SelectViewModel>> jr = new JsonResult<List<SelectViewModel>>();
 		jr.setCode(200);
 		jr.setData(svms);
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/rulelist" }, method = RequestMethod.GET)
+	public JsonResult<List<RuleEntity>> ruleList() {
+		List<RuleEntity> ruleEntities = RuleService.getInstance().getAll();
+		JsonResult<List<RuleEntity>> jr = new JsonResult<List<RuleEntity>>();
+		jr.setCode(200);
+		jr.setData(ruleEntities);
+		return jr;
+	}
+	@RequestMapping(value = { "/ruleadd" }, method = RequestMethod.POST)
+	public JsonResult<Integer> ruleAdd(RuleEntity ruleEntity) {
+		int result = RuleService.getInstance().insert(ruleEntity);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(result);
+		return jr;
+	}
+	@RequestMapping(value = { "/ruleupdate" }, method = RequestMethod.POST)
+	public JsonResult<Integer> ruleUpdate(RuleEntity ruleEntity) {
+		int result = RuleService.getInstance().update(ruleEntity);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(result);
 		return jr;
 	}
 }
