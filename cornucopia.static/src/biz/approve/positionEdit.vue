@@ -1,5 +1,5 @@
 <template>
- <mform :cfg="cfg"></mform>
+ <mform ref="form" :cfg="cfg"></mform>
 </template>
 <script>
 export default {
@@ -52,6 +52,7 @@ export default {
             type: "select",
             data: [{ id: 1, value: "角色" }, { id: 2, value: "规则" }],
             onChange:function(s1){
+              self.$refs.form.detail.rule=""
               if(s1 == 1){
                 self.cfg.items[3].data=[];
               }else{
@@ -63,7 +64,7 @@ export default {
             name: "rule",
             title: "岗位计算",
             type: "select",
-            data: [{ id: 1, value: "角色" }, { id: 2, value: "规则" }]
+            data: [{ id: "1", value: "角色" }, { id: "2", value: "规则" }]
           }
         ],
         rules: {
