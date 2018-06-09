@@ -1,5 +1,5 @@
 <template>
- <mform :cfg="cfg"></mform>
+ <mform ref="form" :cfg="cfg"></mform>
 </template>
 <script>
 export default {
@@ -23,22 +23,38 @@ export default {
         save: this.getGlobalData().ApiBaseUrl + "/approve/positionAdd",
         items: [
           {
+            name: "id",
+            title: "id",
+            type: "hidden"
+          },
+          {
             name: "name",
             title: "岗位名",
-            type: "text"
+            type: "text",
+            width:"90%",
+            data: []
           },
           {
             name: "type",
             title: "岗位类型",
-            type: "combox",
-            data: [{ id: 1, value: "角色" }, { id: 2, value: "规则" }]
+            width:"90%",
+            type: "select",
+            data: [{ id: 1, value: "角色" }, { id: 2, value: "规则" }],
+            onChange: function(s1) {
+              self.$refs.form.detail.rule = "";
+              if (s1 == 1) {
+                self.cfg.items[3].data = self.roles;
+              } else {
+                self.cfg.items[3].data = self.pals;
+              }
+            }
           },
           {
             name: "rule",
             title: "岗位计算",
+            width:"90%",
             type: "select",
-            data: [{ id: 1, value: "角色" }, { id: 2, value: "规则" }],
-            url:this.getGlobalData().ApiBaseUrl + "/role/alllist"
+            data:[]
           }
         ],
         rules: {
@@ -66,8 +82,31 @@ export default {
               (self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2 || 0)
           );
           return false;
+        },
+        onLoaded: function(detail) {
+          self.get(
+            self.getGlobalData().ApiBaseUrl + "/approve/getAllRoles",
+            "",
+            function(response) {
+              if ((response.code = 200)) {
+                self.roles = response.data;
+              }
+            }
+          );
+
+          self.get(
+            self.getGlobalData().ApiBaseUrl + "/role/alllist",
+            "",
+            function(response) {
+              if ((response.code = 200)) {
+                self.pals = response.data;
+              }
+            }
+          );
         }
-      }
+      },
+      roles: [],
+      pals: []
     };
   }
 };

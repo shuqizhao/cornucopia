@@ -106,7 +106,7 @@
                                 </div>
                                 <div v-else-if="item.type=='select'">
                                   <input :id="item.name" :name="item.name" type="hidden" :value="detail[item.name]" class="form-control" :controltype='item.type'  />
-                                    <el-select v-model="detail[item.name]" @change="item.onChange?item.onChange(detail[item.name]):''" style="width:100%" placeholder="请选择">
+                                    <el-select v-model="detail[item.name]" @change="item.onChange?item.onChange(detail[item.name]):''" filterable style="width:100%" placeholder="请选择">
                                       <el-option
                                         v-for="opItem in item.data"
                                         :key="opItem.id"
@@ -201,6 +201,10 @@ export default {
         //     }
         //   }
       });
+    }else{
+      if(self.cfg.onLoaded){
+          self.cfg.onLoaded(self.detail);
+        }
     }
     $(this.$el)
       .find('input[type="file"]')
