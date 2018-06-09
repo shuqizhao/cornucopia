@@ -1,92 +1,103 @@
 <template>
-<el-row>
-    <el-col :span="12"><list :cfg="cfg"></list></el-col>
-    <el-col :span="12"><tree  ref="tree1" :cfg="cfg"></tree></el-col>
+  <el-row>
+    <el-col :span="12"><tree  ref="tree" :cfg="treeCfg"></tree></el-col>
+    <el-col :span="12"><tree  ref="tree1" :cfg="treeCfg1"></tree></el-col>
   </el-row>
-  
 </template>
 <script>
 export default {
+  mounted: function() {},
   data() {
     var self = this;
     return {
-      cfg: {
-        title: "函数管理",
-        parentTitle: "权限管理",
-        simpleUrl: this.getGlobalData().ApiBaseUrl + "/function/alllist",
-        lengthMenu: [[-1], ["ALL"]],
-        sDom: 'f<"dataTables_function"/>',
-        bServerSide: false,
+      treeCfg: {
+        title: "岗位规则",
+        // parentTitle: "流程管理",
+        // filterType: "combox",
+        hideToolBar: true,
+        // dialogWidth: "95%",
         hideCheckBox: true,
-        showSelectedRowColor: true,
-        columns: [
+        url:
+          this.getGlobalData().ApiBaseUrl + "/approve/alllist?processNodeId=0",
+        functions: [
           {
-            title: "id",
-            name: "id",
-            isHide: true
+            text: "新增",
+            type: "btn-success",
+            icon: "el-icon-circle-plus",
+            onClick: function() {
+              self.$refs.tree.currentComponent = "ruleAdd";
+              self.$refs.tree.dialogVisible = true;
+            }
           },
           {
-            title: "函数名",
-            name: "name"
-          },
-          {
-            title: "函数描述",
-            name: "desc"
-          },
-          {
-            title: "是否启用",
-            name: "isEnabled"
-          },
-          {
-            title: "创建时间",
-            name: "createTime"
-          },
-          {
-            title: "修改时间",
-            name: "updateTime"
+            text: "编辑",
+            type: "btn-success",
+            icon: "el-icon-edit",
+            onClick: function() {
+              if (self.currentRuleId == 0) {
+                self.$message({
+                  message: "请先选择岗位规则!",
+                  type: "warning"
+                });
+                return;
+              }
+              self.$refs.tree.currentComponent = "approveEdit";
+              self.$refs.tree.dialogVisible = true;
+            }
           }
         ],
-        idName: "id",
-        fnRowCallback: function(row, data) {
-          if (data.isEnabled) {
-            $("td:eq(2)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
-          } else {
-            $("td:eq(2)", row).html('<i class="el-icon-close"></i>');
-          }
-        },
-        functions: {
-          common: [
-            {
-              text: "添加函数",
-              url: "functionAdd",
-              mode: "modal"
-            },
-            {
-              text: "编辑函数",
-              url: "functionEdit",
-              mode: "modal"
-            }
-          ],
-          more: [
-            {
-              text: "停用",
-              url: this.getGlobalData().ApiBaseUrl + "/function/disable"
-            },
-            {
-              text: "启用",
-              url: this.getGlobalData().ApiBaseUrl + "/function/enable"
-            },
-            {
-              text: "删除",
-              url: this.getGlobalData().ApiBaseUrl + "/function/delete"
-            }
-          ]
-        },
-        onClickRow: function(data, target) {
-          self.id = data.id;
+        onNodeClick: function(data) {
+          self.currentRuleId = data.id;
         }
       },
-      id:0
+      treeCfg1: {
+        title: "岗位条件",
+        // parentTitle: "流程管理",
+        filterType: "combox",
+        dialogWidth: "95%",
+        hideCheckBox: true,
+        hideToolBar: true,
+        url:
+          this.getGlobalData().ApiBaseUrl + "/approve/allchildren?approveId=",
+        onNodeClick: function(data) {
+          self.currentApproveId2 = data.id;
+        },
+        functions: [
+          {
+            text: "新增",
+            type: "btn-success",
+            icon: "el-icon-circle-plus",
+            onClick: function() {
+              if (self.currentApproveId == 0) {
+                self.$message({
+                  message: "请先选择审批路线(一)!",
+                  type: "warning"
+                });
+                return;
+              }
+              self.$refs.tree1.currentComponent = "approveAdd";
+              self.$refs.tree1.dialogVisible = true;
+            }
+          },
+          {
+            text: "编辑",
+            type: "btn-success",
+            icon: "el-icon-edit",
+            onClick: function() {
+              if (self.currentApproveId2 == 0) {
+                self.$message({
+                  message: "请先选择审批路线(二)!",
+                  type: "warning"
+                });
+                return;
+              }
+              self.$refs.tree1.currentComponent = "approveEdit";
+              self.$refs.tree1.dialogVisible = true;
+            }
+          }
+        ]
+      },
+      currentRuleId:0
     };
   },
   updated: function() {
