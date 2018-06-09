@@ -198,12 +198,20 @@ public class ApproveController {
 		jr.setData(result);
 		return jr;
 	}
-	@RequestMapping(value = { "/ruleupdate" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/ruleUpdate" }, method = RequestMethod.POST)
 	public JsonResult<Integer> ruleUpdate(RuleEntity ruleEntity) {
 		int result = RuleService.getInstance().update(ruleEntity);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(result);
+		return jr;
+	}
+	@RequestMapping(value = { "/getRule" }, method = RequestMethod.GET)
+	public JsonResult<RuleEntity> getRule(int id) {
+		RuleEntity ruleEnity = RuleService.getInstance().get(id);
+		JsonResult<RuleEntity> jr = new JsonResult<RuleEntity>();
+		jr.setCode(200);
+		jr.setData(ruleEnity);
 		return jr;
 	}
 }

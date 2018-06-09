@@ -30,4 +30,7 @@ public interface RuleDao {
 
 	@Update("call sp_rule_update(#{rule.id},#{rule.name})")
 	public int update(@Param("rule")RuleEntity ruleEntity);
+
+	@Select("call sp_rule_get(#{id})")
+	public RuleEntity get(@Param("id")int id);
 }

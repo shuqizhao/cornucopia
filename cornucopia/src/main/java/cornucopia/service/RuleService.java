@@ -41,4 +41,8 @@ public class RuleService {
 	public int delete(int id) {
 		return ruledao.delete(id);
 	}
+
+	public RuleEntity get(int id) {
+		return ruledao.get(id);
+	}
 }

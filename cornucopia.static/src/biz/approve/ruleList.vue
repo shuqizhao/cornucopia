@@ -41,7 +41,7 @@ export default {
                 });
                 return;
               }
-              self.$refs.tree.currentComponent = "approveEdit";
+              self.$refs.tree.currentComponent = "ruleEdit";
               self.$refs.tree.dialogVisible = true;
             }
           }
