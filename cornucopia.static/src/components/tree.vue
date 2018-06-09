@@ -261,7 +261,7 @@ export default {
   mounted: function() {
     var self = this;
     this.cfg.functions = this.cfg.functions || [];
-    if (this.cfg.filterType != "combox") {
+    if (!this.cfg.hideToolBar) {
       this.cfg.functions.push({
         text: "全选",
         type: "btn-success",
