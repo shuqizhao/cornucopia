@@ -13,7 +13,7 @@ export default {
     var self = this;
     return {
       cfg: {
-        title: "岗位子规则",
+        title: "新增岗位子规则",
         mode: "create",
         name:'rule',
         hideFooter: true,

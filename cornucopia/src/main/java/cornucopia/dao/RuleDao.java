@@ -30,7 +30,7 @@ public interface RuleDao {
 	@Update("call sp_rule_delete(#{id})")
 	public int delete(@Param("id")int id);
 
-	@Update("call sp_rule_update(#{rule.id},#{rule.name})")
+	@Update("call sp_rule_update(#{rule.id},#{rule.name},#{rule.jobId})")
 	public int update(@Param("rule")RuleEntity ruleEntity);
 
 	@Select("call sp_rule_get(#{id})")
@@ -45,4 +45,7 @@ public interface RuleDao {
 
 	@Delete("call sp_rule_condition_delete_by_rule_id(#{ruleId})")
 	public int deleteCondition(@Param("ruleId")int id);
+
+	@Select("call sp_rule_condition_get_by_rule_id(#{ruleId})")
+	public List<RuleConditionEntity> getRuleConditions(@Param("ruleId")int id);
 }

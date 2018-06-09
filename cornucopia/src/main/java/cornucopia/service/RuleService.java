@@ -69,4 +69,8 @@ public class RuleService {
 			insertRuleCondition(re);
 		}
 	}
+
+	public List<RuleConditionEntity> getRuleConditions(int id) {
+		return ruledao.getRuleConditions(id);
+	}
 }

@@ -251,4 +251,12 @@ public class ApproveController {
 		jr.setData(ruleVm.getRule().getId());
 		return jr;
 	}
+	@RequestMapping(value = { "/getRuleCondititons" }, method = RequestMethod.GET)
+	public JsonResult<List<RuleConditionEntity>> getRuleCondititons(int id) {
+		List<RuleConditionEntity> conditions = RuleService.getInstance().getRuleConditions(id);
+		JsonResult<List<RuleConditionEntity>> jr = new JsonResult<List<RuleConditionEntity>>();
+		jr.setCode(200);
+		jr.setData(conditions);
+		return jr;
+	}
 }
