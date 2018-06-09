@@ -48,6 +48,7 @@ export default {
         ],
         onNodeClick: function(data) {
           self.currentRuleId = data.id;
+          self.currentRuleId2 = 0;
           self.$refs.tree1.loadUrl(1, data.id);
         }
       },
