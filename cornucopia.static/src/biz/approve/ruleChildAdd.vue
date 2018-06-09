@@ -49,12 +49,13 @@ export default {
             "",
             function(response) {
               if ((response.code = 200)) {
-                self.$set(self.cfg.items, 1, {
-                  name: "jobId",
-                  title: "职位",
-                  type: "select",
-                  data: response.data
-                });
+                self.cfg.items[1].data=response.data;
+                // self.$set(self.cfg.items, 1, {
+                //   name: "jobId",
+                //   title: "职位",
+                //   type: "select",
+                //   data: response.data
+                // });
               }
             }
           );
@@ -302,6 +303,7 @@ export default {
         save:this.getGlobalData().ApiBaseUrl + "/approve/ruleChildAdd",
         extraData:{
           rule:{
+            id:0,
             parentId:self.$parent.$parent.$parent.$parent.$parent.currentRuleId
           }
         }

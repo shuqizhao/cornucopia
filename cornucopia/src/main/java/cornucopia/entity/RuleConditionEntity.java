@@ -1,6 +1,6 @@
 package cornucopia.entity;
 
-public class RuleConditionEntity {
+public class RuleConditionEntity extends BaseEntity{
 	private int ruleId;
 	private int boolOperation;
 	private String var1;
