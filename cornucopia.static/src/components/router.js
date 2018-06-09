@@ -245,6 +245,38 @@ Vue.prototype.newGuid = function() {
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }
 
+Vue.prototype.post = function(url, params, onSuccess) {
+    $.ajax({
+        type: 'POST',
+        xhrFields: {
+            withCredentials: true
+        },
+        url: url,
+        data: params,
+        success: function(result) {
+            if (onSuccess) {
+                onSuccess(result);
+            }
+        }
+    });
+}
+
+Vue.prototype.get = function(url, params, onSuccess) {
+    $.ajax({
+        type: 'GET',
+        xhrFields: {
+            withCredentials: true
+        },
+        url: url,
+        data: params,
+        success: function(result) {
+            if (onSuccess) {
+                onSuccess(result);
+            }
+        }
+    });
+}
+
 const router = new VueRouter({
     routes: systemRouters
 });

@@ -104,6 +104,19 @@
                                         <p class="help-block"></p>
                                     </div>
                                 </div>
+                                <div v-else-if="item.type=='select'">
+                                  <input :id="item.name" :name="item.name" type="hidden" :value="detail[item.name]" class="form-control" :controltype='item.type'  />
+                                    <el-select v-model="detail[item.name]" @change="item.onChange?item.onChange(detail[item.name]):''" placeholder="请选择">
+                                      <el-option
+                                        v-for="opItem in item.data"
+                                        :key="opItem.id"
+                                        :label="opItem.value"
+                                        :value="opItem.id">
+                                        <span style="float: left">{{ opItem.value }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ opItem.desc }}</span>
+                                      </el-option>
+                                    </el-select>
+                                </div>
                             </template>
                             <template v-if="cfg.mode=='detail'||(cfg.mode=='detailEdit'&&cfg.detailEditMode!='edit')">
                                 <input v-if="item.type=='hidden'" :id="item.name" type="hidden" class="form-control" :value="detail[item.name]" :controltype='item.type' />
@@ -725,6 +738,8 @@ export default {
             if (data[this.id].length == 0) {
               data[this.id].push(0);
             }
+          }else if (item.attr("controltype") == "select") {
+            data[this.id] = self.detail[this.id];
           } else {
             data[this.id] = item.val();
           }
@@ -801,21 +816,27 @@ export default {
     },
     fillData: function() {
       self = this;
-      $.ajax({
-        type: "get",
-        xhrFields: {
-          withCredentials: true
-        },
-        url: self.cfg.get.url,
-        data: self.cfg.get.params,
-        // async: false,
-        success: function(result) {
-          if (result.code == "200") {
+      // $.ajax({
+      //   type: "get",
+      //   xhrFields: {
+      //     withCredentials: true
+      //   },
+      //   url: self.cfg.get.url,
+      //   data: self.cfg.get.params,
+      //   // async: false,
+      //   success: function(result) {
+      //     if (result.code == "200") {
+      //       self.detail = result.data;
+      //       self.closeLoading();
+      //     }
+      //   }
+      // });
+      self.get(self.cfg.get.url,self.cfg.get.params,function(result){
+        if (result.code == "200") {
             self.detail = result.data;
             self.closeLoading();
           }
-        }
-      });
+      })
     },
     bindSelect2Select: function(id, url) {
       var self = this;

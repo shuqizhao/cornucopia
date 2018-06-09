@@ -36,7 +36,9 @@ export default {
           {
             name: "rule",
             title: "岗位计算",
-            type: "text"
+            type: "select",
+            data: [{ id: 1, value: "角色" }, { id: 2, value: "规则" }],
+            url:this.getGlobalData().ApiBaseUrl + "/role/alllist"
           }
         ],
         rules: {

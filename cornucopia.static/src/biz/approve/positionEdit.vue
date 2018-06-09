@@ -26,7 +26,7 @@ export default {
     var self = this;
     return {
       cfg: {
-        title: "添加审批岗位",
+        title: "编辑审批岗位",
         mode: "edit",
         save: this.getGlobalData().ApiBaseUrl + "/approve/positionUpdate",
         get: {
@@ -49,13 +49,21 @@ export default {
           {
             name: "type",
             title: "岗位类型",
-            type: "combox",
-            data: [{ id: 1, value: "角色" }, { id: 2, value: "规则" }]
+            type: "select",
+            data: [{ id: 1, value: "角色" }, { id: 2, value: "规则" }],
+            onChange:function(s1){
+              if(s1 == 1){
+                self.cfg.items[3].data=[];
+              }else{
+                self.cfg.items[3].data=[{ id: 1, value: "角色" }, { id: 2, value: "规则" }];
+              }
+            }
           },
           {
             name: "rule",
             title: "岗位计算",
-            type: "text"
+            type: "select",
+            data: [{ id: 1, value: "角色" }, { id: 2, value: "规则" }]
           }
         ],
         rules: {
