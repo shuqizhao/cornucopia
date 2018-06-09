@@ -21,6 +21,21 @@ export default {
       this.$parent.$parent.dialogVisible = false;
       this.$parent.$parent.currentComponent = "";
     }
+    self.get(this.getGlobalData().ApiBaseUrl + "/approve/getAllRoles", "", function(
+      response
+    ) {
+      if ((response.code = 200)) {
+        self.roles = response.data;
+      }
+    });
+
+    self.get(this.getGlobalData().ApiBaseUrl + "/role/alllist", "", function(
+      response
+    ) {
+      if ((response.code = 200)) {
+        self.pals = response.data;
+      }
+    });
   },
   data() {
     var self = this;
@@ -51,20 +66,24 @@ export default {
             title: "岗位类型",
             type: "select",
             data: [{ id: 1, value: "角色" }, { id: 2, value: "规则" }],
-            onChange:function(s1){
-              self.$refs.form.detail.rule=""
-              if(s1 == 1){
-                self.cfg.items[3].data=[];
-              }else{
-                self.cfg.items[3].data=[{ id: 1, value: "角色" }, { id: 2, value: "规则" }];
+            onChange: function(s1,loading) {
+              if(!loading){
+                self.$refs.form.detail.rule = "";
+              }
+              if (s1 == 1) {
+                self.cfg.items[3].data = self.roles;
+              } else {
+                self.cfg.items[3].data = [
+                  { id: "1", value: "角色" },
+                  { id: "2", value: "规则" }
+                ];
               }
             }
           },
           {
             name: "rule",
             title: "岗位计算",
-            type: "select",
-            data: [{ id: "1", value: "角色" }, { id: "2", value: "规则" }]
+            type: "select"
           }
         ],
         rules: {
@@ -87,11 +106,14 @@ export default {
           self.$parent.$parent.$parent.$parent.$parent.$refs.positionList.reloadSimpleData(
             self.getGlobalData().ApiBaseUrl +
               "/approve/positionlist?processNodeId=" +
-              (self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2 || 0)
+              (self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2 ||
+                0)
           );
           return false;
         }
-      }
+      },
+      roles: [],
+      pals: []
     };
   }
 };

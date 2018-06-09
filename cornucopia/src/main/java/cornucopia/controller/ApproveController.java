@@ -1,5 +1,6 @@
 package cornucopia.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,12 +10,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
+import cornucopia.entity.RoleEntity;
 import cornucopia.model.ApproveViewModel;
+import cornucopia.model.SelectViewModel;
 import cornucopia.entity.ApproveConditionEntity;
 import cornucopia.entity.ApproveEntity;
 import cornucopia.entity.ApprovePositionEntity;
 import cornucopia.service.ApprovePositionService;
 import cornucopia.service.ApproveService;
+import cornucopia.service.RoleService;
 
 @RestController
 @RequestMapping("/approve")
@@ -153,6 +157,26 @@ public class ApproveController {
 		JsonResult<ApprovePositionEntity> jr = new JsonResult<ApprovePositionEntity>();
 		jr.setCode(200);
 		jr.setData(approvePositionEntity);
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/getAllRoles" }, method = RequestMethod.GET)
+	public JsonResult<List<SelectViewModel>> getAllRoles() {
+		List<SelectViewModel> svms = new ArrayList<SelectViewModel>();
+		List<RoleEntity> roleEntities = RoleService.getInstance().getAllRoles();
+		for(RoleEntity re : roleEntities) {
+			if(re.getIsDeleted()==1 || re.getIsEnabled()==0) {
+				continue;
+			}
+			SelectViewModel svm = new SelectViewModel();
+			svm.setId(re.getId());
+			svm.setValue(re.getName());
+			svm.setDesc(re.getIsDeleted()+"");
+			svms.add(svm);
+		}
+		JsonResult<List<SelectViewModel>> jr = new JsonResult<List<SelectViewModel>>();
+		jr.setCode(200);
+		jr.setData(svms);
 		return jr;
 	}
 }

@@ -190,7 +190,14 @@ export default {
 
     if (this.cfg.mode != "create") {
       self.openLoading();
-      this.fillData();
+      this.fillData(function(){
+        for (var j = 0; j < self.cfg.items.length; j++) {
+            var item = self.cfg.items[j];
+            if (item.onChange) {
+              item.onChange(self.detail[item.name],1);
+            }
+          }
+      });
     }
     $(this.$el)
       .find('input[type="file"]')
@@ -814,26 +821,14 @@ export default {
         }
       });
     },
-    fillData: function() {
+    fillData: function(onSuccess) {
       self = this;
-      // $.ajax({
-      //   type: "get",
-      //   xhrFields: {
-      //     withCredentials: true
-      //   },
-      //   url: self.cfg.get.url,
-      //   data: self.cfg.get.params,
-      //   // async: false,
-      //   success: function(result) {
-      //     if (result.code == "200") {
-      //       self.detail = result.data;
-      //       self.closeLoading();
-      //     }
-      //   }
-      // });
       self.get(self.cfg.get.url,self.cfg.get.params,function(result){
         if (result.code == "200") {
             self.detail = result.data;
+            if(onSuccess){
+              onSuccess()
+            }
             self.closeLoading();
           }
       })

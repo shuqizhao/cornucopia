@@ -2,7 +2,7 @@ package cornucopia.entity;
 
 public class ApprovePositionEntity extends BaseEntity {
 	private int type;
-	private String rule;
+	private int rule;
 	private int processNodeId;
 
 	public int getType() {
@@ -13,11 +13,11 @@ public class ApprovePositionEntity extends BaseEntity {
 		this.type = type;
 	}
 
-	public String getRule() {
+	public int getRule() {
 		return rule;
 	}
 
-	public void setRule(String rule) {
+	public void setRule(int rule) {
 		this.rule = rule;
 	}
 
