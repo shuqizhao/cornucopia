@@ -39,23 +39,17 @@ export default {
       for (var i = 0; i < children.length; i++) {
         if (children[i].validateFrom) {
           var isPass = children[i].validateFrom(function(name, data) {
-            var data1 = data;
-            if (self.cfg.extraData) {
-              if(self.cfg.extraData[name]){
-                data1 = $.extend(data, self.cfg.extraData[name]);
-              }else{
-                dataWillCommit = $.extend(dataWillCommit, self.cfg.extraData);
-              }
-              
-            }
-            dataWillCommit[name] = data1;
+            dataWillCommit[name] = data;
           });
           willCommit = isPass && willCommit;
         }
       }
+
       if (!willCommit) {
         return;
       }
+
+      dataWillCommit = $.extend(true, dataWillCommit, self.cfg.extraData);
 
       var isOk = true;
       if (self.cfg.validate) {

@@ -124,9 +124,11 @@ export default {
   props: ["cfg"],
   created: function() {
     self = this;
-    for (var i = 0; i < self.cfg.tools.length; i++) {
-      var item = self.cfg.tools[i];
-      self.$set(self.toolData,item.name,"")
+    if (self.cfg.tools) {
+      for (var i = 0; i < self.cfg.tools.length; i++) {
+        var item = self.cfg.tools[i];
+        self.$set(self.toolData, item.name, "");
+      }
     }
   },
   mounted: function() {
