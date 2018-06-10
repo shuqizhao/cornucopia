@@ -11,6 +11,9 @@
     <sequenceFlow id="flow5" sourceRef="DOA" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="DOA"></sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="endevent1"></sequenceFlow>
+    <userTask id="ReTry" name="ReTry"></userTask>
+    <sequenceFlow id="flow8" sourceRef="exclusivegateway1" targetRef="ReTry"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="ReTry" targetRef="Init"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_departureProcess">
     <bpmndi:BPMNPlane bpmnElement="departureProcess" id="BPMNPlane_departureProcess">
@@ -28,6 +31,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="720.0" y="121.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ReTry" id="BPMNShape_ReTry">
+        <omgdc:Bounds height="55.0" width="105.0" x="552.0" y="260.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="247.0" y="141.0"></omgdi:waypoint>
@@ -49,6 +55,14 @@
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="760.0" y="141.0"></omgdi:waypoint>
         <omgdi:waypoint x="860.0" y="142.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="740.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="604.0" y="260.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="604.0" y="260.0"></omgdi:waypoint>
+        <omgdi:waypoint x="412.0" y="170.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -177,15 +177,19 @@ export default {
             isHide: true
           },
           {
-            title: "流程节点名",
+            title: "流程图名",
             name: "name",
+          },
+          {
+            title: "版本",
+            name: "version",
           },
           {
             title: "是否启用",
             name: "isEnabled"
           },
           {
-            title: "创建时间",
+            title: "上传时间",
             name: "createTime"
           }
         ],
