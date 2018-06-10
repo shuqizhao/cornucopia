@@ -41,7 +41,12 @@ export default {
           var isPass = children[i].validateFrom(function(name, data) {
             var data1 = data;
             if (self.cfg.extraData) {
-              data1 = $.extend(data, self.cfg.extraData[name]);
+              if(self.cfg.extraData[name]){
+                data1 = $.extend(data, self.cfg.extraData[name]);
+              }else{
+                dataWillCommit = $.extend(dataWillCommit, self.cfg.extraData);
+              }
+              
             }
             dataWillCommit[name] = data1;
           });
@@ -50,6 +55,19 @@ export default {
       }
       if (!willCommit) {
         return;
+      }
+
+      var isOk = true;
+      if (self.cfg.validate) {
+        //自定义验证
+        isOk = self.cfg.validate(dataWillCommit);
+      }
+
+      if (!isOk) {
+        return;
+      }
+      if (self.cfg.beforeCommit) {
+        self.cfg.beforeCommit(dataWillCommit);
       }
 
       this.postUrl(dataWillCommit);

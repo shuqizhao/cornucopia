@@ -2,7 +2,9 @@ package cornucopia.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -335,14 +337,15 @@ public class ApproveController {
 			typeMap.put("postionId", Class.forName("java.lang.Integer"));
 			typeMap.put("postionName", Class.forName("java.lang.String"));
 			for (ApproveEntity approve : approves) {
-				typeMap.put("id_" + approve.getId(), Class.forName("java.lang.Integer"));
+				typeMap.put("id_" + approve.getId(), Class.forName("java.lang.Boolean"));
 			}
 			DynamicBean bean = new DynamicBean(typeMap);
 			for (ApproveEntity approve : approves) {
 				List<ApproveMatrixEntity> approveMatrixEntityTemps = approveMatrixEntities.stream()
-						.filter((ApproveMatrixEntity r) -> r.getApproveCondition2Id() == approve.getId())
+						.filter((ApproveMatrixEntity r) -> r.getApproveCondition2Id() == approve.getId()
+								&& r.getApprovePositionId() == ap.getId())
 						.collect(Collectors.toList());
-				bean.setValue("id_" + approve.getId(), new Integer(approveMatrixEntityTemps.size() == 0 ? 0 : 1));
+				bean.setValue("id_" + approve.getId(), new Boolean(approveMatrixEntityTemps.size() > 0));
 			}
 			bean.setValue("postionId", new Integer(ap.getId()));
 			bean.setValue("postionName", ap.getName());
@@ -351,6 +354,38 @@ public class ApproveController {
 		JsonResult<List<Object>> jr = new JsonResult<List<Object>>();
 		jr.setCode(200);
 		jr.setData(result);
+		return jr;
+	}
+
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = { "/matrixUpdate" }, method = RequestMethod.POST)
+	public JsonResult<Integer> matrixUpdate(@RequestBody Map<String, Object> reqMap) {
+		LinkedHashMap<String, Integer> process = (LinkedHashMap<String, Integer>) reqMap.get("process");
+		int processId = process.get("processId");
+		int processNodeId = process.get("processNodeId");
+		int approveId = process.get("approveId");
+		ApproveMatrixService.getInstance().delete(approveId);
+		List<LinkedHashMap<String, Object>> matrix = (ArrayList<LinkedHashMap<String, Object>>) reqMap.get("matrix");
+		for (LinkedHashMap<String, Object> map : matrix) {
+			for (String key : map.keySet()) {
+				Object value = map.get(key);
+				if (!key.equals("postionId") && !key.equals("postionName")) {
+					if ((Boolean) value) {
+						int postionId = (int) map.get("postionId");
+						ApproveMatrixEntity approveMatrixEntity = new ApproveMatrixEntity();
+						approveMatrixEntity.setProcessId(processId);
+						approveMatrixEntity.setProcessNodeId(processNodeId);
+						approveMatrixEntity.setApproveCondition1Id(approveId);
+						approveMatrixEntity.setApproveCondition2Id(Integer.parseInt(key.split("_")[1]));
+						approveMatrixEntity.setApprovePositionId(postionId);
+						ApproveMatrixService.getInstance().insert(approveMatrixEntity);
+					}
+				}
+			}
+		}
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(1);
 		return jr;
 	}
 }

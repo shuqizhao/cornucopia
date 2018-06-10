@@ -22,7 +22,7 @@ export default {
       cfg: {
         title: "审批矩阵",
         mode: "create",
-        // showCheckBox:true,
+        name: "matrix",
         items: [
           {
             name: "postionName",
@@ -39,6 +39,20 @@ export default {
             title: "流程",
             type: "select",
             onChange: function(s1, toolData) {
+              self.currentProcessId = s1;
+              self.cfg1.extraData.process.processId = s1;
+              self.currentProcessNodeId = 0;
+              self.currentApproveId = 0;
+              var items = [
+                {
+                  name: "postionName",
+                  title: "审批岗位",
+                  type: "label"
+                }
+              ];
+              self.$set(self.cfg, "items", items);
+              self.$set(self.$refs.editList, "tableData", []);
+
               self.get(
                 self.getGlobalData().ApiBaseUrl +
                   "/processnode/alllist?processId=" +
@@ -60,6 +74,8 @@ export default {
             type: "select",
             onChange: function(s1, toolData) {
               self.currentProcessNodeId = s1;
+              self.cfg1.extraData.process.processNodeId = s1;
+              self.currentApproveId = 0;
               var items = [
                 {
                   name: "postionName",
@@ -68,6 +84,8 @@ export default {
                 }
               ];
               self.$set(self.cfg, "items", items);
+              self.$set(self.$refs.editList, "tableData", []);
+
               self.get(
                 self.getGlobalData().ApiBaseUrl +
                   "/approve/alllist?processNodeId=" +
@@ -99,6 +117,17 @@ export default {
             title: "审批路线(一)",
             type: "select",
             onChange: function(s1, toolData) {
+              self.currentApproveId = s1;
+              self.cfg1.extraData.process.approveId = s1;
+              var items = [
+                {
+                  name: "postionName",
+                  title: "审批岗位",
+                  type: "label"
+                }
+              ];
+              self.$set(self.cfg, "items", items);
+              self.$set(self.$refs.editList, "tableData", []);
               self.get(
                 self.getGlobalData().ApiBaseUrl +
                   "/approve/allchildren?approveId=" +
@@ -143,9 +172,31 @@ export default {
         ]
       },
       cfg1: {
-        save: this.getGlobalData().ApiBaseUrl + "/approve/matrixUpdate"
+        save: this.getGlobalData().ApiBaseUrl + "/approve/matrixUpdate",
+        extraData: {
+          process: {
+            processNodeId: this.currentProcessNodeId,
+            processId: this.currentProcessId,
+            approveId: this.currentApproveId
+          }
+        },
+        validate: function() {
+          if (self.currentApproveId == 0) {
+            self.$message({
+              type: "warning",
+              message: "请先选择审批路线！"
+            });
+            return false;
+          }
+          return true;
+        },
+        onSuccess: function() {
+          return false;
+        }
       },
-      currentProcessNodeId: 0
+      currentProcessId: 0,
+      currentProcessNodeId: 0,
+      currentApproveId: 0
     };
   },
   updated: function() {
