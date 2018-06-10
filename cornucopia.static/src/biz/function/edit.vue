@@ -71,6 +71,7 @@ export default {
         title: "参数列表",
         mode: "edit",
         name: "functionParas",
+        showCheckBox:true,
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/function/getPara",
           params: {

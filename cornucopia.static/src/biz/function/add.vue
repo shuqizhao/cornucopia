@@ -48,6 +48,7 @@ export default {
         title: "参数列表",
         mode: "create",
         name: "functionParas",
+        showCheckBox:true,
         items: [
           {
             name: "name",
