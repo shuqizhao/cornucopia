@@ -46,6 +46,7 @@ export default {
         title: "条件公式",
         mode: "create",
         name:'approveConditions',
+        showCheckBox:true,
         dialogWidth: "95%",
         items: [
           {

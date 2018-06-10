@@ -22,7 +22,7 @@
         <button v-for="item in cfg.functions" :key="item.text" @click="item.onClick" :class="'btn '+item.type+' btn-buttons '+item.icon" style="margin-right:10px;">{{item.text}}</button>
         <span v-for="item in cfg.tools" :key="item.text" style="margin-bottom:25px;margin-left:15px;display:inline-block;">
           <label>{{item.title}}：</label>
-          <el-select v-if="item.type=='select'" :name="item.name" v-model="toolData[item.name]"
+          <el-select v-if="item.type=='select'" :name="item.name" filterable v-model="toolData[item.name]"
                   @change="item.onChange?item.onChange(toolData[item.name],toolData):''" placeholder="">
                       <el-option
                       v-for="opItem in item.data"
@@ -39,7 +39,7 @@
             border
             @selection-change="handleSelectionChange"
             style="width: 100%">
-            <el-table-column
+            <el-table-column v-if="cfg.showCheckBox"
             type="selection"
             width="55">
             </el-table-column>
@@ -81,6 +81,10 @@
                         <el-button slot="append" icon="el-icon-search" @click="onClick(scope.$index,item)"></el-button>
                       </el-input>
                     </div>
+                    <center v-else-if="item.type=='checkbox'">
+                      <el-checkbox  :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" ></el-checkbox>
+                    </center>
+                    <el-label v-else :name="item.name" placeholder="" >{{tableData[scope.$index][item.name]}}</el-label>
                 </div>
             </template>
             </el-table-column>

@@ -56,6 +56,7 @@ export default {
         mode: "edit",
         name: "approveConditions",
         dialogWidth: "95%",
+        showCheckBox:true,
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/approve/getConditions",
           params: {

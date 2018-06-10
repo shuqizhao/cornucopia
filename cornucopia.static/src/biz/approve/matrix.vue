@@ -1,5 +1,8 @@
 <template>
+<div>
   <editList ref="editList" :cfg="cfg"></editList>
+  <buttonBar :cfg="cfg1"></buttonBar>
+</div>
 </template>
 <script>
 export default {
@@ -19,7 +22,7 @@ export default {
       cfg: {
         title: "审批矩阵",
         mode: "edit",
-        dialogWidth: "95%",
+        // showCheckBox:true,
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/approve/getConditions",
           params: {
@@ -28,7 +31,7 @@ export default {
         },
         items: [
           {
-            name: "approvePosition",
+            name: "name",
             title: "审批岗位",
             type: "label"
           }
@@ -74,6 +77,17 @@ export default {
                   }
                 }
               );
+              self.get(
+                self.getGlobalData().ApiBaseUrl +
+                  "/approve/positionlist?processNodeId=" +
+                  s1,
+                "",
+                function(response) {
+                  if (response.code == 200) {
+                    self.$set(self.$refs.editList, "tableData", response.data);
+                  }
+                }
+              );
             }
           },
           {
@@ -90,7 +104,7 @@ export default {
                   if (response.code == 200) {
                     var items = [
                       {
-                        name: "approvePosition",
+                        name: "name",
                         title: "审批岗位",
                         type: "label"
                       }
@@ -111,7 +125,9 @@ export default {
           }
         ]
       },
-      id: 0
+      cfg1: {
+        save: this.getGlobalData().ApiBaseUrl + "/approve/matrixUpdate"
+      }
     };
   },
   updated: function() {
