@@ -20,6 +20,18 @@
       </div>
     <div>
         <button v-for="item in cfg.functions" :key="item.text" @click="item.onClick" :class="'btn '+item.type+' btn-buttons '+item.icon" style="margin-right:10px;">{{item.text}}</button>
+        <span v-for="item in cfg.tools" :key="item.text" style="margin-bottom:25px;margin-left:15px;display:inline-block;">
+          <label>{{item.title}}：</label>
+          <el-select v-if="item.type=='select'" :name="item.name" v-model="toolData[item.name]"
+                  @change="item.onChange?item.onChange(item,toolData[item.name]):''" placeholder="">
+                      <el-option
+                      v-for="opItem in item.data"
+                      :key="opItem.id"
+                      :label="opItem.value"
+                      :value="opItem.id">
+                      </el-option>
+          </el-select>
+        </span>
     </div>
     <form class="form-inline form" onsubmit='return false;' role="form">
         <el-table
@@ -135,6 +147,7 @@ export default {
     return {
       tableData: [],
       tableCell: [],
+      toolData: [],
       multipleSelection: [],
       currentComponent: "",
       dialogVisible: false,

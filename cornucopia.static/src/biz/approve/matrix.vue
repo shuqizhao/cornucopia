@@ -1,5 +1,5 @@
 <template>
-  <list :cfg="cfg"></list>
+  <editList ref="editList" :cfg="cfg"></editList>
 </template>
 <script>
 export default {
@@ -8,81 +8,214 @@ export default {
     return {
       cfg: {
         title: "审批矩阵",
-        parentTitle: "权限管理",
-        simpleUrl: this.getGlobalData().ApiBaseUrl + "/approve/matrix",
-        lengthMenu: [[-1], ["ALL"]],
-        sDom: 'f<"dataTables_function"/>',
-        bServerSide: false,
-        hideCheckBox: true,
-        showSelectedRowColor: true,
-        columns: [
+        mode: "edit",
+        dialogWidth: "95%",
+        get: {
+          url: this.getGlobalData().ApiBaseUrl + "/approve/getConditions",
+          params: {
+            id:0
+          }
+        },
+        items: [
           {
-            title: "id",
-            name: "id",
-            isHide: true
+            name: "boolOperation",
+            title: "审批岗位",
+            type: "label"
           },
           {
-            title: "函数名",
-            name: "name"
+            name: "var1",
+            title: "变量1",
+            type: "text",
+            url: "functionPopup"
           },
           {
-            title: "函数描述",
-            name: "desc"
+            name: "var1From",
+            title: "变量1来源",
+            type: "combox",
+            data: [
+              {
+                id: 1,
+                name: "文本"
+              },
+              {
+                id: 2,
+                name: "表单xpath"
+              },
+              {
+                id: 3,
+                name: "函数"
+              }
+            ],
+            onChange: function(index, item, s1, tableCell,tableData,status) {
+              if (!tableCell[index]) {
+                tableCell[index] = {};
+              }
+              if(status!=1){
+                tableData[index]["var1"]="";
+              }
+              
+              if (s1 == 3) {
+                tableCell[index]["var1"] = "popup";
+                // this.parainstId = tableData[index][var2];
+              } else {
+                tableCell[index]["var1"] = "text";
+              }
+            }
           },
           {
-            title: "是否启用",
-            name: "isEnabled"
+            name: "var1Type",
+            title: "变量1类型",
+            type: "combox",
+            data: [
+              {
+                id: 1,
+                name: "字符串"
+              },
+              {
+                id: 2,
+                name: "整数"
+              },
+              {
+                id: 3,
+                name: "浮点型"
+              },
+              {
+                id: 4,
+                name: "日期型"
+              }
+            ]
           },
           {
-            title: "创建时间",
-            name: "createTime"
+            name: "operation",
+            title: "比较运算符",
+            type: "combox",
+            data: [
+              {
+                id: 1,
+                name: "=="
+              },
+              {
+                id: 2,
+                name: ">"
+              },
+              {
+                id: 3,
+                name: ">="
+              },
+              {
+                id: 4,
+                name: "<"
+              },
+              {
+                id: 5,
+                name: "<="
+              },
+              {
+                id: 6,
+                name: "!="
+              }
+            ]
           },
           {
-            title: "修改时间",
-            name: "updateTime"
+            name: "var2",
+            title: "变量2",
+            type: "text",
+            url: "functionPopup"
+          },
+          {
+            name: "var2From",
+            title: "变量2来源",
+            type: "combox",
+            data: [
+              {
+                id: 1,
+                name: "文本"
+              },
+              {
+                id: 2,
+                name: "表单xpath"
+              },
+              {
+                id: 3,
+                name: "函数"
+              }
+            ],
+            onChange: function(index, item, s1, tableCell,tableData,status) {
+              if (!tableCell[index]) {
+                tableCell[index] = {};
+              }
+              if(status!=1){
+                tableData[index]["var2"]="";
+              }
+              
+              if (s1 == 3) {
+                tableCell[index]["var2"] = "popup";
+                // this.parainstId = tableData[index][var2];
+              } else {
+                tableCell[index]["var2"] = "text";
+              }
+
+            }
+          },
+          {
+            name: "var2Type",
+            title: "变量2类型",
+            type: "combox",
+            data: [
+              {
+                id: 1,
+                name: "字符串"
+              },
+              {
+                id: 2,
+                name: "整数"
+              },
+              {
+                id: 3,
+                name: "浮点型"
+              },
+              {
+                id: 4,
+                name: "日期型"
+              }
+            ]
           }
         ],
-        idName: "id",
-        fnRowCallback: function(row, data) {
-          if (data.isEnabled) {
-            $("td:eq(2)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
-          } else {
-            $("td:eq(2)", row).html('<i class="el-icon-close"></i>');
+        rules: {
+          var1: {
+            required: true
+          },
+          var2: {
+            required: true
           }
         },
-        functions: {
-          common: [
-            {
-              text: "添加函数",
-              url: "functionAdd",
-              mode: "modal"
-            },
-            {
-              text: "编辑函数",
-              url: "functionEdit",
-              mode: "modal"
-            }
-          ],
-          more: [
-            {
-              text: "停用",
-              url: this.getGlobalData().ApiBaseUrl + "/function/disable"
-            },
-            {
-              text: "启用",
-              url: this.getGlobalData().ApiBaseUrl + "/function/enable"
-            },
-            {
-              text: "删除",
-              url: this.getGlobalData().ApiBaseUrl + "/function/delete"
-            }
-          ]
+        messages: {
+          var1: {
+            required: "变量1必须填写"
+          },
+          var2: {
+            required: "变量2必须填写"
+          }
         },
-        onClickRow: function(data, target) {
-          self.id = data.id;
-        }
+        validate: function(data, saveData) {
+          return true;
+        },
+        tools:[
+          {
+            name: "processId",
+            title: "流程",
+            type: "select",
+            url: "functionPopup"
+          },
+          {
+            name: "processNodeId",
+            title: "节点",
+            type: "select",
+            url: "functionPopup"
+          },
+        ]
       },
-      id:0
+      id: 0
     };
   },
   updated: function() {
