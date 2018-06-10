@@ -56,11 +56,12 @@
                                           :with-credentials="true"
                                           :limit="item.limit?item.limit:1"
                                           :on-success="onFileUpload"
+                                          :before-remove="onFileUploadBeforeDelete"
                                           :on-exceed="onLimited"
                                           :on-preview="handlePictureCardPreview"
                                           :on-remove="handleRemove">
                                           <i class="el-icon-plus"></i>
-                                          <div slot="tip" class="el-upload__tip">不超过500kb</div>
+                                          <div slot="tip" class="el-upload__tip">{{item.desc}}</div>
                                         </el-upload>
                                         <el-dialog :visible.sync="dialogVisible">
                                           <img width="100%" :src="dialogImageUrl" alt="">
@@ -245,11 +246,13 @@ export default {
       var className = this.$parent.$parent.$el.className;
       return className.indexOf("el-dialog__wrapper") != -1;
     },
-    handleRemove(file, fileList) {
+    onFileUploadBeforeDelete:function(){
       $(self.$el)
         .parent()
         .find("li")
         .tooltip("destroy");
+    },
+    handleRemove(file, fileList) {
       self.drawUploader(fileList)
     },
     handlePictureCardPreview(file) {
@@ -287,7 +290,7 @@ export default {
               .parent()
               .find("li:eq(" + i + ")")
               .append(
-                '<div><i class="fa fa-fw fa-file"></i><div style="position: absolute; top: 120px; left: 0;z-">' +
+                '<div><img width="100%" style="margin-top:-35px;" src="/src/assets/file.png"></img><div style="position: absolute; top: 120px; left: 0;z-">' +
                   item.name +
                   "</div></div>"
               );

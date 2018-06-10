@@ -145,6 +145,8 @@ export default {
         editTitle: "附件",
         mode: "create",
         hideFooter: "true",
+        limit:2,
+        desc:"任意文件，不能超过2M",
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/role/get",
           params: {
