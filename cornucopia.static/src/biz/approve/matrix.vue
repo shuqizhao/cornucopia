@@ -3,6 +3,16 @@
 </template>
 <script>
 export default {
+  mounted: function() {
+    var self = this;
+    self.get(this.getGlobalData().ApiBaseUrl + "/process/alllist", "", function(
+      response
+    ) {
+      if (response.code == 200) {
+        self.$set(self.cfg.tools[0], "data", response.data);
+      }
+    });
+  },
   data() {
     var self = this;
     return {
@@ -13,7 +23,7 @@ export default {
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/approve/getConditions",
           params: {
-            id:0
+            id: 0
           }
         },
         items: [
@@ -46,14 +56,14 @@ export default {
                 name: "函数"
               }
             ],
-            onChange: function(index, item, s1, tableCell,tableData,status) {
+            onChange: function(index, item, s1, tableCell, tableData, status) {
               if (!tableCell[index]) {
                 tableCell[index] = {};
               }
-              if(status!=1){
-                tableData[index]["var1"]="";
+              if (status != 1) {
+                tableData[index]["var1"] = "";
               }
-              
+
               if (s1 == 3) {
                 tableCell[index]["var1"] = "popup";
                 // this.parainstId = tableData[index][var2];
@@ -140,21 +150,20 @@ export default {
                 name: "函数"
               }
             ],
-            onChange: function(index, item, s1, tableCell,tableData,status) {
+            onChange: function(index, item, s1, tableCell, tableData, status) {
               if (!tableCell[index]) {
                 tableCell[index] = {};
               }
-              if(status!=1){
-                tableData[index]["var2"]="";
+              if (status != 1) {
+                tableData[index]["var2"] = "";
               }
-              
+
               if (s1 == 3) {
                 tableCell[index]["var2"] = "popup";
                 // this.parainstId = tableData[index][var2];
               } else {
                 tableCell[index]["var2"] = "text";
               }
-
             }
           },
           {
@@ -200,19 +209,47 @@ export default {
         validate: function(data, saveData) {
           return true;
         },
-        tools:[
+        tools: [
           {
             name: "processId",
             title: "流程",
             type: "select",
-            url: "functionPopup"
+            onChange: function(s1,toolData) {
+              self.get(
+                self.getGlobalData().ApiBaseUrl + "/processnode/alllist?processId="+s1,
+                "",
+                function(response) {
+                  if (response.code == 200) {
+                    self.$set(self.cfg.tools[1], "data", response.data);
+                    toolData.processNodeId="";
+                    toolData.approveId="";
+                  }
+                }
+              );
+            }
           },
           {
             name: "processNodeId",
             title: "节点",
             type: "select",
-            url: "functionPopup"
+            onChange: function(s1,toolData) {
+              self.get(
+                self.getGlobalData().ApiBaseUrl + "/approve/alllist?processNodeId="+s1,
+                "",
+                function(response) {
+                  if (response.code == 200) {
+                    self.$set(self.cfg.tools[2], "data", response.data);
+                    toolData.approveId="";
+                  }
+                }
+              );
+            }
           },
+          {
+            name: "approveId",
+            title: "审批路线(一)",
+            type: "select"
+          }
         ]
       },
       id: 0

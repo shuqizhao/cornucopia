@@ -23,11 +23,11 @@
         <span v-for="item in cfg.tools" :key="item.text" style="margin-bottom:25px;margin-left:15px;display:inline-block;">
           <label>{{item.title}}：</label>
           <el-select v-if="item.type=='select'" :name="item.name" v-model="toolData[item.name]"
-                  @change="item.onChange?item.onChange(item,toolData[item.name]):''" placeholder="">
+                  @change="item.onChange?item.onChange(toolData[item.name],toolData):''" placeholder="">
                       <el-option
                       v-for="opItem in item.data"
                       :key="opItem.id"
-                      :label="opItem.value"
+                      :label="opItem.name"
                       :value="opItem.id">
                       </el-option>
           </el-select>
@@ -118,6 +118,13 @@ $(function() {
 });
 export default {
   props: ["cfg"],
+  created: function() {
+    self = this;
+    for (var i = 0; i < self.cfg.tools.length; i++) {
+      var item = self.cfg.tools[i];
+      self.$set(self.toolData,item.name,"")
+    }
+  },
   mounted: function() {
     var self = this;
     if (this.cfg.mode != "create") {
