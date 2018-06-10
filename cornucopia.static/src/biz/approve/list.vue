@@ -72,12 +72,15 @@ export default {
         option1Change: function() {
           self.currentApproveId = 0;
           self.currentApproveId2 = 0;
-          self.$refs.tree1.loadUrl(1, 0);
+          self.$refs.tree.clearOption2();
+          self.$refs.tree.clearData();
+          self.$refs.tree1.clearData();
+          self.$refs.positionList.clearData();
         },
         option2Change: function() {
           self.currentApproveId = 0;
           self.currentApproveId2 = 0;
-          self.$refs.tree1.loadUrl(1, 0);
+          self.$refs.tree1.clearData();
           self.$refs.positionList.reloadSimpleData(
             self.getGlobalData().ApiBaseUrl +
               "/approve/positionlist?processNodeId=" +

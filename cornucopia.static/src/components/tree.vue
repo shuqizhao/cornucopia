@@ -238,6 +238,15 @@ export default {
       if (this.cfg.onNodeClick) {
         this.cfg.onNodeClick(data);
       }
+    },
+    clearOption1:function(){
+      this.options1 = [];
+    },
+    clearOption2:function(){
+      this.options2 = [];
+    },
+    clearData:function(){
+      this.data2 = []
     }
   },
 

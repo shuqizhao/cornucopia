@@ -722,6 +722,9 @@ export default {
       var self = this;
       self.lastCfg.data = data;
       self.dataTable.clear().rows.add(data).draw()
+    },
+    clearData:function(){
+      this.dataTable.clear().draw();
     }
   }
 };
