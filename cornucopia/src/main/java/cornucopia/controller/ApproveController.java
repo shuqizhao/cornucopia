@@ -1,7 +1,9 @@
 package cornucopia.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,11 +21,14 @@ import cornucopia.model.RuleViewModel;
 import cornucopia.model.SelectViewModel;
 import cornucopia.entity.ApproveConditionEntity;
 import cornucopia.entity.ApproveEntity;
+import cornucopia.entity.ApproveMatrixEntity;
 import cornucopia.entity.ApprovePositionEntity;
+import cornucopia.service.ApproveMatrixService;
 import cornucopia.service.ApprovePositionService;
 import cornucopia.service.ApproveService;
 import cornucopia.service.RoleService;
 import cornucopia.service.RuleService;
+import cornucopia.util.DynamicBean;
 
 @RestController
 @RequestMapping("/approve")
@@ -304,6 +309,48 @@ public class ApproveController {
 		JsonResult<List<RuleConditionEntity>> jr = new JsonResult<List<RuleConditionEntity>>();
 		jr.setCode(200);
 		jr.setData(conditions);
+		return jr;
+	}
+
+	@RequestMapping(value = { "/matrix" }, method = RequestMethod.GET)
+	public JsonResult<List<Object>> matrix(int processNodeId, int conditionId) throws ClassNotFoundException {
+		// 审批岗位
+		List<ApprovePositionEntity> poses = ApprovePositionService.getInstance().getAll(processNodeId);
+		// 审批路径
+		List<ApproveEntity> approves = ApproveService.getInstance().getAllChildren(conditionId);
+		// 审批矩阵
+		List<ApproveMatrixEntity> approveMatrixEntities = ApproveMatrixService.getInstance().getAll(conditionId);
+		if (poses == null) {
+			poses = new ArrayList<ApprovePositionEntity>();
+		}
+		if (approves == null) {
+			approves = new ArrayList<ApproveEntity>();
+		}
+		if (approveMatrixEntities == null) {
+			approveMatrixEntities = new ArrayList<ApproveMatrixEntity>();
+		}
+		List<Object> result = new ArrayList<Object>();
+		for (ApprovePositionEntity ap : poses) {
+			HashMap<String, Object> typeMap = new HashMap<String, Object>();
+			typeMap.put("postionId", Class.forName("java.lang.Integer"));
+			typeMap.put("postionName", Class.forName("java.lang.String"));
+			for (ApproveEntity approve : approves) {
+				typeMap.put("id_" + approve.getId(), Class.forName("java.lang.Integer"));
+			}
+			DynamicBean bean = new DynamicBean(typeMap);
+			for (ApproveEntity approve : approves) {
+				List<ApproveMatrixEntity> approveMatrixEntityTemps = approveMatrixEntities.stream()
+						.filter((ApproveMatrixEntity r) -> r.getApproveCondition2Id() == approve.getId())
+						.collect(Collectors.toList());
+				bean.setValue("id_" + approve.getId(), new Integer(approveMatrixEntityTemps.size() == 0 ? 0 : 1));
+			}
+			bean.setValue("postionId", new Integer(ap.getId()));
+			bean.setValue("postionName", ap.getName());
+			result.add(bean.getObject());
+		}
+		JsonResult<List<Object>> jr = new JsonResult<List<Object>>();
+		jr.setCode(200);
+		jr.setData(result);
 		return jr;
 	}
 }

@@ -21,17 +21,11 @@ export default {
     return {
       cfg: {
         title: "审批矩阵",
-        mode: "edit",
+        mode: "create",
         // showCheckBox:true,
-        get: {
-          url: this.getGlobalData().ApiBaseUrl + "/approve/getConditions",
-          params: {
-            id: 0
-          }
-        },
         items: [
           {
-            name: "name",
+            name: "postionName",
             title: "审批岗位",
             type: "label"
           }
@@ -65,6 +59,15 @@ export default {
             title: "节点",
             type: "select",
             onChange: function(s1, toolData) {
+              self.currentProcessNodeId = s1;
+              var items = [
+                {
+                  name: "postionName",
+                  title: "审批岗位",
+                  type: "label"
+                }
+              ];
+              self.$set(self.cfg, "items", items);
               self.get(
                 self.getGlobalData().ApiBaseUrl +
                   "/approve/alllist?processNodeId=" +
@@ -79,8 +82,9 @@ export default {
               );
               self.get(
                 self.getGlobalData().ApiBaseUrl +
-                  "/approve/positionlist?processNodeId=" +
-                  s1,
+                  "/approve/matrix?processNodeId=" +
+                  s1 +
+                  "&conditionId=0",
                 "",
                 function(response) {
                   if (response.code == 200) {
@@ -104,7 +108,7 @@ export default {
                   if (response.code == 200) {
                     var items = [
                       {
-                        name: "name",
+                        name: "postionName",
                         title: "审批岗位",
                         type: "label"
                       }
@@ -112,12 +116,25 @@ export default {
                     for (var i = 0; i < response.data.length; i++) {
                       var item = response.data[i];
                       items.push({
-                        name: item.name,
+                        name: "id_" + item.id,
                         title: item.name,
                         type: "checkbox"
                       });
                     }
                     self.$set(self.cfg, "items", items);
+                  }
+                }
+              );
+              self.get(
+                self.getGlobalData().ApiBaseUrl +
+                  "/approve/matrix?processNodeId=" +
+                  self.currentProcessNodeId +
+                  "&conditionId=" +
+                  s1,
+                "",
+                function(response) {
+                  if (response.code == 200) {
+                    self.$set(self.$refs.editList, "tableData", response.data);
                   }
                 }
               );
@@ -127,7 +144,8 @@ export default {
       },
       cfg1: {
         save: this.getGlobalData().ApiBaseUrl + "/approve/matrixUpdate"
-      }
+      },
+      currentProcessNodeId: 0
     };
   },
   updated: function() {

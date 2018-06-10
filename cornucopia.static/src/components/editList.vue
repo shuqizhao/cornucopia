@@ -84,7 +84,7 @@
                     <center v-else-if="item.type=='checkbox'">
                       <el-checkbox  :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" ></el-checkbox>
                     </center>
-                    <el-label v-else :name="item.name" placeholder="" >{{tableData[scope.$index][item.name]}}</el-label>
+                    <label v-else :name="item.name" placeholder="" >{{tableData[scope.$index][item.name]}}</label>
                 </div>
             </template>
             </el-table-column>
