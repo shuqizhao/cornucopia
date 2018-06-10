@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
 import cornucopia.entity.ApprovePositionEntity;
+import cornucopia.model.ApprovePositionViewModel;
 
 public interface ApprovePositionDao {
 	
@@ -33,4 +34,7 @@ public interface ApprovePositionDao {
 
 	@Update("call sp_approve_position_update(#{pos.id},#{pos.name},#{pos.type},#{pos.rule})")
 	public int update(@Param("pos") ApprovePositionEntity pos);
+
+	@Select("call sp_approve_position_all_with_viewmodel(#{processNodeId})")
+	public List<ApprovePositionViewModel> getAllWithViewModel(@Param("processNodeId")int processNodeId);
 }

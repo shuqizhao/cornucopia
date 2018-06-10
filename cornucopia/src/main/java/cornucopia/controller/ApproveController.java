@@ -138,32 +138,10 @@ public class ApproveController {
 
 	@RequestMapping(value = { "/positionlist" }, method = RequestMethod.GET)
 	public JsonResult<List<ApprovePositionViewModel>> positionlist(int processNodeId) {
-		List<ApprovePositionEntity> poses = ApprovePositionService.getInstance().getAll(processNodeId);
-		List<ApprovePositionViewModel> posvms = new ArrayList<ApprovePositionViewModel>();
-		for (ApprovePositionEntity pos : poses) {
-			ApprovePositionViewModel posvm = new ApprovePositionViewModel();
-			posvm.setId(pos.getId());
-			posvm.setName(pos.getName());
-			posvm.setType(pos.getType());
-			posvm.setRule(pos.getRule());
-			posvm.setIsEnabled(pos.getIsEnabled());
-			posvm.setCreateTime(pos.getCreateTime());
-			if (pos.getType() == 2) {
-				RuleEntity rule = RuleService.getInstance().get(pos.getRule());
-				if (rule != null) {
-					posvm.setRuleStr(rule.getName());
-				}
-			} else {
-				RoleEntity role = RoleService.getInstance().get(pos.getRule());
-				if (role != null) {
-					posvm.setRuleStr(role.getName());
-				}
-			}
-			posvms.add(posvm);
-		}
+		List<ApprovePositionViewModel> poses = ApprovePositionService.getInstance().getAllWithViewModel(processNodeId);
 		JsonResult<List<ApprovePositionViewModel>> jr = new JsonResult<List<ApprovePositionViewModel>>();
 		jr.setCode(200);
-		jr.setData(posvms);
+		jr.setData(poses);
 		return jr;
 	}
 

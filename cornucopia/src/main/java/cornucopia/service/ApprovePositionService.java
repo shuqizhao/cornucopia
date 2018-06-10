@@ -4,6 +4,7 @@ import java.util.List;
 
 import cornucopia.dao.ApprovePositionDao;
 import cornucopia.entity.ApprovePositionEntity;
+import cornucopia.model.ApprovePositionViewModel;
 import cornucopia.util.MyBatisHelper;
 
 public class ApprovePositionService {
@@ -20,6 +21,10 @@ public class ApprovePositionService {
 
 	public List<ApprovePositionEntity> getAll(int processNodeId) {
 		return posdao.getAll(processNodeId);
+	}
+	
+	public List<ApprovePositionViewModel> getAllWithViewModel(int processNodeId) {
+		return posdao.getAllWithViewModel(processNodeId);
 	}
 
 	public int insert(ApprovePositionEntity approvePositionEntity) {
