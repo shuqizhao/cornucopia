@@ -3,15 +3,16 @@
       <mform :cfg="cfg"></mform>
       <mform :cfg="cfg1"></mform>
       <mform :cfg="cfg2"></mform>
+      <buttonBar :cfg="cfg3"></buttonBar>
     </div>
 </template>
 <script>
 export default {
-  mounted:function(){
-    this.setBreadcrumbTitle(this,"发起新流程","离职申请");
+  mounted: function() {
+    this.setBreadcrumbTitle(this, "发起新流程", "离职申请");
   },
-  destroyed:function(){
-    this.setBreadcrumbTitle(this,'','');
+  destroyed: function() {
+    this.setBreadcrumbTitle(this, "", "");
   },
   data() {
     var self = this;
@@ -21,14 +22,13 @@ export default {
         detailTitle: "申请人信息",
         editTitle: "申请人信息",
         mode: "detailEdit",
-        hideFooter:"true",
+        hideFooter: "true",
         get: {
-          url: this.getGlobalData().ApiBaseUrl+"/user/getSelf",
+          url: this.getGlobalData().ApiBaseUrl + "/user/getSelf",
           params: {
             id: this.$route.query.id
           }
         },
-        // save: this.getGlobalData().ApiBaseUrl+"/role/update",
         items: [
           {
             name: "Id",
@@ -38,38 +38,37 @@ export default {
             name: "name",
             title: "姓名",
             type: "text",
-            width:"300px;"
+            width: "300px;"
           },
           {
             name: "department",
             title: "部门",
             type: "text",
-            width:"300px;"
+            width: "300px;"
           },
           {
             name: "title",
             title: "职位",
             type: "text",
-            width:"300px;"
+            width: "300px;"
           },
           {
             name: "workNo",
             title: "工号",
             type: "text",
-            width:"300px;"
+            width: "300px;"
           },
           {
             name: "workEmail",
             title: "邮箱",
             type: "text",
-            width:"300px;"
-          }
-          ,
+            width: "300px;"
+          },
           {
             name: "phone",
             title: "手机号",
             type: "text",
-            width:"300px;"
+            width: "300px;"
           }
         ],
         afterEditRender: function() {
@@ -81,14 +80,13 @@ export default {
         detailTitle: "申请信息",
         editTitle: "申请信息",
         mode: "create",
-        hideFooter:"true",
+        hideFooter: "true",
         get: {
-          url: this.getGlobalData().ApiBaseUrl+"/role/get",
+          url: this.getGlobalData().ApiBaseUrl + "/role/get",
           params: {
             id: this.$route.query.id
           }
         },
-        // save: this.getGlobalData().ApiBaseUrl+"/role/update",
         items: [
           {
             name: "Id",
@@ -98,44 +96,43 @@ export default {
             name: "title",
             title: "职位",
             type: "text",
-            width:"300px;"
+            width: "300px;"
           },
           {
             name: "department",
             title: "直接主管",
             type: "text",
-            width:"300px;"
+            width: "300px;"
           },
           {
             name: "title",
             title: "入职日期",
             type: "text",
-            width:"300px;"
+            width: "300px;"
           },
           {
             name: "workNo",
             title: "离职日期",
             type: "text",
-            width:"300px;"
+            width: "300px;"
           },
           {
             name: "workEmail",
             title: "联系电话",
             type: "text",
-            width:"300px;"
-          }
-          ,
+            width: "300px;"
+          },
           {
             name: "phone",
             title: "个人邮箱",
             type: "text",
-            width:"300px;"
+            width: "300px;"
           },
           {
-            name: "phone",
+            name: "reson",
             title: "离职原因",
             type: "textarea",
-            isRequire:true
+            isRequire: true
           }
         ],
         afterEditRender: function() {
@@ -147,13 +144,13 @@ export default {
         detailTitle: "附件",
         editTitle: "附件",
         mode: "create",
+        hideFooter: "true",
         get: {
-          url: this.getGlobalData().ApiBaseUrl+"/role/get",
+          url: this.getGlobalData().ApiBaseUrl + "/role/get",
           params: {
             id: this.$route.query.id
           }
         },
-        // save: this.getGlobalData().ApiBaseUrl+"/role/update",
         items: [
           {
             name: "Id",
@@ -163,20 +160,21 @@ export default {
             name: "name",
             title: "文件集",
             type: "uploader",
-            hideLabel:"true",
-            limit:10,
-            url:this.getGlobalData().ApiBaseUrl+"/upload",
+            hideLabel: "true",
+            limit: 10,
+            url: this.getGlobalData().ApiBaseUrl + "/upload"
           }
         ],
         afterEditRender: function() {
-          //  $(self.$el).find("#Name").attr("disabled", true);
         }
       },
+      cfg3: {
+        save: this.getGlobalData().ApiBaseUrl + "/departure/applySave"
+      }
     };
   }
 };
 </script>
 <style>
-
 </style>
 

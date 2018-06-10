@@ -48,7 +48,7 @@
                                 </select>
                                 <input  v-else-if="item.type=='timer'" :id="item.name" :name="item.name" type="text" :placeholder="item.placeholder" class="form-control" :controltype='item.type' :value="detail[item.name]" />
                                 <div v-else-if="item.type=='uploader'">
-                                        <input :id="item.name" :name="item.name" type="hidden" :value="detail[item.name]" class="form-control" :controltype='item.type'  />
+                                        <input :id="item.name" :name="item.name" type="hidden" v-model="detail[item.name]" class="form-control" :controltype='item.type'  />
                                         <el-upload
                                           :action="item.url"
                                           :data="{id:item.name}"
@@ -60,7 +60,7 @@
                                           :on-preview="handlePictureCardPreview"
                                           :on-remove="handleRemove">
                                           <i class="el-icon-plus"></i>
-                                          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                                          <div slot="tip" class="el-upload__tip">不超过500kb</div>
                                         </el-upload>
                                         <el-dialog :visible.sync="dialogVisible">
                                           <img width="100%" :src="dialogImageUrl" alt="">
@@ -188,7 +188,7 @@ export default {
     self = this;
     for (var i = 0; i < self.cfg.items.length; i++) {
       var item = self.cfg.items[i];
-      self.$set(self.detail,item.name,"")
+      self.$set(self.detail, item.name, "");
     }
   },
   mounted: function() {
@@ -246,71 +246,61 @@ export default {
       return className.indexOf("el-dialog__wrapper") != -1;
     },
     handleRemove(file, fileList) {
-      for (var i = 0; i < fileList.length; i++) {
-        var item = fileList[i];
-        $(self.$el)
-          .parent()
-          .find("li:eq(" + i + ")")
-          .find("div")
-          .remove();
-        $(self.$el)
-          .parent()
-          .find("li:eq(" + i + ")")
-          .append(
-            '<div style="position: absolute; top: 0; left: 0;">' +
-              item.name +
-              "</div>"
-          );
-      }
+      $(self.$el)
+        .parent()
+        .find("li")
+        .tooltip("destroy");
+      self.drawUploader(fileList)
     },
     handlePictureCardPreview(file) {
-      console.log(file);
       this.dialogImageUrl = file.url;
       this.dialogImageName = file.name;
       this.dialogVisible = true;
     },
     onFileUpload: function(response, file, fileList) {
       if (response.code == 200) {
-        $(self.$el)
-          .find("#" + response.message)
-          .val(response.data);
-        for (var i = 0; i < fileList.length; i++) {
+        // $(self.$el)
+        //   .find("#" + response.message)
+        //   .val(response.data);
+        self.drawUploader(fileList)
+      }
+    },
+    drawUploader:function(fileList){
+      for (var i = 0; i < fileList.length; i++) {
           var item = fileList[i];
           $(self.$el)
             .parent()
             .find("li:eq(" + i + ")")
             .find("div")
             .remove();
+          if (item.name.indexOf(".jpg") != -1||item.name.indexOf(".png") != -1) {
+            $(self.$el)
+              .parent()
+              .find("li:eq(" + i + ")")
+              .append(
+                '<div style="position: absolute; top: 120px; left: 0;z-">' +
+                  item.name +
+                  "</div>"
+              );
+          } else {
+            $(self.$el)
+              .parent()
+              .find("li:eq(" + i + ")")
+              .append(
+                '<div><i class="fa fa-fw fa-file"></i><div style="position: absolute; top: 120px; left: 0;z-">' +
+                  item.name +
+                  "</div></div>"
+              );
+          }
+
           $(self.$el)
             .parent()
             .find("li:eq(" + i + ")")
-            .append(
-              '<div style="position: absolute; top: 120px; left: 0;z-">' +
-                item.name +
-                "</div>"
-            );
-          $(self.$el)
-            .parent()
-            .find("li:eq(" + i + ")")
-            .find("div")
-            .attr("data-toggle", "tooltip");
-          $(self.$el)
-            .parent()
-            .find("li:eq(" + i + ")")
-            .find("div")
-            .attr("data-placement", "top");
-          $(self.$el)
-            .parent()
-            .find("li:eq(" + i + ")")
-            .find("div")
-            .attr("data-original-title", item.name);
-          $(self.$el)
-            .parent()
-            .find("li:eq(" + i + ")")
-            .find("div")
+            .attr("data-toggle", "tooltip")
+            .attr("data-placement", "top")
+            .attr("data-original-title", item.name)
             .tooltip();
         }
-      }
     },
     onLimited: function() {
       self.$message({
@@ -820,10 +810,10 @@ export default {
             if (self.showDialog()) {
               self.$parent.$parent.$parent.dialogVisible = false;
               self.$parent.$parent.$parent.currentComponent = "";
-              if(self.$parent.$parent.$parent.reloadSimpleData){
+              if (self.$parent.$parent.$parent.reloadSimpleData) {
                 self.$parent.$parent.$parent.reloadSimpleData();
               }
-              if(self.$parent.$parent.$parent.loadUrl){
+              if (self.$parent.$parent.$parent.loadUrl) {
                 self.$parent.$parent.$parent.loadUrl(1);
               }
               return;
