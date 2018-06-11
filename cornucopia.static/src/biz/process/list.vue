@@ -208,6 +208,12 @@ export default {
               url: "uploadDiagram",
               mode: "modal",
               functionName: "uploadDiagram"
+            },
+            {
+              text: "部署流程图",
+              url: "uploadDiagram",
+              mode: "modal",
+              functionName: "uploadDiagram"
             }
           ],
           more: [
