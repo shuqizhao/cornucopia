@@ -205,15 +205,15 @@ export default {
           common: [
             {
               text: "上传流程图",
-              url: "processAdd",
+              url: "uploadDiagram",
               mode: "modal",
-              functionName: "processAdd"
+              functionName: "uploadDiagram"
             }
           ],
           more: [
             {
               text: "停用",
-              url: this.getGlobalData().ApiBaseUrl + "/processnode/disable"
+              url: this.getGlobalData().ApiBaseUrl + "/process/disable"
             },
             {
               text: "启用",
