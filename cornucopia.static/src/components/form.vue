@@ -250,7 +250,7 @@ export default {
       $(self.$el)
         .parent()
         .find("li")
-        .tooltip("destroy");
+        .tooltip("hide");
     },
     handleRemove(file, fileList) {
       self.drawUploader(fileList)
