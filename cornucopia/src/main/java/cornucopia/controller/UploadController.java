@@ -13,22 +13,24 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import cornucopia.entity.JsonResult;
+import cornucopia.util.AppSettings;
 
 @RestController
 public class UploadController {
 	@RequestMapping(value = { "/upload" }, method = RequestMethod.POST)
-	public JsonResult<String> upload(@RequestParam("file") MultipartFile file,@RequestParam("id") String id) {
+	public JsonResult<String> upload(@RequestParam("file") MultipartFile file, @RequestParam("id") String id) {
 		int code = 500;
-		String data = java.util.UUID.randomUUID().toString();
+		String guid = java.util.UUID.randomUUID().toString();
+		String filePath = AppSettings.getInstance(AppSettings.class).get("filesPath");
 		String message = "";
 		if (!file.isEmpty()) {
 			try {
-				File dir = new File(data);
+				File dir = new File(filePath + "/" + guid);
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
 				BufferedOutputStream out = new BufferedOutputStream(
-						new FileOutputStream(new File(data + "/" + file.getOriginalFilename())));
+						new FileOutputStream(new File(filePath + "/" + guid + "/" + file.getOriginalFilename())));
 				out.write(file.getBytes());
 				out.flush();
 				out.close();
@@ -47,7 +49,7 @@ public class UploadController {
 		JsonResult<String> jr = new JsonResult<String>();
 		jr.setCode(code);
 		jr.setMessage(message);
-		jr.setData(data);
+		jr.setData(guid);
 		return jr;
 	}
 }
