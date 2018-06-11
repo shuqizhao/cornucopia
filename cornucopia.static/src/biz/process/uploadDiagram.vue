@@ -9,7 +9,7 @@ export default {
       cfg: {
         title: "上传流程图",
         mode: "create",
-        save: this.getGlobalData().ApiBaseUrl + "/process/upload",
+        save: this.getGlobalData().ApiBaseUrl + "/processdiagram/upload",
         items: [
           {
             name: "name",

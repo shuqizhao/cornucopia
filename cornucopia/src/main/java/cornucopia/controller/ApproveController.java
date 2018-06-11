@@ -292,7 +292,6 @@ public class ApproveController {
 		return jr;
 	}
 
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = { "/matrix" }, method = RequestMethod.GET)
 	public JsonResult<List<Object>> matrix(int processNodeId, int conditionId) throws ClassNotFoundException {
 		// 审批岗位
