@@ -54,7 +54,7 @@
                                           :data="{id:item.name}"
                                           list-type="picture-card"
                                           :with-credentials="true"
-                                          :limit="item.limit?item.limit:1"
+                                          :limit="item.limit||1"
                                           :on-success="onFileUpload"
                                           :before-remove="onFileUploadBeforeDelete"
                                           :on-exceed="onLimited"
@@ -305,9 +305,9 @@ export default {
             .tooltip();
         }
     },
-    onLimited: function() {
+    onLimited: function(files, fileList) {
       self.$message({
-        message: "只能上传一个文件!",
+        message: "只能上传"+fileList.length+"个文件!",
         type: "warning"
       });
     },
