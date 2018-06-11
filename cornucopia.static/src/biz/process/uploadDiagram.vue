@@ -20,6 +20,8 @@ export default {
             name: "fileId",
             title: "流程图",
             type: "uploader",
+            desc:"只能上传bpmn文件",
+            accept:".bpmn",
             url: this.getGlobalData().ApiBaseUrl + "/upload"
           }
         ],

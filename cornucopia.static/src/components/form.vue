@@ -48,13 +48,15 @@
                                 </select>
                                 <input  v-else-if="item.type=='timer'" :id="item.name" :name="item.name" type="text" :placeholder="item.placeholder" class="form-control" :controltype='item.type' :value="detail[item.name]" />
                                 <div v-else-if="item.type=='uploader'">
-                                        <input :id="item.name" :name="item.name" type="hidden" v-model="detail[item.name]" class="form-control" :controltype='item.type'  />
+                                        <input :id="item.name" :name="item.name" type="hidden" class="form-control" :controltype='item.type'  />
                                         <el-upload
                                           :action="item.url"
                                           :data="{id:item.name}"
                                           list-type="picture-card"
                                           :with-credentials="true"
                                           :limit="item.limit||1"
+                                          :accept="item.accept||''"
+                                          :file-list="fileList"
                                           :on-success="onFileUpload"
                                           :before-remove="onFileUploadBeforeDelete"
                                           :on-exceed="onLimited"
@@ -238,7 +240,8 @@ export default {
       isShowDetail: true,
       dialogImageUrl: "",
       dialogImageName: "",
-      dialogVisible: false
+      dialogVisible: false,
+      fileList:[]
     };
   },
   methods: {
@@ -262,6 +265,7 @@ export default {
     },
     onFileUpload: function(response, file, fileList) {
       if (response.code == 200) {
+        self.fileList = fileList;
         // $(self.$el)
         //   .find("#" + response.message)
         //   .val(response.data);
@@ -752,6 +756,17 @@ export default {
             }
           } else if (item.attr("controltype") == "select") {
             data[this.id] = self.detail[this.id];
+          } else if (item.attr("controltype") == "uploader") {
+            debugger;
+            if(!item.limit || item.limit == 1){
+              data[this.id]=self.fileList[0].response.data;
+            }
+            else{
+              data[this.id] = [];
+              for(var i=0;i<self.fileList.length;i++){
+                data[this.id].push(self.fileList[i].response.data)
+              }
+            }
           } else {
             data[this.id] = item.val();
           }
