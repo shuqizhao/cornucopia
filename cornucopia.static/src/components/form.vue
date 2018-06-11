@@ -757,7 +757,6 @@ export default {
           } else if (item.attr("controltype") == "select") {
             data[this.id] = self.detail[this.id];
           } else if (item.attr("controltype") == "uploader") {
-            debugger;
             if(!item.limit || item.limit == 1){
               data[this.id]=self.fileList[0].response.data;
             }
