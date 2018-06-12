@@ -2,7 +2,7 @@
   <el-row>
     <el-col :span="6"><list :cfg="cfg"></list></el-col>
     <el-col :span="6" id="id1"><list ref="nodeList" :cfg="cfg1"></list></el-col>
-    <el-col :span="12" id="id2"><list :cfg="cfg2"></list></el-col>
+    <el-col :span="12" id="id2"><list ref="diagramList" :cfg="cfg2"></list></el-col>
   </el-row>
 </template>
 <script>
@@ -10,7 +10,7 @@ export default {
   data() {
     var self = this;
     return {
-      processId:0,
+      processId: 0,
       cfg: {
         title: "流程管理",
         parentTitle: "系统管理",
@@ -29,7 +29,7 @@ export default {
           {
             title: "流程名",
             name: "name"
-          },
+          }
           // {
           //   title: "是否启用",
           //   name: "isEnabled"
@@ -55,7 +55,7 @@ export default {
               mode: "modal",
               functionName: "processAdd"
             }
-          ],
+          ]
           // more: [
           //   {
           //     text: "停用",
@@ -73,7 +73,7 @@ export default {
         },
         onClickRow: function(data, target) {
           // self.$refs.tree.cfg.title = data.name;
-          self.openLoading(self.$refs.nodeList);
+          self.openLoading(self.$refs.nodeList,"nodeList");
           // self.openLoading($("#id2")[0],"id2");
           $.ajax({
             type: "GET",
@@ -86,9 +86,9 @@ export default {
               data.id,
             success: function(response) {
               if (response.code == "200") {
-                self.closeLoading(self.$refs.nodeList);
+                self.closeLoading(self.$refs.nodeList,"nodeList");
                 // self.closeLoading(self,"id2");
-                $("#id1").attr('processId',data.id);
+                $("#id1").attr("processId", data.id);
                 self.$refs.nodeList.loadSimpleData(response.data);
               } else if (response.message) {
                 self.$message({
@@ -98,6 +98,19 @@ export default {
               }
             }
           });
+          self.openLoading(self.$refs.diagramList);
+          self.get(
+            self.getGlobalData().ApiBaseUrl +
+              "/processdiagram/getAll?processId=" +
+              data.id,
+            "",
+            function(response) {
+              if(response.code == 200){
+                self.$refs.diagramList.loadSimpleData(response.data);
+                self.closeLoading(self.$refs.diagramList);
+              }
+            }
+          );
         }
       },
       cfg1: {
@@ -117,8 +130,8 @@ export default {
           },
           {
             title: "流程节点名",
-            name: "name",
-          },
+            name: "name"
+          }
           // {
           //   title: "是否启用",
           //   name: "isEnabled"
@@ -144,7 +157,7 @@ export default {
               mode: "modal",
               functionName: "processNodeAdd"
             }
-          ],
+          ]
           // more: [
           //   {
           //     text: "停用",
@@ -169,7 +182,7 @@ export default {
         sDom: '<"dataTables_function"/>',
         bServerSide: false,
         hideCheckBox: true,
-        // showSelectedRowColor: true,
+        showSelectedRowColor: true,
         columns: [
           {
             title: "id",
@@ -178,11 +191,11 @@ export default {
           },
           {
             title: "流程图名",
-            name: "name",
+            name: "name"
           },
           {
             title: "版本",
-            name: "version",
+            name: "version"
           },
           {
             title: "是否启用",
@@ -231,7 +244,7 @@ export default {
             }
           ]
         }
-      },
+      }
     };
   },
   updated: function() {
