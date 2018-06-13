@@ -72,9 +72,8 @@ export default {
           // ]
         },
         onClickRow: function(data, target) {
-          // self.$refs.tree.cfg.title = data.name;
+          self.processId = data.id;
           self.openLoading(self.$refs.nodeList,"nodeList");
-          // self.openLoading($("#id2")[0],"id2");
           $.ajax({
             type: "GET",
             xhrFields: {
@@ -88,7 +87,7 @@ export default {
               if (response.code == "200") {
                 self.closeLoading(self.$refs.nodeList,"nodeList");
                 // self.closeLoading(self,"id2");
-                $("#id1").attr("processId", data.id);
+                // $("#id1").attr("processId", data.id);
                 self.$refs.nodeList.loadSimpleData(response.data);
               } else if (response.message) {
                 self.$message({
@@ -209,9 +208,9 @@ export default {
         idName: "id",
         fnRowCallback: function(row, data) {
           if (data.isEnabled) {
-            $("td:eq(1)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
+            $("td:eq(2)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
           } else {
-            $("td:eq(1)", row).html('<i class="el-icon-close"></i>');
+            $("td:eq(2)", row).html('<i class="el-icon-close"></i>');
           }
         },
         functions: {

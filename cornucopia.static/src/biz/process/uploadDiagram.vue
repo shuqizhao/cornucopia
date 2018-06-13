@@ -3,6 +3,17 @@
 </template>
 <script>
 export default {
+  mounted: function() {
+    this.processId = this.$parent.$parent.$parent.$parent.$parent.processId;
+    if (this.processId == 0) {
+      this.$message({
+        message: "请先选择流程节点!",
+        type: "warning"
+      });
+      this.$parent.$parent.dialogVisible = false;
+      this.$parent.$parent.currentComponent = "";
+    }
+  },
   data() {
     var self = this;
     return {
@@ -20,8 +31,8 @@ export default {
             name: "fileId",
             title: "流程图",
             type: "uploader",
-            desc:"只能上传bpmn文件",
-            accept:".bpmn",
+            desc: "只能上传bpmn文件",
+            accept: ".bpmn",
             url: this.getGlobalData().ApiBaseUrl + "/upload"
           }
         ],
@@ -35,28 +46,30 @@ export default {
             required: "流程名必须填写"
           }
         },
-        validate: function(data, saveData) {
-          $.ajax({
-            type: "POST",
-            xhrFields: {
-              withCredentials: true
-            },
-            url: self.getGlobalData().ApiBaseUrl + "/process/exists",
-            data: data,
-            success: function(response) {
-              if (response.code == 200 && response.data == 0) {
-                saveData(data);
-              } else {
-                self.$message({
-                  type: "warning",
-                  message: "流程已经存在!"
-                });
+        onSuccess: function() {
+          self.get(
+            self.getGlobalData().ApiBaseUrl +
+              "/processdiagram/getAll?processId=" +
+              self.processId,
+            "",
+            function(response) {
+              if (response.code == 200) {
+                self.$parent.$parent.$parent.$parent.$parent.$refs.diagramList.loadSimpleData(
+                  response.data
+                );
+                self.$parent.$parent.dialogVisible = false;
+                self.$parent.$parent.currentComponent = "";
               }
             }
-          });
+          );
           return false;
+        },
+        validate: function(data, saveData) {
+          data.processId = self.processId;
+          return true;
         }
-      }
+      },
+      processId: 0
     };
   }
 };
