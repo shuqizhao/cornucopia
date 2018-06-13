@@ -34,6 +34,14 @@ export default {
             desc: "只能上传bpmn文件",
             accept: ".bpmn",
             url: this.getGlobalData().ApiBaseUrl + "/upload"
+          },
+          {
+            name: "picFileId",
+            title: "流程图片",
+            type: "uploader",
+            desc: "只能上传png文件",
+            accept: ".png",
+            url: this.getGlobalData().ApiBaseUrl + "/upload"
           }
         ],
         rules: {
