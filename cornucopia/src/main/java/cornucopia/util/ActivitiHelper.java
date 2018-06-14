@@ -27,10 +27,6 @@ public class ActivitiHelper {
 			InputStream inputStream = new ByteArrayInputStream(xmlStr.getBytes());
 			ProcessEngineConfiguration conf = ProcessEngineConfiguration
 					.createProcessEngineConfigurationFromInputStream(inputStream, "processEngineConfiguration");
-
-			// ProcessEngineConfiguration conf = ProcessEngineConfiguration
-			// .createProcessEngineConfigurationFromResource("/"+path + "/activiti.config",
-			// "processEngineConfiguration");
 			processEngine = conf.buildProcessEngine();
 			inputStream.close();
 		} catch (Exception e) {
