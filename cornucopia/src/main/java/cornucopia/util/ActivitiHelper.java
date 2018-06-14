@@ -22,13 +22,15 @@ public class ActivitiHelper {
 			Element rootEl = document.getRootElement();
 			rootEl.remove(rootEl.attribute("majorVersion"));
 			rootEl.remove(rootEl.attribute("minorVersion"));
-			String xmlStr = document.asXML();
+			String xmlStr = document.asXML().replace("xsi", "xmlns:xsi").replace("schemaLocation",
+					"xsi:schemaLocation");
 			InputStream inputStream = new ByteArrayInputStream(xmlStr.getBytes());
 			ProcessEngineConfiguration conf = ProcessEngineConfiguration
 					.createProcessEngineConfigurationFromInputStream(inputStream, "processEngineConfiguration");
-			
-//			ProcessEngineConfiguration conf = ProcessEngineConfiguration
-//					.createProcessEngineConfigurationFromResource("/"+path + "/activiti.config", "processEngineConfiguration");
+
+			// ProcessEngineConfiguration conf = ProcessEngineConfiguration
+			// .createProcessEngineConfigurationFromResource("/"+path + "/activiti.config",
+			// "processEngineConfiguration");
 			processEngine = conf.buildProcessEngine();
 			inputStream.close();
 		} catch (Exception e) {
