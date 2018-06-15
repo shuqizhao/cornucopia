@@ -18,10 +18,10 @@ public class CornucopiaApplicationTests {
 
 	@Test
 	public void contextLoads() {
-//		ProcessEngine processEngine = ActivitiHelper.GetEngine();
-//		System.out.println(processEngine);
-		List<ProcessCategoryEntity> list = ProcessCategoryService.getInstance().getAll();
-		System.out.println(list.size());
+		ProcessEngine processEngine = ActivitiHelper.GetEngine();
+		System.out.println(processEngine);
+//		List<ProcessCategoryEntity> list = ProcessCategoryService.getInstance().getAll();
+//		System.out.println(list.size());
 	}
 
 }

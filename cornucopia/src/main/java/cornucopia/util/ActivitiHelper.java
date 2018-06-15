@@ -22,8 +22,7 @@ public class ActivitiHelper {
 			Element rootEl = document.getRootElement();
 			rootEl.remove(rootEl.attribute("majorVersion"));
 			rootEl.remove(rootEl.attribute("minorVersion"));
-			String xmlStr = document.asXML().replace("xsi", "xmlns:xsi").replace("schemaLocation",
-					"xsi:schemaLocation");
+			String xmlStr = document.asXML();
 			InputStream inputStream = new ByteArrayInputStream(xmlStr.getBytes());
 			ProcessEngineConfiguration conf = ProcessEngineConfiguration
 					.createProcessEngineConfigurationFromInputStream(inputStream, "processEngineConfiguration");
