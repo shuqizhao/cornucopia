@@ -257,6 +257,12 @@ export default {
     },
     handleRemove(file, fileList) {
       self.drawUploader(fileList)
+      debugger;
+      if(fileList.length==0){
+        $("#"+file.response.message).val('')
+      }
+      
+      $("#"+file.response.message).valid();
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
@@ -266,10 +272,9 @@ export default {
     onFileUpload: function(response, file, fileList) {
       if (response.code == 200) {
         self.fileList = fileList;
-        // $(self.$el)
-        //   .find("#" + response.message)
-        //   .val(response.data);
         self.drawUploader(fileList)
+        $("#"+response.message).val(response.data)
+        $("#"+response.message).valid();
       }
     },
     drawUploader:function(fileList){
@@ -464,13 +469,15 @@ export default {
           //error.appendTo(element.parent());
         },
         success: function(error, element) {
-          //console.log(error);
-          //console.log(element);
-          $(element).tooltip("destroy");
-          $(element)
-            .parent()
-            .parent()
-            .removeClass("has-error");
+          if ($(element).attr("controltype") == "uploader") {
+            $(element)
+              .parent()
+              .find(".el-upload--picture-card")
+              .tooltip("destroy");
+          }else{
+            $(element).tooltip("destroy");
+            $(element).parent().parent().removeClass("has-error");
+          }
         },
         submitHandler: function(form) {
           if (!self.commiting) {
