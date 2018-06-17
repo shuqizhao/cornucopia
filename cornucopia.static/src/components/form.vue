@@ -48,7 +48,7 @@
                                 </select>
                                 <input  v-else-if="item.type=='timer'" :id="item.name" :name="item.name" type="text" :placeholder="item.placeholder" class="form-control" :controltype='item.type' :value="detail[item.name]" />
                                 <div v-else-if="item.type=='uploader'">
-                                        <input :id="item.name" :name="item.name" type="hidden" class="form-control" :controltype='item.type'  />
+                                        <input :id="item.name" :name="item.name" style="height:0.5px;width:0px;padding:0px;margin:0px;" class="form-control" :controltype='item.type'  />
                                         <el-upload
                                           :action="item.url"
                                           :data="{id:item.name}"
@@ -431,42 +431,13 @@ export default {
             //       error.text()
             //   });
             // }
-          } else if (element.attr("controltype") == "upload") {
+          } else if (element.attr("controltype") == "uploader") {
             element
               .parent()
-              .find("object")
-              .attr("data-toggle", "tooltip");
-            element
-              .parent()
-              .find("object")
-              .parent()
-              .attr("data-placement", "right");
-            element
-              .parent()
-              .find("object")
-              .parent()
-              .attr("data-original-title", error.text());
-            element
-              .parent()
-              .find("object")
-              .parent()
-              .tooltip("show");
-          } else if (element.attr("controltype") == "html5upload") {
-            element
-              .parent()
-              .find(".pekeupload-btn-file")
-              .attr("data-toggle", "tooltip");
-            element
-              .parent()
-              .find(".pekeupload-btn-file")
-              .attr("data-placement", "right");
-            element
-              .parent()
-              .find(".pekeupload-btn-file")
-              .attr("data-original-title", error.text());
-            element
-              .parent()
-              .find(".pekeupload-btn-file")
+              .find(".el-upload--picture-card")
+              .attr("data-toggle", "tooltip")
+              .attr("data-placement", "right")
+              .attr("data-original-title", error.text())
               .tooltip("show");
           } else {
             element.attr("data-toggle", "tooltip");
@@ -488,20 +459,6 @@ export default {
                 type: "warning"
               });
             }
-
-            // if (error.text()) {
-            //   self.$message({
-            //     type: "warning",
-            //     message:
-            //       element
-            //         .parent()
-            //         .parent()
-            //         .find(".control-label")
-            //         .text() +
-            //       ":" +
-            //       error.text()
-            //   });
-            // }
           }
 
           //error.appendTo(element.parent());

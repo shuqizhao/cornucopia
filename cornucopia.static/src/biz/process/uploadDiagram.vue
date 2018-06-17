@@ -25,7 +25,9 @@ export default {
           {
             name: "name",
             title: "流程名",
-            type: "text"
+            type: "text",
+            isRequire:true,
+            width:"90%"
           },
           {
             name: "fileId",
@@ -33,7 +35,9 @@ export default {
             type: "uploader",
             desc: "只能上传bpmn文件",
             accept: ".bpmn",
-            url: this.getGlobalData().ApiBaseUrl + "/upload"
+            url: this.getGlobalData().ApiBaseUrl + "/upload",
+            isRequire:true,
+            width:"90%"
           },
           {
             name: "picFileId",
@@ -41,17 +45,31 @@ export default {
             type: "uploader",
             desc: "只能上传png文件",
             accept: ".png",
-            url: this.getGlobalData().ApiBaseUrl + "/upload"
+            url: this.getGlobalData().ApiBaseUrl + "/upload",
+            isRequire:true,
+            width:"90%"
           }
         ],
         rules: {
           name: {
+            required: true
+          },
+          fileId: {
+            required: true
+          },
+          picFileId:{
             required: true
           }
         },
         messages: {
           name: {
             required: "流程名必须填写"
+          },
+           fileId: {
+            required: "流程图必须上传"
+          },
+           picFileId: {
+            required: "流程图片必须上传"
           }
         },
         onSuccess: function() {
