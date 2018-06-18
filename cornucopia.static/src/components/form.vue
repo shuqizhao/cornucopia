@@ -279,10 +279,12 @@ export default {
     },
     onFileUpload: function(response, file, fileList) {
       if (response.code == 200) {
-        self.drawUploader(fileList)
         $("#"+response.message).val(response.data)
-        $("#"+response.message).valid();
+        if(self.commiting){
+          $("#"+response.message).valid();
+        }
         self.detail[response.message] = fileList;
+        self.drawUploader(fileList)
       }
     },
     drawUploader:function(fileList){
@@ -400,6 +402,7 @@ export default {
       }
       self.commiting = true;
       var validateCfg = {
+        ignore: ":hidden",//不验证的元素
         onfocusout: false,
         onclick: false,
         focusInvalid: false,
@@ -520,6 +523,7 @@ export default {
       var self = this;
       self.commiting = true;
       var validateCfg = {
+        ignore: ":hidden",//不验证的元素
         onfocusout: false,
         onclick: false,
         focusInvalid: false,
@@ -730,11 +734,13 @@ export default {
             data[this.id] = self.detail[this.id];
           } else if (item.attr("controltype") == "uploader") {
             if(!item.limit || item.limit == 1){
-              data[this.id]=self.detail[this.id][0].response.data;
+              if(self.detail[this.id][0]){
+                data[this.id]=self.detail[this.id][0].response.data;
+              }
             }
             else{
               data[this.id] = [];
-              for(var i=0;i<self.fileList.length;i++){
+              for(var i=0;i<self.self.detail[this.id].length;i++){
                 data[this.id].push(self.detail[this.id][i].response.data)
               }
             }
@@ -861,7 +867,7 @@ export default {
         self.changing[id] = false;
         return self.data1[id];
       }
-      
+
       self.data1[id] = [];
       self.value1[id] = [];
       $.ajax({
