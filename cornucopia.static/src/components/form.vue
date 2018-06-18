@@ -37,7 +37,11 @@
                             </div>
                             <template v-if="cfg.mode=='edit'||cfg.mode=='create'||(cfg.mode=='detailEdit'&&cfg.detailEditMode=='edit')">
                                 <input v-if="item.type=='hidden'" :id="item.name" type="hidden" class="form-control" :value="detail[item.name]" :controltype='item.type' />
-                                <input v-else-if="item.type=='text'" :id="item.name" :name="item.name" type="text" :placeholder="item.placeholder" class="input-xlarge form-control" style="width:100%;"  :value="detail[item.name]" :controltype='item.type' autocomplete="off"/>
+                                <div v-else-if="item.type=='text'">
+                                  <el-input  :name="item.name" style="width:100%;" :placeholder="item.placeholder" :controltype='item.type' v-model="detail[item.name]"></el-input>
+                                  <input :id="item.name" type="hidden" class="form-control" :value="detail[item.name]" :controltype='item.type'/>
+                                </div>
+                                
                                 <textarea v-else-if="item.type=='textarea'" :id="item.name" :name="item.name" style='width:100%' class="form-control" rows="5" :controltype='item.type' :value="detail[item.name]"></textarea>
                                 <iframe v-else-if="item.type=='textxml'" readonly='false' :id="item.name" :name="item.name"  scrolling="no" frameborder="0" class="form-control embed-responsive-item" :controltype='item.type' style="min-height:190px;" src="/src/ref/codemirror/codemirror.html"></iframe>
                                 <iframe v-else-if="item.type=='textnginx'" readonly='false' :id="item.name" :name="item.name"  scrolling="no" frameborder="0" class="form-control embed-responsive-item" :controltype='item.type' style="min-height:190px;" src="/src/ref/codemirror/codemirrornginx.html"></iframe>
@@ -56,7 +60,7 @@
                                           :with-credentials="true"
                                           :limit="item.limit||1"
                                           :accept="item.accept||''"
-                                          :file-list="fileList"
+                                          :file-list="detail[item.name]"
                                           :on-success="onFileUpload"
                                           :before-remove="onFileUploadBeforeDelete"
                                           :on-exceed="onLimited"
@@ -191,7 +195,13 @@ export default {
     self = this;
     for (var i = 0; i < self.cfg.items.length; i++) {
       var item = self.cfg.items[i];
-      self.$set(self.detail, item.name, "");
+      // self.$set(self.detail, item.name, "");
+      if(item.type=="uploader"){
+        self.$set(self.detail,item.name,[]);
+        // self.$set(self.detail,item.name,[]);
+      }else{
+        self.$set(self.detail, item.name, "");
+      }
     }
   },
   mounted: function() {
@@ -240,8 +250,7 @@ export default {
       isShowDetail: true,
       dialogImageUrl: "",
       dialogImageName: "",
-      dialogVisible: false,
-      fileList:[]
+      dialogVisible: false
     };
   },
   methods: {
@@ -249,20 +258,19 @@ export default {
       var className = this.$parent.$parent.$el.className;
       return className.indexOf("el-dialog__wrapper") != -1;
     },
-    onFileUploadBeforeDelete:function(){
-      $(self.$el)
+    onFileUploadBeforeDelete:function(file){
+      $("#"+file.response.message)
         .parent()
         .find("li")
         .tooltip("hide");
     },
     handleRemove(file, fileList) {
       self.drawUploader(fileList)
-      debugger;
       if(fileList.length==0){
         $("#"+file.response.message).val('')
       }
-      
       $("#"+file.response.message).valid();
+      self.detail[file.response.message] = fileList;
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
@@ -271,22 +279,22 @@ export default {
     },
     onFileUpload: function(response, file, fileList) {
       if (response.code == 200) {
-        self.fileList = fileList;
         self.drawUploader(fileList)
         $("#"+response.message).val(response.data)
         $("#"+response.message).valid();
+        self.detail[response.message] = fileList;
       }
     },
     drawUploader:function(fileList){
       for (var i = 0; i < fileList.length; i++) {
           var item = fileList[i];
-          $(self.$el)
+          $("#"+item.response.message)
             .parent()
             .find("li:eq(" + i + ")")
             .find("div")
             .remove();
           if (item.name.indexOf(".jpg") != -1||item.name.indexOf(".png") != -1) {
-            $(self.$el)
+            $("#"+item.response.message)
               .parent()
               .find("li:eq(" + i + ")")
               .append(
@@ -295,7 +303,7 @@ export default {
                   "</div>"
               );
           } else {
-            $(self.$el)
+            $("#"+item.response.message)
               .parent()
               .find("li:eq(" + i + ")")
               .append(
@@ -305,7 +313,7 @@ export default {
               );
           }
 
-          $(self.$el)
+          $("#"+item.response.message)
             .parent()
             .find("li:eq(" + i + ")")
             .attr("data-toggle", "tooltip")
@@ -722,16 +730,16 @@ export default {
             data[this.id] = self.detail[this.id];
           } else if (item.attr("controltype") == "uploader") {
             if(!item.limit || item.limit == 1){
-              data[this.id]=self.fileList[0].response.data;
+              data[this.id]=self.detail[this.id][0].response.data;
             }
             else{
               data[this.id] = [];
               for(var i=0;i<self.fileList.length;i++){
-                data[this.id].push(self.fileList[i].response.data)
+                data[this.id].push(self.detail[this.id][i].response.data)
               }
             }
-          } else {
-            data[this.id] = item.val();
+          } else if (item.attr("controltype") == "text") {
+            data[this.id] = self.detail[this.id];
           }
         });
       return data;
@@ -853,15 +861,7 @@ export default {
         self.changing[id] = false;
         return self.data1[id];
       }
-      // if (self.data1[id] || self.value1[id]) {
-      //   for (var i in self.data1[id]) {
-      //     var obj = self.data1[id][i];
-      //     obj.disabled = disabled;
-      //     self.$set(self.data1[id], i, obj);
-      //     // self.data1[id][i].disabled = disabled;
-      //   }
-      //   return self.data1[id];
-      // }
+      
       self.data1[id] = [];
       self.value1[id] = [];
       $.ajax({
@@ -888,8 +888,6 @@ export default {
               self.value1[id].push(data.right[i].id);
             }
           }
-          // debugger;
-          // self.$forceUpdate();
         }
       });
       return self.data1[id];

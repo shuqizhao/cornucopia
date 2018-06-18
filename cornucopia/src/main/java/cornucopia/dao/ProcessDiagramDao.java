@@ -17,7 +17,7 @@ public interface ProcessDiagramDao {
 	@Select("call sp_process_diagram_exists(#{name},#{processId})")
 	public int exists(@Param("name") String name,@Param("processId") int processId);
 
-	@Insert("call sp_process_diagram_insert(#{pd.name},#{pd.fileId},#{pd.processId})")
+	@Insert("call sp_process_diagram_insert(#{pd.name},#{pd.fileId},#{pd.picFileId},#{pd.processId})")
 	@SelectKey(statement="Select LAST_INSERT_ID()", keyProperty="pd.id", before=false, resultType=int.class)
 	public int insert(@Param("pd") ProcessDiagramEntity processEntity);
 
