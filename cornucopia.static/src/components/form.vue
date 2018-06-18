@@ -460,10 +460,7 @@ export default {
             element.attr("data-placement", "top");
             element.attr("data-original-title", error.text());
             element.tooltip("show");
-            element
-              .parent()
-              .parent()
-              .addClass("has-error");
+            element.addClass("has-error");
           }
 
           if (element.attr("controltype") != "suggest") {
@@ -487,7 +484,7 @@ export default {
               .tooltip("destroy");
           }else{
             $(element).tooltip("destroy");
-            $(element).parent().parent().removeClass("has-error");
+            $(element).removeClass("has-error");
           }
         },
         submitHandler: function(form) {
@@ -552,52 +549,20 @@ export default {
               .find("button")
               .parent()
               .tooltip("show");
-          } else if (element.attr("controltype") == "upload") {
+          } else if (element.attr("controltype") == "uploader") {
             element
               .parent()
-              .find("object")
-              .attr("data-toggle", "tooltip");
-            element
-              .parent()
-              .find("object")
-              .parent()
-              .attr("data-placement", "right");
-            element
-              .parent()
-              .find("object")
-              .parent()
-              .attr("data-original-title", error.text());
-            element
-              .parent()
-              .find("object")
-              .parent()
-              .tooltip("show");
-          } else if (element.attr("controltype") == "html5upload") {
-            element
-              .parent()
-              .find(".pekeupload-btn-file")
-              .attr("data-toggle", "tooltip");
-            element
-              .parent()
-              .find(".pekeupload-btn-file")
-              .attr("data-placement", "right");
-            element
-              .parent()
-              .find(".pekeupload-btn-file")
-              .attr("data-original-title", error.text());
-            element
-              .parent()
-              .find(".pekeupload-btn-file")
+              .find(".el-upload--picture-card")
+              .attr("data-toggle", "tooltip")
+              .attr("data-placement", "right")
+              .attr("data-original-title", error.text())
               .tooltip("show");
           } else {
             element.attr("data-toggle", "tooltip");
             element.attr("data-placement", "top");
             element.attr("data-original-title", error.text());
             element.tooltip("show");
-            element
-              .parent()
-              .parent()
-              .addClass("has-error");
+            element.addClass("has-error");
           }
 
           if (element.attr("controltype") != "suggest") {
@@ -613,10 +578,7 @@ export default {
         },
         success: function(error, element) {
           $(element).tooltip("destroy");
-          $(element)
-            .parent()
-            .parent()
-            .removeClass("has-error");
+          $(element).removeClass("has-error");
         },
         submitHandler: function(form) {
           if (!self.commiting) {
@@ -917,3 +879,8 @@ export default {
   }
 };
 </script>
+<style>
+.has-error{
+      border-color: #f56c6c
+}
+</style>
