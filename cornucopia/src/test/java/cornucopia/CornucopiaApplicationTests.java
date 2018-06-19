@@ -1,8 +1,10 @@
 package cornucopia;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +25,11 @@ public class CornucopiaApplicationTests {
 		// ProcessCategoryService.getInstance().getAll();
 		// System.out.println(list.size());
 		String id = ProcessDiagramService.getInstance().deploy(63);
+		List<ProcessDefinition> list = ActivitiHelper.GetEngine().getRepositoryService().createProcessDefinitionQuery()
+				.deploymentId(id).list();
+		for (ProcessDefinition a : list) {
+			System.out.println(a.getId() + "   " + a.getKey());
+		}
 		System.out.println(id);
 	}
 

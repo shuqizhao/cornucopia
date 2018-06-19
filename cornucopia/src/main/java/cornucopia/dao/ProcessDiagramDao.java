@@ -32,4 +32,7 @@ public interface ProcessDiagramDao {
 	
 	@Select("call sp_process_diagram_get(#{id})")
 	public ProcessDiagramEntity get(@Param("id")int id);
+
+	@Update("call sp_process_diagram_update(#{pd.id},#{pd.deployId})")
+	public int update(@Param("pd")ProcessDiagramEntity processDiagramEntity);
 }

@@ -59,13 +59,13 @@ public class ProcessDiagramService {
 		Deployment deployment = ActivitiHelper.GetEngine().getRepositoryService().createDeployment()
 				.name(processDiagramEntity.getName()).addInputStream(fileId.getName(), fileId.getIs())
 				.addInputStream(picFileId.getName(), picFileId.getIs()).deploy();
+		
 		processDiagramEntity.setDeployId(deployment.getId());
 		update(processDiagramEntity);
 		return deployment.getId();
 	}
 
 	private void update(ProcessDiagramEntity processDiagramEntity) {
-		// TODO Auto-generated method stub
-
+		 processDiagramDao.update(processDiagramEntity);
 	}
 }
