@@ -1,5 +1,6 @@
 package cornucopia.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,15 @@ public class ProcessDiagramController {
 		JsonResult<List<ProcessDiagramEntity>> jr = new JsonResult<List<ProcessDiagramEntity>>();
 		jr.setCode(200);
 		jr.setData(result);
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/deploy" }, method = RequestMethod.POST)
+	public JsonResult<String> deploy(int id) throws IOException {
+		String deployId = ProcessDiagramService.getInstance().deploy(id);
+		JsonResult<String> jr = new JsonResult<String>();
+		jr.setCode(200);
+		jr.setData(deployId);
 		return jr;
 	}
 }

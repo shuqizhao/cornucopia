@@ -29,4 +29,7 @@ public interface ProcessDiagramDao {
 	
 	@Update("call sp_process_diagram_delete(#{id})")
 	public int delete(@Param("id")int id);
+	
+	@Select("call sp_process_diagram_get(#{id})")
+	public ProcessDiagramEntity get(@Param("id")int id);
 }
