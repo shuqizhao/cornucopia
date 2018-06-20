@@ -225,7 +225,20 @@ export default {
               text: "部署流程图",
               url: "deployDiagram",
               url: this.getGlobalData().ApiBaseUrl + "/processdiagram/deploy",
-              functionName: "deployDiagram"
+              functionName: "deployDiagram",
+              onSuccess: function() {
+                self.get(
+                  self.getGlobalData().ApiBaseUrl +
+                    "/processdiagram/getAll?processId=" +
+                    self.processId,
+                  "",
+                  function(response) {
+                    if (response.code == 200) {
+                      self.$refs.diagramList.loadSimpleData(response.data);
+                    }
+                  }
+                );
+              }
             }
           ],
           more: [

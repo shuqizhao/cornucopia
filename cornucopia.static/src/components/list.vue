@@ -412,7 +412,14 @@ export default {
     $(self.$el)
       .find(".searchDataTableMoreOp")
       .click(function() {
-        self.searchDataTableMoreOp(this);
+        var onSuccess = null;
+        for (var i = 0; i < functions.common.length; i++) {
+          var button = functions.common[i];
+          if(button.text==this.id){
+            onSuccess = button.onSuccess;
+          }
+        }
+        self.searchDataTableMoreOp(this,onSuccess);
       });
     $(self.$el)
       .find(".btn-searchDataTable")
@@ -554,7 +561,7 @@ export default {
         );
       });
     },
-    searchDataTableMoreOp: function(e) {
+    searchDataTableMoreOp: function(e,onSuccess) {
       var self = this;
       var mode = $(e).attr("mode");
       var url = $(e).attr("url");
@@ -634,6 +641,9 @@ export default {
                 type: "POST",
                 data: { Ids: formData },
                 success: function(response) {
+                  if(onSuccess){
+                      onSuccess(response)
+                  }
                   if (response.code == 200) {
                     self.reloadSimpleData();
                     self.dataTable.draw(false);
