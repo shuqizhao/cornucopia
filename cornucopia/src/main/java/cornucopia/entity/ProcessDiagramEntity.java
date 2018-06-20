@@ -5,6 +5,8 @@ public class ProcessDiagramEntity extends BaseEntity {
 	private int processId;
 	private String picFileId;
 	private String deployId;
+	private String defId;
+	private String defKey;
 
 	public String getFileId() {
 		return fileId;
@@ -36,5 +38,21 @@ public class ProcessDiagramEntity extends BaseEntity {
 
 	public void setDeployId(String deployId) {
 		this.deployId = deployId;
+	}
+
+	public String getDefId() {
+		return defId;
+	}
+
+	public void setDefId(String defId) {
+		this.defId = defId;
+	}
+
+	public String getDefKey() {
+		return defKey;
+	}
+
+	public void setDefKey(String defKey) {
+		this.defKey = defKey;
 	}
 }

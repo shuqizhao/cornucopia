@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.ProcessDefinition;
 
 import cornucopia.dao.ProcessDiagramDao;
 import cornucopia.entity.ProcessDiagramEntity;
@@ -59,13 +60,18 @@ public class ProcessDiagramService {
 		Deployment deployment = ActivitiHelper.GetEngine().getRepositoryService().createDeployment()
 				.name(processDiagramEntity.getName()).addInputStream(fileId.getName(), fileId.getIs())
 				.addInputStream(picFileId.getName(), picFileId.getIs()).deploy();
-		
+		List<ProcessDefinition> list = ActivitiHelper.GetEngine().getRepositoryService().createProcessDefinitionQuery()
+				.deploymentId(deployment.getId()).list();
+		if (list.size() > 0) {
+			processDiagramEntity.setDefId(list.get(0).getId());
+			processDiagramEntity.setDefKey(list.get(0).getKey());
+		}
 		processDiagramEntity.setDeployId(deployment.getId());
 		update(processDiagramEntity);
 		return deployment.getId();
 	}
 
 	private void update(ProcessDiagramEntity processDiagramEntity) {
-		 processDiagramDao.update(processDiagramEntity);
+		processDiagramDao.update(processDiagramEntity);
 	}
 }
