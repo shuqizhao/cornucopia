@@ -73,7 +73,7 @@ export default {
         },
         onClickRow: function(data, target) {
           self.processId = data.id;
-          self.openLoading(self.$refs.nodeList,"nodeList");
+          self.openLoading(self.$refs.nodeList, "nodeList");
           $.ajax({
             type: "GET",
             xhrFields: {
@@ -85,7 +85,7 @@ export default {
               data.id,
             success: function(response) {
               if (response.code == "200") {
-                self.closeLoading(self.$refs.nodeList,"nodeList");
+                self.closeLoading(self.$refs.nodeList, "nodeList");
                 // self.closeLoading(self,"id2");
                 // $("#id1").attr("processId", data.id);
                 self.$refs.nodeList.loadSimpleData(response.data);
@@ -104,7 +104,7 @@ export default {
               data.id,
             "",
             function(response) {
-              if(response.code == 200){
+              if (response.code == 200) {
                 self.$refs.diagramList.loadSimpleData(response.data);
                 self.closeLoading(self.$refs.diagramList);
               }
@@ -223,9 +223,9 @@ export default {
             },
             {
               text: "部署流程图",
-              url: "uploadDiagram",
-              mode: "modal",
-              functionName: "uploadDiagram"
+              url: "deployDiagram",
+              url: this.getGlobalData().ApiBaseUrl + "/processdiagram/deploy",
+              functionName: "deployDiagram"
             }
           ],
           more: [

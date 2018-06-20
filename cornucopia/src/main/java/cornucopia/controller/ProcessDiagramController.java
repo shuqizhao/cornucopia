@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
@@ -33,7 +34,7 @@ public class ProcessDiagramController {
 	}
 	
 	@RequestMapping(value = { "/deploy" }, method = RequestMethod.POST)
-	public JsonResult<String> deploy(int id) throws IOException {
+	public JsonResult<String> deploy(@RequestParam(value = "Ids") int id) throws IOException {
 		String deployId = ProcessDiagramService.getInstance().deploy(id);
 		JsonResult<String> jr = new JsonResult<String>();
 		jr.setCode(200);
