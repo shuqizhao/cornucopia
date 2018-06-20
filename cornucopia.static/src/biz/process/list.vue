@@ -194,7 +194,7 @@ export default {
           },
           {
             title: "版本",
-            name: "version"
+            name: "defId"
           },
           {
             title: "是否启用",
