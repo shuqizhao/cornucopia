@@ -1,7 +1,13 @@
 package cornucopia.entity;
 
+import java.util.List;
+
 public class ProcessCategoryEntity extends BaseEntity {
 	private int orderNum;
+
+	private String icon;
+
+	private List<ProcessEntity> proesses;
 
 	public int getOrderNum() {
 		return orderNum;
@@ -19,5 +25,11 @@ public class ProcessCategoryEntity extends BaseEntity {
 		this.icon = icon;
 	}
 
-	private String icon;
+	public List<ProcessEntity> getProesses() {
+		return proesses;
+	}
+
+	public void setProesses(List<ProcessEntity> proesses) {
+		this.proesses = proesses;
+	}
 }

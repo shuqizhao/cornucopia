@@ -26,7 +26,7 @@ public interface BaseDao<T> {
 	@Update("call sp_common_enable(#{tn},#{id})")
 	public int enable(@Param("tn") String tn, @Param("id") int id);
 
-	@Update("call sp_delete(#{tn},#{id})")
+	@Update("call sp_common_delete(#{tn},#{id})")
 	public int delete(@Param("tn") String tn, @Param("id") int id);
 
 	@Select("call sp_common_get(#{tn},#{id})")

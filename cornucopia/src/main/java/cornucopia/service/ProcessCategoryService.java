@@ -1,5 +1,7 @@
 package cornucopia.service;
 
+import java.util.List;
+
 import cornucopia.dao.ProcessCategoryDao;
 import cornucopia.entity.ProcessCategoryEntity;
 
@@ -15,5 +17,9 @@ public class ProcessCategoryService extends BaseService<ProcessCategoryDao, Proc
 	
 	protected String getName() {
 		return "sys_process_category";
+	}
+	
+	public List<ProcessCategoryEntity> getAllByOrder(){
+		return tdao.getAllByOrder();
 	}
 }
