@@ -9,7 +9,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <router-link v-for="process in category.proesses" :key="process.id" :to="process.url||''">
+              <router-link v-for="process in category.proesses" :key="process.id" :to="(process.url+'?processId='+process.id)||''">
                <a class="btn btn-app">
                <i class="fa fa-plus-circle"></i> {{process.name}}
               </a>
