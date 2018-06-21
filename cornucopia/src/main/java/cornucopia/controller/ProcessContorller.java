@@ -3,6 +3,7 @@ package cornucopia.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,8 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
 import cornucopia.entity.ProcessCategoryEntity;
+import cornucopia.entity.ProcessDataEntity;
 import cornucopia.entity.ProcessEntity;
+import cornucopia.model.ProcessDataViewModel;
 import cornucopia.service.ProcessCategoryService;
+import cornucopia.service.ProcessDataService;
 import cornucopia.service.ProcessService;
 
 @RestController
@@ -85,6 +89,17 @@ public class ProcessContorller {
 		JsonResult<List<ProcessCategoryEntity>> jr = new JsonResult<List<ProcessCategoryEntity>>();
 		jr.setCode(200);
 		jr.setData(processCategories);
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/applySave" }, method = RequestMethod.POST)
+	public JsonResult<Integer> applySave(@RequestBody ProcessDataViewModel pdvm) {
+		ProcessDataEntity processDataEntity = new ProcessDataEntity();
+		processDataEntity.setBizData(pdvm.getXmlStr());
+		int result = ProcessDataService.getInstance().insert(processDataEntity);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(result);
 		return jr;
 	}
 }

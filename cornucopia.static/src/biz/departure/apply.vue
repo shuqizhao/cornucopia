@@ -23,6 +23,7 @@ export default {
         editTitle: "申请人信息",
         mode: "detailEdit",
         hideFooter: "true",
+        name:'applicant',
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/user/getSelf",
           params: {
@@ -81,6 +82,7 @@ export default {
         editTitle: "申请信息",
         mode: "create",
         hideFooter: "true",
+        name:"applyInfo",
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/role/get",
           params: {
@@ -99,37 +101,37 @@ export default {
             width: "300px;"
           },
           {
-            name: "department",
+            name: "managerId",
             title: "直接主管",
             type: "text",
             width: "300px;"
           },
           {
-            name: "title",
+            name: "entryDate",
             title: "入职日期",
             type: "text",
             width: "300px;"
           },
           {
-            name: "workNo",
+            name: "leaveDate",
             title: "离职日期",
             type: "text",
             width: "300px;"
           },
           {
-            name: "workEmail",
+            name: "phone",
             title: "联系电话",
             type: "text",
             width: "300px;"
           },
           {
-            name: "phone",
+            name: "workEmail",
             title: "个人邮箱",
             type: "text",
             width: "300px;"
           },
           {
-            name: "reson",
+            name: "reason",
             title: "离职原因",
             type: "textarea",
             isRequire: true
@@ -146,6 +148,7 @@ export default {
         mode: "create",
         hideFooter: "true",
         desc:"任意文件，不能超过2M",
+        name:"attachment",
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/role/get",
           params: {
@@ -158,7 +161,7 @@ export default {
             type: "hidden"
           },
           {
-            name: "name",
+            name: "files",
             title: "文件集",
             type: "uploader",
             limit:10,
@@ -170,7 +173,13 @@ export default {
         }
       },
       cfg3: {
-        save: this.getGlobalData().ApiBaseUrl + "/departure/applySave"
+        save: this.getGlobalData().ApiBaseUrl + "/process/applySave",
+        dataType:'xml',
+        extraData:{
+          approve:{
+            processId:this.$route.query.processId
+          }
+        }
       }
     };
   }

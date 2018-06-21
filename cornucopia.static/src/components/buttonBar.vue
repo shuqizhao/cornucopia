@@ -68,6 +68,9 @@ export default {
     },
     postUrl: function(data, handler) {
       var self = this;
+      if (self.cfg.dataType == "xml") {
+        data = { xmlStr: self.parse2xml(data) };
+      }
       $.ajax({
         type: "POST",
         contentType: "application/json;charset=utf-8",
@@ -137,6 +140,37 @@ export default {
           }
         }
       });
+    },
+    parse2xml: function(data) {
+      var xmldata = "";
+      for (var i in data) {
+        xmldata += "<" + i + ">";
+        if (typeof data[i] == "object") {
+          xmldata += this.parse2xml(data[i]);
+        } else {
+          xmldata += data[i];
+        }
+        xmldata += "</" + i + ">";
+      }
+      return xmldata;
+    },
+    parse2json: function(xmlStr) {
+      var root = document.createElement("XMLROOT");
+      root.innerHTML = xmlStr;
+      return this.parse(root);
+    },
+    parse: function(node) {
+      var result = {};
+      for (var i = 0; i < node.childNodes.length; ++i) {
+        if (node.childNodes[i].nodeType == 1) {
+          result[node.childNodes[i].nodeName.toLowerCase()] = this.parse(
+            node.childNodes[i]
+          );
+        } else if (node.childNodes[i].nodeType == 3) {
+          return node.childNodes[i].nodeValue;
+        }
+      }
+      return result;
     }
   },
   data() {
