@@ -7,7 +7,17 @@
 </template>
 <script>
 export default {
-  mounted:function(){
+  mounted: function() {
+    var self = this;
+    self.get(
+      self.getGlobalData().ApiBaseUrl + "/approve/getAllRoles",
+      "",
+      function(response) {
+        if (response.code == 200) {
+          self.roles = response.data;
+        }
+      }
+    );
   },
   data() {
     var self = this;
@@ -15,12 +25,12 @@ export default {
       cfg: {
         title: "编辑岗位子规则",
         mode: "edit",
-        name:'rule',
+        name: "rule",
         hideFooter: true,
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/approve/getRule",
           params: {
-            id:self.$parent.$parent.$parent.$parent.$parent.currentRuleId2
+            id: self.$parent.$parent.$parent.$parent.$parent.currentRuleId2
           }
         },
         items: [
@@ -30,10 +40,28 @@ export default {
             type: "text"
           },
           {
+            name: "type",
+            title: "规则类型",
+            type: "select",
+            data: [
+              { id: 1, value: "角色" },
+              { id: 2, value: "函数" },
+              { id: 3, value: "指定人" },
+              { id: 4, value: "跳过" }
+            ],
+            onChange: function(s1) {
+              if (s1 == 1) {
+                self.cfg.items[2].data = self.roles;
+              }else{
+                self.cfg.items[2].data = [];
+              }
+            }
+          },
+          {
             name: "jobId",
             title: "职位",
             type: "select",
-            data:[]
+            data: []
           }
         ],
         rules: {
@@ -50,32 +78,32 @@ export default {
           return true;
         },
         onLoaded: function() {
-          self.get(
-            self.getGlobalData().ApiBaseUrl + "/approve/getAllRoles",
-            "",
-            function(response) {
-              if ((response.code = 200)) {
-                self.cfg.items[1].data=response.data;
-                // self.$set(self.cfg.items, 1, {
-                //   name: "jobId",
-                //   title: "职位",
-                //   type: "select",
-                //   data: response.data
-                // });
-              }
-            }
-          );
+          // self.get(
+          //   self.getGlobalData().ApiBaseUrl + "/approve/getAllRoles",
+          //   "",
+          //   function(response) {
+          //     if ((response.code = 200)) {
+          //       self.cfg.items[2].data = response.data;
+          //       // self.$set(self.cfg.items, 1, {
+          //       //   name: "jobId",
+          //       //   title: "职位",
+          //       //   type: "select",
+          //       //   data: response.data
+          //       // });
+          //     }
+          //   }
+          // );
         }
       },
       cfg1: {
         title: "条件公式",
         mode: "edit",
-        name:'ruleConditions',
+        name: "ruleConditions",
         dialogWidth: "95%",
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/approve/getRuleCondititons",
           params: {
-            id:self.$parent.$parent.$parent.$parent.$parent.currentRuleId2
+            id: self.$parent.$parent.$parent.$parent.$parent.currentRuleId2
           }
         },
         items: [
@@ -118,14 +146,14 @@ export default {
                 name: "函数"
               }
             ],
-            onChange: function(index, item, s1, tableCell,tableData,status) {
+            onChange: function(index, item, s1, tableCell, tableData, status) {
               if (!tableCell[index]) {
                 tableCell[index] = {};
               }
-              if(status!=1){
-                tableData[index]["var1"]="";
+              if (status != 1) {
+                tableData[index]["var1"] = "";
               }
-              
+
               if (s1 == 3) {
                 tableCell[index]["var1"] = "popup";
               } else {
@@ -211,20 +239,19 @@ export default {
                 name: "函数"
               }
             ],
-            onChange: function(index, item, s1, tableCell,tableData,status) {
+            onChange: function(index, item, s1, tableCell, tableData, status) {
               if (!tableCell[index]) {
                 tableCell[index] = {};
               }
-              if(status!=1){
-                tableData[index]["var2"]="";
+              if (status != 1) {
+                tableData[index]["var2"] = "";
               }
-              
+
               if (s1 == 3) {
                 tableCell[index]["var2"] = "popup";
               } else {
                 tableCell[index]["var2"] = "text";
               }
-
             }
           },
           {
@@ -311,15 +338,16 @@ export default {
           }
         ]
       },
-      cfg2:{
-        save:this.getGlobalData().ApiBaseUrl + "/approve/ruleChildUpdate",
-        extraData:{
-          rule:{
-            id:self.$parent.$parent.$parent.$parent.$parent.currentRuleId2,
-            parentId:self.$parent.$parent.$parent.$parent.$parent.currentRuleId
+      cfg2: {
+        save: this.getGlobalData().ApiBaseUrl + "/approve/ruleChildUpdate",
+        extraData: {
+          rule: {
+            id: self.$parent.$parent.$parent.$parent.$parent.currentRuleId2,
+            parentId: self.$parent.$parent.$parent.$parent.$parent.currentRuleId
           }
         }
-      }
+      },
+      roles:[]
     };
   }
 };
