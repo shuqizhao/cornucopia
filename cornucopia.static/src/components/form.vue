@@ -730,6 +730,9 @@ export default {
           else if (item.attr("controltype") == "textarea") {
             data[this.id] = self.detail[this.id];
           }
+          else if (item.attr("controltype") == "hidden") {
+            data[this.id] = self.detail[this.id];
+          }
         });
       return data;
     },

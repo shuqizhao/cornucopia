@@ -46,6 +46,7 @@
             <el-table-column v-for="item in this.cfg.items" :key="item.name"
             :show-overflow-tooltip="true"
             :label="item.title"
+            :width="item.type=='hidden'?'0px':''"
             >
             <template slot-scope="scope">
               <div v-if="tableCell[scope.$index]&&tableCell[scope.$index][item.name]">

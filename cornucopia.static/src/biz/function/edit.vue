@@ -80,6 +80,10 @@ export default {
         },
         items: [
           {
+            name: "id",
+            type: "hidden"
+          },
+          {
             name: "name",
             title: "参数名",
             type: "text"
