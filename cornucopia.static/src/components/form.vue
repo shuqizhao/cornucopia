@@ -42,7 +42,15 @@
                                   <input :id="item.name" type="hidden" class="form-control" :value="detail[item.name]" :controltype='item.type'/>
                                 </div>
                                 
-                                <textarea v-else-if="item.type=='textarea'" :id="item.name" :name="item.name" style='width:100%' class="form-control" rows="5" :controltype='item.type' :value="detail[item.name]"></textarea>
+                                <!-- <textarea v-else-if="item.type=='textarea'" :id="item.name" :name="item.name" style='width:100%' class="form-control" rows="5" :controltype='item.type' :value="detail[item.name]"></textarea> -->
+                                <div v-else-if="item.type=='textarea'">
+                                  <input :id="item.name" :name="item.name" style="height:0.5px;width:0px;padding:0px;margin:0px;" class="form-control" :controltype='item.type'/>
+                                  <el-input
+                                    type="textarea"
+                                    :autosize="{ minRows: 2, maxRows: 100}"
+                                    v-model="detail[item.name]">
+                                    </el-input>
+                                </div>
                                 <iframe v-else-if="item.type=='textxml'" readonly='false' :id="item.name" :name="item.name"  scrolling="no" frameborder="0" class="form-control embed-responsive-item" :controltype='item.type' style="min-height:190px;" src="/src/ref/codemirror/codemirror.html"></iframe>
                                 <iframe v-else-if="item.type=='textnginx'" readonly='false' :id="item.name" :name="item.name"  scrolling="no" frameborder="0" class="form-control embed-responsive-item" :controltype='item.type' style="min-height:190px;" src="/src/ref/codemirror/codemirrornginx.html"></iframe>
                                 <input v-else-if="item.type=='pwd'" :id="item.name" :name="item.name" type="password" :placeholder="item.placeholder" class="input-xlarge form-control" style="width:100%;" :value="detail[item.name]" :controltype='item.type' />
@@ -50,7 +58,14 @@
                                     <option v-for="option in item.data" v-bind:key="option.id" :selected="option.id==detail[item.name]?'selected':''" :value="option.id">{{option.value}}</option>
                                     
                                 </select>
-                                <input  v-else-if="item.type=='timer'" :id="item.name" :name="item.name" type="text" :placeholder="item.placeholder" class="form-control" :controltype='item.type' :value="detail[item.name]" />
+                                <div v-else-if="item.type=='timer'">
+                                   <input :id="item.name" :name="item.name" style="height:0.5px;width:0px;padding:0px;margin:0px;" class="form-control" :controltype='item.type'/>
+                                    <el-date-picker
+                                      v-model="detail[item.name]"
+                                      style="width:100%"
+                                      type="date">
+                                    </el-date-picker>
+                                </div>
                                 <div v-else-if="item.type=='uploader'">
                                         <input :id="item.name" :name="item.name" style="height:0.5px;width:0px;padding:0px;margin:0px;" class="form-control" :controltype='item.type'  />
                                         <el-upload
@@ -707,6 +722,12 @@ export default {
               }
             }
           } else if (item.attr("controltype") == "text") {
+            data[this.id] = self.detail[this.id];
+          }
+          else if (item.attr("controltype") == "timer") {
+            data[this.id] = self.detail[this.id];
+          }
+          else if (item.attr("controltype") == "textarea") {
             data[this.id] = self.detail[this.id];
           }
         });

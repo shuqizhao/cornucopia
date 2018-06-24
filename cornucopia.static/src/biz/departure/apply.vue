@@ -98,7 +98,8 @@ export default {
             name: "title",
             title: "职位",
             type: "text",
-            width: "300px;"
+            width: "300px;",
+            isRequire: true
           },
           {
             name: "managerId",
@@ -109,26 +110,30 @@ export default {
           {
             name: "entryDate",
             title: "入职日期",
-            type: "text",
-            width: "300px;"
+            type: "timer",
+            width: "300px;",
+            isRequire: true
           },
           {
             name: "leaveDate",
             title: "离职日期",
             type: "text",
-            width: "300px;"
+            width: "300px;",
+            isRequire: true
           },
           {
             name: "phone",
             title: "联系电话",
             type: "text",
-            width: "300px;"
+            width: "300px;",
+            isRequire: true
           },
           {
             name: "workEmail",
             title: "个人邮箱",
             type: "text",
-            width: "300px;"
+            width: "300px;",
+            isRequire: true
           },
           {
             name: "reason",
@@ -139,7 +144,17 @@ export default {
         ],
         afterEditRender: function() {
           //  $(self.$el).find("#Name").attr("disabled", true);
-        }
+        },
+        rules: {
+          title: {
+            required: true
+          }
+        },
+        messages: {
+          title: {
+            required: "职位必须填写"
+          }
+        },
       },
       cfg2: {
         title: "附件",
