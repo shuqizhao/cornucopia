@@ -1,6 +1,6 @@
 <template>
  <div>
-     <mform :cfg="cfg"></mform>
+     <mform ref="form" :cfg="cfg"></mform>
      <editList ref="editList" :cfg="cfg1"></editList>
      <buttonBar :cfg="cfg2"></buttonBar>
  </div>
@@ -15,6 +15,7 @@ export default {
       function(response) {
         if (response.code == 200) {
           self.roles = response.data;
+          self.cfg.items[1].data = self.roles;
         }
       }
     );
@@ -40,8 +41,14 @@ export default {
             type: "text"
           },
           {
+            name: "jobId",
+            title: "职位",
+            type: "select",
+            data: []
+          }
+          ,{
             name: "type",
-            title: "规则类型",
+            title: "类型",
             type: "select",
             data: [
               { id: 1, value: "角色" },
@@ -51,15 +58,26 @@ export default {
             ],
             onChange: function(s1) {
               if (s1 == 1) {
-                self.cfg.items[2].data = self.roles;
-              }else{
-                self.cfg.items[2].data = [];
+                self.cfg.items[3].type="select"
+                self.cfg.items[3].data = self.roles;
+                self.$refs.form.detail.user="";
+              }else if(s1==2){
+                self.cfg.items[3].type="select"
+                self.cfg.items[3].data = [];
+                self.$refs.form.detail.user="";
+              }else if(s1==3){
+                self.cfg.items[3].type="text"
+                self.cfg.items[3].data = "";
+                self.$refs.form.detail.user="";
+              }else if(s1==4){
+                self.cfg.items[3].type="text"
+                self.$refs.form.detail.user="999999";
               }
             }
           },
           {
-            name: "jobId",
-            title: "职位",
+            name: "user",
+            title: "人选",
             type: "select",
             data: []
           }
@@ -78,21 +96,7 @@ export default {
           return true;
         },
         onLoaded: function() {
-          // self.get(
-          //   self.getGlobalData().ApiBaseUrl + "/approve/getAllRoles",
-          //   "",
-          //   function(response) {
-          //     if ((response.code = 200)) {
-          //       self.cfg.items[2].data = response.data;
-          //       // self.$set(self.cfg.items, 1, {
-          //       //   name: "jobId",
-          //       //   title: "职位",
-          //       //   type: "select",
-          //       //   data: response.data
-          //       // });
-          //     }
-          //   }
-          // );
+          // self.cfg.items[1].data = self.roles;
         }
       },
       cfg1: {
