@@ -145,6 +145,10 @@
                                     <el-button slot="append" icon="el-icon-search" @click="onClick(item)"></el-button>
                                   </el-input>
                                 </div>
+                                <div v-else-if="item.type=='readonly'">
+                                  <el-input  :name="item.name" disabled style="width:100%;" :placeholder="item.placeholder" :controltype='item.type' v-model="detail[item.name]"></el-input>
+                                  <input :id="item.name" type="hidden" class="form-control" :value="detail[item.name]" :controltype='item.type'/>
+                                </div>
                             </template>
                             <template v-if="cfg.mode=='detail'||(cfg.mode=='detailEdit'&&cfg.detailEditMode!='edit')">
                                 <input v-if="item.type=='hidden'" :id="item.name" type="hidden" class="form-control" :value="detail[item.name]" :controltype='item.type' />
@@ -743,6 +747,12 @@ export default {
             data[this.id] = self.detail[this.id];
           }
           else if (item.attr("controltype") == "hidden") {
+            data[this.id] = self.detail[this.id];
+          }
+          else if (item.attr("controltype") == "popup") {
+            data[this.id] = self.detail[this.id];
+          }
+          else if (item.attr("controltype") == "readonly") {
             data[this.id] = self.detail[this.id];
           }
         });

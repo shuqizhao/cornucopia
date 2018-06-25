@@ -28,6 +28,42 @@ export default {
             title: "职位",
             type: "select",
             data:[]
+          },{
+            name: "type",
+            title: "类型",
+            type: "select",
+            data: [
+              { id: 1, value: "角色" },
+              { id: 2, value: "函数" },
+              { id: 3, value: "指定人" },
+              { id: 4, value: "跳过" }
+            ],
+            onChange: function(s1) {
+              if (s1 == 1) {
+                self.cfg.items[3].type="select"
+                self.cfg.items[3].data = self.roles;
+                self.$set(self.$refs.form.detail,"user","");
+                // self.$refs.form.detail.user="";
+              }else if(s1==2){
+                self.cfg.items[3].url="functionPopup";
+                self.cfg.items[3].type="popup";
+                self.cfg.items[3].data = [];
+                self.$refs.form.detail.user="";
+              }else if(s1==3){
+                self.cfg.items[3].type="text"
+                self.cfg.items[3].data = "";
+                self.$refs.form.detail.user="";
+              }else if(s1==4){
+                self.cfg.items[3].type="readonly"
+                self.$refs.form.detail.user="999999";
+              }
+            }
+          },
+          {
+            name: "user",
+            title: "人选",
+            type: "select",
+            data: []
           }
         ],
         rules: {
@@ -49,13 +85,8 @@ export default {
             "",
             function(response) {
               if ((response.code = 200)) {
-                self.cfg.items[1].data=response.data;
-                // self.$set(self.cfg.items, 1, {
-                //   name: "jobId",
-                //   title: "职位",
-                //   type: "select",
-                //   data: response.data
-                // });
+                self.roles = response.data;
+                self.cfg.items[1].data = self.roles;
               }
             }
           );

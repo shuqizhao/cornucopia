@@ -60,7 +60,8 @@ export default {
               if (s1 == 1) {
                 self.cfg.items[3].type="select"
                 self.cfg.items[3].data = self.roles;
-                self.$refs.form.detail.user="";
+                self.$set(self.$refs.form.detail,"user","");
+                // self.$refs.form.detail.user="";
               }else if(s1==2){
                 self.cfg.items[3].url="functionPopup";
                 self.cfg.items[3].type="popup";
@@ -71,7 +72,7 @@ export default {
                 self.cfg.items[3].data = "";
                 self.$refs.form.detail.user="";
               }else if(s1==4){
-                self.cfg.items[3].type="text"
+                self.cfg.items[3].type="readonly"
                 self.$refs.form.detail.user="999999";
               }
             }
