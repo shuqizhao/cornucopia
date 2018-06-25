@@ -61,7 +61,6 @@ export default {
                 self.cfg.items[3].type="select"
                 self.cfg.items[3].data = self.roles;
                 self.$set(self.$refs.form.detail,"user","");
-                // self.$refs.form.detail.user="";
               }else if(s1==2){
                 self.cfg.items[3].url="functionPopup";
                 self.cfg.items[3].type="popup";
@@ -97,8 +96,29 @@ export default {
         validate: function(data, saveData) {
           return true;
         },
-        onLoaded: function() {
-          // self.cfg.items[1].data = self.roles;
+        onLoaded: function(detail) {
+          if(detail.type==1){
+            self.get(
+              self.getGlobalData().ApiBaseUrl + "/approve/getAllRoles",
+              "",
+              function(response) {
+                if (response.code == 200) {
+                  self.roles = response.data;
+                  self.cfg.items[3].type="select";
+                  self.cfg.items[3].data = self.roles;
+                  self.$set(self.$refs.form.detail,"user",parseInt(detail.user));
+                }
+              }
+            );
+          }else if(detail.type==2){
+            self.cfg.items[3].url="functionPopup";
+            self.cfg.items[3].type="popup";
+          }
+          else if(detail.type==3){
+            self.cfg.items[3].type="text";
+          }else if(detail.type==4){
+            self.cfg.items[3].type="readonly";
+          }
         }
       },
       cfg1: {
