@@ -139,6 +139,12 @@
                                       </el-option>
                                     </el-select>
                                 </div>
+                                <div v-else-if="item.type=='popup'">
+                                  <input :id="item.name" :name="item.name" type="hidden" :value="detail[item.name]" class="form-control" :controltype='item.type'  />
+                                  <el-input :name="item.name" v-model="detail[item.name]" disabled placeholder="" >
+                                    <el-button slot="append" icon="el-icon-search" @click="onClick(item)"></el-button>
+                                  </el-input>
+                                </div>
                             </template>
                             <template v-if="cfg.mode=='detail'||(cfg.mode=='detailEdit'&&cfg.detailEditMode!='edit')">
                                 <input v-if="item.type=='hidden'" :id="item.name" type="hidden" class="form-control" :value="detail[item.name]" :controltype='item.type' />
@@ -199,6 +205,9 @@
             <!-- /.box-footer -->
         </form>
     </div>
+  <el-dialog append-to-body :visible.sync="dialogVisible" :width="this.cfg.dialogWidth?this.cfg.dialogWidth:'65%'" >
+    <component  style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
+  </el-dialog>
 </div>
 </template>
 <script>
@@ -265,7 +274,10 @@ export default {
       isShowDetail: true,
       dialogImageUrl: "",
       dialogImageName: "",
-      dialogVisible: false
+      dialogVisible: false,
+      currentComponent:"",
+      popUpValue:"",
+      popUpItem:{}
     };
   },
   methods: {
@@ -899,6 +911,20 @@ export default {
       } else {
         return id;
       }
+    },
+    onClick: function(item) {
+      debugger;
+      this.dialogVisible = true;
+      this.currentComponent = item.url;
+      this.popUpValue = this.detail[item.name];
+      // this.popUpIndex = index;
+      this.popUpItem = item;
+    },
+    getPopupValue: function() {
+      return this.popUpValue;
+    },
+    setPopupValue: function(value) {
+      this.detail[this.popUpItem.name] = value;
     }
   }
 };

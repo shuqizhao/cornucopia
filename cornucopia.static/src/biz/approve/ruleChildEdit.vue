@@ -62,7 +62,8 @@ export default {
                 self.cfg.items[3].data = self.roles;
                 self.$refs.form.detail.user="";
               }else if(s1==2){
-                self.cfg.items[3].type="select"
+                self.cfg.items[3].url="functionPopup";
+                self.cfg.items[3].type="popup";
                 self.cfg.items[3].data = [];
                 self.$refs.form.detail.user="";
               }else if(s1==3){
