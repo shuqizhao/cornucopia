@@ -17,7 +17,7 @@ public interface RuleDao {
 	@Select("call sp_rule_all()")
 	public List<RuleEntity> getAll();
 
-	@Insert("call sp_rule_insert(#{rule.name},#{rule.jobId},#{rule.parentId})")
+	@Insert("call sp_rule_insert(#{rule.name},#{rule.jobId},#{rule.parentId},#{rule.type},#{rule.user})")
 	@SelectKey(statement="Select LAST_INSERT_ID()", keyProperty="rule.id", before=false, resultType=int.class)
 	public int insert(@Param("rule") RuleEntity ruleEntity);
 
@@ -30,7 +30,7 @@ public interface RuleDao {
 	@Update("call sp_rule_delete(#{id})")
 	public int delete(@Param("id")int id);
 
-	@Update("call sp_rule_update(#{rule.id},#{rule.name},#{rule.jobId})")
+	@Update("call sp_rule_update(#{rule.id},#{rule.name},#{rule.jobId},#{rule.type},#{rule.user})")
 	public int update(@Param("rule")RuleEntity ruleEntity);
 
 	@Select("call sp_rule_get(#{id})")
