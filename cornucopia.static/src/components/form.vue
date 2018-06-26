@@ -170,7 +170,7 @@
                                 <!-- <div v-else-if="item.type=='select2select'" v-html="detail[item.name]" style="width:100%" /> -->
                                 <el-transfer  v-else-if="item.type=='transfer'" filterable v-model="value1[item.name]" :data="bindTransfer(item.name,item.url,true)" :titles="['待选择', '已选择']"  ></el-transfer>
                                 <input v-else-if="item.type=='combox'" class="input-xlarge form-control" disabled='disabled' :value="bindCombox(item.data,detail[item.name])" style="width:100%" />
-                                <input v-else-if="item.type!='hidden'" class="input-xlarge form-control" disabled='disabled' :value="detail[item.name]" style="width:100%" />
+                                <input v-else-if="item.type!='hidden'" :id="item.name" :name="item.name" class="input-xlarge form-control" disabled='disabled' :value="detail[item.name]" style="width:100%" :controltype='item.type' />
                             </template>
                         </td>
                         <!-- <span>
@@ -693,39 +693,46 @@ export default {
         .find(".form-control")
         .each(function(index) {
           var item = $(this);
+          var contentType = item.attr("controltype");
           if (this.type == "checkbox") {
             if (item.attr("checked")) {
               data[this.id] = 1;
             } else {
               data[this.id] = 0;
             }
-          } else if (item.attr("controltype") == "suggest") {
+          } else if (contentType == "suggest") {
             data[this.id] = item.attr("data-id");
-          } else if (item.attr("controltype") == "yesno") {
+          } else if (contentType == "yesno") {
             data[this.id] = item.hasClass("is-checked") ? 1 : 0;
-          } else if (item.attr("controltype") == "addline") {
+          } else if (contentType == "addline") {
             var arraytemp = [];
             item.find("input").each(function() {
               var input = $(this);
               arraytemp.push(input.val());
             });
             data[this.id] = arraytemp;
-          } else if (item.attr("controltype") == "textxml") {
+          } else if (contentType == "textxml") {
             data[this.id] = item[0].contentWindow.getValue();
-          } else if (item.attr("controltype") == "textnginx") {
+          } else if (contentType == "textnginx") {
             data[this.id] = item[0].contentWindow.getValue();
-          } else if (item.attr("controltype") == "baidutext") {
+          } else if (contentType == "baidutext") {
             data[this.id] = UE.getEditor(this.id + "1")
               .getContent()
               .replace("<video", "<video autoplay");
-          } else if (item.attr("controltype") == "transfer") {
+          } else if (contentType == "transfer") {
             data[this.id] = self.value1[this.id];
             if (data[this.id].length == 0) {
               data[this.id].push(0);
             }
-          } else if (item.attr("controltype") == "select") {
-            data[this.id] = self.detail[this.id];
-          } else if (item.attr("controltype") == "uploader") {
+          } else if (contentType == "select"
+          ||contentType == "text"
+          ||contentType == "textarea"
+          ||contentType == "hidden"
+          ||contentType == "popup"
+          ||contentType == "readonly"
+          ||contentType == "timer") {
+            data[this.id] = self.detail[this.id]||"";
+          } else if (contentType == "uploader") {
             if(!item.limit || item.limit == 1){
               if(self.detail[this.id][0]){
                 data[this.id]=self.detail[this.id][0].response.data;
@@ -737,23 +744,6 @@ export default {
                 data[this.id].push(self.detail[this.id][i].response.data)
               }
             }
-          } else if (item.attr("controltype") == "text") {
-            data[this.id] = self.detail[this.id];
-          }
-          else if (item.attr("controltype") == "timer") {
-            data[this.id] = self.detail[this.id];
-          }
-          else if (item.attr("controltype") == "textarea") {
-            data[this.id] = self.detail[this.id];
-          }
-          else if (item.attr("controltype") == "hidden") {
-            data[this.id] = self.detail[this.id];
-          }
-          else if (item.attr("controltype") == "popup") {
-            data[this.id] = self.detail[this.id];
-          }
-          else if (item.attr("controltype") == "readonly") {
-            data[this.id] = self.detail[this.id];
           }
         });
       return data;
