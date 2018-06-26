@@ -1,8 +1,5 @@
 <template>
-  <el-row>
-    <el-col :span="12"><list :cfg="cfg"></list></el-col>
-    <el-col :span="12"><tree  ref="tree" :cfg="treeCfg"></tree></el-col>
-  </el-row>
+  <list :cfg="cfg"></list>
 </template>
 <script>
 export default {
@@ -10,172 +7,116 @@ export default {
     var self = this;
     return {
       cfg: {
-        title: "角色管理",
-        parentTitle: "权限管理",
-        simpleUrl: this.getGlobalData().ApiBaseUrl + "/role/alllist",
-        lengthMenu: [[-1], ["ALL"]],
-        sDom: 'f<"dataTables_function"/>',
-        bServerSide: false,
-        hideCheckBox: true,
-        showSelectedRowColor: true,
+        // isShowSearchArea:"true",
+        scrollX: true,
+        scrollCollapse: true,
+        fixedColumns: {
+          leftColumns: 4
+        },
+        title: "我发起的任务",
+        // parentTitle: "系统管理",
+        url: this.getGlobalData().ApiBaseUrl + "/user/list",
         columns: [
           {
-            title: "id",
-            name: "id",
-            isHide: true
-          },
-          {
-            title: "角色名",
-            name: "name"
+            title: "用户名",
+            name: "name",
+            isSearch: true
           },
           {
             title: "是否启用",
-            name: "isEnabled"
+            name: "isEnabled",
+            isSearch: true,
+            type: "combox",
+            data: [
+              {
+                id: "2",
+                value: "不限"
+              },
+              {
+                id: "1",
+                value: "是"
+              },
+              {
+                id: "0",
+                value: "否"
+              }
+            ]
           },
           {
+            title: "工号",
+            name: "personNumber",
+            isSearch: true
+          },{
+            title: "职位",
+            name: "jobId"
+          },{
+            title: "工作邮箱",
+            name: "email"
+          },{
+            title: "手机号码",
+            name: "phone"
+          },{
+            title: "所属上级",
+            name: "managerId"
+          },{
+            title: "所在部门",
+            name: "orgId"
+          },
+            {
             title: "创建时间",
-            name: "createTime"
+            name: "createTime",
+            isSearch: true,
+            type: "timer"
+          },
+           {
+            title: "修改时间",
+            name: "updateTime",
+            isSearch: true,
+            type: "timer"
+          },
+          {
+            title: "最后登录时间",
+            name: "lastLoginTime"
           }
         ],
-        idName: "id",
         fnRowCallback: function(row, data) {
           if (data.isEnabled) {
-            $("td:eq(1)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
+            $("td:eq(3)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
           } else {
-            $("td:eq(1)", row).html('<i class="el-icon-close"></i>');
+            $("td:eq(3)", row).html('<i class="el-icon-close"></i>');
           }
         },
+        idName: "id",
         functions: {
-          common: [
-            {
-              text: "添加角色",
-              url: "roleAdd",
-              mode: "modal"
-            }
-          ],
           more: [
             {
               text: "停用",
-              url: this.getGlobalData().ApiBaseUrl + "/role/disable"
+              url: this.getGlobalData().ApiBaseUrl + "/user/disable",
+              functionName:'userDisable'
             },
             {
               text: "启用",
-              url: this.getGlobalData().ApiBaseUrl + "/role/enable"
-            },
+              url: this.getGlobalData().ApiBaseUrl + "/user/enable",
+              functionName:'userEnable'
+            }
+          ],
+          common: [
             {
-              text: "删除",
-              url: this.getGlobalData().ApiBaseUrl + "/role/delete"
+              text: "添加用户",
+              url: "/auth/userAdd",
+              mode: "navigate",
+              functionName:'userAdd'
             }
           ]
         },
-        onClickRow: function(data, target) {
-          self.$refs.tree.cfg.title = data.name;
-          self.openLoading(self.$refs.tree);
-          $.ajax({
-            type: "GET",
-            xhrFields: {
-              withCredentials: true
-            },
-            url:
-              self.getGlobalData().ApiBaseUrl +
-              "/auth/getCheckedList?roleId=" +
-              data.id,
-            success: function(response) {
-              if (response.code == "200") {
-                self.$refs.tree.setCheckedKeys(response.data);
-                self.closeLoading(self.$refs.tree);
-                self.currentRoleId = data.id;
-              } else if (response.message) {
-                self.$message({
-                  type: "warning",
-                  message: response.message
-                });
-              }
-            }
-          });
-        }
-      },
-      treeCfg: {
-        title: "资源管理",
-        parentTitle: "权限管理",
-        url: this.getGlobalData().ApiBaseUrl + "/auth/allResource",
-        functions: [
+        operations: [
           {
-            text: "保存",
-            type: "btn-success",
-            icon: "el-icon-success",
-            onClick: function() {
-              if (!self.currentRoleId) {
-                self.$message({
-                  message: "请先选择角色!",
-                  type: "warning"
-                });
-                return;
-              }
-              self
-                .$confirm("确定要保存吗", "提示", {
-                  confirmButtonText: "确定",
-                  cancelButtonText: "取消",
-                  type: "info"
-                })
-                .then(() => {
-                  $.ajax({
-                    type: "POST",
-                    xhrFields: {
-                      withCredentials: true
-                    },
-                    data: {
-                      roleId: self.currentRoleId,
-                      checkedList: self.$refs.tree.getCheckedKeys()
-                    },
-                    url:
-                      self.getGlobalData().ApiBaseUrl + "/auth/saveCheckedList",
-                    success: function(response) {
-                      if (response.code == "200") {
-                        self.$message({
-                          message: "操作成功!",
-                          type: "success"
-                        });
-                      } else if (response.message) {
-                        self.$message({
-                          type: "warning",
-                          message: response.message
-                        });
-                      }
-                    }
-                  });
-                });
-            }
+            text: "查看",
+            url: "/auth/userView"
           }
-          // {
-          //   text: "全选",
-          //   type: "btn-success",
-          //   icon:'el-icon-circle-check-outline',
-          //   onClick:function(){
-          //     self.$refs.tree.checkAll();
-          //   }
-          // },
-          // {
-          //   text: "清空",
-          //   type: "btn-success",
-          //   icon:'el-icon-circle-close-outline',
-          //   onClick:function(){
-          //     self.$refs.tree.clearAll();
-          //   }
-          // }
         ]
       }
     };
-  },
-  updated: function() {
-    var self = this;
-    self.$parent.title = self.cfg.title;
-    self.$parent.parentTitle = self.cfg.parentTitle;
   }
 };
 </script>
-<style>
-.dataTables_filter {
-  margin-bottom: -40px;
-}
-</style>
