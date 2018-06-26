@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import cornucopia.dao.UserDao;
 import cornucopia.entity.RoleEntity;
 import cornucopia.entity.UserEntity;
+import cornucopia.model.ApplicantViewModel;
 import cornucopia.model.IdNameModel;
 import cornucopia.model.TransferViewModel;
 import cornucopia.model.UserModPwdViewModel;
@@ -85,5 +86,9 @@ public class UserService {
 
 	public int checkPwd(UserModPwdViewModel umpvm) {
 		return userdao.checkPwd(umpvm);
+	}
+
+	public ApplicantViewModel getApplicant(int id) {
+		return userdao.getApplicant(id);
 	}
 }

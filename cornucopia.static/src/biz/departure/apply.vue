@@ -23,16 +23,24 @@ export default {
         editTitle: "申请人信息",
         mode: "detailEdit",
         hideFooter: "true",
-        name:'applicant',
+        name: "applicant",
         get: {
-          url: this.getGlobalData().ApiBaseUrl + "/user/getSelf",
+          url: this.getGlobalData().ApiBaseUrl + "/user/getApplicant",
           params: {
             id: this.$route.query.id
           }
         },
         items: [
           {
-            name: "Id",
+            name: "id",
+            type: "hidden"
+          },
+          {
+            name: "departmentId",
+            type: "hidden"
+          },
+          {
+            name: "titleId",
             type: "hidden"
           },
           {
@@ -82,7 +90,7 @@ export default {
         editTitle: "申请信息",
         mode: "create",
         hideFooter: "true",
-        name:"applyInfo",
+        name: "applyInfo",
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/role/get",
           params: {
@@ -154,7 +162,7 @@ export default {
           title: {
             required: "职位必须填写"
           }
-        },
+        }
       },
       cfg2: {
         title: "附件",
@@ -162,8 +170,8 @@ export default {
         editTitle: "附件",
         mode: "create",
         hideFooter: "true",
-        desc:"任意文件，不能超过2M",
-        name:"attachment",
+        desc: "任意文件，不能超过2M",
+        name: "attachment",
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/role/get",
           params: {
@@ -179,20 +187,19 @@ export default {
             name: "files",
             title: "文件集",
             type: "uploader",
-            limit:10,
+            limit: 10,
             hideLabel: "true",
             url: this.getGlobalData().ApiBaseUrl + "/upload"
           }
         ],
-        afterEditRender: function() {
-        }
+        afterEditRender: function() {}
       },
       cfg3: {
         save: this.getGlobalData().ApiBaseUrl + "/process/applySave",
-        dataType:'xml',
-        extraData:{
-          approve:{
-            processId:this.$route.query.processId
+        dataType: "xml",
+        extraData: {
+          approve: {
+            processId: this.$route.query.processId
           }
         }
       }

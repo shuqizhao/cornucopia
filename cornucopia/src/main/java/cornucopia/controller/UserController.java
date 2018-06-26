@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
 import cornucopia.entity.UserEntity;
+import cornucopia.model.ApplicantViewModel;
 import cornucopia.model.TransferViewModel;
 import cornucopia.service.UserService;
 import cornucopia.util.DataTableParameter;
@@ -58,12 +59,13 @@ public class UserController {
 		return jr;
 	}
 	
-	@RequestMapping(value = { "/getSelf"}, method = RequestMethod.GET)
-	public JsonResult<UserEntity> getSelf(HttpServletRequest request) {
+	@RequestMapping(value = { "/getApplicant"}, method = RequestMethod.GET)
+	public JsonResult<ApplicantViewModel> getApplicant(HttpServletRequest request) {
 		UserEntity user = (UserEntity)request.getSession().getAttribute("user");
-		JsonResult<UserEntity> jr = new JsonResult<UserEntity>();
+		ApplicantViewModel av = UserService.getInstance().getApplicant(user.getId());
+		JsonResult<ApplicantViewModel> jr = new JsonResult<ApplicantViewModel>();
 		jr.setCode(200);
-		jr.setData(user);
+		jr.setData(av);
 		return jr;
 	}
 }

@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.mapping.StatementType;
 
 import cornucopia.entity.UserEntity;
+import cornucopia.model.ApplicantViewModel;
 import cornucopia.model.UserModPwdViewModel;
 import cornucopia.util.PagingParameters;
 
@@ -39,4 +40,7 @@ public interface UserDao {
 
 	@Select("call sp_user_check_pwd(#{umpvm.id},#{umpvm.oldPwd})")
 	public int checkPwd(@Param("umpvm") UserModPwdViewModel umpvm);
+
+	@Select("call usp_user_get_applicant(#{id})")
+	public ApplicantViewModel getApplicant(@Param("id")int id);
 }
