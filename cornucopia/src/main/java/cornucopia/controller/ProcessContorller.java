@@ -1,10 +1,12 @@
 package cornucopia.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.dom4j.DocumentException;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +26,7 @@ import cornucopia.service.ProcessService;
 import cornucopia.util.DataTableParameter;
 import cornucopia.util.DataTableResult;
 import cornucopia.util.PagingParameters;
+import cornucopia.util.XmlUtil;
 
 @RestController
 @RequestMapping("/process")
@@ -100,13 +103,15 @@ public class ProcessContorller {
 	}
 	
 	@RequestMapping(value = { "/applySave" }, method = RequestMethod.POST)
-	public JsonResult<Integer> applySave(HttpServletRequest request,@RequestBody ProcessDataViewModel pdvm) {
+	public JsonResult<Integer> applySave(HttpServletRequest request,@RequestBody ProcessDataViewModel pdvm) throws DocumentException, UnsupportedEncodingException {
 		ProcessDataEntity processDataEntity = new ProcessDataEntity();
 		processDataEntity.setBizData(pdvm.getXmlStr());
 		String formCode = OrderService.getInstance().getOrderNo("DPF");
 		processDataEntity.setFormCode(formCode);
 		UserEntity user = (UserEntity)request.getSession().getAttribute("user");
 		processDataEntity.setCreateBy(user.getId());
+		String processId = XmlUtil.selectSingleNode(processDataEntity.getBizData(), "//processId");
+		processDataEntity.setProcessId(Integer.parseInt(processId));
 		int result = ProcessDataService.getInstance().insert(processDataEntity);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);

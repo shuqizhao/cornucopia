@@ -69,7 +69,7 @@ export default {
     postUrl: function(data, handler) {
       var self = this;
       if (self.cfg.dataType == "xml") {
-        data = { xmlStr: self.parse2xml(data) };
+        data = { xmlStr: "<root>"+self.parse2xml(data)+"</root>" };
       }
       $.ajax({
         type: "POST",

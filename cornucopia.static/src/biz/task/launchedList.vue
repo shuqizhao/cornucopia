@@ -42,28 +42,28 @@ export default {
           // }
         },
         idName: "id",
-        functions: {
-          more: [
-            {
-              text: "停用",
-              url: this.getGlobalData().ApiBaseUrl + "/user/disable",
-              functionName:'userDisable'
-            },
-            {
-              text: "启用",
-              url: this.getGlobalData().ApiBaseUrl + "/user/enable",
-              functionName:'userEnable'
-            }
-          ],
-          common: [
-            {
-              text: "添加用户",
-              url: "/auth/userAdd",
-              mode: "navigate",
-              functionName:'userAdd'
-            }
-          ]
-        },
+        // functions: {
+        //   more: [
+        //     {
+        //       text: "停用",
+        //       url: this.getGlobalData().ApiBaseUrl + "/user/disable",
+        //       functionName:'userDisable'
+        //     },
+        //     {
+        //       text: "启用",
+        //       url: this.getGlobalData().ApiBaseUrl + "/user/enable",
+        //       functionName:'userEnable'
+        //     }
+        //   ],
+          // common: [
+          //   {
+          //     text: "添加用户",
+          //     url: "/auth/userAdd",
+          //     mode: "navigate",
+          //     functionName:'userAdd'
+          //   }
+          // ]
+        // },
         operations: [
           {
             text: "查看",
