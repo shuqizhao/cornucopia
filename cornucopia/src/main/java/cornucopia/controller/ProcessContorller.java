@@ -14,6 +14,7 @@ import cornucopia.entity.ProcessCategoryEntity;
 import cornucopia.entity.ProcessDataEntity;
 import cornucopia.entity.ProcessEntity;
 import cornucopia.model.ProcessDataViewModel;
+import cornucopia.service.OrderService;
 import cornucopia.service.ProcessCategoryService;
 import cornucopia.service.ProcessDataService;
 import cornucopia.service.ProcessService;
@@ -96,6 +97,8 @@ public class ProcessContorller {
 	public JsonResult<Integer> applySave(@RequestBody ProcessDataViewModel pdvm) {
 		ProcessDataEntity processDataEntity = new ProcessDataEntity();
 		processDataEntity.setBizData(pdvm.getXmlStr());
+		String formCode = OrderService.getInstance().getOrderNo("DPF");
+		processDataEntity.setFormCode(formCode);
 		int result = ProcessDataService.getInstance().insert(processDataEntity);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
