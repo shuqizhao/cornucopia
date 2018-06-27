@@ -42,11 +42,19 @@ export default {
             type: "timer"
           },
           {
-            title: "最后审批人",
+            title: "流程状态",
+            name: "updateBy"
+          },
+          {
+            title: "最新审批步骤",
+            name: "updateBy"
+          },
+          {
+            title: "最新审批人",
             name: "updateBy"
           },
            {
-            title: "最后操作时间",
+            title: "最新操作时间",
             name: "updateTime",
             isSearch: true,
             type: "timer"
