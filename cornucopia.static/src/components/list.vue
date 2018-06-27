@@ -42,7 +42,7 @@
                               <i class="fa fa-fw fa-list-alt"></i>
                             </div>
                               <input type="hidden" class="form-control" :id="column.name" :name="column.name"/>
-                              <el-select v-model="value" placeholder="请选择" @change="onSelectChange(value,column.name)">
+                              <el-select v-model="value" placeholder="请选择" filterable @change="onSelectChange(value,column.name)">
                               <el-option v-for="item in column.data" :key="item.id" :label="item.value" :value="item.id"> </el-option>
                             </el-select>
                           </div>

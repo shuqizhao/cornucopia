@@ -3,6 +3,18 @@
 </template>
 <script>
 export default {
+  mounted:function(){
+    var self = this;
+    self.get(self.getGlobalData().ApiBaseUrl + "/process/alllist",'',function(r){
+      if(r.code==200){
+        var data =[];
+        for(var i=0;i<r.data.length;i++){
+          data.push({id:r.data[i].id,value:r.data[i].name});
+        }
+        self.cfg.columns[1].data=data;
+      }
+    });
+  },
   data() {
     var self = this;
     return {
@@ -18,14 +30,20 @@ export default {
             isSearch: true
           },{
             title: "流程类型",
-            name: "processId",
-            isSearch: true
+            name: "processName",
+            isSearch: true,
+            type:"combox",
+            data:[]
           },
             {
             title: "发起时间",
             name: "createTime",
             isSearch: true,
             type: "timer"
+          },
+          {
+            title: "最后审批人",
+            name: "updateBy"
           },
            {
             title: "最后操作时间",

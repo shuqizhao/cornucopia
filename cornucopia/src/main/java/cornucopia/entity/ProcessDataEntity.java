@@ -2,6 +2,7 @@ package cornucopia.entity;
 
 public class ProcessDataEntity extends BaseEntity {
 	private int processId;
+	private String processName;
 	private String bizData;
 	private String formCode;
 	private int procinstId;
@@ -54,5 +55,13 @@ public class ProcessDataEntity extends BaseEntity {
 
 	public void setStepName(String stepName) {
 		this.stepName = stepName;
+	}
+
+	public String getProcessName() {
+		return processName;
+	}
+
+	public void setProcessName(String processName) {
+		this.processName = processName;
 	}
 }
