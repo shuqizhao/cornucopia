@@ -3,6 +3,8 @@ package cornucopia.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,11 +15,15 @@ import cornucopia.entity.JsonResult;
 import cornucopia.entity.ProcessCategoryEntity;
 import cornucopia.entity.ProcessDataEntity;
 import cornucopia.entity.ProcessEntity;
+import cornucopia.entity.UserEntity;
 import cornucopia.model.ProcessDataViewModel;
 import cornucopia.service.OrderService;
 import cornucopia.service.ProcessCategoryService;
 import cornucopia.service.ProcessDataService;
 import cornucopia.service.ProcessService;
+import cornucopia.util.DataTableParameter;
+import cornucopia.util.DataTableResult;
+import cornucopia.util.PagingParameters;
 
 @RestController
 @RequestMapping("/process")
@@ -94,15 +100,29 @@ public class ProcessContorller {
 	}
 	
 	@RequestMapping(value = { "/applySave" }, method = RequestMethod.POST)
-	public JsonResult<Integer> applySave(@RequestBody ProcessDataViewModel pdvm) {
+	public JsonResult<Integer> applySave(HttpServletRequest request,@RequestBody ProcessDataViewModel pdvm) {
 		ProcessDataEntity processDataEntity = new ProcessDataEntity();
 		processDataEntity.setBizData(pdvm.getXmlStr());
 		String formCode = OrderService.getInstance().getOrderNo("DPF");
 		processDataEntity.setFormCode(formCode);
+		UserEntity user = (UserEntity)request.getSession().getAttribute("user");
+		processDataEntity.setCreateBy(user.getId());
 		int result = ProcessDataService.getInstance().insert(processDataEntity);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(result);
 		return jr;
+	}
+	
+	@RequestMapping(value = { "/launchedList" }, method = RequestMethod.POST)
+	public DataTableResult<ProcessDataEntity> launchedList(HttpServletRequest request,DataTableParameter dtp) {
+		PagingParameters pp = new PagingParameters();
+		pp.setStart(dtp.getiDisplayStart());
+		pp.setLength(dtp.getiDisplayLength());
+		UserEntity user = (UserEntity)request.getSession().getAttribute("user");
+		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().launchedList(pp,user.getId());
+		int count = pp.getTotalRows();
+		DataTableResult<ProcessDataEntity> dtr = new DataTableResult<ProcessDataEntity>(dtp.getsEcho() + 1, count, count, processDatas);
+		return dtr;
 	}
 }
