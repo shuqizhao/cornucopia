@@ -5,6 +5,7 @@ public class ProcessEntity extends BaseEntity {
 	private String icon;
 	private int orderNum;
 	private String url;
+	private String pre;
 
 	public int getCategoryId() {
 		return categoryId;
@@ -36,5 +37,13 @@ public class ProcessEntity extends BaseEntity {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public String getPre() {
+		return pre;
+	}
+
+	public void setPre(String pre) {
+		this.pre = pre;
 	}
 }

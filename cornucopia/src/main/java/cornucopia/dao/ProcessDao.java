@@ -29,4 +29,7 @@ public interface ProcessDao {
 	
 	@Update("call sp_process_delete(#{id})")
 	public int delete(@Param("id")int id);
+
+	@Select("call sp_process_get(#{processId})")
+	public ProcessEntity get(@Param("processId")String processId);
 }

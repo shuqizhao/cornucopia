@@ -107,16 +107,18 @@ public class ProcessContorller {
 		ProcessDataEntity processDataEntity = new ProcessDataEntity();
 		processDataEntity.setBizData(pdvm.getXmlStr());
 		
-		String formCode = OrderService.getInstance().getOrderNo("DPF");
+		String processId = XmlUtil.selectSingleText(processDataEntity.getBizData(), "//processId");
+		processDataEntity.setProcessId(Integer.parseInt(processId));
+		
+		String pre = ProcessService.getInstance().getPre(processId);
+		
+		String formCode = OrderService.getInstance().getOrderNo(pre);
 		processDataEntity.setFormCode(formCode);
 		XmlUtil.createElementForPd(processDataEntity, "//approve", "fromCode", formCode);
 		
 		UserEntity user = (UserEntity)request.getSession().getAttribute("user");
 		processDataEntity.setCreateBy(user.getId());
 		XmlUtil.createElementForPd(processDataEntity, "//approve", "createBy", user.getId()+"");
-		
-		String processId = XmlUtil.selectSingleText(processDataEntity.getBizData(), "//processId");
-		processDataEntity.setProcessId(Integer.parseInt(processId));
 		
 		int result = ProcessDataService.getInstance().insert(processDataEntity);
 		

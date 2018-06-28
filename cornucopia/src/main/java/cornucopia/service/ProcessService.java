@@ -41,4 +41,12 @@ public class ProcessService {
 	public int delete(int id) {
 		return processDao.delete(id);
 	}
+
+	public ProcessEntity get(String processId) {
+		return processDao.get(processId);
+	}
+	
+	public String getPre(String processId) {
+		return get(processId).getPre();
+	}
 }
