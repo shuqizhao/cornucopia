@@ -6,8 +6,11 @@ import java.util.Map;
 
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskQuery;
 
 import cornucopia.dao.ProcessDao;
+import cornucopia.entity.ProcessDiagramEntity;
 import cornucopia.entity.ProcessEntity;
 import cornucopia.util.ActivitiHelper;
 import cornucopia.util.MyBatisHelper;
@@ -57,8 +60,10 @@ public class ProcessService {
 	}
 
 	public String StartByProcessId(String processId, String userId) {
-		// get from db
-		return Start(processId, userId);
+		ProcessDiagramEntity pd = ProcessDiagramService.getInstance().getByProcessId(processId);
+		String instId = Start(pd.getDefKey(), userId);
+		Complete(instId, userId);
+		return instId;
 	}
 
 	public String Start(String key, String userId) {
@@ -69,5 +74,13 @@ public class ProcessService {
 		// String acId = pi.getActivityId();
 		String instId = pi.getProcessInstanceId();
 		return instId;
+	}
+
+	public void Complete(String instId, String userId) {
+		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
+		query.taskAssignee(userId);
+		query.processInstanceId(instId);
+		Task task = query.singleResult();
+		ActivitiHelper.GetEngine().getTaskService().complete(task.getId());
 	}
 }

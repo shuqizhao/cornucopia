@@ -13,7 +13,7 @@ import cornucopia.entity.ProcessDataEntity;
 import cornucopia.util.PagingParameters;
 
 public interface ProcessDataDao {
-	@Insert("call sp_process_data_insert(#{pd.processId},#{pd.bizData},#{pd.formCode},#{pd.createBy})")
+	@Insert("call sp_process_data_insert(#{pd.processId},#{pd.bizData},#{pd.formCode},#{pd.createBy},#{pd.procinstId})")
 	@SelectKey(statement="Select LAST_INSERT_ID()", keyProperty="pd.id", before=false, resultType=int.class)
 	public int insert(@Param("pd") ProcessDataEntity processDataEntity);
 

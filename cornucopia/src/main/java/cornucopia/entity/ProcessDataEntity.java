@@ -5,7 +5,7 @@ public class ProcessDataEntity extends BaseEntity {
 	private String processName;
 	private String bizData;
 	private String formCode;
-	private int procinstId;
+	private String procinstId;
 	private int levelCount;
 	private String stepName;
 
@@ -33,11 +33,11 @@ public class ProcessDataEntity extends BaseEntity {
 		this.formCode = formCode;
 	}
 
-	public int getProcinstId() {
+	public String getProcinstId() {
 		return procinstId;
 	}
 
-	public void setProcinstId(int procinstId) {
+	public void setProcinstId(String procinstId) {
 		this.procinstId = procinstId;
 	}
 

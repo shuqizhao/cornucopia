@@ -52,6 +52,10 @@ public class ProcessDiagramService {
 	public ProcessDiagramEntity get(int id) {
 		return processDiagramDao.get(id);
 	}
+	
+	public ProcessDiagramEntity getByProcessId(String id) {
+		return processDiagramDao.getByProcessId(id);
+	}
 
 	public String deploy(int id) throws IOException {
 		ProcessDiagramEntity processDiagramEntity = get(id);
