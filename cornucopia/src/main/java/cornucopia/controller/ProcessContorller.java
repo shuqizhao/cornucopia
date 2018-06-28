@@ -106,13 +106,22 @@ public class ProcessContorller {
 	public JsonResult<Integer> applySave(HttpServletRequest request,@RequestBody ProcessDataViewModel pdvm) throws DocumentException, UnsupportedEncodingException {
 		ProcessDataEntity processDataEntity = new ProcessDataEntity();
 		processDataEntity.setBizData(pdvm.getXmlStr());
+		
 		String formCode = OrderService.getInstance().getOrderNo("DPF");
 		processDataEntity.setFormCode(formCode);
+		XmlUtil.createElementForPd(processDataEntity, "//approve", "fromCode", formCode);
+		
 		UserEntity user = (UserEntity)request.getSession().getAttribute("user");
 		processDataEntity.setCreateBy(user.getId());
-		String processId = XmlUtil.selectSingleNode(processDataEntity.getBizData(), "//processId");
+		XmlUtil.createElementForPd(processDataEntity, "//approve", "createBy", user.getId()+"");
+		
+		String processId = XmlUtil.selectSingleText(processDataEntity.getBizData(), "//processId");
 		processDataEntity.setProcessId(Integer.parseInt(processId));
+		
 		int result = ProcessDataService.getInstance().insert(processDataEntity);
+		
+		XmlUtil.createElementForPd(processDataEntity, "//approve", "pdId", processDataEntity.getId()+"");
+		
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(result);
