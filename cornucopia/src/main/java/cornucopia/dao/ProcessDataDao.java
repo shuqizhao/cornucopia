@@ -20,4 +20,8 @@ public interface ProcessDataDao {
 	@Select("call sp_process_data_get_by_launched_list(#{pp.start},#{pp.length},#{userId},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
 	@Options(statementType = StatementType.CALLABLE)
 	public List<ProcessDataEntity> launchedList(@Param("pp")PagingParameters pp,@Param("userId")int userId);
+
+	@Select("call sp_process_data_get_by_task_list(#{pp.start},#{pp.length},#{userId},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
+	@Options(statementType = StatementType.CALLABLE)
+	public List<ProcessDataEntity> taskList(@Param("pp")PagingParameters pp,@Param("userId") int userId);
 }

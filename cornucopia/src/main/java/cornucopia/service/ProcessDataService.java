@@ -26,4 +26,8 @@ public class ProcessDataService {
 	public List<ProcessDataEntity> launchedList(PagingParameters pp,int userId) {
 		return processDataDao.launchedList(pp,userId);
 	}
+
+	public List<ProcessDataEntity> taskList(PagingParameters pp, int userId) {
+		return processDataDao.taskList(pp,userId);
+	}
 }

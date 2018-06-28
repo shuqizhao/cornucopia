@@ -22,7 +22,7 @@ export default {
         // isShowSearchArea:"true",
         scrollCollapse: true,
         title: "我的任务",
-        url: this.getGlobalData().ApiBaseUrl + "/process/launchedList",
+        url: this.getGlobalData().ApiBaseUrl + "/process/taskList",
         columns: [
           {
             title: "单号",

@@ -144,4 +144,16 @@ public class ProcessContorller {
 		DataTableResult<ProcessDataEntity> dtr = new DataTableResult<ProcessDataEntity>(dtp.getsEcho() + 1, count, count, processDatas);
 		return dtr;
 	}
+	
+	@RequestMapping(value = { "/taskList" }, method = RequestMethod.POST)
+	public DataTableResult<ProcessDataEntity> taskList(HttpServletRequest request,DataTableParameter dtp) {
+		PagingParameters pp = new PagingParameters();
+		pp.setStart(dtp.getiDisplayStart());
+		pp.setLength(dtp.getiDisplayLength());
+		UserEntity user = (UserEntity)request.getSession().getAttribute("user");
+		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().taskList(pp,user.getId());
+		int count = pp.getTotalRows();
+		DataTableResult<ProcessDataEntity> dtr = new DataTableResult<ProcessDataEntity>(dtp.getsEcho() + 1, count, count, processDatas);
+		return dtr;
+	}
 }
