@@ -30,4 +30,8 @@ public class ProcessDataService {
 	public List<ProcessDataEntity> taskList(PagingParameters pp, int userId) {
 		return processDataDao.taskList(pp,userId);
 	}
+
+	public ProcessDataEntity getByInstId(String instId) {
+		return processDataDao.getByInstId(instId);
+	}
 }

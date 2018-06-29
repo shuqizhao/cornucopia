@@ -29,4 +29,7 @@ public interface ProcessNodeDao {
 	
 	@Update("call sp_process_node_delete(#{id})")
 	public int delete(@Param("id")int id);
+
+	@Select("call sp_process_node_get_by_name(#{processId},#{taskName})")
+	public ProcessNodeEntity getByName(@Param("processId")String processId, @Param("taskName")String taskName);
 }

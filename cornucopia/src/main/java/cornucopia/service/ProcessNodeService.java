@@ -17,28 +17,32 @@ public class ProcessNodeService {
 	}
 
 	ProcessNodeDao processNodeDao = MyBatisHelper.getMapper(ProcessNodeDao.class);
-	
+
 	public List<ProcessNodeEntity> getAll(int processId) {
 		return processNodeDao.getAll(processId);
 	}
 
-	public int exists(String nodeName,int processId) {
-		return processNodeDao.exists(nodeName,processId);
+	public int exists(String nodeName, int processId) {
+		return processNodeDao.exists(nodeName, processId);
 	}
 
 	public int insert(ProcessNodeEntity processNodeEntity) {
-		 return processNodeDao.insert(processNodeEntity);
+		return processNodeDao.insert(processNodeEntity);
 	}
 
 	public int disable(int id) {
 		return processNodeDao.disable(id);
 	}
-	
+
 	public int enable(int id) {
 		return processNodeDao.enable(id);
 	}
-	
+
 	public int delete(int id) {
 		return processNodeDao.delete(id);
+	}
+
+	public ProcessNodeEntity getByName(String processId, String taskName) {
+		return processNodeDao.getByName(processId, taskName);
 	}
 }
