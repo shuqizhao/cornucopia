@@ -64,7 +64,7 @@ public class ProcessService {
 	public String StartByProcessId(String processId, String userId) {
 		ProcessDiagramEntity pd = ProcessDiagramService.getInstance().getByProcessId(processId);
 		String instId = Start(pd.getDefKey(), userId);
-		Complete(processId, instId);
+		Complete(processId, instId, userId);
 		return instId;
 	}
 
@@ -78,19 +78,20 @@ public class ProcessService {
 		return instId;
 	}
 
-	public void Complete(String instId) {
-	    ProcessDataEntity pde =	ProcessDataService.getInstance().getByInstId(instId);
-		String processId = pde.getProcessId()+"";
-		Complete(processId, instId);
+	public void Complete(String instId, String userId) {
+		ProcessDataEntity pde = ProcessDataService.getInstance().getByInstId(instId);
+		String processId = pde.getProcessId() + "";
+		Complete(processId, instId, userId);
 	}
 
-	public void Complete(String processId, String instId) {
+	public void Complete(String processId, String instId, String userId) {
 		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
+		query.taskAssignee(userId);
 		query.processInstanceId(instId);
 		Task task = query.singleResult();
-		String userId = getNextDealUser(processId, instId);
+		String nextUserId = getNextDealUser(processId, instId);
 		Map<String, Object> variables = new HashMap<String, Object>();
-		variables.put("dealUser", userId);
+		variables.put("dealUser", nextUserId);
 		variables.put("isWhile", "1");
 		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
 	}
@@ -102,6 +103,6 @@ public class ProcessService {
 		String taskName = task.getName();
 		ProcessNodeEntity pne = ProcessNodeService.getInstance().getByName(processId, taskName);
 		int processNodeId = pne.getId();
-		return processNodeId+"";
+		return processNodeId + "";
 	}
 }
