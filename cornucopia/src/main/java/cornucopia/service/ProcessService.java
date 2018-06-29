@@ -72,6 +72,7 @@ public class ProcessService {
 		RuntimeService rs = ActivitiHelper.GetEngine().getRuntimeService();
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("dealUser", userId);
+		variables.put("isWhile", "1");
 		ProcessInstance pi = rs.startProcessInstanceByKey(key, variables);
 		String instId = pi.getProcessInstanceId();
 		return instId;
@@ -90,6 +91,7 @@ public class ProcessService {
 		String userId = getNextDealUser(processId, instId);
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("dealUser", userId);
+		variables.put("isWhile", "1");
 		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
 	}
 
@@ -100,6 +102,6 @@ public class ProcessService {
 		String taskName = task.getName();
 		ProcessNodeEntity pne = ProcessNodeService.getInstance().getByName(processId, taskName);
 		int processNodeId = pne.getId();
-		return "";
+		return processNodeId+"";
 	}
 }

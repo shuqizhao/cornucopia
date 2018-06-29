@@ -4,16 +4,22 @@
     <startEvent id="startevent1" name="Start"></startEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <userTask id="DOA" name="DOA" activiti:assignee="${dealUser}"></userTask>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway" default="xunhuan"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="DOA" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="DOA"></sequenceFlow>
-    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow10" sourceRef="startevent1" targetRef="DOA"></sequenceFlow>
+    <sequenceFlow id="xunhuan" sourceRef="exclusivegateway1" targetRef="DOA">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isWhile=1}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="jiesu" sourceRef="exclusivegateway1" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isWhile=0}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="Init" name="Init" activiti:assignee="${dealUser}"></userTask>
+    <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="Init"></sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="Init" targetRef="DOA"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_departureProcess">
     <bpmndi:BPMNPlane bpmnElement="departureProcess" id="BPMNPlane_departureProcess">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="212.0" y="124.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="170.0" y="124.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="860.0" y="125.0"></omgdc:Bounds>
@@ -24,21 +30,28 @@
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="720.0" y="121.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Init" id="BPMNShape_Init">
+        <omgdc:Bounds height="55.0" width="105.0" x="280.0" y="115.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="565.0" y="142.0"></omgdi:waypoint>
         <omgdi:waypoint x="720.0" y="141.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+      <bpmndi:BPMNEdge bpmnElement="xunhuan" id="BPMNEdge_xunhuan">
         <omgdi:waypoint x="740.0" y="121.0"></omgdi:waypoint>
         <omgdi:waypoint x="602.0" y="43.0"></omgdi:waypoint>
         <omgdi:waypoint x="512.0" y="115.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+      <bpmndi:BPMNEdge bpmnElement="jiesu" id="BPMNEdge_jiesu">
         <omgdi:waypoint x="760.0" y="141.0"></omgdi:waypoint>
         <omgdi:waypoint x="860.0" y="142.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="247.0" y="141.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="205.0" y="141.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="142.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="385.0" y="142.0"></omgdi:waypoint>
         <omgdi:waypoint x="460.0" y="142.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
