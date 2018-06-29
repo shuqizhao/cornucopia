@@ -7,14 +7,19 @@
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway" default="xunhuan"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="DOA" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="xunhuan" sourceRef="exclusivegateway1" targetRef="DOA">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isWhile=1}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${to=1}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="jiesu" sourceRef="exclusivegateway1" targetRef="endevent1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isWhile=0}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${to=0}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="Init" name="Init" activiti:assignee="${dealUser}"></userTask>
     <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="Init"></sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="Init" targetRef="DOA"></sequenceFlow>
+    <userTask id="Retry" name="Retry" activiti:assignee="${dealUser}"></userTask>
+    <sequenceFlow id="flow13" sourceRef="Retry" targetRef="DOA"></sequenceFlow>
+    <sequenceFlow id="tuihui" sourceRef="exclusivegateway1" targetRef="Retry">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${to=2}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_departureProcess">
     <bpmndi:BPMNPlane bpmnElement="departureProcess" id="BPMNPlane_departureProcess">
@@ -32,6 +37,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="Init" id="BPMNShape_Init">
         <omgdc:Bounds height="55.0" width="105.0" x="280.0" y="115.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Retry" id="BPMNShape_Retry">
+        <omgdc:Bounds height="55.0" width="105.0" x="460.0" y="240.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="565.0" y="142.0"></omgdi:waypoint>
@@ -53,6 +61,14 @@
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="385.0" y="142.0"></omgdi:waypoint>
         <omgdi:waypoint x="460.0" y="142.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="512.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="512.0" y="170.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="tuihui" id="BPMNEdge_tuihui">
+        <omgdi:waypoint x="740.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="512.0" y="240.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
