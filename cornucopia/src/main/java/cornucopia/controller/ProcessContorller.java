@@ -101,59 +101,63 @@ public class ProcessContorller {
 		jr.setData(processCategories);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/applySave" }, method = RequestMethod.POST)
-	public JsonResult<Integer> applySave(HttpServletRequest request,@RequestBody ProcessDataViewModel pdvm) throws DocumentException, UnsupportedEncodingException {
+	public JsonResult<Integer> applySave(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
+			throws DocumentException, UnsupportedEncodingException {
 		ProcessDataEntity processDataEntity = new ProcessDataEntity();
 		processDataEntity.setBizData(pdvm.getXmlStr());
-		
+
 		String processId = XmlUtil.selectSingleText(processDataEntity.getBizData(), "//processId");
 		processDataEntity.setProcessId(Integer.parseInt(processId));
-		
+
 		String pre = ProcessService.getInstance().getPre(processId);
-		
+
 		String formCode = OrderService.getInstance().getOrderNo(pre);
 		processDataEntity.setFormCode(formCode);
 		XmlUtil.createElementForPd(processDataEntity, "//approve", "fromCode", formCode);
-		
-		UserEntity user = (UserEntity)request.getSession().getAttribute("user");
+
+		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		processDataEntity.setCreateBy(user.getId());
-		XmlUtil.createElementForPd(processDataEntity, "//approve", "createBy", user.getId()+"");
-		
-		String procinstId = ProcessService.getInstance().StartByProcessId(processId, user.getId()+"");
+		XmlUtil.createElementForPd(processDataEntity, "//approve", "createBy", user.getId() + "");
+
+		String procinstId = ProcessService.getInstance().StartByProcessId(processId, user.getId() + "",
+				processDataEntity.getBizData());
 		processDataEntity.setProcinstId(procinstId);
 		int result = ProcessDataService.getInstance().insert(processDataEntity);
-		
-		XmlUtil.createElementForPd(processDataEntity, "//approve", "pdId", processDataEntity.getId()+"");
-		
-		
+
+		// XmlUtil.createElementForPd(processDataEntity, "//approve", "pdId",
+		// processDataEntity.getId()+"");
+
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(result);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/launchedList" }, method = RequestMethod.POST)
-	public DataTableResult<ProcessDataEntity> launchedList(HttpServletRequest request,DataTableParameter dtp) {
+	public DataTableResult<ProcessDataEntity> launchedList(HttpServletRequest request, DataTableParameter dtp) {
 		PagingParameters pp = new PagingParameters();
 		pp.setStart(dtp.getiDisplayStart());
 		pp.setLength(dtp.getiDisplayLength());
-		UserEntity user = (UserEntity)request.getSession().getAttribute("user");
-		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().launchedList(pp,user.getId());
+		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().launchedList(pp, user.getId());
 		int count = pp.getTotalRows();
-		DataTableResult<ProcessDataEntity> dtr = new DataTableResult<ProcessDataEntity>(dtp.getsEcho() + 1, count, count, processDatas);
+		DataTableResult<ProcessDataEntity> dtr = new DataTableResult<ProcessDataEntity>(dtp.getsEcho() + 1, count,
+				count, processDatas);
 		return dtr;
 	}
-	
+
 	@RequestMapping(value = { "/taskList" }, method = RequestMethod.POST)
-	public DataTableResult<ProcessDataEntity> taskList(HttpServletRequest request,DataTableParameter dtp) {
+	public DataTableResult<ProcessDataEntity> taskList(HttpServletRequest request, DataTableParameter dtp) {
 		PagingParameters pp = new PagingParameters();
 		pp.setStart(dtp.getiDisplayStart());
 		pp.setLength(dtp.getiDisplayLength());
-		UserEntity user = (UserEntity)request.getSession().getAttribute("user");
-		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().taskList(pp,user.getId());
+		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().taskList(pp, user.getId());
 		int count = pp.getTotalRows();
-		DataTableResult<ProcessDataEntity> dtr = new DataTableResult<ProcessDataEntity>(dtp.getsEcho() + 1, count, count, processDatas);
+		DataTableResult<ProcessDataEntity> dtr = new DataTableResult<ProcessDataEntity>(dtp.getsEcho() + 1, count,
+				count, processDatas);
 		return dtr;
 	}
 }

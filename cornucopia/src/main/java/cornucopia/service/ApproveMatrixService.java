@@ -29,4 +29,8 @@ public class ApproveMatrixService {
 	public int delete(int id) {
 		return approveMatrixDao.delete(id);
 	}
+	
+	public List<ApproveMatrixEntity> getByNodeId(int id) {
+		return approveMatrixDao.getByNodeId(id);
+	}
 }

@@ -20,4 +20,7 @@ public interface ApproveMatrixDao {
 	
 	@Update("call sp_approve_matrix_delete(#{id})")
 	public int delete(@Param("id")int id);
+
+	@Select("call sp_approve_matrix_get_by_process_node_id(#{id})")
+	public List<ApproveMatrixEntity> getByNodeId(@Param("id")int id);
 }
