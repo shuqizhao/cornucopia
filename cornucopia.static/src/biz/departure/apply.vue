@@ -1,7 +1,7 @@
 <template>
     <div>
       <mform :cfg="cfg"></mform>
-      <mform :cfg="cfg1"></mform>
+      <mform ref="applyInfo" :cfg="cfg1"></mform>
       <mform :cfg="cfg2"></mform>
       <buttonBar :cfg="cfg3"></buttonBar>
     </div>
@@ -9,14 +9,14 @@
 <script>
 export default {
   mounted: function() {
-    self = this;
+    let me = this;
     this.setBreadcrumbTitle(this, "发起新流程", "离职申请");
-    var processId = this.$route.query.processId;
-    var dataId = this.$route.query.id;
+    var processId = me.$route.query.processId;
+    var dataId = me.$route.query.id;
     if (dataId) {
-      // this.openLoading(self,"abc");
-      this.get(
-        this.getGlobalData().ApiBaseUrl +
+      me.openLoading();
+      me.get(
+        me.getGlobalData().ApiBaseUrl +
           "/process/getBizData?processId=" +
           processId +
           "&id=" +
@@ -24,7 +24,11 @@ export default {
         "",
         function(response) {
           if (response.code == 200) {
-            // self.closeLoading(self,"abc");
+            me.closeLoading();
+            var dataJson = JSON.parse(response.data);
+            var applyInfoInfo = dataJson.applyInfo[0];
+            // me.$set(me.$refs.applyInfo,"detail",applyInfoInfo)
+            // me.$refs.applyInfo.detail = applyInfoInfo;
           }
         }
       );
@@ -34,7 +38,7 @@ export default {
     this.setBreadcrumbTitle(this, "", "");
   },
   data() {
-    var self = this;
+    let self = this;
     return {
       cfg: {
         title: "申请人信息",

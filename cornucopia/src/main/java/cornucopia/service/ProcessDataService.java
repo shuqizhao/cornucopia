@@ -6,6 +6,7 @@ import cornucopia.dao.ProcessDataDao;
 import cornucopia.entity.ProcessDataEntity;
 import cornucopia.util.MyBatisHelper;
 import cornucopia.util.PagingParameters;
+import cornucopia.util.XmlUtil;
 
 public class ProcessDataService {
 	private static ProcessDataService instance = new ProcessDataService();
@@ -18,17 +19,17 @@ public class ProcessDataService {
 	}
 
 	ProcessDataDao processDataDao = MyBatisHelper.getMapper(ProcessDataDao.class);
-	
+
 	public int insert(ProcessDataEntity processDataEntity) {
 		return processDataDao.insert(processDataEntity);
 	}
 
-	public List<ProcessDataEntity> launchedList(PagingParameters pp,int userId) {
-		return processDataDao.launchedList(pp,userId);
+	public List<ProcessDataEntity> launchedList(PagingParameters pp, int userId) {
+		return processDataDao.launchedList(pp, userId);
 	}
 
 	public List<ProcessDataEntity> taskList(PagingParameters pp, int userId) {
-		return processDataDao.taskList(pp,userId);
+		return processDataDao.taskList(pp, userId);
 	}
 
 	public ProcessDataEntity getByInstId(String instId) {
@@ -37,5 +38,12 @@ public class ProcessDataService {
 
 	public ProcessDataEntity get(int id) {
 		return processDataDao.get(id);
+	}
+
+	public String getBizData(int id) {
+		ProcessDataEntity processDataEntity = get(id);
+		String bizDataXmlStr = processDataEntity.getBizData();
+		String bizDataJsonStr = XmlUtil.toJSONString(bizDataXmlStr);
+		return bizDataJsonStr;
 	}
 }

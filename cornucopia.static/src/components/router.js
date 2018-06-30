@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import VueResource from 'vue-resource'
+// import VueResource from 'vue-resource'
 
 Vue.component('mimiApp', function(resolve) {
     require(['../components/mimiApp.vue'], resolve)

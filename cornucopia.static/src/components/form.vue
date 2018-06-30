@@ -220,7 +220,7 @@ import "jquery-validation";
 export default {
   props: ["cfg"],
   created: function() {
-    self = this;
+    let self = this;
     for (var i = 0; i < self.cfg.items.length; i++) {
       var item = self.cfg.items[i];
       // self.$set(self.detail, item.name, "");
@@ -233,7 +233,7 @@ export default {
     }
   },
   mounted: function() {
-    var self = this;
+    let self = this;
     self.isMounted = true;
 
     if (this.cfg.mode != "create") {
