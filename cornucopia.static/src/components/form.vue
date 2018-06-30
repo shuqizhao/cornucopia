@@ -19,7 +19,7 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form id="form1" class="form-inline form" onsubmit='return false;' role="form">
+        <form class="form-inline form" onsubmit='return false;' role="form">
             <div class="box-body">
                 <template v-for="item in cfg.items" >
                     <input v-if="item.type=='hidden'" :id="item.name" type="hidden" :key="item.name" class="form-control" :value="detail[item.name]" :controltype='item.type' />
@@ -260,7 +260,7 @@ export default {
     // });
   },
   updated: function() {
-    self = this;
+    let self = this;
     if (self.cfg.afterEditRender) {
       self.cfg.afterEditRender(self.cfg.detailEditMode, self.detail);
     }
@@ -414,7 +414,7 @@ export default {
     },
     btnDecommit: function(event) {
       var target = event.currentTarget;
-      self = this;
+      let self = this;
       self.commiting = true;
       self.btnCommit(target, function() {
         self.cfg.detailEditMode = "detail";
@@ -749,7 +749,7 @@ export default {
       return data;
     },
     saveData: function(data, handler) {
-      self = this;
+      let self = this;
       var successLang = "成功!";
       if (data == null) {
         data = self.getData();
@@ -821,7 +821,7 @@ export default {
       });
     },
     fillData: function(onSuccess) {
-      self = this;
+      let self = this;
       self.get(self.cfg.get.url, self.cfg.get.params, function(result) {
         if (result.code == "200") {
           self.detail = result.data;
@@ -913,7 +913,6 @@ export default {
       }
     },
     onClick: function(item) {
-      debugger;
       this.dialogVisible = true;
       this.currentComponent = item.url;
       this.popUpValue = this.detail[item.name];

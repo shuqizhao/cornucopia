@@ -1,22 +1,22 @@
 <template>
     <div>
-      <mform :cfg="cfg"></mform>
+      <mform ref="applicant" :cfg="cfg"></mform>
       <mform ref="applyInfo" :cfg="cfg1"></mform>
-      <mform :cfg="cfg2"></mform>
+      <mform ref="files" :cfg="cfg2"></mform>
       <buttonBar :cfg="cfg3"></buttonBar>
     </div>
 </template>
 <script>
 export default {
   mounted: function() {
-    let me = this;
+    let self = this;
     this.setBreadcrumbTitle(this, "发起新流程", "离职申请");
-    var processId = me.$route.query.processId;
-    var dataId = me.$route.query.id;
+    var processId = self.$route.query.processId;
+    var dataId = self.$route.query.id;
     if (dataId) {
-      me.openLoading();
-      me.get(
-        me.getGlobalData().ApiBaseUrl +
+      self.openLoading();
+      self.get(
+        self.getGlobalData().ApiBaseUrl +
           "/process/getBizData?processId=" +
           processId +
           "&id=" +
@@ -24,11 +24,15 @@ export default {
         "",
         function(response) {
           if (response.code == 200) {
-            me.closeLoading();
+            self.closeLoading();
             var dataJson = JSON.parse(response.data);
             var applyInfoInfo = dataJson.applyInfo[0];
+            Object.keys(applyInfoInfo).forEach(function(key) {
+              // console.log(key, applyInfoInfo[key]);
+              self.$refs.applyInfo.detail[key]=applyInfoInfo[key];
+            });
             // me.$set(me.$refs.applyInfo,"detail",applyInfoInfo)
-            // me.$refs.applyInfo.detail = applyInfoInfo;
+            // me1.$refs.applyInfo.detail = applyInfoInfo;
           }
         }
       );
