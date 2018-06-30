@@ -8,6 +8,8 @@ public class ProcessDataEntity extends BaseEntity {
 	private String procinstId;
 	private int levelCount;
 	private String stepName;
+	private String createName;
+	private String updateName;
 
 	public int getProcessId() {
 		return processId;
@@ -63,5 +65,21 @@ public class ProcessDataEntity extends BaseEntity {
 
 	public void setProcessName(String processName) {
 		this.processName = processName;
+	}
+
+	public String getCreateName() {
+		return createName;
+	}
+
+	public void setCreateName(String createName) {
+		this.createName = createName;
+	}
+
+	public String getUpdateName() {
+		return updateName;
+	}
+
+	public void setUpdateName(String updateName) {
+		this.updateName = updateName;
 	}
 }

@@ -35,23 +35,25 @@ export default {
             type:"combox",
             data:[]
           },
-            {
-            title: "发起时间",
-            name: "createTime",
-            isSearch: true,
-            type: "timer"
-          },
           {
             title: "流程状态",
-            name: "updateBy"
+            name: "status"
+          },
+          {
+            title: "发起人",
+            name: "createName"
+          },
+          {
+            title: "发起时间",
+            name: "createTime"
           },
           {
             title: "最新审批步骤",
-            name: "updateBy"
+            name: "stepName"
           },
           {
             title: "最新审批人",
-            name: "updateBy"
+            name: "updateName"
           },
            {
             title: "最新操作时间",
