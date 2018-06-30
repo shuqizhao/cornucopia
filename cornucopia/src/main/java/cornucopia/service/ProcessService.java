@@ -100,6 +100,9 @@ public class ProcessService {
 		query.processInstanceId(instId);
 		Task task = query.singleResult();
 		List<Integer> nextUserIds = getNextDealUser(processId, instId, bizData);
+		if (nextUserIds == null || nextUserIds.size() == 0) {
+			// to-do
+		}
 		Map<String, Object> variables = new HashMap<String, Object>();
 		for (int nextUserId : nextUserIds) {
 			variables.put("dealUser", nextUserId);

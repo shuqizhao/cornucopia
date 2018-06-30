@@ -693,7 +693,7 @@ export default {
       if(!self.cfg.simpleUrl&&!simpleUrl){
         return;
       }
-      self.openLoading();
+      // self.openLoading();
       var data = [];
       $.ajax({
         type: "GET",
@@ -714,7 +714,7 @@ export default {
               message: response.message
             });
           }
-          self.closeLoading();
+          // self.closeLoading();
         }
       });
       return data;
