@@ -2,8 +2,8 @@
     <div>
       <mform ref="applicant" :cfg="cfg"></mform>
       <mform ref="applyInfo" :cfg="cfg1"></mform>
-      <mform ref="files" :cfg="cfg2"></mform>
-      <buttonBar :cfg="cfg3"></buttonBar>
+      <mform ref="attachment" :cfg="cfg2"></mform>
+      <buttonBar ref="approve" :cfg="cfg3"></buttonBar>
     </div>
 </template>
 <script>
@@ -25,14 +25,27 @@ export default {
         function(response) {
           if (response.code == 200) {
             self.closeLoading();
-            var dataJson = JSON.parse(response.data);
-            var applyInfoInfo = dataJson.applyInfo[0];
-            Object.keys(applyInfoInfo).forEach(function(key) {
-              // console.log(key, applyInfoInfo[key]);
-              self.$refs.applyInfo.detail[key]=applyInfoInfo[key];
+            let dataJson = JSON.parse(response.data);
+            Object.keys(dataJson).forEach(function(key) {
+              
+              let obj = dataJson[key][0];
+              // self.$refs[key].detail[key]=dataJson[key];
+              Object.keys(obj).forEach(function(subKey) {
+                if(self.$refs[key]&&self.$refs[key].detail){
+                  // self.$set(self.$refs[key].detail,subKey,obj[subKey])
+                  self.$refs[key].detail[subKey] = obj[subKey];
+                }
+              });
             });
-            // me.$set(me.$refs.applyInfo,"detail",applyInfoInfo)
-            // me1.$refs.applyInfo.detail = applyInfoInfo;
+
+            // var applyInfoInfo = dataJson.applyInfo[0];
+            // var applicantInfo = dataJson.applicant[0];
+            // Object.keys(applyInfoInfo).forEach(function(key) {
+            //   self.$refs.applyInfo.detail[key]=applyInfoInfo[key];
+            // });
+            // Object.keys(applicantInfo).forEach(function(key) {
+            //   self.$refs.applicant.detail[key]=applicantInfo[key];
+            // });
           }
         }
       );
