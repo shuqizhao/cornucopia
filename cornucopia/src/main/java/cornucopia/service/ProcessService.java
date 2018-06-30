@@ -3,6 +3,7 @@ package cornucopia.service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -95,14 +96,16 @@ public class ProcessService {
 		query.taskAssignee(userId);
 		query.processInstanceId(instId);
 		Task task = query.singleResult();
-		String nextUserId = getNextDealUser(processId, instId, bizData);
+		List<Integer> nextUserIds = getNextDealUser(processId, instId, bizData);
 		Map<String, Object> variables = new HashMap<String, Object>();
-		variables.put("dealUser", nextUserId);
+		for (int nextUserId : nextUserIds) {
+			variables.put("dealUser", nextUserId);
+		}
 		variables.put("isWhile", "1");
 		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
 	}
 
-	public String getNextDealUser(String processId, String instId, String bizData) {
+	public List<Integer> getNextDealUser(String processId, String instId, String bizData) {
 		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
 		query.processInstanceId(instId);
 		Task task = query.singleResult();
@@ -120,13 +123,35 @@ public class ProcessService {
 			if (acs == null || acs.size() == 0) {
 				// thow ex
 			}
+			boolean c1Bool = true;
 			for (ApproveConditionEntity ac : acs) {
 				if (calculateApproveCondition(ac, bizData)) {
-
+					c1Bool = c1Bool && true;
+				} else {
+					c1Bool = c1Bool && false;
+				}
+			}
+			if (c1Bool) {
+				int c2Id = am.getApproveCondition2Id();
+				List<ApproveConditionEntity> bacs = ApproveService.getInstance().getConditions(c2Id);
+				if (bacs == null || bacs.size() == 0) {
+					// thow ex
+				}
+				boolean c2Bool = true;
+				for (ApproveConditionEntity ac : bacs) {
+					if (calculateApproveCondition(ac, bizData)) {
+						c2Bool = c2Bool && true;
+					} else {
+						c2Bool = c2Bool && false;
+					}
+				}
+				if (c2Bool) {
+					int positionId = am.getApprovePositionId();
+					return ApprovePositionService.getInstance().getUserIdsByPositionId(positionId, bizData);
 				}
 			}
 		}
-		return processNodeId + "";
+		return new ArrayList<Integer>();
 	}
 
 	public boolean calculateApproveCondition(ApproveConditionEntity ac, String bizData) {

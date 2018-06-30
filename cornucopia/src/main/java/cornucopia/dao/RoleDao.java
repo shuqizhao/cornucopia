@@ -40,4 +40,7 @@ public interface RoleDao {
 
 	@Select("call sp_role_get(#{id})")
 	public RoleEntity get(@Param("id")int id);
+
+	@Select("call sp_role_get_user_ids_by_role_id(#{id})")
+	public List<Integer> getUserIdsByRoleId(@Param("id")String id);
 }

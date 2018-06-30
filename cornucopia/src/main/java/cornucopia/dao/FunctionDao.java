@@ -54,4 +54,7 @@ public interface FunctionDao {
 
 	@Select("call sp_function_parainst_get(#{id})")
 	public ParainstEntity getParainst(@Param("id")String parainstId);
+
+	@Select("call sp_function_execute(#{sp})")
+	public List<Integer> executeGetUserIds(@Param("sp")String sp);
 }

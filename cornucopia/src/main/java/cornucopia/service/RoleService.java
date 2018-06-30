@@ -50,4 +50,7 @@ public class RoleService {
 	public RoleEntity get(int id) {
 		return roledao.get(id);
 	}
+	public List<Integer> getUserIdsByRoleId(String id){
+		return roledao.getUserIdsByRoleId(id);
+	}
 }
