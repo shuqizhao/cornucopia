@@ -1,5 +1,6 @@
 package cornucopia.service;
 
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,6 +14,7 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
+import org.dom4j.DocumentException;
 
 import cornucopia.dao.ProcessDao;
 import cornucopia.entity.ApproveConditionEntity;
@@ -23,6 +25,7 @@ import cornucopia.entity.ProcessEntity;
 import cornucopia.entity.ProcessNodeEntity;
 import cornucopia.util.ActivitiHelper;
 import cornucopia.util.MyBatisHelper;
+import cornucopia.util.XmlUtil;
 
 public class ProcessService {
 	private static ProcessService instance = new ProcessService();
@@ -111,6 +114,9 @@ public class ProcessService {
 		Task task = query.singleResult();
 		String taskName = task.getName();
 		ProcessNodeEntity pne = ProcessNodeService.getInstance().getByName(processId, taskName);
+		if (pne == null) {
+			// ex
+		}
 		int processNodeId = pne.getId();
 
 		List<ApproveMatrixEntity> ams = ApproveMatrixService.getInstance().getByNodeId(processNodeId);
@@ -159,9 +165,15 @@ public class ProcessService {
 		if (ac.getVar1From() == 1) {// 文本
 			var1 = ac.getVar1();
 		} else if (ac.getVar1From() == 2) {// xpath
-
+			try {
+				var1 = XmlUtil.selectSingleText(bizData, ac.getVar1());
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} catch (DocumentException e) {
+				e.printStackTrace();
+			}
 		} else if (ac.getVar1From() == 3) {// 函数
-
+			var1 = FunctionService.getInstance().executeGetUserIds(ac.getVar1(), bizData);
 		}
 
 		Object var2 = "";

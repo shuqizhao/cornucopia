@@ -119,6 +119,32 @@ public class FunctionService {
 		sp += ")";
 		return funcdao.executeGetUserIds(sp);
 	}
+	
+	public String executeGetText(String parainstId, String bizData) {
+		ParainstEntity pe = getParainst(parainstId);
+		String jsonObj = pe.getParainstJson();
+		Map<String, Object> map = parseJSON2Map(jsonObj);
+		FunctionEntity fe = get(pe.getFunctionId());
+		String sp = fe.getName() + "(";
+		for (String key : map.keySet()) {
+			String value = map.get(key).toString();
+			if (value.startsWith("//")) {
+				try {
+					value = XmlUtil.selectSingleText(bizData, value);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				} catch (DocumentException e) {
+					e.printStackTrace();
+				}
+				sp += "'" + value + "',";
+			} else {
+				sp += "'" + value + "',";
+			}
+			sp = sp.substring(0, sp.length() - 1);
+		}
+		sp += ")";
+		return funcdao.executeGetText(sp);
+	}
 
 	public Map<String, Object> parseJSON2Map(String jsonStr) {
 		Map<String, Object> map = new HashMap<String, Object>();
