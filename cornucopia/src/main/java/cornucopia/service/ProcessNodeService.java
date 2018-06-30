@@ -45,4 +45,8 @@ public class ProcessNodeService {
 	public ProcessNodeEntity getByName(String processId, String taskName) {
 		return processNodeDao.getByName(processId, taskName);
 	}
+
+	public ProcessNodeEntity getDoaNode(String processId) {
+		return processNodeDao.getDoaNode(processId);
+	}
 }

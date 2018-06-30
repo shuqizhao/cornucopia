@@ -32,4 +32,7 @@ public interface ProcessNodeDao {
 
 	@Select("call sp_process_node_get_by_name(#{processId},#{taskName})")
 	public ProcessNodeEntity getByName(@Param("processId")String processId, @Param("taskName")String taskName);
+
+	@Select("call sp_process_node_get_doa(#{processId})")
+	public ProcessNodeEntity getDoaNode(@Param("processId")String processId);
 }

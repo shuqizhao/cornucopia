@@ -107,7 +107,7 @@ public class ProcessService {
 		for (int nextUserId : nextUserIds) {
 			variables.put("dealUser", nextUserId);
 		}
-		variables.put("isWhile", "1");
+		variables.put("to", "1");
 		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
 	}
 
@@ -117,8 +117,11 @@ public class ProcessService {
 		Task task = query.singleResult();
 		String taskName = task.getName();
 		ProcessNodeEntity pne = ProcessNodeService.getInstance().getByName(processId, taskName);
-		if (pne == null) {
-			// ex
+		if (pne == null || !pne.getName().contains("DOA")) {
+			pne = ProcessNodeService.getInstance().getDoaNode(processId);
+			if (pne == null) {
+				// ex
+			}
 		}
 		int processNodeId = pne.getId();
 
