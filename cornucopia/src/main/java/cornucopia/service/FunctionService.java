@@ -99,8 +99,11 @@ public class FunctionService {
 		String jsonObj = pe.getParainstJson();
 		Map<String, Object> map = parseJSON2Map(jsonObj);
 		FunctionEntity fe = get(pe.getFunctionId());
-		String sp = fe.getName() + "(";
+		String sp = "call " + fe.getName() + "(";
 		for (String key : map.keySet()) {
+			if (key.equals("functionId")) {
+				continue;
+			}
 			String value = map.get(key).toString();
 			if (value.startsWith("//")) {
 				try {
@@ -119,7 +122,7 @@ public class FunctionService {
 		sp += ")";
 		return funcdao.executeGetUserIds(sp);
 	}
-	
+
 	public String executeGetText(String parainstId, String bizData) {
 		ParainstEntity pe = getParainst(parainstId);
 		String jsonObj = pe.getParainstJson();

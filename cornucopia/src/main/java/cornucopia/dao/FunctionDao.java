@@ -58,6 +58,6 @@ public interface FunctionDao {
 	@Select("call sp_function_execute(#{sp})")
 	public List<Integer> executeGetUserIds(@Param("sp")String sp);
 
-	@Select("call sp_function_execute_text(#{sp})")
-	public String executeGetText(String sp);
+	@Select("call sp_function_execute(#{sp})")
+	public String executeGetText(@Param("sp") String sp);
 }
