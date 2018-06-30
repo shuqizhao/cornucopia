@@ -160,4 +160,13 @@ public class ProcessContorller {
 				count, processDatas);
 		return dtr;
 	}
+	@RequestMapping(value = { "/getBizData" }, method = RequestMethod.GET)
+	public JsonResult<String> getBizData(HttpServletRequest request,int processId,int id) {
+//		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(id);
+		JsonResult<String> jr = new JsonResult<String>();
+		jr.setCode(200);
+		jr.setData(processDataEntity.getBizData());
+		return jr;
+	}
 }

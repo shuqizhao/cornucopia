@@ -34,4 +34,8 @@ public class ProcessDataService {
 	public ProcessDataEntity getByInstId(String instId) {
 		return processDataDao.getByInstId(instId);
 	}
+
+	public ProcessDataEntity get(int id) {
+		return processDataDao.get(id);
+	}
 }

@@ -9,7 +9,26 @@
 <script>
 export default {
   mounted: function() {
+    self = this;
     this.setBreadcrumbTitle(this, "发起新流程", "离职申请");
+    var processId = this.$route.query.processId;
+    var dataId = this.$route.query.id;
+    if (dataId) {
+      // this.openLoading(self,"abc");
+      this.get(
+        this.getGlobalData().ApiBaseUrl +
+          "/process/getBizData?processId=" +
+          processId +
+          "&id=" +
+          dataId,
+        "",
+        function(response) {
+          if (response.code == 200) {
+            // self.closeLoading(self,"abc");
+          }
+        }
+      );
+    }
   },
   destroyed: function() {
     this.setBreadcrumbTitle(this, "", "");

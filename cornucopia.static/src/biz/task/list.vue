@@ -63,11 +63,7 @@ export default {
           }
         ],
         fnRowCallback: function(row, data) {
-          // if (data.isEnabled) {
-          //   $("td:eq(3)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
-          // } else {
-          //   $("td:eq(3)", row).html('<i class="el-icon-close"></i>');
-          // }
+          $("td:eq(0)", row).html('<a target="_blank" href="#/'+data.url+'?processId='+data.processId+'&id='+data.id+'">'+data.formCode+'</a>');
         },
         idName: "id",
         // functions: {
@@ -92,12 +88,12 @@ export default {
           //   }
           // ]
         // },
-        operations: [
-          {
-            text: "查看",
-            url: "/auth/userView"
-          }
-        ]
+        // operations: [
+        //   {
+        //     text: "查看",
+        //     url: "/auth/userView"
+        //   }
+        // ]
       }
     };
   }

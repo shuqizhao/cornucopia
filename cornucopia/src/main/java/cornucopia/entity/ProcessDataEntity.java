@@ -10,6 +10,7 @@ public class ProcessDataEntity extends BaseEntity {
 	private String stepName;
 	private String createName;
 	private String updateName;
+	private String url;
 
 	public int getProcessId() {
 		return processId;
@@ -81,5 +82,13 @@ public class ProcessDataEntity extends BaseEntity {
 
 	public void setUpdateName(String updateName) {
 		this.updateName = updateName;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 }
