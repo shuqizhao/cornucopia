@@ -3,7 +3,8 @@
       <mform ref="applicant" :cfg="cfg"></mform>
       <mform ref="applyInfo" :cfg="cfg1"></mform>
       <mform ref="attachment" :cfg="cfg2"></mform>
-      <buttonBar ref="approve" :cfg="cfg3"></buttonBar>
+      <buttonBar v-show="!isApprove" ref="submit" :cfg="cfg3"></buttonBar>
+      <buttonBar v-show="isApprove" ref="approve" :cfg="cfg4"></buttonBar>
     </div>
 </template>
 <script>
@@ -14,6 +15,7 @@ export default {
     var processId = self.$route.query.processId;
     var dataId = self.$route.query.id;
     if (dataId) {
+      self.isApprove = true;
       self.openLoading();
       self.get(
         self.getGlobalData().ApiBaseUrl +
@@ -27,28 +29,18 @@ export default {
             self.closeLoading();
             let dataJson = JSON.parse(response.data);
             Object.keys(dataJson).forEach(function(key) {
-              
               let obj = dataJson[key][0];
-              // self.$refs[key].detail[key]=dataJson[key];
               Object.keys(obj).forEach(function(subKey) {
-                if(self.$refs[key]&&self.$refs[key].detail){
-                  // self.$set(self.$refs[key].detail,subKey,obj[subKey])
+                if (self.$refs[key] && self.$refs[key].detail) {
                   self.$refs[key].detail[subKey] = obj[subKey];
                 }
               });
             });
-
-            // var applyInfoInfo = dataJson.applyInfo[0];
-            // var applicantInfo = dataJson.applicant[0];
-            // Object.keys(applyInfoInfo).forEach(function(key) {
-            //   self.$refs.applyInfo.detail[key]=applyInfoInfo[key];
-            // });
-            // Object.keys(applicantInfo).forEach(function(key) {
-            //   self.$refs.applicant.detail[key]=applicantInfo[key];
-            // });
           }
         }
       );
+    } else {
+      self.isApprove = false;
     }
   },
   destroyed: function() {
@@ -57,6 +49,7 @@ export default {
   data() {
     let self = this;
     return {
+      isApprove: false,
       cfg: {
         title: "申请人信息",
         detailTitle: "申请人信息",
@@ -242,6 +235,33 @@ export default {
             processId: this.$route.query.processId
           }
         }
+      },
+      cfg4: {
+        save: this.getGlobalData().ApiBaseUrl + "/process/applyApprove",
+        hideSave: true,
+        hideCancel: true,
+        dataType: "xml",
+        extraData: {
+          approve: {
+            processId: this.$route.query.processId
+          }
+        },
+        buttons: [
+          {
+            name: "同意",
+            type: "success"
+          },
+          {
+            name: "退回"
+          },
+          {
+            name: "关闭",
+            type: "warning",
+            onClick: function() {
+              window.close();
+            }
+          }
+        ]
       }
     };
   }

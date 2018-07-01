@@ -2,9 +2,14 @@
     <div  class="box" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
         <center>
         <el-button
-        type="primary"
-          @click="btnSave">保存</el-button>
-        <el-button
+        type="primary" v-show="!cfg.hideSave"
+          @click="btnPost({name:'保存'})">保存</el-button>
+          <span v-for="item in this.cfg.buttons" :key="item.name" style="margin-right:5px;">
+            <el-button
+          :type="item.type||'primary'"
+          @click="btnPost(item)">{{item.name}}</el-button>
+          </span>
+        <el-button v-show="!cfg.hideCancel"
           type="warning"
           @click="btnCancel">取消</el-button>
         </center>
@@ -31,7 +36,24 @@ export default {
         history.go(-1);
       }
     },
-    btnSave: function() {
+    btnPost: function(item) {
+      var self = this;
+      if (item.onClick) {
+        self
+          .$confirm("确定要" + item.name + "吗", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          })
+          .then(() => {
+            item.onClick(item);
+          })
+          .catch(() => {});
+      } else {
+        self.btnSave(item);
+      }
+    },
+    btnSave: function(item) {
       var self = this;
       var dataWillCommit = {};
       var children = this.$parent.$children;
@@ -63,13 +85,21 @@ export default {
       if (self.cfg.beforeCommit) {
         self.cfg.beforeCommit(dataWillCommit);
       }
-
-      this.postUrl(dataWillCommit);
+      self
+        .$confirm("确定要" + item.name + "吗", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+        .then(() => {
+          self.postUrl(dataWillCommit, null, item);
+        })
+        .catch(() => {});
     },
-    postUrl: function(data, handler) {
+    postUrl: function(data, handler, item) {
       var self = this;
-      if (self.cfg.dataType == "xml") {
-        data = { xmlStr: "<root>"+self.parse2xml(data)+"</root>" };
+      if (self.cfg.dataType == "xml" && item && item.dataType != "json") {
+        data = { xmlStr: "<root>" + self.parse2xml(data) + "</root>" };
       }
       $.ajax({
         type: "POST",
@@ -78,7 +108,7 @@ export default {
         xhrFields: {
           withCredentials: true
         },
-        url: self.cfg.save,
+        url: item ? item.url : self.cfg.save,
         data: JSON.stringify(data),
         success: function(response) {
           if (response.code && response.code == "201") {
@@ -174,9 +204,7 @@ export default {
     }
   },
   data() {
-    return {
-      message: "fds"
-    };
+    return {};
   }
 };
 </script>
