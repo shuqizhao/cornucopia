@@ -237,7 +237,7 @@ export default {
         }
       },
       cfg4: {
-        save: this.getGlobalData().ApiBaseUrl + "/process/applyApprove",
+        // save: this.getGlobalData().ApiBaseUrl + "/process/applyApprove",
         hideSave: true,
         hideCancel: true,
         dataType: "xml",
@@ -249,10 +249,12 @@ export default {
         buttons: [
           {
             name: "同意",
-            type: "success"
+            type: "success",
+            url: this.getGlobalData().ApiBaseUrl + "/process/applyAgree"
           },
           {
-            name: "退回"
+            name: "退回",
+            url: this.getGlobalData().ApiBaseUrl + "/process/applyReturn"
           },
           {
             name: "关闭",

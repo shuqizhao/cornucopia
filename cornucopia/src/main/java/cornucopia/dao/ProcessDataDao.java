@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.mapping.StatementType;
 
 import cornucopia.entity.ProcessDataEntity;
@@ -30,4 +31,10 @@ public interface ProcessDataDao {
 
 	@Select("call sp_process_data_get_by_id(#{id})")
 	public ProcessDataEntity get(@Param("id") int id);
+
+	@Update("call sp_process_data_update(#{pd.id},#{pd.bizData})")
+	public int update(@Param("pd")ProcessDataEntity processDataEntity);
+
+	@Select("call sp_process_data_get_form_code(#{formCode})")
+	public ProcessDataEntity getByFormCode(@Param("formCode")String formCode);
 }

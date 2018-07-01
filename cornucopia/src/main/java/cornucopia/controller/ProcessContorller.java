@@ -135,6 +135,22 @@ public class ProcessContorller {
 		return jr;
 	}
 
+	@RequestMapping(value = { "/applyAgree" }, method = RequestMethod.POST)
+	public JsonResult<Integer> applyAgree(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
+			throws DocumentException, UnsupportedEncodingException {
+		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//formCode");
+		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
+		processDataEntity.setBizData(pdvm.getXmlStr());
+		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		processDataEntity.setUpdateBy(user.getId());
+		int result = ProcessDataService.getInstance().update(processDataEntity);
+		ProcessService.getInstance().Complete(processDataEntity.getProcinstId(), user.getId() + "", pdvm.getXmlStr());
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(result);
+		return jr;
+	}
+
 	@RequestMapping(value = { "/launchedList" }, method = RequestMethod.POST)
 	public DataTableResult<ProcessDataEntity> launchedList(HttpServletRequest request, DataTableParameter dtp) {
 		PagingParameters pp = new PagingParameters();
@@ -160,9 +176,10 @@ public class ProcessContorller {
 				count, processDatas);
 		return dtr;
 	}
+
 	@RequestMapping(value = { "/getBizData" }, method = RequestMethod.GET)
-	public JsonResult<String> getBizData(HttpServletRequest request,int processId,int id) {
-//		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+	public JsonResult<String> getBizData(HttpServletRequest request, int processId, int id) {
+		// UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		String bizData = ProcessDataService.getInstance().getBizData(id);
 		JsonResult<String> jr = new JsonResult<String>();
 		jr.setCode(200);

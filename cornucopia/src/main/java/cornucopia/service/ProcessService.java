@@ -105,9 +105,13 @@ public class ProcessService {
 		}
 		Map<String, Object> variables = new HashMap<String, Object>();
 		for (int nextUserId : nextUserIds) {
+			if (nextUserId == 666666) {
+				variables.put("to", "0");
+			} else {
+				variables.put("to", "1");
+			}
 			variables.put("dealUser", nextUserId);
 		}
-		variables.put("to", "1");
 		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
 	}
 

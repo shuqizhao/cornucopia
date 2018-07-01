@@ -46,4 +46,12 @@ public class ProcessDataService {
 		String bizDataJsonStr = XmlUtil.toJSONString(bizDataXmlStr);
 		return bizDataJsonStr;
 	}
+
+	public int update(ProcessDataEntity processDataEntity) {
+		return processDataDao.update(processDataEntity);
+	}
+
+	public ProcessDataEntity getByFormCode(String formCode) {
+		return processDataDao.getByFormCode(formCode);
+	}
 }
