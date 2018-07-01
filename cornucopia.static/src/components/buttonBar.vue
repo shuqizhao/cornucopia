@@ -122,6 +122,9 @@ export default {
               message: "成功!",
               type: "success"
             });
+            if(item.onSuccess(item)){
+              return;
+            }
           } else if (response.message) {
             $(self.$el)
               .find(".btn-commit")

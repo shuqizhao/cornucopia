@@ -44,6 +44,17 @@ export default {
       self.isApprove = false;
     }
   },
+  created: function() {
+    var dataId = this.$route.query.id;
+    if (!dataId) {
+      this.cfg.get = {
+        url: this.getGlobalData().ApiBaseUrl + "/user/getApplicant",
+        params: {
+          id: this.$route.query.id
+        }
+      };
+    }
+  },
   destroyed: function() {
     this.setBreadcrumbTitle(this, "", "");
   },
@@ -82,7 +93,7 @@ export default {
           {
             name: "createBy",
             type: "hidden"
-          },
+          }
           // {
           //   name: "updateTime",
           //   title: "上次时间",
@@ -291,7 +302,11 @@ export default {
           {
             name: "同意",
             type: "success",
-            url: this.getGlobalData().ApiBaseUrl + "/process/applyAgree"
+            url: this.getGlobalData().ApiBaseUrl + "/process/applyAgree",
+            onSuccess:function(){
+              // self.$router.go('/mytask')
+              self.$router.push({path:'/mytask'})
+            }
           },
           {
             name: "退回",
