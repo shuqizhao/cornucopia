@@ -3,7 +3,7 @@
         <center>
         <el-button
         type="primary" v-show="!cfg.hideSave"
-          @click="btnPost({name:'保存'})">保存</el-button>
+          @click="btnPost({name:'保存',url:cfg.save})">保存</el-button>
           <span v-for="item in this.cfg.buttons" :key="item.name" style="margin-right:5px;">
             <el-button
           :type="item.type||'primary'"
@@ -122,7 +122,7 @@ export default {
               message: "成功!",
               type: "success"
             });
-            if(item.onSuccess(item)){
+            if (item.onSuccess(item)) {
               return;
             }
           } else if (response.message) {

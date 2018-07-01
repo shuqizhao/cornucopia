@@ -24,13 +24,10 @@ public class CornucopiaApplicationTests {
 		// List<ProcessCategoryEntity> list =
 		// ProcessCategoryService.getInstance().getAll();
 		// System.out.println(list.size());
-		String id = ProcessDiagramService.getInstance().deploy(63);
-		List<ProcessDefinition> list = ActivitiHelper.GetEngine().getRepositoryService().createProcessDefinitionQuery()
-				.deploymentId(id).list();
-		for (ProcessDefinition a : list) {
-			System.out.println(a.getId() + "   " + a.getKey());
-		}
-		System.out.println(id);
+//		String id = ProcessDiagramService.getInstance().deploy(63);
+		//init database
+		ActivitiHelper.GetEngine();
+		System.out.println(1);
 	}
 
 }

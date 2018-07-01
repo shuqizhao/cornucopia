@@ -312,6 +312,7 @@ export default {
       this.dialogVisible = true;
     },
     onFileUpload: function(response, file, fileList) {
+      var self = this;
       if (response.code == 200) {
         $("#"+response.message).val(response.data)
         if(self.commiting){

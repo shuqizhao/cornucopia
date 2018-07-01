@@ -7,10 +7,10 @@
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="DOA" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="xunhuan" sourceRef="exclusivegateway1" targetRef="DOA">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${to=1}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${to==1}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="jiesu" sourceRef="exclusivegateway1" targetRef="endevent1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${to=0}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${to==0}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="Init" name="Init" activiti:assignee="${dealUser}"></userTask>
     <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="Init"></sequenceFlow>
@@ -18,7 +18,7 @@
     <userTask id="Retry" name="Retry" activiti:assignee="${dealUser}"></userTask>
     <sequenceFlow id="flow13" sourceRef="Retry" targetRef="DOA"></sequenceFlow>
     <sequenceFlow id="tuihui" sourceRef="exclusivegateway1" targetRef="Retry">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${to=2}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${to==2}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_departureProcess">
