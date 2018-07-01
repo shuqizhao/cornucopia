@@ -74,7 +74,7 @@ public class ProcessService {
 	public String StartByProcessId(String processId, String userId, String bizData) {
 		ProcessDiagramEntity pd = ProcessDiagramService.getInstance().getByProcessId(processId);
 		String instId = Start(pd.getDefKey(), userId);
-		Complete(processId, instId, userId, bizData);
+		Complete(processId, instId, userId, bizData, 0);
 		return instId;
 	}
 
@@ -88,18 +88,18 @@ public class ProcessService {
 		return instId;
 	}
 
-	public void Complete(String instId, String userId, String bizData) {
+	public void Complete(String instId, String userId, String bizData, int levelCount) {
 		ProcessDataEntity pde = ProcessDataService.getInstance().getByInstId(instId);
 		String processId = pde.getProcessId() + "";
-		Complete(processId, instId, userId, bizData);
+		Complete(processId, instId, userId, bizData, levelCount);
 	}
 
-	public void Complete(String processId, String instId, String userId, String bizData) {
+	public void Complete(String processId, String instId, String userId, String bizData, int levelCount) {
 		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
 		query.taskAssignee(userId);
 		query.processInstanceId(instId);
 		Task task = query.singleResult();
-		List<Integer> nextUserIds = getNextDealUser(processId, instId, bizData);
+		List<Integer> nextUserIds = getNextDealUser(processId, instId, bizData, levelCount);
 		if (nextUserIds == null || nextUserIds.size() == 0) {
 			// to-do
 		}
@@ -115,7 +115,7 @@ public class ProcessService {
 		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
 	}
 
-	public List<Integer> getNextDealUser(String processId, String instId, String bizData) {
+	public List<Integer> getNextDealUser(String processId, String instId, String bizData, int levelCount) {
 		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
 		query.processInstanceId(instId);
 		Task task = query.singleResult();
@@ -133,41 +133,47 @@ public class ProcessService {
 		if (ams == null || ams.size() == 0) {
 			// thow ex
 		}
+		int i = 0;
 		for (ApproveMatrixEntity am : ams) {
-			int c1Id = am.getApproveCondition1Id();
-			List<ApproveConditionEntity> acs = ApproveService.getInstance().getConditions(c1Id);
-			if (acs == null || acs.size() == 0) {
-				// thow ex
-			}
-			boolean c1Bool = true;
-			for (ApproveConditionEntity ac : acs) {
-				if (calculateApproveCondition(ac, bizData)) {
-					c1Bool = c1Bool && true;
-				} else {
-					c1Bool = c1Bool && false;
-				}
-			}
-			if (c1Bool) {
-				int c2Id = am.getApproveCondition2Id();
-				List<ApproveConditionEntity> bacs = ApproveService.getInstance().getConditions(c2Id);
-				if (bacs == null || bacs.size() == 0) {
+			if (levelCount == i) {
+				int c1Id = am.getApproveCondition1Id();
+				List<ApproveConditionEntity> acs = ApproveService.getInstance().getConditions(c1Id);
+				if (acs == null || acs.size() == 0) {
 					// thow ex
 				}
-				boolean c2Bool = true;
-				for (ApproveConditionEntity ac : bacs) {
+				boolean c1Bool = true;
+				for (ApproveConditionEntity ac : acs) {
 					if (calculateApproveCondition(ac, bizData)) {
-						c2Bool = c2Bool && true;
+						c1Bool = c1Bool && true;
 					} else {
-						c2Bool = c2Bool && false;
+						c1Bool = c1Bool && false;
 					}
 				}
-				if (c2Bool) {
-					int positionId = am.getApprovePositionId();
-					return ApprovePositionService.getInstance().getUserIdsByPositionId(positionId, bizData);
+				if (c1Bool) {
+					int c2Id = am.getApproveCondition2Id();
+					List<ApproveConditionEntity> bacs = ApproveService.getInstance().getConditions(c2Id);
+					if (bacs == null || bacs.size() == 0) {
+						// thow ex
+					}
+					boolean c2Bool = true;
+					for (ApproveConditionEntity ac : bacs) {
+						if (calculateApproveCondition(ac, bizData)) {
+							c2Bool = c2Bool && true;
+						} else {
+							c2Bool = c2Bool && false;
+						}
+					}
+					if (c2Bool) {
+						int positionId = am.getApprovePositionId();
+						return ApprovePositionService.getInstance().getUserIdsByPositionId(positionId, bizData);
+					}
 				}
 			}
+			i++;
 		}
-		return new ArrayList<Integer>();
+		List<Integer> result = new ArrayList<Integer>();;
+		result.add(666666);
+		return result;
 	}
 
 	public boolean calculateApproveCondition(ApproveConditionEntity ac, String bizData) {

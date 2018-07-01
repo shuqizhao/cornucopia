@@ -118,7 +118,7 @@ public class ProcessContorller {
 		String formCode = OrderService.getInstance().getOrderNo(pre);
 		processDataEntity.setFormCode(formCode);
 		XmlUtil.createElementForPd(processDataEntity, "//approve", "fromCode", formCode);
-		
+
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		XmlUtil.createElementForPd(processDataEntity, "//approve", "createTime", df.format(new Date()));
 
@@ -148,8 +148,10 @@ public class ProcessContorller {
 		processDataEntity.setBizData(pdvm.getXmlStr());
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		processDataEntity.setUpdateBy(user.getId());
+		processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
 		int result = ProcessDataService.getInstance().update(processDataEntity);
-		ProcessService.getInstance().Complete(processDataEntity.getProcinstId(), user.getId() + "", pdvm.getXmlStr());
+		ProcessService.getInstance().Complete(processDataEntity.getProcinstId(), user.getId() + "", pdvm.getXmlStr(),
+				processDataEntity.getLevelCount());
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(result);

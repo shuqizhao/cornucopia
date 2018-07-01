@@ -32,7 +32,7 @@ public interface ProcessDataDao {
 	@Select("call sp_process_data_get_by_id(#{id})")
 	public ProcessDataEntity get(@Param("id") int id);
 
-	@Update("call sp_process_data_update(#{pd.id},#{pd.bizData})")
+	@Update("call sp_process_data_update(#{pd.id},#{pd.bizData},#{pd.updateBy},#{pd.levelCount})")
 	public int update(@Param("pd")ProcessDataEntity processDataEntity);
 
 	@Select("call sp_process_data_get_form_code(#{formCode})")
