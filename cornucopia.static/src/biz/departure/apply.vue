@@ -75,6 +75,14 @@ export default {
             type: "text",
             width: "300px;"
           },
+          {
+            name: "processId",
+            type: "hidden"
+          },
+          {
+            name: "createBy",
+            type: "hidden"
+          },
           // {
           //   name: "updateTime",
           //   title: "上次时间",

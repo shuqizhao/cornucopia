@@ -1,6 +1,8 @@
 package cornucopia.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -116,6 +118,9 @@ public class ProcessContorller {
 		String formCode = OrderService.getInstance().getOrderNo(pre);
 		processDataEntity.setFormCode(formCode);
 		XmlUtil.createElementForPd(processDataEntity, "//approve", "fromCode", formCode);
+		
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		XmlUtil.createElementForPd(processDataEntity, "//approve", "createTime", df.format(new Date()));
 
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		processDataEntity.setCreateBy(user.getId());
@@ -138,7 +143,7 @@ public class ProcessContorller {
 	@RequestMapping(value = { "/applyAgree" }, method = RequestMethod.POST)
 	public JsonResult<Integer> applyAgree(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {
-		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//formCode");
+		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//fromCode");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
 		processDataEntity.setBizData(pdvm.getXmlStr());
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
