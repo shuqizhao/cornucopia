@@ -35,23 +35,25 @@ export default {
             type:"combox",
             data:[]
           },
-            {
-            title: "发起时间",
-            name: "createTime",
-            isSearch: true,
-            type: "timer"
-          },
           {
             title: "流程状态",
-            name: "updateBy"
+            name: "status"
           },
+          // {
+          //   title: "发起人",
+          //   name: "createName"
+          // },
+          // {
+          //   title: "发起时间",
+          //   name: "createTime"
+          // },
           {
             title: "最新审批步骤",
-            name: "updateBy"
+            name: "stepName"
           },
           {
             title: "最新审批人",
-            name: "updateBy"
+            name: "updateName"
           },
            {
             title: "最新操作时间",
@@ -61,11 +63,7 @@ export default {
           }
         ],
         fnRowCallback: function(row, data) {
-          // if (data.isEnabled) {
-          //   $("td:eq(3)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
-          // } else {
-          //   $("td:eq(3)", row).html('<i class="el-icon-close"></i>');
-          // }
+          $("td:eq(0)", row).html('<a target="_blank" href="#/'+data.url+'?processId='+data.processId+'&id='+data.id+'">'+data.formCode+'</a>');
         },
         idName: "id",
         // functions: {
@@ -90,12 +88,12 @@ export default {
           //   }
           // ]
         // },
-        operations: [
-          {
-            text: "查看",
-            url: "/auth/userView"
-          }
-        ]
+        // operations: [
+        //   {
+        //     text: "查看",
+        //     url: "/auth/userView"
+        //   }
+        // ]
       }
     };
   }
