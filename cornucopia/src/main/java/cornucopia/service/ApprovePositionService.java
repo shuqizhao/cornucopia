@@ -116,6 +116,11 @@ public class ApprovePositionService {
 		}
 		return new ArrayList<Integer>();
 	}
+	
+	public String getJobTitleByPositionId(int id) {
+		ApprovePositionEntity ape = getPosition(id);
+		return ape.getName();
+	}
 
 	public boolean calculateCondition(RuleConditionEntity rc, String bizData) {
 		Object var1 = "";

@@ -19,11 +19,13 @@ import cornucopia.entity.JsonResult;
 import cornucopia.entity.ProcessCategoryEntity;
 import cornucopia.entity.ProcessDataEntity;
 import cornucopia.entity.ProcessEntity;
+import cornucopia.entity.ProcessInstDiagramEntity;
 import cornucopia.entity.UserEntity;
 import cornucopia.model.ProcessDataViewModel;
 import cornucopia.service.OrderService;
 import cornucopia.service.ProcessCategoryService;
 import cornucopia.service.ProcessDataService;
+import cornucopia.service.ProcessInstDiagramService;
 import cornucopia.service.ProcessService;
 import cornucopia.util.DataTableParameter;
 import cornucopia.util.DataTableResult;
@@ -130,7 +132,7 @@ public class ProcessContorller {
 				processDataEntity.getBizData());
 		processDataEntity.setProcinstId(procinstId);
 		int result = ProcessDataService.getInstance().insert(processDataEntity);
-
+		ProcessService.getInstance().buildProcessInstDiagram(processDataEntity);
 		// XmlUtil.createElementForPd(processDataEntity, "//approve", "pdId",
 		// processDataEntity.getId()+"");
 
@@ -150,8 +152,7 @@ public class ProcessContorller {
 		processDataEntity.setUpdateBy(user.getId());
 		processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
 		int result = ProcessDataService.getInstance().update(processDataEntity);
-		ProcessService.getInstance().Complete(processDataEntity.getProcinstId(), user.getId() + "", pdvm.getXmlStr(),
-				processDataEntity.getLevelCount());
+		ProcessService.getInstance().Complete(processDataEntity);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(result);
@@ -191,6 +192,15 @@ public class ProcessContorller {
 		JsonResult<String> jr = new JsonResult<String>();
 		jr.setCode(200);
 		jr.setData(bizData);
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/getProcessInstDiagram" }, method = RequestMethod.GET)
+	public JsonResult<List<ProcessInstDiagramEntity>> getProcessInstDiagram(int processDataId) {
+		List<ProcessInstDiagramEntity> ProcessInstDiagramEntities = ProcessInstDiagramService.getInstance().getAll(processDataId);
+		JsonResult<List<ProcessInstDiagramEntity>> jr = new JsonResult<List<ProcessInstDiagramEntity>>();
+		jr.setCode(200);
+		jr.setData(ProcessInstDiagramEntities);
 		return jr;
 	}
 }

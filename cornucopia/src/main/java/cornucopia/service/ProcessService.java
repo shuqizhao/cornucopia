@@ -22,6 +22,7 @@ import cornucopia.entity.ApproveMatrixEntity;
 import cornucopia.entity.ProcessDataEntity;
 import cornucopia.entity.ProcessDiagramEntity;
 import cornucopia.entity.ProcessEntity;
+import cornucopia.entity.ProcessInstDiagramEntity;
 import cornucopia.entity.ProcessNodeEntity;
 import cornucopia.util.ActivitiHelper;
 import cornucopia.util.MyBatisHelper;
@@ -88,10 +89,8 @@ public class ProcessService {
 		return instId;
 	}
 
-	public void Complete(String instId, String userId, String bizData, int levelCount) {
-		ProcessDataEntity pde = ProcessDataService.getInstance().getByInstId(instId);
-		String processId = pde.getProcessId() + "";
-		Complete(processId, instId, userId, bizData, levelCount);
+	public void Complete(ProcessDataEntity pde) {
+		Complete(pde.getProcessId()+"", pde.getProcinstId(), pde.getUpdateBy()+"", pde.getBizData(), pde.getLevelCount());
 	}
 
 	public void Complete(String processId, String instId, String userId, String bizData, int levelCount) {
@@ -171,9 +170,94 @@ public class ProcessService {
 			}
 			i++;
 		}
-		List<Integer> result = new ArrayList<Integer>();;
+		List<Integer> result = new ArrayList<Integer>();
 		result.add(666666);
 		return result;
+	}
+
+	public void buildProcessInstDiagram(ProcessDataEntity processDataEntity) {
+		String instId = processDataEntity.getProcinstId();
+		String processId = processDataEntity.getProcessId() + "";
+		int processDataId = processDataEntity.getId();
+		String bizData = processDataEntity.getBizData();
+		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
+		query.processInstanceId(instId);
+		Task task = query.singleResult();
+		String taskName = task.getName();
+		String currentUserId = task.getAssignee();
+		ProcessNodeEntity pne = ProcessNodeService.getInstance().getByName(processId, taskName);
+		if (pne == null || !pne.getName().contains("DOA")) {
+			pne = ProcessNodeService.getInstance().getDoaNode(processId);
+			if (pne == null) {
+				// ex
+			}
+		}
+		int processNodeId = pne.getId();
+
+		List<ApproveMatrixEntity> ams = ApproveMatrixService.getInstance().getByNodeId(processNodeId);
+		if (ams == null || ams.size() == 0) {
+			// thow ex
+		}
+		
+		ProcessInstDiagramService.getInstance().delete(processDataId);
+		ProcessInstDiagramEntity pide = new ProcessInstDiagramEntity();
+		pide.setProcessDataId(processDataId);
+		pide.setProcessId(processDataEntity.getProcessId());
+		pide.setName("发起申请");
+		pide.setUserId(processDataEntity.getCreateBy());
+		pide.setLevelCount(-1);
+		ProcessInstDiagramService.getInstance().insert(pide);
+		
+		int i = 0;
+		for (ApproveMatrixEntity am : ams) {
+			int c1Id = am.getApproveCondition1Id();
+			List<ApproveConditionEntity> acs = ApproveService.getInstance().getConditions(c1Id);
+			if (acs == null || acs.size() == 0) {
+				// thow ex
+			}
+			boolean c1Bool = true;
+			for (ApproveConditionEntity ac : acs) {
+				if (calculateApproveCondition(ac, bizData)) {
+					c1Bool = c1Bool && true;
+				} else {
+					c1Bool = c1Bool && false;
+				}
+			}
+			if (c1Bool) {
+				int c2Id = am.getApproveCondition2Id();
+				List<ApproveConditionEntity> bacs = ApproveService.getInstance().getConditions(c2Id);
+				if (bacs == null || bacs.size() == 0) {
+					// thow ex
+				}
+				boolean c2Bool = true;
+				for (ApproveConditionEntity ac : bacs) {
+					if (calculateApproveCondition(ac, bizData)) {
+						c2Bool = c2Bool && true;
+					} else {
+						c2Bool = c2Bool && false;
+					}
+				}
+				if (c2Bool) {
+					int positionId = am.getApprovePositionId();
+					List<Integer> userIds = ApprovePositionService.getInstance().getUserIdsByPositionId(positionId,
+							bizData);
+					String jobTitle = ApprovePositionService.getInstance().getJobTitleByPositionId(positionId);
+					for(int userId : userIds) {
+						ProcessInstDiagramEntity processInstDiagramEntity = new ProcessInstDiagramEntity();
+						processInstDiagramEntity.setProcessDataId(processDataId);
+						processInstDiagramEntity.setProcessId(processDataEntity.getProcessId());
+						processInstDiagramEntity.setName(jobTitle);
+						processInstDiagramEntity.setUserId(userId);
+						processInstDiagramEntity.setLevelCount(i);
+						if(currentUserId.equals(userId+"")) {
+							processInstDiagramEntity.setIsCurrent(1);
+						}
+						ProcessInstDiagramService.getInstance().insert(processInstDiagramEntity);
+					}
+				}
+			}
+			i++;
+		}
 	}
 
 	public boolean calculateApproveCondition(ApproveConditionEntity ac, String bizData) {
@@ -196,9 +280,15 @@ public class ProcessService {
 		if (ac.getVar2From() == 1) {// 文本
 			var2 = ac.getVar1();
 		} else if (ac.getVar2From() == 2) {// xpath
-
+			try {
+				var2 = XmlUtil.selectSingleText(bizData, ac.getVar2());
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} catch (DocumentException e) {
+				e.printStackTrace();
+			}
 		} else if (ac.getVar2From() == 3) {// 函数
-
+			var2 = FunctionService.getInstance().executeGetUserIds(ac.getVar2(), bizData);
 		}
 
 		// 字符串
