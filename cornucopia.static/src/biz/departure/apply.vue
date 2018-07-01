@@ -1,10 +1,11 @@
 <template>
     <div>
+      <mform v-show="isApprove" ref="approve" :cfg="cfg0"></mform>
       <mform ref="applicant" :cfg="cfg"></mform>
       <mform ref="applyInfo" :cfg="cfg1"></mform>
       <mform ref="attachment" :cfg="cfg2"></mform>
       <buttonBar v-show="!isApprove" ref="submit" :cfg="cfg3"></buttonBar>
-      <buttonBar v-show="isApprove" ref="approve" :cfg="cfg4"></buttonBar>
+      <buttonBar v-show="isApprove" ref="agree" :cfg="cfg4"></buttonBar>
     </div>
 </template>
 <script>
@@ -50,6 +51,38 @@ export default {
     let self = this;
     return {
       isApprove: false,
+      cfg0: {
+        title: "单据信息",
+        detailTitle: "单据信息",
+        editTitle: "单据信息",
+        mode: "detailEdit",
+        hideFooter: "true",
+        name: "approve",
+        items: [
+          {
+            name: "id",
+            type: "hidden"
+          },
+          {
+            name: "fromCode",
+            title: "单号",
+            type: "text",
+            width: "300px;"
+          },
+          {
+            name: "createTime",
+            title: "创建时间",
+            type: "text",
+            width: "300px;"
+          },
+          // {
+          //   name: "updateTime",
+          //   title: "上次时间",
+          //   type: "text",
+          //   width: "300px;"
+          // }
+        ]
+      },
       cfg: {
         title: "申请人信息",
         detailTitle: "申请人信息",
@@ -57,12 +90,12 @@ export default {
         mode: "detailEdit",
         hideFooter: "true",
         name: "applicant",
-        get: {
-          url: this.getGlobalData().ApiBaseUrl + "/user/getApplicant",
-          params: {
-            id: this.$route.query.id
-          }
-        },
+        // get: {
+        //   // url: this.getGlobalData().ApiBaseUrl + "/user/getApplicant",
+        //   params: {
+        //     id: this.$route.query.id
+        //   }
+        // },
         items: [
           {
             name: "id",

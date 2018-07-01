@@ -237,6 +237,9 @@ export default {
     self.isMounted = true;
 
     if (this.cfg.mode != "create") {
+      if(!self.cfg.get){
+        return;
+      }
       self.openLoading();
       this.fillData(function() {
         if (self.cfg.onLoaded) {
