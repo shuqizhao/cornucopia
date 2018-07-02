@@ -68,7 +68,7 @@
           </li>
           <!-- Control Sidebar Toggle Button -->
           <li>
-            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+            <a v-show="this.$route.query.showDiagram" href="#" data-toggle="control-sidebar"><i class="fa fa-bars"></i></a>
           </li>
         </ul>
       </div>
@@ -91,18 +91,6 @@
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
-
-      <!-- search form (Optional) -->
-      <!-- <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" id="searchText" class="form-control" @keyup="filterMenus" placeholder="Search...">
-          <span class="input-group-btn">
-              <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-              </button>
-            </span>
-        </div>
-      </form> -->
-      <!-- /.search form -->
 
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
@@ -156,59 +144,10 @@
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
-    <!-- Create the tabs -->
-    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-      <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-    </ul>
-    <!-- Tab panes -->
-    <div class="tab-content">
-      <div class="tab-pane active" id="control-sidebar-home-tab">
+    <center>
         <h3 class="control-sidebar-heading">流程图</h3>
         <processInstDiagram></processInstDiagram>
-      </div>
-      <!-- /.tab-pane -->
-      <!-- Home tab content -->
-      <div class="tab-pane" id="control-sidebar-home-tab">
-        <h3 class="control-sidebar-heading">当前时间</h3>
-        <ul class="control-sidebar-menu">
-          <li>
-            <a href="javascript:;">
-              <i class="menu-icon fa fa-birthday-cake bg-red"></i>
-
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading">{{getNow()}}</h4>
-
-                <p>{{getWeekDay()}}</p>
-              </div>
-            </a>
-          </li>
-        </ul>
-
-      </div>
-      <!-- /.tab-pane -->
-     
-      <!-- /.tab-pane -->
-      <!-- Settings tab content -->
-      <div class="tab-pane" id="control-sidebar-settings-tab">
-        <form method="post">
-          <h3 class="control-sidebar-heading">个性设置</h3>
-
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              保持登陆状态
-              <input type="checkbox" class="pull-right" checked>
-            </label>
-
-            <p>
-              持续一个月时间
-            </p>
-          </div>
-          <!-- /.form-group -->
-        </form>
-      </div>
-      <!-- /.tab-pane -->
-    </div>
+    </center>
   </aside>
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
@@ -344,5 +283,12 @@ export default {
 </script>
 
 <style>
-
+.el-step__title.is-process {
+    font-weight: 700;
+    color: #7387af;
+}
+.el-step__description.is-process{
+  font-weight: 700;
+    color: #7387af;
+}
 </style>
