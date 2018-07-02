@@ -1,5 +1,5 @@
 <template>
-    <el-steps direction="vertical" :space="80" :active="1" finish-status="success" style="margin-left: 70px;">
+    <el-steps direction="vertical" :space="80" :active="activeCount" finish-status="success" style="margin-left: 70px;">
         <el-step v-for="step in steps" :title="step.name" :description="step.userName" :key="step.id"></el-step>
         <!-- <el-step title="结束"></el-step> -->
     </el-steps>
@@ -21,6 +21,11 @@ export default {
                   id:99999,
                   name:'结束'
               });
+              for(var i=0;i<r.data.length;i++){
+                  if(r.data[i].isCurrent==1){
+                      self.activeCount=i+1;
+                  }
+              }
           }
         }
       );
@@ -28,7 +33,8 @@ export default {
   },
   data() {
     return {
-        steps:[]
+        steps:[],
+        activeCount:0
     };
   }
 };
