@@ -1,5 +1,5 @@
 <template>
-    <el-steps direction="vertical" :space="80" :active="activeCount" finish-status="success" style="margin-left: 70px;">
+    <el-steps direction="vertical" :space="80" :active="activeCount"  style="margin-left: 70px;">
         <el-step v-for="step in steps" :title="step.name" :description="step.userName" :key="step.id"></el-step>
         <!-- <el-step title="结束"></el-step> -->
     </el-steps>
