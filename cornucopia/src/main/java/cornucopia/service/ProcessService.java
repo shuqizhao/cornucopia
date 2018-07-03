@@ -72,14 +72,14 @@ public class ProcessService {
 		return get(processId).getPre();
 	}
 
-	public String StartByProcessId(String processId, String userId, String bizData) {
+	public String StartByProcessId(String processId, int userId, String bizData) {
 		ProcessDiagramEntity pd = ProcessDiagramService.getInstance().getByProcessId(processId);
 		String instId = Start(pd.getDefKey(), userId);
 		Complete(processId, instId, userId, bizData, 0);
 		return instId;
 	}
 
-	public String Start(String key, String userId) {
+	public String Start(String key, int userId) {
 		RuntimeService rs = ActivitiHelper.GetEngine().getRuntimeService();
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("dealUser", userId);
@@ -90,12 +90,12 @@ public class ProcessService {
 	}
 
 	public void Complete(ProcessDataEntity pde) {
-		Complete(pde.getProcessId()+"", pde.getProcinstId(), pde.getUpdateBy()+"", pde.getBizData(), pde.getLevelCount());
+		Complete(pde.getProcessId()+"", pde.getProcinstId(), pde.getUpdateBy(), pde.getBizData(), pde.getLevelCount());
 	}
 
-	public void Complete(String processId, String instId, String userId, String bizData, int levelCount) {
+	public void Complete(String processId, String instId, int userId, String bizData, int levelCount) {
 		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
-		query.taskAssignee(userId);
+		query.taskAssignee(userId+"");
 		query.processInstanceId(instId);
 		Task task = query.singleResult();
 		List<Integer> nextUserIds = getNextDealUser(processId, instId, bizData, levelCount);
