@@ -67,7 +67,7 @@
                                     </el-date-picker>
                                 </div>
                                 <div v-else-if="item.type=='uploader'">
-                                        <input :id="item.name" :name="item.name" style="height:0.5px;width:0px;padding:0px;margin:0px;" class="form-control" :controltype='item.type'  />
+                                        <input :id="item.name" :name="item.name" style="height:0.5px;width:0px;padding:0px;margin:0px;" class="form-control" :controltype='item.type' :limit='item.limit' :mode='item.mode'  />
                                         <el-upload
                                           :action="item.url"
                                           :data="{id:item.name}"
@@ -737,15 +737,24 @@ export default {
           ||contentType == "timer") {
             data[this.id] = self.detail[this.id]||"";
           } else if (contentType == "uploader") {
-            if(!item.limit || item.limit == 1){
+            debugger;
+            if(!item.attr("limit") || item.attr("limit") == 1){
               if(self.detail[this.id][0]){
-                data[this.id]=self.detail[this.id][0].response.data;
+                if(item.attr("mode")=='xml'){
+                  data[this.id]=self.detail[this.id][0];
+                }else{
+                  data[this.id]=self.detail[this.id][0].response.data;
+                }
               }
             }
             else{
               data[this.id] = [];
-              for(var i=0;i<self.self.detail[this.id].length;i++){
-                data[this.id].push(self.detail[this.id][i].response.data)
+              for(var i=0;i<self.detail[this.id].length;i++){
+                if(item.attr("mode")=='xml'){
+                  data[this.id].push(self.detail[this.id][i])
+                }else{
+                  data[this.id].push(self.detail[this.id][i].response.data)
+                }
               }
             }
           }

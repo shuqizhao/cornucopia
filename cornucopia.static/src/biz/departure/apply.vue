@@ -284,6 +284,7 @@ export default {
             title: "文件集",
             type: "uploader",
             limit: 10,
+            // mode:'xml',
             hideLabel: "true",
             url: this.getGlobalData().ApiBaseUrl + "/upload"
           }
