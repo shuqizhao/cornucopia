@@ -20,4 +20,7 @@ public interface ProcessInstDiagramDao {
 	
 	@Select("call sp_process_inst_diagram_all(#{processDataId})")
 	public List<ProcessInstDiagramEntity> getAll(@Param("processDataId") int processDataId);
+
+	@Select("call sp_process_inst_auth(#{processDataId},#{userId})")
+	public List<String> getProcessInstAuth(@Param("processDataId")int processDataId,@Param("userId")int userId);
 }

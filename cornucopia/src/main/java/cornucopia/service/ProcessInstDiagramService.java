@@ -29,4 +29,8 @@ public class ProcessInstDiagramService {
 	public List<ProcessInstDiagramEntity> getAll(int processDataId) {
 		return processInstDiagramDao.getAll(processDataId);
 	}
+
+	public List<String> getProcessInstAuth(int processDataId,int userId) {
+		return processInstDiagramDao.getProcessInstAuth(processDataId, userId);
+	}
 }

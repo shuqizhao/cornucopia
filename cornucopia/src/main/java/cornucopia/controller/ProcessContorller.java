@@ -203,4 +203,14 @@ public class ProcessContorller {
 		jr.setData(ProcessInstDiagramEntities);
 		return jr;
 	}
+	
+	@RequestMapping(value = { "/getProcessInstAuth" }, method = RequestMethod.GET)
+	public JsonResult<List<String>> getProcessInstAuth(HttpServletRequest request,int processDataId) {
+		 UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		List<String> auths = ProcessInstDiagramService.getInstance().getProcessInstAuth(processDataId,user.getId());
+		JsonResult<List<String>> jr = new JsonResult<List<String>>();
+		jr.setCode(200);
+		jr.setData(auths);
+		return jr;
+	}
 }

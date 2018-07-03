@@ -5,7 +5,7 @@
         type="primary" v-show="!cfg.hideSave"
           @click="btnPost({name:'保存',url:cfg.save})">保存</el-button>
           <span v-for="item in this.cfg.buttons" :key="item.name" style="margin-right:5px;">
-            <el-button
+            <el-button v-show="!(item.hidden||false)"
           :type="item.type||'primary'"
           @click="btnPost(item)">{{item.name}}</el-button>
           </span>

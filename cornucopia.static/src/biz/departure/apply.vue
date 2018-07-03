@@ -40,6 +40,20 @@ export default {
           }
         }
       );
+
+      self.get(
+        self.getGlobalData().ApiBaseUrl +
+          "/process/getProcessInstAuth?processDataId=" + dataId,
+        "",
+        function(response) {
+          if (response.code == 200) {
+            if(response.data.length>0){
+              self.cfg4.buttons[0].hidden = false;
+              self.cfg4.buttons[1].hidden = false;
+            }
+          }
+        }
+      );
     } else {
       self.isApprove = false;
     }
@@ -306,11 +320,13 @@ export default {
             onSuccess:function(){
               // self.$router.go('/mytask')
               self.$router.push({path:'/mytask'})
-            }
+            },
+            hidden:true,
           },
           {
             name: "退回",
-            url: this.getGlobalData().ApiBaseUrl + "/process/applyReturn"
+            url: this.getGlobalData().ApiBaseUrl + "/process/applyReturn",
+            hidden:true,
           },
           {
             name: "关闭",
