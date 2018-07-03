@@ -109,8 +109,9 @@ public class ProcessService {
 			} else {
 				variables.put("to", "1");
 			}
-			variables.put("dealUser", nextUserId);
 		}
+		variables.put("assigneeList", nextUserIds);
+		variables.put("condition", 0);
 		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
 	}
 

@@ -3,7 +3,11 @@
   <process id="departureProcess" name="departureProcess" isExecutable="true">
     <startEvent id="startevent1" name="Start"></startEvent>
     <endEvent id="endevent1" name="End"></endEvent>
-    <userTask id="DOA" name="DOA" activiti:assignee="${dealUser}"></userTask>
+    <userTask id="DOA" name="DOA" activiti:assignee="${dealUser}">
+      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="${assigneeList}" activiti:elementVariable="dealUser">
+        <completionCondition>${nrOfCompletedInstances/nrOfInstances &gt;= condition}</completionCondition>
+      </multiInstanceLoopCharacteristics>
+    </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="DOA" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="xunhuan" sourceRef="exclusivegateway1" targetRef="DOA">
