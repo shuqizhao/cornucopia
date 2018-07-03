@@ -112,6 +112,7 @@ export default {
         url: item ? item.url : self.cfg.save,
         data: JSON.stringify(data),
         success: function(response) {
+          self.closeLoading(self.$parent);
           if (response.code && response.code == "201") {
             window.open(response.data);
           } else if (response.code && response.code == "203") {
@@ -123,15 +124,15 @@ export default {
               message: "成功!",
               type: "success"
             });
-            self.closeLoading(self.$parent);
+            
             if (item&&item.onSuccess) {
               item.onSuccess(item);
               return;
             }
           } else if (response.message) {
-            $(self.$el)
-              .find(".btn-commit")
-              .removeAttr("disabled");
+            // $(self.$el)
+            //   .find(".btn-commit")
+            //   .removeAttr("disabled");
             self.$message({
               type: "warning",
               message: response.message

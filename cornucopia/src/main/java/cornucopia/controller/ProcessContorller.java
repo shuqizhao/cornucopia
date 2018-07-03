@@ -22,6 +22,7 @@ import cornucopia.entity.ProcessEntity;
 import cornucopia.entity.ProcessInstDiagramEntity;
 import cornucopia.entity.UserEntity;
 import cornucopia.model.ProcessDataViewModel;
+import cornucopia.model.ProcessInstAuthViewModel;
 import cornucopia.service.OrderService;
 import cornucopia.service.ProcessCategoryService;
 import cornucopia.service.ProcessDataService;
@@ -151,11 +152,18 @@ public class ProcessContorller {
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		processDataEntity.setUpdateBy(user.getId());
 		processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
-		int result = ProcessDataService.getInstance().update(processDataEntity);
-		ProcessService.getInstance().Complete(processDataEntity);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
-		jr.setCode(200);
-		jr.setData(result);
+		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
+				.getProcessInstAuth(processDataEntity.getId(), user.getId());
+		if (auths != null && auths.size() > 0) {
+			int result = ProcessDataService.getInstance().update(processDataEntity);
+			ProcessService.getInstance().Complete(processDataEntity);
+			jr.setCode(200);
+			jr.setData(result);
+		} else {
+			jr.setCode(500);
+			jr.setMessage("没有权限");
+		}
 		return jr;
 	}
 
@@ -194,21 +202,24 @@ public class ProcessContorller {
 		jr.setData(bizData);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/getProcessInstDiagram" }, method = RequestMethod.GET)
 	public JsonResult<List<ProcessInstDiagramEntity>> getProcessInstDiagram(int processDataId) {
-		List<ProcessInstDiagramEntity> ProcessInstDiagramEntities = ProcessInstDiagramService.getInstance().getAll(processDataId);
+		List<ProcessInstDiagramEntity> ProcessInstDiagramEntities = ProcessInstDiagramService.getInstance()
+				.getAll(processDataId);
 		JsonResult<List<ProcessInstDiagramEntity>> jr = new JsonResult<List<ProcessInstDiagramEntity>>();
 		jr.setCode(200);
 		jr.setData(ProcessInstDiagramEntities);
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/getProcessInstAuth" }, method = RequestMethod.GET)
-	public JsonResult<List<String>> getProcessInstAuth(HttpServletRequest request,int processDataId) {
-		 UserEntity user = (UserEntity) request.getSession().getAttribute("user");
-		List<String> auths = ProcessInstDiagramService.getInstance().getProcessInstAuth(processDataId,user.getId());
-		JsonResult<List<String>> jr = new JsonResult<List<String>>();
+	public JsonResult<List<ProcessInstAuthViewModel>> getProcessInstAuth(HttpServletRequest request,
+			int processDataId) {
+		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance().getProcessInstAuth(processDataId,
+				user.getId());
+		JsonResult<List<ProcessInstAuthViewModel>> jr = new JsonResult<List<ProcessInstAuthViewModel>>();
 		jr.setCode(200);
 		jr.setData(auths);
 		return jr;

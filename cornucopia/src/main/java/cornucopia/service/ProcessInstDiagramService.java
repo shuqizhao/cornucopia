@@ -4,6 +4,7 @@ import java.util.List;
 
 import cornucopia.dao.ProcessInstDiagramDao;
 import cornucopia.entity.ProcessInstDiagramEntity;
+import cornucopia.model.ProcessInstAuthViewModel;
 import cornucopia.util.MyBatisHelper;
 
 public class ProcessInstDiagramService {
@@ -30,7 +31,7 @@ public class ProcessInstDiagramService {
 		return processInstDiagramDao.getAll(processDataId);
 	}
 
-	public List<String> getProcessInstAuth(int processDataId,int userId) {
+	public List<ProcessInstAuthViewModel> getProcessInstAuth(int processDataId,int userId) {
 		return processInstDiagramDao.getProcessInstAuth(processDataId, userId);
 	}
 }
