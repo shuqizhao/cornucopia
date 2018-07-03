@@ -98,6 +98,7 @@ export default {
     },
     postUrl: function(data, handler, item) {
       var self = this;
+      self.openLoading(self.$parent);
       if (self.cfg.dataType == "xml" && item && item.dataType != "json") {
         data = { xmlStr: "<root>" + self.parse2xml(data) + "</root>" };
       }
@@ -122,7 +123,9 @@ export default {
               message: "成功!",
               type: "success"
             });
-            if (item.onSuccess(item)) {
+            self.closeLoading(self.$parent);
+            if (item&&item.onSuccess) {
+              item.onSuccess(item);
               return;
             }
           } else if (response.message) {

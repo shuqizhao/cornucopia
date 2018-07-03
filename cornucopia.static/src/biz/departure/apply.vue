@@ -43,15 +43,16 @@ export default {
 
       self.get(
         self.getGlobalData().ApiBaseUrl +
-          "/process/getProcessInstAuth?processDataId=" + dataId,
+          "/process/getProcessInstAuth?processDataId=" +
+          dataId,
         "",
         function(response) {
           if (response.code == 200) {
-            if(response.data.length>0){
+            if (response.data.length > 0) {
               self.cfg4.buttons[0].hidden = false;
               self.cfg4.buttons[1].hidden = false;
-            }else{
-              self.cfg1.mode ="detailEdit";
+            } else {
+              self.cfg1.mode = "detailEdit";
             }
           }
         }
@@ -296,6 +297,10 @@ export default {
           approve: {
             processId: this.$route.query.processId
           }
+        },
+        onSuccess: function() {
+          self.$router.push({ path: "/launchedtask" });
+          return false;
         }
       },
       cfg4: {
@@ -313,16 +318,15 @@ export default {
             name: "同意",
             type: "success",
             url: this.getGlobalData().ApiBaseUrl + "/process/applyAgree",
-            onSuccess:function(){
-              // self.$router.go('/mytask')
-              self.$router.push({path:'/mytask'})
+            onSuccess: function() {
+              self.$router.push({ path: "/mytask" });
             },
-            hidden:true,
+            hidden: true
           },
           {
             name: "退回",
             url: this.getGlobalData().ApiBaseUrl + "/process/applyReturn",
-            hidden:true,
+            hidden: true
           },
           {
             name: "关闭",
