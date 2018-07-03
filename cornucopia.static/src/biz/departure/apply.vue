@@ -50,6 +50,8 @@ export default {
             if(response.data.length>0){
               self.cfg4.buttons[0].hidden = false;
               self.cfg4.buttons[1].hidden = false;
+            }else{
+              self.cfg1.mode ="detailEdit";
             }
           }
         }
@@ -190,12 +192,6 @@ export default {
         mode: "create",
         hideFooter: "true",
         name: "applyInfo",
-        get: {
-          url: this.getGlobalData().ApiBaseUrl + "/role/get",
-          params: {
-            id: this.$route.query.id
-          }
-        },
         items: [
           {
             name: "Id",
