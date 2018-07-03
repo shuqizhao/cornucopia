@@ -121,7 +121,7 @@ Vue.prototype.clearCookie = function(cname, domain) {
     this.setCookie(cname, "", -1, domain);
 }
 
-Vue.prototype.openLoading = function(el, id) {
+Vue.prototype.openLoading = function(el, id, msg, timeout) {
     let self = this;
     let targetTemp = self;
     if (el) {
@@ -133,14 +133,14 @@ Vue.prototype.openLoading = function(el, id) {
     }
     self[idTemp] = self.$loading({
         lock: true,
-        text: '拼命加载中...',
+        text: msg || '拼命加载中...',
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)',
         target: targetTemp.$el
     });
     setTimeout(() => {
         self[idTemp].close();
-    }, 5000);
+    }, timeout || 5000);
 }
 
 Vue.prototype.closeLoading = function(el, id) {

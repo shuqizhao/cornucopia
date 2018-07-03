@@ -98,7 +98,7 @@ export default {
     },
     postUrl: function(data, handler, item) {
       var self = this;
-      self.openLoading(self.$parent);
+      self.openLoading(self.$parent,null,"正在提交...",15000);
       if (self.cfg.dataType == "xml" && item && item.dataType != "json") {
         data = { xmlStr: "<root>" + self.parse2xml(data) + "</root>" };
       }
