@@ -63,7 +63,7 @@ export default {
           }
         ],
         fnRowCallback: function(row, data) {
-          $("td:eq(0)", row).html('<a target="_blank" href="#/'+data.url+'?processId='+data.processId+'&id='+data.id+'">'+data.formCode+'</a>');
+          $("td:eq(0)", row).html('<a target="_blank" href="#/'+data.url+'?processId='+data.processId+'&id='+data.id+'&showDiagram=1">'+data.formCode+'</a>');
         },
         idName: "id",
         // functions: {
