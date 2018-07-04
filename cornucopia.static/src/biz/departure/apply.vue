@@ -33,7 +33,12 @@ export default {
               let obj = dataJson[key][0];
               Object.keys(obj).forEach(function(subKey) {
                 if (self.$refs[key] && self.$refs[key].detail) {
-                  self.$refs[key].detail[subKey] = obj[subKey];
+                  try {
+                    if(subKey=="files") return;
+                    self.$refs[key].detail[subKey] = obj[subKey];
+                  } catch (err) {
+                    console.log(err);
+                  }
                 }
               });
             });
@@ -51,6 +56,7 @@ export default {
             if (response.data.length > 0) {
               self.cfg4.buttons[0].hidden = false;
               self.cfg4.buttons[1].hidden = false;
+              self.cfg4.buttons[2].hidden = false;
             } else {
               self.cfg1.mode = "detailEdit";
             }
@@ -325,9 +331,21 @@ export default {
             hidden: true
           },
           {
+            name: "重发起",
+            type: "success",
+            url: this.getGlobalData().ApiBaseUrl + "/process/applyRetry",
+            onSuccess: function() {
+              self.$router.push({ path: "/mytask" });
+            },
+            hidden: true
+          },
+          {
             name: "退回",
             url: this.getGlobalData().ApiBaseUrl + "/process/applyReturn",
-            hidden: true
+            hidden: true,
+            onSuccess: function() {
+              self.$router.push({ path: "/mytask" });
+            }
           },
           {
             name: "关闭",

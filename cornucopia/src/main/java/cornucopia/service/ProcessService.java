@@ -88,6 +88,18 @@ public class ProcessService {
 		String instId = pi.getProcessInstanceId();
 		return instId;
 	}
+	
+	public void Return(ProcessDataEntity pde) {
+		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
+		query.taskAssignee(pde.getUpdateBy()+"");
+		query.processInstanceId(pde.getProcinstId());
+		Task task = query.singleResult();
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put("to", "2");
+		variables.put("dealUser", pde.getCreateBy());
+		variables.put("condition", 0);
+		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
+	}
 
 	public void Complete(ProcessDataEntity pde) {
 		Complete(pde.getProcessId()+"", pde.getProcinstId(), pde.getUpdateBy(), pde.getBizData(), pde.getLevelCount());

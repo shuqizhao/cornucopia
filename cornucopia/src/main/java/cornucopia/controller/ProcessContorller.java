@@ -166,6 +166,54 @@ public class ProcessContorller {
 		}
 		return jr;
 	}
+	
+	@RequestMapping(value = { "/applyRetry" }, method = RequestMethod.POST)
+	public JsonResult<Integer> applyRetry(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
+			throws DocumentException, UnsupportedEncodingException {
+		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//fromCode");
+		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
+		processDataEntity.setBizData(pdvm.getXmlStr());
+		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		processDataEntity.setUpdateBy(user.getId());
+		processDataEntity.setLevelCount(processDataEntity.getLevelCount());
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
+				.getProcessInstAuth(processDataEntity.getId(), user.getId());
+		if (auths != null && auths.size() > 0) {
+			int result = ProcessDataService.getInstance().update(processDataEntity);
+			ProcessService.getInstance().Complete(processDataEntity);
+			jr.setCode(200);
+			jr.setData(result);
+		} else {
+			jr.setCode(500);
+			jr.setMessage("没有权限");
+		}
+		return jr;
+	}
+	
+	@RequestMapping(value = { "/applyReturn" }, method = RequestMethod.POST)
+	public JsonResult<Integer> applyReturn(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
+			throws DocumentException, UnsupportedEncodingException {
+		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//fromCode");
+		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
+		processDataEntity.setBizData(pdvm.getXmlStr());
+		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		processDataEntity.setUpdateBy(user.getId());
+		processDataEntity.setLevelCount(0);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
+				.getProcessInstAuth(processDataEntity.getId(), user.getId());
+		if (auths != null && auths.size() > 0) {
+			int result = ProcessDataService.getInstance().update(processDataEntity);
+			ProcessService.getInstance().Return(processDataEntity);
+			jr.setCode(200);
+			jr.setData(result);
+		} else {
+			jr.setCode(500);
+			jr.setMessage("没有权限");
+		}
+		return jr;
+	}
 
 	@RequestMapping(value = { "/launchedList" }, method = RequestMethod.POST)
 	public DataTableResult<ProcessDataEntity> launchedList(HttpServletRequest request, DataTableParameter dtp) {
