@@ -3,6 +3,7 @@ package cornucopia.model;
 public class ProcessInstAuthViewModel {
 	private int userId;
 	private String buttonName;
+	private String buttonType;
 
 	public int getUserId() {
 		return userId;
@@ -18,5 +19,13 @@ public class ProcessInstAuthViewModel {
 
 	public void setButtonName(String buttonName) {
 		this.buttonName = buttonName;
+	}
+
+	public String getButtonType() {
+		return buttonType;
+	}
+
+	public void setButtonType(String buttonType) {
+		this.buttonType = buttonType;
 	}
 }

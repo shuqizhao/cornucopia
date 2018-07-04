@@ -55,8 +55,14 @@ export default {
           if (response.code == 200) {
             if (response.data.length > 0) {
               self.cfg4.buttons[0].hidden = false;
-              self.cfg4.buttons[1].hidden = false;
               self.cfg4.buttons[2].hidden = false;
+              for(var i=0;i<response.data.length;i++){
+                if(response.data[i].buttonType=='Retry'){
+                  self.cfg4.buttons[1].hidden = false;
+                  self.cfg4.buttons[0].hidden = true;
+                  self.cfg4.buttons[2].hidden = true;
+                }
+              }
             } else {
               self.cfg1.mode = "detailEdit";
             }
