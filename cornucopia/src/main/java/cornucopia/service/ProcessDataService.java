@@ -56,4 +56,8 @@ public class ProcessDataService {
 	public ProcessDataEntity getByFormCode(String formCode) {
 		return processDataDao.getByFormCode(formCode);
 	}
+
+	public List<ProcessDataEntity> dealedList(PagingParameters pp, int userId) {
+		return processDataDao.dealedList(pp, userId);
+	}
 }
