@@ -72,14 +72,16 @@ public class ProcessService {
 		return get(processId).getPre();
 	}
 
-	public String StartByProcessId(String processId, int userId, String bizData) {
-		ProcessDiagramEntity pd = ProcessDiagramService.getInstance().getByProcessId(processId);
-		String instId = Start(pd.getDefKey(), userId);
-		Complete(processId, instId, userId, bizData, 0);
+	public String StartProcess(ProcessDataEntity pde) {
+		ProcessDiagramEntity pd = ProcessDiagramService.getInstance().getByProcessId(pde.getProcessId()+"");
+		String instId = StartProcessByKey(pd.getDefKey(), pde.getCreateBy());
+		pde.setProcinstId(instId);
+		pde.setLevelCount(0);
+		Complete(pde);
 		return instId;
 	}
 
-	public String Start(String key, int userId) {
+	private String StartProcessByKey(String key, int userId) {
 		RuntimeService rs = ActivitiHelper.GetEngine().getRuntimeService();
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("dealUser", userId);
@@ -101,16 +103,17 @@ public class ProcessService {
 		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
 	}
 
-	public void Complete(ProcessDataEntity pde) {
-		Complete(pde.getProcessId()+"", pde.getProcinstId(), pde.getUpdateBy(), pde.getBizData(), pde.getLevelCount());
-	}
+//	public void Complete(ProcessDataEntity pde) {
+//		Complete(pde.getProcessId()+"", pde.getProcinstId(), pde.getUpdateBy(), pde.getBizData(), pde.getLevelCount());
+//	}
 
-	public void Complete(String processId, String instId, int userId, String bizData, int levelCount) {
+	public void Complete(ProcessDataEntity pde) {
+//		String processId, String instId, int userId, String bizData, int levelCount; 
 		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
-		query.taskAssignee(userId+"");
-		query.processInstanceId(instId);
+		query.taskAssignee(pde.getUpdateBy()+"");
+		query.processInstanceId(pde.getProcinstId());
 		Task task = query.singleResult();
-		List<Integer> nextUserIds = getNextDealUser(processId, instId, bizData, levelCount);
+		List<Integer> nextUserIds = getNextDealUser(pde);
 		if (nextUserIds == null || nextUserIds.size() == 0) {
 			// to-do
 		}
@@ -127,14 +130,14 @@ public class ProcessService {
 		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
 	}
 
-	public List<Integer> getNextDealUser(String processId, String instId, String bizData, int levelCount) {
+	public List<Integer> getNextDealUser(ProcessDataEntity pde) {
 		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
-		query.processInstanceId(instId);
+		query.processInstanceId(pde.getProcinstId());
 		Task task = query.singleResult();
 		String taskName = task.getName();
-		ProcessNodeEntity pne = ProcessNodeService.getInstance().getByName(processId, taskName);
+		ProcessNodeEntity pne = ProcessNodeService.getInstance().getByName(pde.getProcessId()+"", taskName);
 		if (pne == null || !pne.getName().contains("DOA")) {
-			pne = ProcessNodeService.getInstance().getDoaNode(processId);
+			pne = ProcessNodeService.getInstance().getDoaNode(pde.getProcessId()+"");
 			if (pne == null) {
 				// ex
 			}
@@ -147,7 +150,7 @@ public class ProcessService {
 		}
 		int i = 0;
 		for (ApproveMatrixEntity am : ams) {
-			if (levelCount == i) {
+			if (pde.getLevelCount() == i) {
 				int c1Id = am.getApproveCondition1Id();
 				List<ApproveConditionEntity> acs = ApproveService.getInstance().getConditions(c1Id);
 				if (acs == null || acs.size() == 0) {
@@ -155,7 +158,7 @@ public class ProcessService {
 				}
 				boolean c1Bool = true;
 				for (ApproveConditionEntity ac : acs) {
-					if (calculateApproveCondition(ac, bizData)) {
+					if (calculateApproveCondition(ac, pde.getBizData())) {
 						c1Bool = c1Bool && true;
 					} else {
 						c1Bool = c1Bool && false;
@@ -169,7 +172,7 @@ public class ProcessService {
 					}
 					boolean c2Bool = true;
 					for (ApproveConditionEntity ac : bacs) {
-						if (calculateApproveCondition(ac, bizData)) {
+						if (calculateApproveCondition(ac, pde.getBizData())) {
 							c2Bool = c2Bool && true;
 						} else {
 							c2Bool = c2Bool && false;
@@ -177,7 +180,7 @@ public class ProcessService {
 					}
 					if (c2Bool) {
 						int positionId = am.getApprovePositionId();
-						return ApprovePositionService.getInstance().getUserIdsByPositionId(positionId, bizData);
+						return ApprovePositionService.getInstance().getUserIdsByPositionId(positionId, pde.getBizData());
 					}
 				}
 			}

@@ -131,9 +131,7 @@ public class ProcessContorller {
 		processDataEntity.setUpdateBy(user.getId());
 		XmlUtil.createElementForPd(processDataEntity, "//approve", "createBy", user.getId() + "");
 
-		String procinstId = ProcessService.getInstance().StartByProcessId(processId, user.getId(),
-				processDataEntity.getBizData());
-		processDataEntity.setProcinstId(procinstId);
+		ProcessService.getInstance().StartProcess(processDataEntity);
 		int result = ProcessDataService.getInstance().insert(processDataEntity);
 		ProcessService.getInstance().buildProcessInstDiagram(processDataEntity);
 		// XmlUtil.createElementForPd(processDataEntity, "//approve", "pdId",
