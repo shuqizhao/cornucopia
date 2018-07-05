@@ -111,7 +111,6 @@ public class ProcessContorller {
 	public JsonResult<Integer> applySave(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {
 		ProcessDataEntity processDataEntity = new ProcessDataEntity();
-		processDataEntity.setStepName("发起申请");
 		processDataEntity.setBizData(pdvm.getXmlStr());
 
 		String processId = XmlUtil.selectSingleText(processDataEntity.getBizData(), "//processId");
@@ -132,6 +131,7 @@ public class ProcessContorller {
 		XmlUtil.createElementForPd(processDataEntity, "//approve", "createBy", user.getId() + "");
 
 		ProcessService.getInstance().StartProcess(processDataEntity);
+		processDataEntity.setStepName("发起申请");
 		int result = ProcessDataService.getInstance().insert(processDataEntity);
 		ProcessService.getInstance().buildProcessInstDiagram(processDataEntity);
 		// XmlUtil.createElementForPd(processDataEntity, "//approve", "pdId",
@@ -156,8 +156,8 @@ public class ProcessContorller {
 		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
 				.getProcessInstAuth(processDataEntity.getId(), user.getId());
 		if (auths != null && auths.size() > 0) {
-			int result = ProcessDataService.getInstance().update(processDataEntity);
 			ProcessService.getInstance().Complete(processDataEntity);
+			int result = ProcessDataService.getInstance().update(processDataEntity);
 			jr.setCode(200);
 			jr.setData(result);
 		} else {
@@ -172,17 +172,19 @@ public class ProcessContorller {
 			throws DocumentException, UnsupportedEncodingException {
 		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//fromCode");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
-		processDataEntity.setStepName("重发起");
 		processDataEntity.setBizData(pdvm.getXmlStr());
+		
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		processDataEntity.setUpdateBy(user.getId());
 		processDataEntity.setLevelCount(processDataEntity.getLevelCount());
+		
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
 				.getProcessInstAuth(processDataEntity.getId(), user.getId());
 		if (auths != null && auths.size() > 0) {
-			int result = ProcessDataService.getInstance().update(processDataEntity);
 			ProcessService.getInstance().Complete(processDataEntity);
+			processDataEntity.setStepName("重发起");
+			int result = ProcessDataService.getInstance().update(processDataEntity);
 			jr.setCode(200);
 			jr.setData(result);
 		} else {
@@ -197,17 +199,19 @@ public class ProcessContorller {
 			throws DocumentException, UnsupportedEncodingException {
 		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//fromCode");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
-		processDataEntity.setStepName("被退回");
 		processDataEntity.setBizData(pdvm.getXmlStr());
+		
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		processDataEntity.setUpdateBy(user.getId());
 		processDataEntity.setLevelCount(0);
+		
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
 				.getProcessInstAuth(processDataEntity.getId(), user.getId());
 		if (auths != null && auths.size() > 0) {
-			int result = ProcessDataService.getInstance().update(processDataEntity);
 			ProcessService.getInstance().Return(processDataEntity);
+			processDataEntity.setStepName("被退回");
+			int result = ProcessDataService.getInstance().update(processDataEntity);
 			jr.setCode(200);
 			jr.setData(result);
 		} else {

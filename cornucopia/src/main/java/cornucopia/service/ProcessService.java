@@ -19,6 +19,7 @@ import org.dom4j.DocumentException;
 import cornucopia.dao.ProcessDao;
 import cornucopia.entity.ApproveConditionEntity;
 import cornucopia.entity.ApproveMatrixEntity;
+import cornucopia.entity.ApprovePositionEntity;
 import cornucopia.entity.ProcessDataEntity;
 import cornucopia.entity.ProcessDiagramEntity;
 import cornucopia.entity.ProcessEntity;
@@ -73,7 +74,7 @@ public class ProcessService {
 	}
 
 	public String StartProcess(ProcessDataEntity pde) {
-		ProcessDiagramEntity pd = ProcessDiagramService.getInstance().getByProcessId(pde.getProcessId()+"");
+		ProcessDiagramEntity pd = ProcessDiagramService.getInstance().getByProcessId(pde.getProcessId() + "");
 		String instId = StartProcessByKey(pd.getDefKey(), pde.getCreateBy());
 		pde.setProcinstId(instId);
 		pde.setLevelCount(0);
@@ -90,10 +91,10 @@ public class ProcessService {
 		String instId = pi.getProcessInstanceId();
 		return instId;
 	}
-	
+
 	public void Return(ProcessDataEntity pde) {
 		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
-		query.taskAssignee(pde.getUpdateBy()+"");
+		query.taskAssignee(pde.getUpdateBy() + "");
 		query.processInstanceId(pde.getProcinstId());
 		Task task = query.singleResult();
 		Map<String, Object> variables = new HashMap<String, Object>();
@@ -103,14 +104,9 @@ public class ProcessService {
 		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
 	}
 
-//	public void Complete(ProcessDataEntity pde) {
-//		Complete(pde.getProcessId()+"", pde.getProcinstId(), pde.getUpdateBy(), pde.getBizData(), pde.getLevelCount());
-//	}
-
 	public void Complete(ProcessDataEntity pde) {
-//		String processId, String instId, int userId, String bizData, int levelCount; 
 		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
-		query.taskAssignee(pde.getUpdateBy()+"");
+		query.taskAssignee(pde.getUpdateBy() + "");
 		query.processInstanceId(pde.getProcinstId());
 		Task task = query.singleResult();
 		List<Integer> nextUserIds = getNextDealUser(pde);
@@ -135,9 +131,9 @@ public class ProcessService {
 		query.processInstanceId(pde.getProcinstId());
 		Task task = query.singleResult();
 		String taskName = task.getName();
-		ProcessNodeEntity pne = ProcessNodeService.getInstance().getByName(pde.getProcessId()+"", taskName);
+		ProcessNodeEntity pne = ProcessNodeService.getInstance().getByName(pde.getProcessId() + "", taskName);
 		if (pne == null || !pne.getName().contains("DOA")) {
-			pne = ProcessNodeService.getInstance().getDoaNode(pde.getProcessId()+"");
+			pne = ProcessNodeService.getInstance().getDoaNode(pde.getProcessId() + "");
 			if (pne == null) {
 				// ex
 			}
@@ -180,7 +176,9 @@ public class ProcessService {
 					}
 					if (c2Bool) {
 						int positionId = am.getApprovePositionId();
-						return ApprovePositionService.getInstance().getUserIdsByPositionId(positionId, pde.getBizData());
+						ApprovePositionEntity ape = ApprovePositionService.getInstance().getPosition(positionId);
+						pde.setStepName(ape.getName());
+						return ApprovePositionService.getInstance().getUserIdsByPosition(ape, pde.getBizData());
 					}
 				}
 			}
@@ -214,7 +212,7 @@ public class ProcessService {
 		if (ams == null || ams.size() == 0) {
 			// thow ex
 		}
-		
+
 		ProcessInstDiagramService.getInstance().delete(processDataId);
 		ProcessInstDiagramEntity pide = new ProcessInstDiagramEntity();
 		pide.setProcessDataId(processDataId);
@@ -223,7 +221,7 @@ public class ProcessService {
 		pide.setUserId(processDataEntity.getCreateBy());
 		pide.setLevelCount(-1);
 		ProcessInstDiagramService.getInstance().insert(pide);
-		
+
 		int i = 0;
 		for (ApproveMatrixEntity am : ams) {
 			int c1Id = am.getApproveCondition1Id();
@@ -258,14 +256,14 @@ public class ProcessService {
 					List<Integer> userIds = ApprovePositionService.getInstance().getUserIdsByPositionId(positionId,
 							bizData);
 					String jobTitle = ApprovePositionService.getInstance().getJobTitleByPositionId(positionId);
-					for(int userId : userIds) {
+					for (int userId : userIds) {
 						ProcessInstDiagramEntity processInstDiagramEntity = new ProcessInstDiagramEntity();
 						processInstDiagramEntity.setProcessDataId(processDataId);
 						processInstDiagramEntity.setProcessId(processDataEntity.getProcessId());
 						processInstDiagramEntity.setName(jobTitle);
 						processInstDiagramEntity.setUserId(userId);
 						processInstDiagramEntity.setLevelCount(i);
-						if(currentUserId.equals(userId+"")) {
+						if (currentUserId.equals(userId + "")) {
 							processInstDiagramEntity.setIsCurrent(1);
 						}
 						ProcessInstDiagramService.getInstance().insert(processInstDiagramEntity);

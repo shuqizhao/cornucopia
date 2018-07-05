@@ -109,6 +109,10 @@ public class ApprovePositionService {
 
 	public List<Integer> getUserIdsByPositionId(int id, String bizData) {
 		ApprovePositionEntity ape = getPosition(id);
+		return getUserIdsByPosition(ape, bizData);
+	}
+
+	public List<Integer> getUserIdsByPosition(ApprovePositionEntity ape, String bizData) {
 		if (ape.getType() == 1) {
 			return RoleService.getInstance().getUserIdsByRoleId(ape.getRule() + "");
 		} else if (ape.getType() == 2) {
@@ -116,7 +120,7 @@ public class ApprovePositionService {
 		}
 		return new ArrayList<Integer>();
 	}
-	
+
 	public String getJobTitleByPositionId(int id) {
 		ApprovePositionEntity ape = getPosition(id);
 		return ape.getName();
