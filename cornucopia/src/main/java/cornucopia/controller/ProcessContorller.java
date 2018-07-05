@@ -128,6 +128,7 @@ public class ProcessContorller {
 
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		processDataEntity.setCreateBy(user.getId());
+		processDataEntity.setUpdateBy(user.getId());
 		XmlUtil.createElementForPd(processDataEntity, "//approve", "createBy", user.getId() + "");
 
 		String procinstId = ProcessService.getInstance().StartByProcessId(processId, user.getId(),
