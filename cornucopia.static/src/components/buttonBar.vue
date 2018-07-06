@@ -98,7 +98,7 @@ export default {
     },
     postUrl: function(data, handler, item) {
       var self = this;
-      self.openLoading(self.$parent,null,"正在提交...",15000);
+      self.openLoading(self.$parent, null, "正在提交...", 15000);
       if (self.cfg.dataType == "xml" && item && item.dataType != "json") {
         data = { xmlStr: "<root>" + self.parse2xml(data) + "</root>" };
       }
@@ -124,8 +124,8 @@ export default {
               message: "成功!",
               type: "success"
             });
-            
-            if (item&&item.onSuccess) {
+
+            if (item && item.onSuccess) {
               item.onSuccess(item);
               return;
             }
@@ -181,13 +181,24 @@ export default {
     parse2xml: function(data) {
       var xmldata = "";
       for (var i in data) {
-        xmldata += "<" + i + ">";
-        if (typeof data[i] == "object") {
+        if (!Array.isArray(data[i])) {
+          xmldata += "<" + i + ">";
+        }
+
+        if (Array.isArray(data[i])) {
+          for (var j = 0; j < data[i].length; j++) {
+            xmldata += "<" + i + ">";
+            xmldata += data[i][j];
+            xmldata += "</" + i + ">";
+          }
+        } else if (typeof data[i] == "object") {
           xmldata += this.parse2xml(data[i]);
         } else {
           xmldata += data[i];
         }
-        xmldata += "</" + i + ">";
+        if (!Array.isArray(data[i])) {
+          xmldata += "</" + i + ">";
+        }
       }
       return xmldata;
     },

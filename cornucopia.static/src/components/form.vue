@@ -737,7 +737,6 @@ export default {
           ||contentType == "timer") {
             data[this.id] = self.detail[this.id]||"";
           } else if (contentType == "uploader") {
-            debugger;
             if(!item.attr("limit") || item.attr("limit") == 1){
               if(self.detail[this.id][0]){
                 if(item.attr("mode")=='xml'){
