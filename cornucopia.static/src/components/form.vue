@@ -293,18 +293,30 @@ export default {
       return className.indexOf("el-dialog__wrapper") != -1;
     },
     onFileUploadBeforeDelete:function(file){
-      $("#"+file.response.message)
+      var id = "";
+      if(file.response){
+        id = file.response.message;
+      }else{
+        id = file.itemId;
+      }
+      $("#"+id)
         .parent()
         .find("li")
         .tooltip("hide");
     },
     handleRemove(file, fileList) {
       this.drawUploader(fileList)
-      if(fileList.length==0){
-        $("#"+file.response.message).val('')
+      var id = "";
+      if(file.response){
+        id = file.response.message;
+      }else{
+        id = file.itemId;
       }
-      this.detail[file.response.message] = fileList;
-      // $("#"+file.response.message).valid();
+      if(fileList.length==0){
+        $("#"+id).val('')
+      }
+      this.detail[id] = fileList;
+      $("#"+id).valid();
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
@@ -325,13 +337,19 @@ export default {
     drawUploader:function(fileList){
       for (var i = 0; i < fileList.length; i++) {
           var item = fileList[i];
-          $("#"+item.response.message)
+          var id = ""
+          if(item.response){
+            id = item.response.message;
+          }else{
+            id = item.itemId;
+          }
+          $("#"+id)
             .parent()
             .find("li:eq(" + i + ")")
             .find("div")
             .remove();
           if (item.name.indexOf(".jpg") != -1||item.name.indexOf(".png") != -1) {
-            $("#"+item.response.message)
+            $("#"+id)
               .parent()
               .find("li:eq(" + i + ")")
               .append(
@@ -340,7 +358,7 @@ export default {
                   "</div>"
               );
           } else {
-            $("#"+item.response.message)
+            $("#"+id)
               .parent()
               .find("li:eq(" + i + ")")
               .append(
@@ -350,7 +368,7 @@ export default {
               );
           }
 
-          $("#"+item.response.message)
+          $("#"+id)
             .parent()
             .find("li:eq(" + i + ")")
             .attr("data-toggle", "tooltip")
@@ -748,9 +766,10 @@ export default {
                 }
                 data[this.id].push({
                   id:item.response.data,
+                  itemId:item.response.message,
                   name:item.name,
                   url:url,
-                  response:item.response
+                  // response:item.response
                 });
               }
           }
