@@ -299,12 +299,12 @@ export default {
         .tooltip("hide");
     },
     handleRemove(file, fileList) {
-      self.drawUploader(fileList)
+      this.drawUploader(fileList)
       if(fileList.length==0){
         $("#"+file.response.message).val('')
       }
-      $("#"+file.response.message).valid();
-      self.detail[file.response.message] = fileList;
+      this.detail[file.response.message] = fileList;
+      // $("#"+file.response.message).valid();
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
@@ -740,7 +740,18 @@ export default {
               data[this.id] = [];
               for(var i=0;i<self.detail[this.id].length;i++){
                 var item = self.detail[this.id][i];
-                data[this.id].push({id:item.response.data,name:item.name,url:item.url,response:item.response});
+                var url =''
+                if (item.name.indexOf(".jpg") != -1||item.name.indexOf(".png") != -1){
+                  url = self.getGlobalData().ApiBaseUrl+"/download?id="+item.response.data;
+                }else{
+                  url = '/src/assets/file.png';
+                }
+                data[this.id].push({
+                  id:item.response.data,
+                  name:item.name,
+                  url:url,
+                  response:item.response
+                });
               }
           }
         });
