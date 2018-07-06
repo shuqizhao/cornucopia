@@ -737,25 +737,23 @@ export default {
           ||contentType == "timer") {
             data[this.id] = self.detail[this.id]||"";
           } else if (contentType == "uploader") {
-            if(!item.attr("limit") || item.attr("limit") == 1){
-              if(self.detail[this.id][0]){
-                if(item.attr("mode")=='xml'){
-                  data[this.id]=self.detail[this.id][0];
-                }else{
-                  data[this.id]=self.detail[this.id][0].response.data;
-                }
-              }
-            }
-            else{
+            debugger;
+            // if(!item.attr("limit") || item.attr("limit") == 1){
+            //   if(self.detail[this.id][0]){
+            //     if(item.attr("mode")=='xml'){
+            //       data[this.id]=self.detail[this.id][0];
+            //     }else{
+            //       data[this.id]=self.detail[this.id][0].response;
+            //     }
+            //   }
+            // }
+            // else{
               data[this.id] = [];
               for(var i=0;i<self.detail[this.id].length;i++){
-                if(item.attr("mode")=='xml'){
-                  data[this.id].push(self.detail[this.id][i])
-                }else{
-                  data[this.id].push(self.detail[this.id][i].response.data)
-                }
+                var item = self.detail[this.id][i];
+                data[this.id].push({id:item.response.data,name:item.name,url:item.url});
               }
-            }
+            // data[this.id]=self.detail[this.id]
           }
         });
       return data;

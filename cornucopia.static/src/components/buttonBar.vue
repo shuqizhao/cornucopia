@@ -184,11 +184,10 @@ export default {
         if (!Array.isArray(data[i])) {
           xmldata += "<" + i + ">";
         }
-
         if (Array.isArray(data[i])) {
           for (var j = 0; j < data[i].length; j++) {
             xmldata += "<" + i + ">";
-            xmldata += data[i][j];
+            xmldata += this.parse2xml(data[i][j]);
             xmldata += "</" + i + ">";
           }
         } else if (typeof data[i] == "object") {

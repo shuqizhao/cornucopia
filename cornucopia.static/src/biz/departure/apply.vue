@@ -34,7 +34,6 @@ export default {
               Object.keys(obj).forEach(function(subKey) {
                 if (self.$refs[key] && self.$refs[key].detail) {
                   try {
-                    if(subKey=="files") return;
                     self.$refs[key].detail[subKey] = obj[subKey];
                   } catch (err) {
                     console.log(err);
