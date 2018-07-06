@@ -762,7 +762,7 @@ export default {
                 if (item.name.indexOf(".jpg") != -1||item.name.indexOf(".png") != -1){
                   url = self.getGlobalData().ApiBaseUrl+"/download?id="+item.response.data;
                 }else{
-                  url = '/src/assets/file.png';
+                  url = '';
                 }
                 data[this.id].push({
                   id:item.response.data,
@@ -952,6 +952,26 @@ export default {
     },
     setPopupValue: function(value) {
       this.detail[this.popUpItem.name] = value;
+    }
+  },
+  watch:{
+    detail:{
+        handler:function(val,oldval){
+            var self = this;
+            for(var i=0;i<this.cfg.items.length;i++){
+              var item = this.cfg.items[i];
+              if(item.type=="uploader"){
+                for(var j in val){
+                  if(j == item.name){
+                    setTimeout(function(){
+                      self.drawUploader(val[j]);
+                    },200)
+                  }
+                }
+              }
+            }
+        },
+        deep:true
     }
   }
 };
