@@ -26,6 +26,7 @@ import cornucopia.entity.ProcessEntity;
 import cornucopia.entity.ProcessInstDiagramEntity;
 import cornucopia.entity.ProcessNodeEntity;
 import cornucopia.util.ActivitiHelper;
+import cornucopia.util.Log4jHelper;
 import cornucopia.util.MyBatisHelper;
 import cornucopia.util.XmlUtil;
 
@@ -74,8 +75,11 @@ public class ProcessService {
 	}
 
 	public String StartProcess(ProcessDataEntity pde) {
+		Log4jHelper.LOGGER.info(String.format("[%s]->%s->createBy=%d", pde.getFormCode(), "开始流程", pde.getCreateBy()));
 		ProcessDiagramEntity pd = ProcessDiagramService.getInstance().getByProcessId(pde.getProcessId() + "");
+		Log4jHelper.LOGGER.info(String.format("[%s]->defKey=%s", pde.getFormCode(), pd.getDefKey()));
 		String instId = StartProcessByKey(pd.getDefKey(), pde.getCreateBy());
+		Log4jHelper.LOGGER.info(String.format("[%s]->instId=%s", pde.getFormCode(), instId));
 		pde.setProcinstId(instId);
 		pde.setLevelCount(0);
 		Complete(pde);
@@ -93,6 +97,8 @@ public class ProcessService {
 	}
 
 	public void Return(ProcessDataEntity pde) {
+		Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s", pde.getFormCode(), "退回任务",
+				pde.getUpdateBy(), pde.getProcinstId()));
 		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
 		query.taskAssignee(pde.getUpdateBy() + "");
 		query.processInstanceId(pde.getProcinstId());
@@ -101,18 +107,25 @@ public class ProcessService {
 		variables.put("to", "2");
 		variables.put("dealUser", pde.getCreateBy());
 		variables.put("condition", 0);
+		Log4jHelper.LOGGER.info(String.format("[%s]->taskId=%s", pde.getFormCode(), task.getId()));
 		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
+		Log4jHelper.LOGGER.info(String.format("[%s]->%s", pde.getFormCode(), "引擎退回完成"));
 	}
 
 	public void Complete(ProcessDataEntity pde) {
+		Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s", pde.getFormCode(), "完成任务",
+				pde.getUpdateBy(), pde.getProcinstId()));
+		List<Integer> nextUserIds = getNextDealUser(pde);
+		if (nextUserIds == null || nextUserIds.size() == 0) {
+			Log4jHelper.LOGGER.error(String.format("[%s]->%s->updateBy=%d->instId=%s", pde.getFormCode(), "找不到人",
+					pde.getUpdateBy(), pde.getProcinstId()));
+			return;
+		}
 		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
 		query.taskAssignee(pde.getUpdateBy() + "");
 		query.processInstanceId(pde.getProcinstId());
 		Task task = query.singleResult();
-		List<Integer> nextUserIds = getNextDealUser(pde);
-		if (nextUserIds == null || nextUserIds.size() == 0) {
-			// to-do
-		}
+		Log4jHelper.LOGGER.info(String.format("[%s]->taskId=%s", pde.getFormCode(), task.getId()));
 		Map<String, Object> variables = new HashMap<String, Object>();
 		for (int nextUserId : nextUserIds) {
 			if (nextUserId == 666666) {
@@ -124,9 +137,12 @@ public class ProcessService {
 		variables.put("assigneeList", nextUserIds);
 		variables.put("condition", pde.getCondition());
 		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
+		Log4jHelper.LOGGER.info(String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "引擎任务完成", task.getId()));
 	}
 
 	public List<Integer> getNextDealUser(ProcessDataEntity pde) {
+		Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s", pde.getFormCode(), "获取审批人员",
+				pde.getUpdateBy(), pde.getProcinstId()));
 		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
 		query.processInstanceId(pde.getProcinstId());
 		Task task = query.singleResult();
@@ -135,14 +151,18 @@ public class ProcessService {
 		if (pne == null || !pne.getName().contains("DOA")) {
 			pne = ProcessNodeService.getInstance().getDoaNode(pde.getProcessId() + "");
 			if (pne == null) {
-				// ex
+				Log4jHelper.LOGGER.error(String.format("[%s]->%s->updateBy=%d->instId=%s", pde.getFormCode(), "未能获取DOA",
+						pde.getUpdateBy(), pde.getProcinstId()));
+				return null;
 			}
 		}
 		int processNodeId = pne.getId();
 
 		List<ApproveMatrixEntity> ams = ApproveMatrixService.getInstance().getByNodeId(processNodeId);
 		if (ams == null || ams.size() == 0) {
-			// thow ex
+			Log4jHelper.LOGGER.error(String.format("[%s]->%s->updateBy=%d->instId=%s", pde.getFormCode(), "未能获取审批矩阵",
+					pde.getUpdateBy(), pde.getProcinstId()));
+			return null;
 		}
 		int i = 0;
 		for (ApproveMatrixEntity am : ams) {
@@ -150,7 +170,9 @@ public class ProcessService {
 				int c1Id = am.getApproveCondition1Id();
 				List<ApproveConditionEntity> acs = ApproveService.getInstance().getConditions(c1Id);
 				if (acs == null || acs.size() == 0) {
-					// thow ex
+					Log4jHelper.LOGGER.error(String.format("[%s]->%s->updateBy=%d->instId=%s->c1Id=%d",
+							pde.getFormCode(), "未能获取审批条件c1", pde.getUpdateBy(), pde.getProcinstId(), c1Id));
+					return null;
 				}
 				boolean c1Bool = true;
 				for (ApproveConditionEntity ac : acs) {
@@ -164,7 +186,9 @@ public class ProcessService {
 					int c2Id = am.getApproveCondition2Id();
 					List<ApproveConditionEntity> bacs = ApproveService.getInstance().getConditions(c2Id);
 					if (bacs == null || bacs.size() == 0) {
-						// thow ex
+						Log4jHelper.LOGGER.error(String.format("[%s]->%s->updateBy=%d->instId=%s->c2Id=%d",
+								pde.getFormCode(), "未能获取审批条件c2", pde.getUpdateBy(), pde.getProcinstId(), c2Id));
+						return null;
 					}
 					boolean c2Bool = true;
 					for (ApproveConditionEntity ac : bacs) {
@@ -185,9 +209,16 @@ public class ProcessService {
 			}
 			i++;
 		}
-		List<Integer> result = new ArrayList<Integer>();
-		result.add(666666);
-		return result;
+		if (pde.getLevelCount() == ams.size() - 1) {
+			List<Integer> result = new ArrayList<Integer>();
+			result.add(666666);
+			return result;
+		} else {
+			Log4jHelper.LOGGER.error(String.format("[%s]->%s->updateBy=%d->instId=%s->levelCount=%d->processNodeId=%d",
+					pde.getFormCode(), "审批条件不匹配", pde.getUpdateBy(), pde.getProcinstId(), pde.getLevelCount(),
+					processNodeId));
+			return null;
+		}
 	}
 
 	public void buildProcessInstDiagram(ProcessDataEntity processDataEntity) {
@@ -257,7 +288,8 @@ public class ProcessService {
 					ApprovePositionEntity ape = ApprovePositionService.getInstance().getPosition(positionId);
 					processDataEntity.setStepName(ape.getVitualTitle());
 					processDataEntity.setCondition(ape.getApproveType());
-					List<Integer> userIds = ApprovePositionService.getInstance().getUserIdsByPosition(ape, processDataEntity.getBizData());
+					List<Integer> userIds = ApprovePositionService.getInstance().getUserIdsByPosition(ape,
+							processDataEntity.getBizData());
 					String jobTitle = ape.getVitualTitle();
 					for (int userId : userIds) {
 						ProcessInstDiagramEntity processInstDiagramEntity = new ProcessInstDiagramEntity();
