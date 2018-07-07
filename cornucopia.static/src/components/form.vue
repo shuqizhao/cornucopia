@@ -127,8 +127,8 @@
                                     </div>
                                 </div>
                                 <div v-else-if="item.type=='select'">
-                                  <input :id="item.name" :name="item.name" type="hidden" :value="detail[item.name]" class="form-control" :controltype='item.type'  />
-                                    <el-select v-model="detail[item.name]" @change="item.onChange?item.onChange(detail[item.name]):''" filterable style="width:100%" placeholder="请选择">
+                                  <input :id="item.name" :name="item.name" style="height:0.5px;width:0px;padding:0px;margin:0px;" :value="detail[item.name]" class="form-control" :controltype='item.type'  />
+                                    <el-select v-model="detail[item.name]" @change="onSelectChange(item)" filterable style="width:100%" placeholder="请选择">
                                       <el-option
                                         v-for="opItem in item.data"
                                         :key="opItem.id"
@@ -187,7 +187,7 @@
                                 <input v-else-if="item.type=='combox'" class="input-xlarge form-control" disabled='disabled' :value="bindCombox(item.data,detail[item.name])" style="width:100%" />
                                 <div v-else-if="item.type=='select'">
                                   <input :id="item.name" :name="item.name" type="hidden" :value="detail[item.name]" class="form-control" :controltype='item.type'  />
-                                    <el-select v-model="detail[item.name]" :disabled="true" @change="item.onChange?item.onChange(detail[item.name]):''" filterable style="width:100%" placeholder="请选择">
+                                    <el-select v-model="detail[item.name]" :disabled="true" @change="onSelectChange(item)" filterable style="width:100%" placeholder="请选择">
                                       <el-option
                                         v-for="opItem in item.data"
                                         :key="opItem.id"
@@ -323,6 +323,12 @@ export default {
     showDialog: function() {
       var className = this.$parent.$parent.$el.className;
       return className.indexOf("el-dialog__wrapper") != -1;
+    },
+    onSelectChange:function(item){
+      if(item.onChange){
+        item.onChange(this.detail[item.name])
+      }
+      $('#'+item.name).val(this.detail[item.name]).keyup();
     },
     onFileUploadBeforeDelete:function(file){
       if(this.cfg.mode=='detail'||(this.cfg.mode=='detailEdit'&&this.cfg.detailEditMode!='edit')){
@@ -487,127 +493,134 @@ export default {
       });
     },
     btnCommit: function(e, handler) {
+      // var self = this;
+      // if (!handler) {
+      //   handler = function() {
+      //     self.commiting = false;
+      //   };
+      // }
+      // self.commiting = true;
+      // var validateCfg = {
+      //   ignore: ":hidden",//不验证的元素
+      //   onfocusout: false,
+      //   onclick: false,
+      //   focusInvalid: false,
+      //   onkeyup: false,
+      //   onkeyup: function(element) {
+      //     //console.log(element);
+      //     $(element).valid();
+      //   },
+      //   errorPlacement: function(error, element) {
+      //     if (element.attr("controltype") == "suggest") {
+      //       element
+      //         .next()
+      //         .find("button")
+      //         .attr("data-toggle", "tooltip");
+      //       element
+      //         .next()
+      //         .find("button")
+      //         .parent()
+      //         .attr("data-placement", "right");
+      //       element
+      //         .next()
+      //         .find("button")
+      //         .parent()
+      //         .attr("data-original-title", error.text());
+      //       element
+      //         .next()
+      //         .find("button")
+      //         .parent()
+      //         .tooltip("show");
+
+      //       // if (error.text()) {
+      //       //   self.$message({
+      //       //     type: "warning",
+      //       //     message:
+      //       //       element
+      //       //         .parent()
+      //       //         .parent()
+      //       //         .parent()
+      //       //         .find(".control-label")
+      //       //         .text() +
+      //       //       ":" +
+      //       //       error.text()
+      //       //   });
+      //       // }
+      //     } else if (element.attr("controltype") == "uploader") {
+      //       element
+      //         .parent()
+      //         .find(".el-upload--picture-card")
+      //         .attr("data-toggle", "tooltip")
+      //         .attr("data-placement", "right")
+      //         .attr("data-original-title", error.text())
+      //         .tooltip("show");
+      //     } else {
+      //       element.attr("data-toggle", "tooltip");
+      //       element.attr("data-placement", "top");
+      //       element.attr("data-original-title", error.text());
+      //       element.tooltip("show");
+      //       element.addClass("has-error");
+      //     }
+
+      //     if (element.attr("controltype") != "suggest") {
+      //       if (self.commiting && error.text()) {
+      //         self.$notify({
+      //           title: "验证未通过",
+      //           message: error.text(),
+      //           position: "bottom-right",
+      //           type: "warning"
+      //         });
+      //       }
+      //     }
+
+      //     //error.appendTo(element.parent());
+      //   },
+      //   success: function(error, element) {
+      //     if ($(element).attr("controltype") == "uploader") {
+      //       $(element)
+      //         .parent()
+      //         .find(".el-upload--picture-card")
+      //         .tooltip("destroy");
+      //     }else{
+      //       $(element).tooltip("destroy");
+      //       $(element).removeClass("has-error");
+      //     }
+      //   },
+      //   submitHandler: function(form) {
+      //     if (!self.commiting) {
+      //       return;
+      //     }
+      //     var data = self.getData();
+      //     //console.log(data);
+      //     var isOk = true;
+      //     if (self.cfg.validate) {
+      //       //自定义验证
+      //       isOk = self.cfg.validate(data, self.saveData);
+      //     }
+
+      //     if (!isOk) {
+      //       return;
+      //     }
+      //     if (self.cfg.beforeCommit) {
+      //       self.cfg.beforeCommit(data);
+      //     }
+      //     $(self.$el)
+      //       .find(".btn-commit")
+      //       .attr("disabled", "disabled");
+      //     self.saveData(data, handler);
+      //   }
+      // };
+      // var lastCfg = $.extend(true, validateCfg, self.cfg);
+      // $(self.$el)
+      //   .find(".form")
+      //   .validate(lastCfg);
       var self = this;
-      if (!handler) {
-        handler = function() {
-          self.commiting = false;
-        };
-      }
-      self.commiting = true;
-      var validateCfg = {
-        ignore: ":hidden",//不验证的元素
-        onfocusout: false,
-        onclick: false,
-        focusInvalid: false,
-        onkeyup: false,
-        onkeyup: function(element) {
-          //console.log(element);
-          $(element).valid();
-        },
-        errorPlacement: function(error, element) {
-          if (element.attr("controltype") == "suggest") {
-            element
-              .next()
-              .find("button")
-              .attr("data-toggle", "tooltip");
-            element
-              .next()
-              .find("button")
-              .parent()
-              .attr("data-placement", "right");
-            element
-              .next()
-              .find("button")
-              .parent()
-              .attr("data-original-title", error.text());
-            element
-              .next()
-              .find("button")
-              .parent()
-              .tooltip("show");
-
-            // if (error.text()) {
-            //   self.$message({
-            //     type: "warning",
-            //     message:
-            //       element
-            //         .parent()
-            //         .parent()
-            //         .parent()
-            //         .find(".control-label")
-            //         .text() +
-            //       ":" +
-            //       error.text()
-            //   });
-            // }
-          } else if (element.attr("controltype") == "uploader") {
-            element
-              .parent()
-              .find(".el-upload--picture-card")
-              .attr("data-toggle", "tooltip")
-              .attr("data-placement", "right")
-              .attr("data-original-title", error.text())
-              .tooltip("show");
-          } else {
-            element.attr("data-toggle", "tooltip");
-            element.attr("data-placement", "top");
-            element.attr("data-original-title", error.text());
-            element.tooltip("show");
-            element.addClass("has-error");
-          }
-
-          if (element.attr("controltype") != "suggest") {
-            if (self.commiting && error.text()) {
-              self.$notify({
-                title: "验证未通过",
-                message: error.text(),
-                position: "bottom-right",
-                type: "warning"
-              });
-            }
-          }
-
-          //error.appendTo(element.parent());
-        },
-        success: function(error, element) {
-          if ($(element).attr("controltype") == "uploader") {
-            $(element)
-              .parent()
-              .find(".el-upload--picture-card")
-              .tooltip("destroy");
-          }else{
-            $(element).tooltip("destroy");
-            $(element).removeClass("has-error");
-          }
-        },
-        submitHandler: function(form) {
-          if (!self.commiting) {
-            return;
-          }
-          var data = self.getData();
-          //console.log(data);
-          var isOk = true;
-          if (self.cfg.validate) {
-            //自定义验证
-            isOk = self.cfg.validate(data, self.saveData);
-          }
-
-          if (!isOk) {
-            return;
-          }
-          if (self.cfg.beforeCommit) {
-            self.cfg.beforeCommit(data);
-          }
+      self.validateFrom(function(data){
           $(self.$el)
-            .find(".btn-commit")
-            .attr("disabled", "disabled");
+          .find(".btn-commit")
+          .attr("disabled", "disabled");
           self.saveData(data, handler);
-        }
-      };
-      var lastCfg = $.extend(true, validateCfg, self.cfg);
-      $(self.$el)
-        .find(".form")
-        .validate(lastCfg);
+      })
     },
     validateFrom: function(onSuccess, onFail) {
       var self = this;
@@ -622,33 +635,22 @@ export default {
           $(element).valid();
         },
         errorPlacement: function(error, element) {
-          if (element.attr("controltype") == "suggest") {
-            element
-              .next()
-              .find("button")
-              .attr("data-toggle", "tooltip");
-            element
-              .next()
-              .find("button")
-              .parent()
-              .attr("data-placement", "right");
-            element
-              .next()
-              .find("button")
-              .parent()
-              .attr("data-original-title", error.text());
-            element
-              .next()
-              .find("button")
-              .parent()
-              .tooltip("show");
-          } else if (element.attr("controltype") == "uploader") {
+          if (element.attr("controltype") == "uploader") {
             element
               .parent()
               .find(".el-upload--picture-card")
               .attr("data-toggle", "tooltip")
               .attr("data-placement", "right")
               .attr("data-original-title", error.text())
+              .tooltip("show");
+          } else if (element.attr("controltype") == "select") {
+            element
+              .parent()
+              .find(".el-input__inner")
+              .attr("data-toggle", "tooltip")
+              .attr("data-placement", "top")
+              .attr("data-original-title", error.text())
+              .addClass("has-error")
               .tooltip("show");
           } else {
             element.attr("data-toggle", "tooltip");
@@ -657,21 +659,23 @@ export default {
             element.tooltip("show");
             element.addClass("has-error");
           }
-
-          if (element.attr("controltype") != "suggest") {
-            if (self.commiting && error.text()) {
-              self.$notify({
-                title: "验证未通过",
-                message: error.text(),
-                position: "bottom-right",
-                type: "warning"
-              });
-            }
-          }
         },
         success: function(error, element) {
-          $(element).tooltip("destroy");
-          $(element).removeClass("has-error");
+          if ($(element).attr("controltype") == "uploader") {
+            $(element)
+              .parent()
+              .find(".el-upload--picture-card")
+              .tooltip("destroy");
+          }else if ($(element).attr("controltype") == "select") {
+            $(element)
+              .parent()
+              .find(".el-input__inner")
+              .removeClass("has-error")
+              .tooltip("destroy");
+          } else{
+            $(element).tooltip("destroy");
+            $(element).removeClass("has-error");
+          }
         },
         submitHandler: function(form) {
           if (!self.commiting) {
@@ -704,39 +708,41 @@ export default {
       $(self.$el)
         .find(".form")
         .validate(lastCfg);
-      if (
-        $(self.$el)
-          .find(".form")
-          .valid()
-      ) {
-        if (!self.commiting) {
-          return;
-        }
-        var data = self.getData();
+        
+      // if (
+      //   $(self.$el)
+      //     .find(".form")
+      //     .valid()
+      // ) {
+      //   if (!self.commiting) {
+      //     return;
+      //   }
+      //   var data = self.getData();
 
-        var isOk = true;
-        if (self.cfg.validate) {
-          //自定义验证
-          isOk = self.cfg.validate(data, self.saveData);
-        }
+      //   var isOk = true;
+      //   if (self.cfg.validate) {
+      //     //自定义验证
+      //     isOk = self.cfg.validate(data, self.saveData);
+      //   }
 
-        if (!isOk) {
-          return false;
-        }
-        if (self.cfg.beforeCommit) {
-          self.cfg.beforeCommit(data);
-        }
-        // $(self.$el)
-        //   .find(".btn-commit")
-        //   .attr("disabled", "disabled");
-        // self.saveData(data, handler);
-        if (onSuccess) {
-          onSuccess(self.cfg.name, data);
-        }
-        return true;
-      } else {
-        return false;
-      }
+      //   if (!isOk) {
+      //     return false;
+      //   }
+      //   if (self.cfg.beforeCommit) {
+      //     self.cfg.beforeCommit(data);
+      //   }
+      //   // $(self.$el)
+      //   //   .find(".btn-commit")
+      //   //   .attr("disabled", "disabled");
+      //   // self.saveData(data, handler);
+      //   if (onSuccess) {
+      //     onSuccess(self.cfg.name, data);
+      //   }
+      //   return true;
+      // } else {
+      //   return false;
+      // }
+      return false;
     },
     btnButtons: function(e) {
       var name = e.target.name;
@@ -754,7 +760,6 @@ export default {
         .find(".form")
         .find(".form-control")
         .each(function(index) {
-          debugger;
           var item = $(this);
           var contentType = item.attr("controltype");
           if (this.type == "checkbox") {
@@ -1016,5 +1021,8 @@ export default {
 <style>
 .has-error{
       border-color: #f56c6c
+}
+.el-input__inner .has-error{
+  border-color: #f56c6c
 }
 </style>
