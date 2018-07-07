@@ -60,7 +60,7 @@ export default {
       var willCommit = true;
       for (var i = 0; i < children.length; i++) {
         if (children[i].validateFrom) {
-          var isPass = children[i].validateFrom(function(name, data) {
+          var isPass = children[i].validateFrom(true,function(name, data) {
             dataWillCommit[name] = data;
           });
           willCommit = isPass && willCommit;

@@ -122,7 +122,7 @@ public class ProcessService {
 			}
 		}
 		variables.put("assigneeList", nextUserIds);
-		variables.put("condition", 0);
+		variables.put("condition", pde.getCondition());
 		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
 	}
 
@@ -177,7 +177,8 @@ public class ProcessService {
 					if (c2Bool) {
 						int positionId = am.getApprovePositionId();
 						ApprovePositionEntity ape = ApprovePositionService.getInstance().getPosition(positionId);
-						pde.setStepName(ape.getName());
+						pde.setStepName(ape.getVitualTitle());
+						pde.setCondition(ape.getApproveType());
 						return ApprovePositionService.getInstance().getUserIdsByPosition(ape, pde.getBizData());
 					}
 				}
@@ -253,9 +254,11 @@ public class ProcessService {
 				}
 				if (c2Bool) {
 					int positionId = am.getApprovePositionId();
-					List<Integer> userIds = ApprovePositionService.getInstance().getUserIdsByPositionId(positionId,
-							bizData);
-					String jobTitle = ApprovePositionService.getInstance().getJobTitleByPositionId(positionId);
+					ApprovePositionEntity ape = ApprovePositionService.getInstance().getPosition(positionId);
+					processDataEntity.setStepName(ape.getVitualTitle());
+					processDataEntity.setCondition(ape.getApproveType());
+					List<Integer> userIds = ApprovePositionService.getInstance().getUserIdsByPosition(ape, processDataEntity.getBizData());
+					String jobTitle = ape.getVitualTitle();
 					for (int userId : userIds) {
 						ProcessInstDiagramEntity processInstDiagramEntity = new ProcessInstDiagramEntity();
 						processInstDiagramEntity.setProcessDataId(processDataId);

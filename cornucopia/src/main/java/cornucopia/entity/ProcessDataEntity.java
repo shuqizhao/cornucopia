@@ -11,6 +11,7 @@ public class ProcessDataEntity extends BaseEntity {
 	private String createName;
 	private String updateName;
 	private String url;
+	private int condition;
 
 	public int getProcessId() {
 		return processId;
@@ -90,5 +91,13 @@ public class ProcessDataEntity extends BaseEntity {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public int getCondition() {
+		return condition;
+	}
+
+	public void setCondition(int condition) {
+		this.condition = condition;
 	}
 }

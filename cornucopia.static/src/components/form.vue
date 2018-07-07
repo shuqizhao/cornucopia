@@ -812,12 +812,26 @@ export default {
               data[this.id] = [];
               for(var i=0;i<self.detail[this.id].length;i++){
                 var item = self.detail[this.id][i];
-                var url = self.getGlobalData().ApiBaseUrl+"/download?id="+item.response.data;
+                var varId="";
+                var varItemId="";
+                var varName ="";
+                var varUrl ="";
+                if(item.response){
+                  varId = item.response.data;
+                  varItemId = item.response.message;
+                  varName = item.name;
+                  varUrl = self.getGlobalData().ApiBaseUrl+"/download?id="+item.response.data;
+                }else{
+                  varId = item.id;
+                  varItemId = item.itemId;
+                  varName = item.name;
+                  varUrl = self.getGlobalData().ApiBaseUrl+"/download?id="+item.id;
+                }
                 data[this.id].push({
-                  id:item.response.data,
-                  itemId:item.response.message,
-                  name:item.name,
-                  url:url,
+                  id:varId,
+                  itemId:varItemId,
+                  name:varName,
+                  url:varUrl,
                   // response:item.response
                 });
               }
