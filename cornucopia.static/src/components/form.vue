@@ -185,6 +185,23 @@
                                 <!-- <div v-else-if="item.type=='select2select'" v-html="detail[item.name]" style="width:100%" /> -->
                                 <el-transfer  v-else-if="item.type=='transfer'" filterable v-model="value1[item.name]" :data="bindTransfer(item.name,item.url,true)" :titles="['待选择', '已选择']"  ></el-transfer>
                                 <input v-else-if="item.type=='combox'" class="input-xlarge form-control" disabled='disabled' :value="bindCombox(item.data,detail[item.name])" style="width:100%" />
+                                <div v-else-if="item.type=='select'">
+                                  <input :id="item.name" :name="item.name" type="hidden" :value="detail[item.name]" class="form-control" :controltype='item.type'  />
+                                    <el-select v-model="detail[item.name]" :disabled="true" @change="item.onChange?item.onChange(detail[item.name]):''" filterable style="width:100%" placeholder="请选择">
+                                      <el-option
+                                        v-for="opItem in item.data"
+                                        :key="opItem.id"
+                                        :label="opItem.value"
+                                        :value="opItem.id">
+                                        <span style="float: left">{{ opItem.value }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ opItem.desc }}</span>
+                                      </el-option>
+                                    </el-select>
+                                </div>
+                                <div v-else-if="item.type!='hidden'">
+                                  <el-input  :name="item.name" style="width:100%;" :disabled="true" :placeholder="item.placeholder" :controltype='item.type' v-model="detail[item.name]"></el-input>
+                                  <input :id="item.name" type="hidden" class="form-control" :value="detail[item.name]" :controltype='item.type'/>
+                                </div>
                                 <input v-else-if="item.type!='hidden'" :id="item.name" :name="item.name" class="input-xlarge form-control" disabled='disabled' :value="detail[item.name]" style="width:100%" :controltype='item.type' />
                             </template>
                         </td>
@@ -737,6 +754,7 @@ export default {
         .find(".form")
         .find(".form-control")
         .each(function(index) {
+          debugger;
           var item = $(this);
           var contentType = item.attr("controltype");
           if (this.type == "checkbox") {
@@ -772,6 +790,7 @@ export default {
           } else if (contentType == "select"
           ||contentType == "text"
           ||contentType == "textarea"
+          ||contentType == "combox"
           ||contentType == "hidden"
           ||contentType == "popup"
           ||contentType == "readonly"

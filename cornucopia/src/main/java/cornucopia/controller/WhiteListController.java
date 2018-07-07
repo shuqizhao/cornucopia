@@ -2,6 +2,7 @@ package cornucopia.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,7 +31,7 @@ public class WhiteListController {
 	}
 
 	@RequestMapping(value = { "/add" }, method = RequestMethod.POST)
-	public JsonResult<Integer> add(WhiteListEntity whiteListEntity) {
+	public JsonResult<Integer> add(@RequestBody WhiteListEntity whiteListEntity) {
 		WhiteListService.getInstance().addWhiteListByPage(whiteListEntity);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
@@ -66,7 +67,7 @@ public class WhiteListController {
 	}
 
 	@RequestMapping(value = { "/update" }, method = RequestMethod.POST)
-	public JsonResult<Integer> update(WhiteListEntity whiteListEntity) {
+	public JsonResult<Integer> update(@RequestBody WhiteListEntity whiteListEntity) {
 		int result = WhiteListService.getInstance().updateWhiteListEntity(whiteListEntity);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);

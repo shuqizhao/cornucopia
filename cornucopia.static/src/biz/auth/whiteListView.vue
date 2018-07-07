@@ -41,7 +41,7 @@ export default {
             name: "type",
             title: "类型",
             isRequire:true,
-            type: "combox",
+            type: "select",
             data:[{
               id:1,
               value:'需要登录'
