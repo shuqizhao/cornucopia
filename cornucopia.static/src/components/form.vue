@@ -319,9 +319,10 @@ export default {
       $("#"+id).valid();
     },
     handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogImageName = file.name;
-      this.dialogVisible = true;
+      window.open(file.url);
+      // this.dialogImageUrl = file.url;
+      // this.dialogImageName = file.name;
+      // this.dialogVisible = true;
     },
     onFileUpload: function(response, file, fileList) {
       var self = this;
@@ -758,12 +759,7 @@ export default {
               data[this.id] = [];
               for(var i=0;i<self.detail[this.id].length;i++){
                 var item = self.detail[this.id][i];
-                var url =''
-                if (item.name.indexOf(".jpg") != -1||item.name.indexOf(".png") != -1){
-                  url = self.getGlobalData().ApiBaseUrl+"/download?id="+item.response.data;
-                }else{
-                  url = '';
-                }
+                var url = self.getGlobalData().ApiBaseUrl+"/download?id="+item.response.data;
                 data[this.id].push({
                   id:item.response.data,
                   itemId:item.response.message,
