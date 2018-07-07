@@ -157,12 +157,27 @@
                                     <i v-else class="el-icon-close" style="margin-top:8px;"></i>
                                 </div>
                                 <div v-else-if="item.type=='uploader'">
-                                    <input :id="item.name" :name="item.name" type="text" :value="displayValue" class="form-control" :controltype='item.type' style="width: 0;height: 0;border: 0;background: transparent;" />
-                                    <p id="<%=item.name+1%>" style="line-height:29px;display:inline;">
-                                        <a target="_bank" :href='displayLink'>
-                                            {{displayText}}
-                                        </a>
-                                    </p>
+                                        <input :id="item.name" :name="item.name" style="height:0.5px;width:0px;padding:0px;margin:0px;" class="form-control" :controltype='item.type' :limit='item.limit' :mode='item.mode'  />
+                                        <el-upload
+                                          :action="item.url"
+                                          :data="{id:item.name}"
+                                          list-type="picture-card"
+                                          :with-credentials="true"
+                                          :limit="item.limit||1"
+                                          :accept="item.accept||''"
+                                          :file-list="detail[item.name]"
+                                          :on-success="onFileUpload"
+                                          :before-remove="onFileUploadBeforeDelete"
+                                          :on-exceed="onLimited"
+                                          :on-preview="handlePictureCardPreview"
+                                          :on-remove="handleRemove">
+                                          <i class="el-icon-plus"></i>
+                                          <div slot="tip" class="el-upload__tip">{{item.desc}}</div>
+                                        </el-upload>
+                                        <el-dialog :visible.sync="dialogVisible">
+                                          <img width="100%" :src="dialogImageUrl" alt="">
+                                          <label>{{dialogImageName}}</label>
+                                        </el-dialog>
                                 </div>
                                 <iframe v-else-if="item.type=='textxml'" readonly='false' :id="item.name+'_readonly'" :name="item.name+'_readonly'" style='width:100%'  scrolling="no" frameborder="0" class="form-control" :controltype='item.type' src="/src/ref/codemirror/codemirror.html"></iframe>
                                 <iframe v-else-if="item.type=='textnginx'" readonly='false' :id="item.name+'_readonly'" :name="item.name+'_readonly'" style='width:100%'  scrolling="no" frameborder="0" class="form-control" :controltype='item.type' src="/src/ref/codemirror/codemirrornginx.html"></iframe>
@@ -293,6 +308,9 @@ export default {
       return className.indexOf("el-dialog__wrapper") != -1;
     },
     onFileUploadBeforeDelete:function(file){
+      if(this.cfg.mode=='detail'||(this.cfg.mode=='detailEdit'&&this.cfg.detailEditMode!='edit')){
+          return false;
+      }
       var id = "";
       if(file.response){
         id = file.response.message;
@@ -376,6 +394,10 @@ export default {
             .attr("data-placement", "top")
             .attr("data-original-title", item.name)
             .tooltip();
+        }
+        if(this.cfg.mode=='detail'||(this.cfg.mode=='detailEdit'&&this.cfg.detailEditMode!='edit')){
+          $(this.$el).find('.el-upload--picture-card').hide();
+          $(this.$el).find('.el-upload-list__item-delete').hide();
         }
     },
     onLimited: function(files, fileList) {
