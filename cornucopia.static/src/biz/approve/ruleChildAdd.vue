@@ -26,7 +26,7 @@ export default {
           {
             name: "jobId",
             title: "职位",
-            type: "select",
+            type: "hidden",
             data:[]
           },{
             name: "type",
