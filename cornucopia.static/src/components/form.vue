@@ -615,14 +615,14 @@ export default {
       //   .find(".form")
       //   .validate(lastCfg);
       var self = this;
-      self.validateFrom(function(data){
+      self.validateFrom(false,function(name,data){
           $(self.$el)
           .find(".btn-commit")
           .attr("disabled", "disabled");
           self.saveData(data, handler);
       })
     },
-    validateFrom: function(onSuccess, onFail) {
+    validateFrom: function(isOut,onSuccess, onFail) {
       var self = this;
       self.commiting = true;
       var validateCfg = {
@@ -659,6 +659,15 @@ export default {
             element.tooltip("show");
             element.addClass("has-error");
           }
+
+          if (self.commiting && error.text()) {
+              self.$notify({
+                title: "验证未通过",
+                message: error.text(),
+                position: "bottom-right",
+                type: "warning"
+              });
+          }
         },
         success: function(error, element) {
           if ($(element).attr("controltype") == "uploader") {
@@ -678,7 +687,7 @@ export default {
           }
         },
         submitHandler: function(form) {
-          if (!self.commiting) {
+          if (!self.commiting || isOut) {
             return;
           }
           var data = self.getData();
@@ -700,7 +709,7 @@ export default {
           //   .attr("disabled", "disabled");
           // self.saveData(data, handler);
           if (onSuccess) {
-            onSuccess(data);
+            onSuccess(self.cfg.name,data);
           }
         }
       };
@@ -708,41 +717,39 @@ export default {
       $(self.$el)
         .find(".form")
         .validate(lastCfg);
-        
-      // if (
-      //   $(self.$el)
-      //     .find(".form")
-      //     .valid()
-      // ) {
-      //   if (!self.commiting) {
-      //     return;
-      //   }
-      //   var data = self.getData();
+      if (isOut&&
+        $(self.$el)
+          .find(".form")
+          .valid()
+      ) {
+        if (!self.commiting) {
+          return;
+        }
+        var data = self.getData();
 
-      //   var isOk = true;
-      //   if (self.cfg.validate) {
-      //     //自定义验证
-      //     isOk = self.cfg.validate(data, self.saveData);
-      //   }
+        var isOk = true;
+        if (self.cfg.validate) {
+          //自定义验证
+          isOk = self.cfg.validate(data, self.saveData);
+        }
 
-      //   if (!isOk) {
-      //     return false;
-      //   }
-      //   if (self.cfg.beforeCommit) {
-      //     self.cfg.beforeCommit(data);
-      //   }
-      //   // $(self.$el)
-      //   //   .find(".btn-commit")
-      //   //   .attr("disabled", "disabled");
-      //   // self.saveData(data, handler);
-      //   if (onSuccess) {
-      //     onSuccess(self.cfg.name, data);
-      //   }
-      //   return true;
-      // } else {
-      //   return false;
-      // }
-      return false;
+        if (!isOk) {
+          return false;
+        }
+        if (self.cfg.beforeCommit) {
+          self.cfg.beforeCommit(data);
+        }
+        // $(self.$el)
+        //   .find(".btn-commit")
+        //   .attr("disabled", "disabled");
+        // self.saveData(data, handler);
+        if (onSuccess) {
+          onSuccess(self.cfg.name, data);
+        }
+        return true;
+      } else {
+        return false;
+      }
     },
     btnButtons: function(e) {
       var name = e.target.name;
