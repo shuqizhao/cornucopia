@@ -3,6 +3,7 @@ package cornucopia.controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +18,7 @@ import cornucopia.service.ProcessDiagramService;
 @RequestMapping("/processdiagram")
 public class ProcessDiagramController {
 	@RequestMapping(value = { "/upload" }, method = RequestMethod.POST)
-	public JsonResult<Integer> upload(ProcessDiagramViewModel pdvm) {
+	public JsonResult<Integer> upload(@RequestBody ProcessDiagramViewModel pdvm) {
 		ProcessDiagramEntity processDiagramEntity = new ProcessDiagramEntity();
 		processDiagramEntity.setProcessId(pdvm.getProcessId());
 		processDiagramEntity.setPicFileId(pdvm.getPicFileId()[0].getId());

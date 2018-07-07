@@ -10,6 +10,7 @@ import java.io.IOException;
 public class FileUtil {
 	public static String Store(String name, byte[] bytes) throws IOException {
 		String guid = java.util.UUID.randomUUID().toString();
+		guid = guid.replaceAll("-", "");
 		String filePath = AppSettings.getInstance(AppSettings.class).get("filesPath");
 		File dir = new File(filePath + "/" + guid);
 		if (!dir.exists()) {
