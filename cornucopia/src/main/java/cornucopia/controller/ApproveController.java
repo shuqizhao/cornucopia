@@ -146,7 +146,7 @@ public class ApproveController {
 	}
 
 	@RequestMapping(value = { "/positionAdd" }, method = RequestMethod.POST)
-	public JsonResult<Integer> positionAdd(ApprovePositionEntity pos) {
+	public JsonResult<Integer> positionAdd(@RequestBody ApprovePositionEntity pos) {
 		int id = ApprovePositionService.getInstance().insert(pos);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
@@ -155,7 +155,7 @@ public class ApproveController {
 	}
 
 	@RequestMapping(value = { "/positionUpdate" }, method = RequestMethod.POST)
-	public JsonResult<Integer> positionUpdate(ApprovePositionEntity pos) {
+	public JsonResult<Integer> positionUpdate(@RequestBody ApprovePositionEntity pos) {
 		int id = ApprovePositionService.getInstance().update(pos);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
@@ -222,7 +222,7 @@ public class ApproveController {
 	}
 
 	@RequestMapping(value = { "/ruleadd" }, method = RequestMethod.POST)
-	public JsonResult<Integer> ruleAdd(RuleEntity ruleEntity) {
+	public JsonResult<Integer> ruleAdd(@RequestBody RuleEntity ruleEntity) {
 		int result = RuleService.getInstance().insert(ruleEntity);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
@@ -231,7 +231,7 @@ public class ApproveController {
 	}
 
 	@RequestMapping(value = { "/ruleUpdate" }, method = RequestMethod.POST)
-	public JsonResult<Integer> ruleUpdate(RuleEntity ruleEntity) {
+	public JsonResult<Integer> ruleUpdate(@RequestBody RuleEntity ruleEntity) {
 		int result = RuleService.getInstance().update(ruleEntity);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);

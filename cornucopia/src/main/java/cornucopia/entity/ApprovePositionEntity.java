@@ -4,6 +4,8 @@ public class ApprovePositionEntity extends BaseEntity {
 	private int type;
 	private int rule;
 	private int processNodeId;
+	private String vitualTitle;
+	private int approveType;
 
 	public int getType() {
 		return type;
@@ -27,5 +29,21 @@ public class ApprovePositionEntity extends BaseEntity {
 
 	public void setProcessNodeId(int processNodeId) {
 		this.processNodeId = processNodeId;
+	}
+
+	public String getVitualTitle() {
+		return vitualTitle;
+	}
+
+	public void setVitualTitle(String vitualTitle) {
+		this.vitualTitle = vitualTitle;
+	}
+
+	public int getApproveType() {
+		return approveType;
+	}
+
+	public void setApproveType(int approveType) {
+		this.approveType = approveType;
 	}
 }
