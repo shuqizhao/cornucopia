@@ -16,6 +16,8 @@ import cornucopia.dao.FunctionDao;
 import cornucopia.entity.FunctionEntity;
 import cornucopia.entity.FunctionParameterEntity;
 import cornucopia.entity.ParainstEntity;
+import cornucopia.entity.ProcessDataEntity;
+import cornucopia.util.Log4jHelper;
 import cornucopia.util.MyBatisHelper;
 import cornucopia.util.XmlUtil;
 
@@ -94,7 +96,7 @@ public class FunctionService {
 		return funcdao.getParainst(parainstId);
 	}
 
-	public List<Integer> executeGetUserIds(String parainstId, String bizData) {
+	public List<Integer> executeGetUserIds(String parainstId, ProcessDataEntity pde) {
 		ParainstEntity pe = getParainst(parainstId);
 		String jsonObj = pe.getParainstJson();
 		Map<String, Object> map = parseJSON2Map(jsonObj);
@@ -107,11 +109,10 @@ public class FunctionService {
 			String value = map.get(key).toString();
 			if (value.startsWith("//")) {
 				try {
-					value = XmlUtil.selectSingleText(bizData, value);
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				} catch (DocumentException e) {
-					e.printStackTrace();
+					value = XmlUtil.selectSingleText(pde.getBizData(), value);
+				} catch (Exception e) {
+					Log4jHelper.LOGGER
+							.error(String.format("准备执行函数%s时获取xpath异常->%s->parainstId=%s", sp, value, parainstId), e);
 				}
 				sp += "'" + value + "',";
 			} else {
@@ -120,6 +121,7 @@ public class FunctionService {
 			sp = sp.substring(0, sp.length() - 1);
 		}
 		sp += ")";
+		Log4jHelper.LOGGER.info(String.format("准备执行函数->%s->parainstId=%s", sp, parainstId));
 		return funcdao.executeGetUserIds(sp);
 	}
 

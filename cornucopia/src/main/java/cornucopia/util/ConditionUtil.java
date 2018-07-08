@@ -1,6 +1,5 @@
 package cornucopia.util;
 
-import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,14 +13,12 @@ import javax.script.ScriptException;
 
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
-import org.dom4j.DocumentException;
 
 import cornucopia.entity.ApproveMatrixEntity;
 import cornucopia.entity.ApprovePositionEntity;
 import cornucopia.entity.ConditionEntity;
 import cornucopia.entity.ProcessDataEntity;
 import cornucopia.entity.ProcessNodeEntity;
-import cornucopia.entity.RuleConditionEntity;
 import cornucopia.entity.RuleEntity;
 import cornucopia.service.ApproveMatrixService;
 import cornucopia.service.ApprovePositionService;
@@ -94,7 +91,11 @@ public class ConditionUtil {
 						ApprovePositionEntity ape = ApprovePositionService.getInstance().getPosition(positionId);
 						pde.setStepName(ape.getVitualTitle());
 						pde.setCondition(ape.getApproveType());
-						List<Integer> userIds = getUserIdsByPosition(ape, pde.getBizData());
+						Log4jHelper.LOGGER.error(String.format(
+								"[%s]->%s->updateBy=%d->instId=%s->c2Id=%d->vitualTitle=%s->approveType=%d",
+								pde.getFormCode(), "找到虚拟岗位", pde.getUpdateBy(), pde.getProcinstId(), c2Id,
+								ape.getVitualTitle(), ape.getApproveType()));
+						List<Integer> userIds = getUserIdsByPosition(ape, pde);
 						if (processService != null) {
 							processService.build(pde, userIds, currentUserId, i);
 						}
@@ -116,30 +117,26 @@ public class ConditionUtil {
 		}
 	}
 
-	public static List<Integer> getUserIdsByPositionIdWithRule(int id, String bizData) {
+	public static List<Integer> getUserIdsByPositionIdWithRule(int id, ProcessDataEntity pde) {
 		List<RuleEntity> rules = RuleService.getInstance().getRuleChildren(id);
 		if (rules == null || rules.size() == 0) {
-			// ex
+			Log4jHelper.LOGGER.error(String.format("[%s]->%s->ruleId=%d", pde.getFormCode(), "找不到岗位规则", id));
+			return new ArrayList<Integer>();
 		}
 		for (RuleEntity rule : rules) {
-			List<RuleConditionEntity> rcs = RuleService.getInstance().getRuleConditions(rule.getId());
+			List<?> rcs = RuleService.getInstance().getRuleConditions(rule.getId());
 			if (rcs == null || rcs.size() == 0) {
-				// ex
+				Log4jHelper.LOGGER.error(String.format("[%s]->%s->ruleId=%d", pde.getFormCode(), "找不到岗位规则条件", id));
+				continue;
 			}
-			boolean cBool = true;
-			for (RuleConditionEntity rc : rcs) {
-				if (ConditionUtil.calculateCondition(rc, bizData)) {
-					cBool = cBool && true;
-				} else {
-					cBool = cBool && false;
-				}
-			}
+			@SuppressWarnings("unchecked")
+			boolean cBool = ConditionUtil.calculateCondition((List<ConditionEntity>) rcs, pde);
 			if (cBool) {
 				// 角色
 				if (rule.getType() == 1) {
 					return RoleService.getInstance().getUserIdsByRoleId(rule.getUser());
 				} else if (rule.getType() == 2) {// 函数
-					return FunctionService.getInstance().executeGetUserIds(rule.getUser(), bizData);
+					return FunctionService.getInstance().executeGetUserIds(rule.getUser(), pde);
 				} else if (rule.getType() == 3) {// 指定人
 					List<Integer> list = new ArrayList<Integer>();
 					list.add(rule.getRuleId());
@@ -154,16 +151,16 @@ public class ConditionUtil {
 		return new ArrayList<Integer>();
 	}
 
-	public List<Integer> getUserIdsByPositionId(int id, String bizData) {
+	public List<Integer> getUserIdsByPositionId(int id, ProcessDataEntity pde) {
 		ApprovePositionEntity ape = ApprovePositionService.getInstance().getPosition(id);
-		return getUserIdsByPosition(ape, bizData);
+		return getUserIdsByPosition(ape, pde);
 	}
 
-	public static List<Integer> getUserIdsByPosition(ApprovePositionEntity ape, String bizData) {
+	public static List<Integer> getUserIdsByPosition(ApprovePositionEntity ape, ProcessDataEntity pde) {
 		if (ape.getType() == 1) {
 			return RoleService.getInstance().getUserIdsByRoleId(ape.getRule() + "");
 		} else if (ape.getType() == 2) {
-			return getUserIdsByPositionIdWithRule(ape.getRule(), bizData);
+			return getUserIdsByPositionIdWithRule(ape.getRule(), pde);
 		}
 		return new ArrayList<Integer>();
 	}
@@ -177,8 +174,8 @@ public class ConditionUtil {
 		boolean isCurLevle01 = false;
 		for (ConditionEntity ac : acs) {
 			Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s->acId=%d", pde.getFormCode(),
-					"开始计算条件", pde.getUpdateBy(), pde.getProcinstId(), ac.getId()));
-			boolean isPass = ConditionUtil.calculateCondition(ac, pde.getBizData());
+					"开始计算条件" + i, pde.getUpdateBy(), pde.getProcinstId(), ac.getId()));
+			boolean isPass = ConditionUtil.calculateCondition(ac, pde);
 			String op = "";
 			String levelLeft = " ";
 			String levelRight = " ";
@@ -235,50 +232,59 @@ public class ConditionUtil {
 			}
 			i++;
 		}
-		bools += "";
-		Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s->bools=%s", pde.getFormCode(),
-				"计算条件的表达式为", pde.getUpdateBy(), pde.getProcinstId(), bools));
-		ScriptEngineManager manager = new ScriptEngineManager();
-		ScriptEngine engine = manager.getEngineByName("js");
 		try {
+			ScriptEngineManager manager = new ScriptEngineManager();
+			ScriptEngine engine = manager.getEngineByName("js");
 			boolean result = (boolean) engine.eval(bools);
+			Log4jHelper.LOGGER.info(String.format("[%s]->%s:%s->%s:%s->updateBy=%d->instId=%s", pde.getFormCode(),
+					"计算条件的表达式为", bools, "结果为", result + "", pde.getUpdateBy(), pde.getProcinstId()));
 			return result;
 		} catch (ScriptException e) {
-			Log4jHelper.LOGGER.error(String.format("[%s]->%s->updateBy=%d->instId=%s->bools=%s", pde.getFormCode(),
-					"计算条件的表达式为", pde.getUpdateBy(), pde.getProcinstId(), bools), e);
+			Log4jHelper.LOGGER.error(String.format("[%s]->%s:%s->%s:%s->updateBy=%d->instId=%s", pde.getFormCode(),
+					"计算条件的表达式为", bools, "结果为", "error", pde.getUpdateBy(), pde.getProcinstId()), e);
 			return false;
 		}
 	}
 
-	private static boolean calculateCondition(ConditionEntity ac, String bizData) {
+	private static boolean calculateCondition(ConditionEntity ac, ProcessDataEntity pde) {
 		Object var1 = "";
 		if (ac.getVar1From() == 1) {// 文本
 			var1 = ac.getVar1();
+			Log4jHelper.LOGGER
+					.info(String.format("[%s]->变量1->acId=%d->变量值为文本{%s}", pde.getFormCode(), ac.getId(), var1));
 		} else if (ac.getVar1From() == 2) {// xpath
 			try {
-				var1 = XmlUtil.selectSingleText(bizData, ac.getVar1());
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			} catch (DocumentException e) {
-				e.printStackTrace();
+				var1 = XmlUtil.selectSingleText(pde.getBizData(), ac.getVar1());
+				Log4jHelper.LOGGER.info(String.format("[%s]->变量1->acId=%d->变量值为xpath:{%s=%s}", pde.getFormCode(),
+						ac.getId(), ac.getVar1(), var1));
+			} catch (Exception e) {
+				Log4jHelper.LOGGER.error(String.format("[%s]->变量1->acId=%d->变量值为xpath{%s=error}", pde.getFormCode(),
+						ac.getId(), ac.getVar1()), e);
 			}
 		} else if (ac.getVar1From() == 3) {// 函数
-			var1 = FunctionService.getInstance().executeGetUserIds(ac.getVar1(), bizData);
+			var1 = FunctionService.getInstance().executeGetUserIds(ac.getVar1(), pde);
+			Log4jHelper.LOGGER.info(String.format("[%s]->变量1->acId=%d->变量值为函数:{%s=%s}", pde.getFormCode(), ac.getId(),
+					ac.getVar1(), var1));
 		}
 
 		Object var2 = "";
 		if (ac.getVar2From() == 1) {// 文本
-			var2 = ac.getVar1();
+			var2 = ac.getVar2();
+			Log4jHelper.LOGGER
+					.info(String.format("[%s]->变量2->acId=%d->变量值为文本{%s}", pde.getFormCode(), ac.getId(), var2));
 		} else if (ac.getVar2From() == 2) {// xpath
 			try {
-				var2 = XmlUtil.selectSingleText(bizData, ac.getVar2());
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			} catch (DocumentException e) {
-				e.printStackTrace();
+				var2 = XmlUtil.selectSingleText(pde.getBizData(), ac.getVar2());
+				Log4jHelper.LOGGER.info(String.format("[%s]->变量2->acId=%d->变量值为xpath:{%s=%s}", pde.getFormCode(),
+						ac.getId(), ac.getVar2(), var2));
+			} catch (Exception e) {
+				Log4jHelper.LOGGER.error(String.format("[%s]->变量2->acId=%d->变量值为xpath{%s=error}", pde.getFormCode(),
+						ac.getId(), ac.getVar2()), e);
 			}
 		} else if (ac.getVar2From() == 3) {// 函数
-			var2 = FunctionService.getInstance().executeGetUserIds(ac.getVar2(), bizData);
+			var2 = FunctionService.getInstance().executeGetUserIds(ac.getVar2(), pde);
+			Log4jHelper.LOGGER.info(String.format("[%s]->变量2->acId=%d->变量值为函数:{%s=%s}", pde.getFormCode(), ac.getId(),
+					ac.getVar2(), var2));
 		}
 
 		// 字符串
@@ -287,11 +293,21 @@ public class ConditionUtil {
 			String var22 = var2.toString();
 			if (ac.getOperation() == 1) {
 				if (var11.equals(var22)) {
+					Log4jHelper.LOGGER
+							.info(String.format("[%s]->变量类型[字符串],%s==%s,结果为true", pde.getFormCode(), var11, var22));
 					return true;
+				} else {
+					Log4jHelper.LOGGER
+							.info(String.format("[%s]->变量类型[字符串],%s==%s,结果为false", pde.getFormCode(), var11, var22));
 				}
 			} else {
 				if (!var11.equals(var22)) {
+					Log4jHelper.LOGGER
+							.info(String.format("[%s]->变量类型[字符串],%s!=%s,结果为true", pde.getFormCode(), var11, var22));
 					return true;
+				} else {
+					Log4jHelper.LOGGER
+							.info(String.format("[%s]->变量类型[字符串],%s!=%s,结果为false", pde.getFormCode(), var11, var22));
 				}
 			}
 		}
@@ -301,27 +317,57 @@ public class ConditionUtil {
 			int var22 = Integer.parseInt(var2.toString());
 			if (ac.getOperation() == 1) {
 				if (var11 == var22) {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[整数],%s==%s,结果为true", pde.getFormCode(), var11 + "", var22 + ""));
 					return true;
+				} else {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[整数],%s==%s,结果为false", pde.getFormCode(), var11 + "", var22 + ""));
 				}
 			} else if (ac.getOperation() == 2) {
 				if (var11 > var22) {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[整数],%s>%s,结果为true", pde.getFormCode(), var11 + "", var22 + ""));
 					return true;
+				} else {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[整数],%s>%s,结果为false", pde.getFormCode(), var11 + "", var22 + ""));
 				}
 			} else if (ac.getOperation() == 3) {
 				if (var11 >= var22) {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[整数],%s>=%s,结果为true", pde.getFormCode(), var11 + "", var22 + ""));
 					return true;
+				} else {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[整数],%s>=%s,结果为false", pde.getFormCode(), var11 + "", var22 + ""));
 				}
 			} else if (ac.getOperation() == 4) {
 				if (var11 < var22) {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[整数],%s<%s,结果为true", pde.getFormCode(), var11 + "", var22 + ""));
 					return true;
+				} else {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[整数],%s<%s,结果为false", pde.getFormCode(), var11 + "", var22 + ""));
 				}
 			} else if (ac.getOperation() == 5) {
 				if (var11 <= var22) {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[整数],%s<=%s,结果为true", pde.getFormCode(), var11 + "", var22 + ""));
 					return true;
+				} else {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[整数],%s<=%s,结果为false", pde.getFormCode(), var11 + "", var22 + ""));
 				}
 			} else if (ac.getOperation() == 6) {
 				if (var11 != var22) {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[整数],%s!=%s,结果为true", pde.getFormCode(), var11 + "", var22 + ""));
 					return true;
+				} else {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[整数],%s!=%s,结果为false", pde.getFormCode(), var11 + "", var22 + ""));
 				}
 			}
 		}
@@ -331,27 +377,57 @@ public class ConditionUtil {
 			float var22 = Float.parseFloat(var2.toString());
 			if (ac.getOperation() == 1) {
 				if (var11 == var22) {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[浮点],%s==%s,结果为true", pde.getFormCode(), var11 + "", var22 + ""));
 					return true;
+				} else {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[浮点],%s==%s,结果为false", pde.getFormCode(), var11 + "", var22 + ""));
 				}
 			} else if (ac.getOperation() == 2) {
 				if (var11 > var22) {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[浮点],%s>%s,结果为true", pde.getFormCode(), var11 + "", var22 + ""));
 					return true;
+				} else {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[浮点],%s>%s,结果为false", pde.getFormCode(), var11 + "", var22 + ""));
 				}
 			} else if (ac.getOperation() == 3) {
 				if (var11 >= var22) {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[浮点],%s>=%s,结果为true", pde.getFormCode(), var11 + "", var22 + ""));
 					return true;
+				} else {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[浮点],%s>=%s,结果为false", pde.getFormCode(), var11 + "", var22 + ""));
 				}
 			} else if (ac.getOperation() == 4) {
 				if (var11 < var22) {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[浮点],%s<%s,结果为true", pde.getFormCode(), var11 + "", var22 + ""));
 					return true;
+				} else {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[浮点],%s<%s,结果为false", pde.getFormCode(), var11 + "", var22 + ""));
 				}
 			} else if (ac.getOperation() == 5) {
 				if (var11 <= var22) {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[浮点],%s<=%s,结果为true", pde.getFormCode(), var11 + "", var22 + ""));
 					return true;
+				} else {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[浮点],%s<=%s,结果为false", pde.getFormCode(), var11 + "", var22 + ""));
 				}
 			} else if (ac.getOperation() == 6) {
 				if (var11 != var22) {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[浮点],%s!=%s,结果为true", pde.getFormCode(), var11 + "", var22 + ""));
 					return true;
+				} else {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[浮点],%s!=%s,结果为false", pde.getFormCode(), var11 + "", var22 + ""));
 				}
 			}
 		}
@@ -362,37 +438,67 @@ public class ConditionUtil {
 			try {
 				var11 = df.parse(var1.toString());
 			} catch (ParseException e) {
-				e.printStackTrace();
+				Log4jHelper.LOGGER.error(String.format("[%s]->变量1,类型[日期],解析出错,%s", pde.getFormCode(), var11 + ""), e);
 			}
 			Date var22 = null;
 			try {
 				var22 = df.parse(var2.toString());
 			} catch (ParseException e) {
-				e.printStackTrace();
+				Log4jHelper.LOGGER.error(String.format("[%s]->变量2,类型[日期],解析出错,%s", pde.getFormCode(), var22 + ""), e);
 			}
 			if (ac.getOperation() == 1) {
 				if (var11.getTime() == var22.getTime()) {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[日期],%s==%s,结果为true", pde.getFormCode(), var11 + "", var22 + ""));
 					return true;
+				} else {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[日期],%s==%s,结果为false", pde.getFormCode(), var11 + "", var22 + ""));
 				}
 			} else if (ac.getOperation() == 2) {
 				if (var11.getTime() > var22.getTime()) {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[日期],%s>%s,结果为true", pde.getFormCode(), var11 + "", var22 + ""));
 					return true;
+				} else {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[日期],%s>%s,结果为false", pde.getFormCode(), var11 + "", var22 + ""));
 				}
 			} else if (ac.getOperation() == 3) {
 				if (var11.getTime() >= var22.getTime()) {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[日期],%s>=%s,结果为true", pde.getFormCode(), var11 + "", var22 + ""));
 					return true;
+				} else {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[日期],%s>=%s,结果为false", pde.getFormCode(), var11 + "", var22 + ""));
 				}
 			} else if (ac.getOperation() == 4) {
 				if (var11.getTime() < var22.getTime()) {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[日期],%s<%s,结果为true", pde.getFormCode(), var11 + "", var22 + ""));
 					return true;
+				} else {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[日期],%s<%s,结果为false", pde.getFormCode(), var11 + "", var22 + ""));
 				}
 			} else if (ac.getOperation() == 5) {
 				if (var11.getTime() <= var22.getTime()) {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[日期],%s<=%s,结果为true", pde.getFormCode(), var11 + "", var22 + ""));
 					return true;
+				} else {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[日期],%s<=%s,结果为false", pde.getFormCode(), var11 + "", var22 + ""));
 				}
 			} else if (ac.getOperation() == 6) {
 				if (var11 != var22) {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[日期],%s!=%s,结果为true", pde.getFormCode(), var11 + "", var22 + ""));
 					return true;
+				} else {
+					Log4jHelper.LOGGER.info(
+							String.format("[%s]->变量类型[日期],%s!=%s,结果为false", pde.getFormCode(), var11 + "", var22 + ""));
 				}
 			}
 		}
