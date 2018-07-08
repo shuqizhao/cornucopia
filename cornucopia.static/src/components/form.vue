@@ -286,6 +286,7 @@ export default {
     $(this.$el)
       .find('input[type="file"]')
       .hide();
+    
   },
   beforeUpdate: function() {
     // $(".el-transfer__button").click(function() {
@@ -301,6 +302,10 @@ export default {
     }
     this.iframeLoad();
     // alert("update01")
+    if(this.cfg.mode=='detail'||(this.cfg.mode=='detailEdit'&&this.cfg.detailEditMode!='edit')){
+          $(this.$el).find('.el-upload--picture-card').hide();
+          $(this.$el).find('.el-upload-list__item-delete').hide();
+    }
   },
   data() {
     return {
