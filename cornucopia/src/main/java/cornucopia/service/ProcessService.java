@@ -212,7 +212,7 @@ public class ProcessService {
 			}
 			i++;
 		}
-		if (pde.getLevelCount() == ams.size() - 1) {
+		if (pde.getLevelCount() == ams.size()) {
 			List<Integer> result = new ArrayList<Integer>();
 			result.add(666666);
 			return result;
