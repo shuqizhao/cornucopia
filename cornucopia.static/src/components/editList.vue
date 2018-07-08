@@ -254,7 +254,7 @@ export default {
         onSuccess();
       }
     },
-    validateFrom: function(onSuccess, onFail) {
+    validateFrom: function(isOut,onSuccess, onFail) {
       var self = this;
       self.commiting = true;
       var validateCfg = {

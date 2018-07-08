@@ -8,11 +8,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.dom4j.DocumentException;
 
-import cornucopia.entity.ApproveConditionEntity;
 import cornucopia.entity.ApproveMatrixEntity;
 import cornucopia.entity.ApprovePositionEntity;
 import cornucopia.entity.ConditionEntity;
@@ -34,6 +37,7 @@ public class ConditionUtil {
 		return getNextDealUser(pde, null);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static List<Integer> getNextDealUser(ProcessDataEntity pde, ProcessService processService) {
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s", pde.getFormCode(), "开始获取审批人员",
 				pde.getUpdateBy(), pde.getProcinstId()));
@@ -67,43 +71,24 @@ public class ConditionUtil {
 
 		int i = 0;
 		for (ApproveMatrixEntity am : ams) {
-			if (pde.getLevelCount() == i && processService != null) {
+			if (pde.getLevelCount() == i || processService != null) {
 				int c1Id = am.getApproveCondition1Id();
-				List<ApproveConditionEntity> acs = ApproveService.getInstance().getConditions(c1Id);
+				List<?> acs = ApproveService.getInstance().getConditions(c1Id);
 				if (acs == null || acs.size() == 0) {
 					Log4jHelper.LOGGER.error(String.format("[%s]->%s->updateBy=%d->instId=%s->c1Id=%d",
 							pde.getFormCode(), "未能获取审批条件c1", pde.getUpdateBy(), pde.getProcinstId(), c1Id));
 					return null;
 				}
-				boolean c1Bool = true;
-				for (ApproveConditionEntity ac : acs) {
-					Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s->acId=%d",
-							pde.getFormCode(), "开始计算条件", pde.getUpdateBy(), pde.getProcinstId(), ac.getId()));
-
-					if (ConditionUtil.calculateCondition(ac, pde.getBizData())) {
-						c1Bool = c1Bool && true;
-					} else {
-						c1Bool = c1Bool && false;
-					}
-				}
+				boolean c1Bool = calculateCondition((List<ConditionEntity>) acs, pde);
 				if (c1Bool) {
 					int c2Id = am.getApproveCondition2Id();
-					List<ApproveConditionEntity> bacs = ApproveService.getInstance().getConditions(c2Id);
+					List<?> bacs = ApproveService.getInstance().getConditions(c2Id);
 					if (bacs == null || bacs.size() == 0) {
 						Log4jHelper.LOGGER.error(String.format("[%s]->%s->updateBy=%d->instId=%s->c2Id=%d",
 								pde.getFormCode(), "未能获取审批条件c2", pde.getUpdateBy(), pde.getProcinstId(), c2Id));
 						return null;
 					}
-					boolean c2Bool = true;
-					for (ApproveConditionEntity ac : bacs) {
-						Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s->acId=%d",
-								pde.getFormCode(), "开始计算条件", pde.getUpdateBy(), pde.getProcinstId(), ac.getId()));
-						if (ConditionUtil.calculateCondition(ac, pde.getBizData())) {
-							c2Bool = c2Bool && true;
-						} else {
-							c2Bool = c2Bool && false;
-						}
-					}
+					boolean c2Bool = calculateCondition((List<ConditionEntity>) bacs, pde);
 					if (c2Bool) {
 						int positionId = am.getApprovePositionId();
 						ApprovePositionEntity ape = ApprovePositionService.getInstance().getPosition(positionId);
@@ -183,7 +168,84 @@ public class ConditionUtil {
 		return new ArrayList<Integer>();
 	}
 
-	public static boolean calculateCondition(ConditionEntity ac, String bizData) {
+	public static boolean calculateCondition(List<ConditionEntity> acs, ProcessDataEntity pde) {
+		String bools = "1==1 ";
+		int i = 0;
+		boolean isLevelO2Start = false;
+		boolean isLevelO2End = false;
+		boolean isPreLevel01 = true;
+		boolean isCurLevle01 = false;
+		for (ConditionEntity ac : acs) {
+			Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s->acId=%d", pde.getFormCode(),
+					"开始计算条件", pde.getUpdateBy(), pde.getProcinstId(), ac.getId()));
+			boolean isPass = ConditionUtil.calculateCondition(ac, pde.getBizData());
+			String op = "";
+			String levelLeft = " ";
+			String levelRight = " ";
+			if (ac.getLevel() == 1) {
+				isCurLevle01 = true;
+
+				if (isPreLevel01 && !isCurLevle01) {
+					isLevelO2Start = true;
+				} else {
+					isLevelO2Start = false;
+				}
+				if (isCurLevle01 && !isPreLevel01) {
+					isLevelO2End = true;
+				} else {
+					isLevelO2End = false;
+				}
+
+				isPreLevel01 = true;
+			} else {
+				isCurLevle01 = false;
+
+				if (isPreLevel01 && !isCurLevle01) {
+					isLevelO2Start = true;
+				} else {
+					isLevelO2Start = false;
+				}
+				if (isCurLevle01 && !isPreLevel01) {
+					isLevelO2End = true;
+				} else {
+					isLevelO2End = false;
+				}
+
+				isPreLevel01 = false;
+			}
+
+			if (isLevelO2Start) {
+				levelLeft = " ( ";
+			}
+			if (isLevelO2End) {
+				levelRight = " ) ";
+			}
+			if (ac.getOperation() == 1 || i == 0) {
+				op = " && ";
+			} else {
+				op = " || ";
+			}
+
+			bools += op + levelLeft + isPass + levelRight;
+
+			i++;
+		}
+		bools += "";
+		Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s->bools=%s", pde.getFormCode(),
+				"计算条件的表达式为", pde.getUpdateBy(), pde.getProcinstId(), bools));
+		ScriptEngineManager manager = new ScriptEngineManager();
+		ScriptEngine engine = manager.getEngineByName("js");
+		try {
+			boolean result = (boolean) engine.eval(bools);
+			return result;
+		} catch (ScriptException e) {
+			Log4jHelper.LOGGER.error(String.format("[%s]->%s->updateBy=%d->instId=%s->bools=%s", pde.getFormCode(),
+					"计算条件的表达式为", pde.getUpdateBy(), pde.getProcinstId(), bools), e);
+			return false;
+		}
+	}
+
+	private static boolean calculateCondition(ConditionEntity ac, String bizData) {
 		Object var1 = "";
 		if (ac.getVar1From() == 1) {// 文本
 			var1 = ac.getVar1();
