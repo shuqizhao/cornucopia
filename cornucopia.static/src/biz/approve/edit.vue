@@ -229,14 +229,6 @@ export default {
               {
                 id: 2,
                 name: "二级"
-              },
-              {
-                id: 3,
-                name: "三级"
-              },
-              {
-                id: 4,
-                name: "四级"
               }
             ]
           }
