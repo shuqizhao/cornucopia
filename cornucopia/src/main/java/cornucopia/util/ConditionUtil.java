@@ -228,9 +228,11 @@ public class ConditionUtil {
 			} else {
 				op = " || ";
 			}
-
-			bools += op + levelLeft + isPass + levelRight;
-
+			if (i == acs.size() - 1) {
+				bools += op + levelLeft + isPass + levelRight;
+			} else {
+				bools += levelRight + op + levelLeft + isPass;
+			}
 			i++;
 		}
 		bools += "";
