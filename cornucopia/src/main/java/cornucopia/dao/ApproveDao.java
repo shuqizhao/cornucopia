@@ -32,7 +32,7 @@ public interface ApproveDao {
 	@Update("call sp_approve_delete(#{id})")
 	public int delete(@Param("id")int id);
 
-	@Insert("call sp_approve_condition_insert(#{approveCondition.approveId},#{approveCondition.boolOperation},#{approveCondition.var1},#{approveCondition.var1From},#{approveCondition.var1Type},#{approveCondition.operation},#{approveCondition.var2},#{approveCondition.var2From},#{approveCondition.var2Type})")
+	@Insert("call sp_approve_condition_insert(#{approveCondition.approveId},#{approveCondition.boolOperation},#{approveCondition.var1},#{approveCondition.var1From},#{approveCondition.varType},#{approveCondition.operation},#{approveCondition.var2},#{approveCondition.var2From},#{approveCondition.level})")
 	@SelectKey(statement="Select LAST_INSERT_ID()", keyProperty="approveCondition.id", before=false, resultType=int.class)
 	public int insertApproveCondition(@Param("approveCondition") ApproveConditionEntity approveEntity);
 

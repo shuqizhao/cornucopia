@@ -153,8 +153,8 @@ export default {
             }
           },
           {
-            name: "var1Type",
-            title: "变量1类型",
+            name: "varType",
+            title: "变量类型",
             type: "combox",
             data: [
               {
@@ -247,25 +247,25 @@ export default {
             }
           },
           {
-            name: "var2Type",
-            title: "变量2类型",
+            name: "level",
+            title: "变量级别",
             type: "combox",
             data: [
               {
                 id: 1,
-                name: "字符串"
+                name: "一级"
               },
               {
                 id: 2,
-                name: "整数"
+                name: "二级"
               },
               {
                 id: 3,
-                name: "浮点型"
+                name: "三级"
               },
               {
                 id: 4,
-                name: "日期型"
+                name: "四级"
               }
             ]
           }

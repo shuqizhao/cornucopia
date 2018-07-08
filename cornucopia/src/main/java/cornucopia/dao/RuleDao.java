@@ -39,7 +39,7 @@ public interface RuleDao {
 	@Select("call sp_rule_get_children(#{ruleId})")
 	public List<RuleEntity> getRuleChildren(@Param("ruleId")int ruleId);
 
-	@Insert("call sp_rule_condition_insert(#{rc.ruleId},#{rc.boolOperation},#{rc.var1},#{rc.var1From},#{rc.var1Type},#{rc.operation},#{rc.var2},#{rc.var2From},#{rc.var2Type})")
+	@Insert("call sp_rule_condition_insert(#{rc.ruleId},#{rc.boolOperation},#{rc.var1},#{rc.var1From},#{rc.varType},#{rc.operation},#{rc.var2},#{rc.var2From},#{rc.level})")
 	@SelectKey(statement="Select LAST_INSERT_ID()", keyProperty="rc.id", before=false, resultType=int.class)
 	public int insertApproveCondition(@Param("rc")RuleConditionEntity ruleConditionEntity);
 
