@@ -1,6 +1,5 @@
 package cornucopia.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,14 +10,10 @@ import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 
 import cornucopia.dao.ProcessDao;
-import cornucopia.entity.ApproveConditionEntity;
-import cornucopia.entity.ApproveMatrixEntity;
-import cornucopia.entity.ApprovePositionEntity;
 import cornucopia.entity.ProcessDataEntity;
 import cornucopia.entity.ProcessDiagramEntity;
 import cornucopia.entity.ProcessEntity;
 import cornucopia.entity.ProcessInstDiagramEntity;
-import cornucopia.entity.ProcessNodeEntity;
 import cornucopia.util.ActivitiHelper;
 import cornucopia.util.ConditionUtil;
 import cornucopia.util.Log4jHelper;
@@ -109,7 +104,7 @@ public class ProcessService {
 	public void Complete(ProcessDataEntity pde) {
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s", pde.getFormCode(), "准备完成任务",
 				pde.getUpdateBy(), pde.getProcinstId()));
-		List<Integer> nextUserIds = ConditionUtil.getNextDealUser(pde, null);
+		List<Integer> nextUserIds = ConditionUtil.getNextDealUser(pde);
 		if (nextUserIds == null || nextUserIds.size() == 0) {
 			Log4jHelper.LOGGER.error(String.format("[%s]->%s->updateBy=%d->instId=%s", pde.getFormCode(), "任务找不到人",
 					pde.getUpdateBy(), pde.getProcinstId()));
@@ -137,34 +132,33 @@ public class ProcessService {
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "引擎任务完成", task.getId()));
 	}
 
-	public void clear(ProcessDataEntity processDataEntity) {
-		ProcessInstDiagramService.getInstance().delete(processDataEntity.getId());
+	public void clear(ProcessDataEntity pde) {
+		ProcessInstDiagramService.getInstance().delete(pde.getId());
 		ProcessInstDiagramEntity pide = new ProcessInstDiagramEntity();
-		pide.setProcessDataId(processDataEntity.getId());
-		pide.setProcessId(processDataEntity.getProcessId());
+		pide.setProcessDataId(pde.getId());
+		pide.setProcessId(pde.getProcessId());
 		pide.setName("发起申请");
-		pide.setUserId(processDataEntity.getCreateBy());
+		pide.setUserId(pde.getCreateBy());
 		pide.setLevelCount(-1);
 		ProcessInstDiagramService.getInstance().insert(pide);
 	}
 
-	public void build(ProcessDataEntity processDataEntity, List<Integer> userIds, String currentUserId,
-			int levelCount) {
+	public void build(ProcessDataEntity pde, List<Integer> userIds, String currentUserId, int levelCount) {
 		for (int userId : userIds) {
-			ProcessInstDiagramEntity processInstDiagramEntity = new ProcessInstDiagramEntity();
-			processInstDiagramEntity.setProcessDataId(processDataEntity.getId());
-			processInstDiagramEntity.setProcessId(processDataEntity.getProcessId());
-			processInstDiagramEntity.setName(processDataEntity.getStepName());
-			processInstDiagramEntity.setUserId(userId);
-			processInstDiagramEntity.setLevelCount(levelCount);
+			ProcessInstDiagramEntity pide = new ProcessInstDiagramEntity();
+			pide.setProcessDataId(pde.getId());
+			pide.setProcessId(pde.getProcessId());
+			pide.setName(pde.getStepName());
+			pide.setUserId(userId);
+			pide.setLevelCount(levelCount);
 			if (currentUserId.equals(userId + "")) {
-				processInstDiagramEntity.setIsCurrent(1);
+				pide.setIsCurrent(1);
 			}
-			ProcessInstDiagramService.getInstance().insert(processInstDiagramEntity);
+			ProcessInstDiagramService.getInstance().insert(pide);
 		}
 	}
 
-	public void buildProcessInstDiagram(ProcessDataEntity processDataEntity) {
-		ConditionUtil.getNextDealUser(processDataEntity, instance);
+	public void buildProcessInstDiagram(ProcessDataEntity pde) {
+		ConditionUtil.getNextDealUser(pde, instance);
 	}
 }

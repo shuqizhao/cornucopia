@@ -30,6 +30,10 @@ import cornucopia.service.RoleService;
 import cornucopia.service.RuleService;
 
 public class ConditionUtil {
+	public static List<Integer> getNextDealUser(ProcessDataEntity pde) {
+		return getNextDealUser(pde, null);
+	}
+
 	public static List<Integer> getNextDealUser(ProcessDataEntity pde, ProcessService processService) {
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s", pde.getFormCode(), "开始获取审批人员",
 				pde.getUpdateBy(), pde.getProcinstId()));
