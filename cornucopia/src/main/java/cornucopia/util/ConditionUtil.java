@@ -137,21 +137,21 @@ public class ConditionUtil {
 			if (cBool) {
 				// 角色
 				if (rule.getType() == 1) {
-					Log4jHelper.LOGGER.info(String.format("[%s]->开始计算规则[%s]->ruleId=%d->通过角色[%s]获取人员",
+					Log4jHelper.LOGGER.info(String.format("[%s]->开始计算规则[%s]->通过角色[%s]获取人员->positonId=%d",
 							pde.getFormCode(), rule.getName(), rule.getUser(), id));
 					return RoleService.getInstance().getUserIdsByRoleId(rule.getUser());
 				} else if (rule.getType() == 2) {// 函数
-					Log4jHelper.LOGGER.info(String.format("[%s]->开始计算规则[%s]->ruleId=%d->通过函数[%s]获取人员",
+					Log4jHelper.LOGGER.info(String.format("[%s]->开始计算规则[%s]->通过函数[%s]获取人员->positonId=%d",
 							pde.getFormCode(), rule.getName(), rule.getUser(), id));
 					return FunctionService.getInstance().executeGetUserIds(rule.getUser(), pde);
 				} else if (rule.getType() == 3) {// 指定人
-					Log4jHelper.LOGGER.info(String.format("[%s]->开始计算规则[%s]->ruleId=%d->通过指定人[%s]获取人员",
+					Log4jHelper.LOGGER.info(String.format("[%s]->开始计算规则[%s]->通过指定人[%s]获取人员->positonId=%d",
 							pde.getFormCode(), rule.getName(), rule.getUser(), id));
 					List<Integer> list = new ArrayList<Integer>();
 					list.add(rule.getRuleId());
 					return list;
 				} else if (rule.getType() == 4) {// 跳过
-					Log4jHelper.LOGGER.info(String.format("[%s]->开始计算规则[%s]->ruleId=%d->跳过[%s]", pde.getFormCode(),
+					Log4jHelper.LOGGER.info(String.format("[%s]->开始计算规则[%s]->跳过[%s]->positonId=%d", pde.getFormCode(),
 							rule.getName(), rule.getUser(), id));
 					List<Integer> list = new ArrayList<Integer>();
 					list.add(rule.getRuleId());
