@@ -91,7 +91,7 @@ public class ConditionUtil {
 						ApprovePositionEntity ape = ApprovePositionService.getInstance().getPosition(positionId);
 						pde.setStepName(ape.getVitualTitle());
 						pde.setCondition(ape.getApproveType());
-						Log4jHelper.LOGGER.error(String.format(
+						Log4jHelper.LOGGER.info(String.format(
 								"[%s]->%s->updateBy=%d->instId=%s->c2Id=%d->vitualTitle=%s->approveType=%d",
 								pde.getFormCode(), "找到虚拟岗位", pde.getUpdateBy(), pde.getProcinstId(), c2Id,
 								ape.getVitualTitle(), ape.getApproveType()));
