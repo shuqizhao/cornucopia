@@ -179,6 +179,9 @@ public class ProcessService {
 				}
 				boolean c1Bool = true;
 				for (ApproveConditionEntity ac : acs) {
+					Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s->acId=%d",
+							pde.getFormCode(), "开始计算条件", pde.getUpdateBy(), pde.getProcinstId(), ac.getId()));
+					
 					if (calculateApproveCondition(ac, pde.getBizData())) {
 						c1Bool = c1Bool && true;
 					} else {
@@ -195,6 +198,8 @@ public class ProcessService {
 					}
 					boolean c2Bool = true;
 					for (ApproveConditionEntity ac : bacs) {
+						Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s->acId=%d",
+								pde.getFormCode(), "开始计算条件", pde.getUpdateBy(), pde.getProcinstId(), ac.getId()));
 						if (calculateApproveCondition(ac, pde.getBizData())) {
 							c2Bool = c2Bool && true;
 						} else {
