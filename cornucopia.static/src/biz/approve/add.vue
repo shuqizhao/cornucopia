@@ -251,9 +251,9 @@ export default {
               self.$refs.editList.insertNew({
                 boolOperation: 1,
                 var1From: 2,
-                var1Type: 1,
+                varType: 1,
                 var2From: 1,
-                var2Type: 1
+                level: 1
               });
             }
           },
