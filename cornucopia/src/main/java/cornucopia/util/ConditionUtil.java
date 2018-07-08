@@ -223,7 +223,7 @@ public class ConditionUtil {
 			if (isLevelO2End) {
 				levelRight = " ) ";
 			}
-			if (ac.getOperation() == 1 || i == 0) {
+			if (ac.getBoolOperation() == 1 || i == 0) {
 				op = " && ";
 			} else {
 				op = " || ";

@@ -388,6 +388,17 @@ export default {
     },
     setPopupValue: function(value) {
       this.tableData[this.popUpIndex][this.popUpItem.name] = value;
+    },
+    getTableData: function() {
+      return this.tableData;
+    },
+    showPopup:function(url){
+      this.dialogVisible = true;
+      this.currentComponent = url;
+    },
+    hidePopup:function(){
+      this.dialogVisible = false;
+      this.currentComponent = '';
     }
   }
 };
