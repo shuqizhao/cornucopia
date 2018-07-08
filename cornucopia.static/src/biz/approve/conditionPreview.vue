@@ -92,17 +92,17 @@ export default {
           levelRight = " ) ";
         }
         if (ac.boolOperation == 1 || i == 0) {
-          op = " && ";
+          op = " and ";
         } else {
-          op = " || ";
+          op = " or ";
         }
-        if (i == tableData.length - 1) {
-          bools += op + levelLeft + isPass + levelRight;
+        if (i == tableData.length - 1 && !isPreLevel01) {
+          bools += op + levelLeft + isPass + " ) ";
         } else {
           bools += levelRight + op + levelLeft + isPass;
         }
       }
-      this.expression = bools;
+      this.expression = bools.substring(10,bools.length);
     }
   }
 };

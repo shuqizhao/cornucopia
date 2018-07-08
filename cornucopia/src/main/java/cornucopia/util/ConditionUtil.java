@@ -228,7 +228,7 @@ public class ConditionUtil {
 			} else {
 				op = " || ";
 			}
-			if (i == acs.size() - 1) {
+			if (i == acs.size() - 1 && !isPreLevel01) {
 				bools += op + levelLeft + isPass + levelRight;
 			} else {
 				bools += levelRight + op + levelLeft + isPass;

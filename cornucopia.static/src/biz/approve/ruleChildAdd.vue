@@ -319,6 +319,14 @@ export default {
             onClick: function() {
               self.$refs.editList.downSelected();
             }
+          },
+          {
+            text: "预览",
+            type: "btn-success",
+            icon: "el-icon-view",
+            onClick: function() {
+              self.$refs.editList.showPopup('conditionPreview');
+            }
           }
         ]
       },
