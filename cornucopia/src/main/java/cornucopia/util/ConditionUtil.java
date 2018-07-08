@@ -124,9 +124,12 @@ public class ConditionUtil {
 			return new ArrayList<Integer>();
 		}
 		for (RuleEntity rule : rules) {
+			Log4jHelper.LOGGER
+					.info(String.format("[%s]->开始计算规则[%s]->ruleId=%d", pde.getFormCode(), rule.getName(), id));
 			List<?> rcs = RuleService.getInstance().getRuleConditions(rule.getId());
 			if (rcs == null || rcs.size() == 0) {
-				Log4jHelper.LOGGER.error(String.format("[%s]->%s->ruleId=%d", pde.getFormCode(), "找不到岗位规则条件", id));
+				Log4jHelper.LOGGER.error(
+						String.format("[%s]->开始计算规则[%s],找不到岗位规则条件->ruleId=%d", pde.getFormCode(), rule.getName(), id));
 				continue;
 			}
 			@SuppressWarnings("unchecked")
@@ -134,14 +137,22 @@ public class ConditionUtil {
 			if (cBool) {
 				// 角色
 				if (rule.getType() == 1) {
+					Log4jHelper.LOGGER.info(String.format("[%s]->开始计算规则[%s]->ruleId=%d->通过角色[%s]获取人员",
+							pde.getFormCode(), rule.getName(), rule.getUser(), id));
 					return RoleService.getInstance().getUserIdsByRoleId(rule.getUser());
 				} else if (rule.getType() == 2) {// 函数
+					Log4jHelper.LOGGER.info(String.format("[%s]->开始计算规则[%s]->ruleId=%d->通过函数[%s]获取人员",
+							pde.getFormCode(), rule.getName(), rule.getUser(), id));
 					return FunctionService.getInstance().executeGetUserIds(rule.getUser(), pde);
 				} else if (rule.getType() == 3) {// 指定人
+					Log4jHelper.LOGGER.info(String.format("[%s]->开始计算规则[%s]->ruleId=%d->通过指定人[%s]获取人员",
+							pde.getFormCode(), rule.getName(), rule.getUser(), id));
 					List<Integer> list = new ArrayList<Integer>();
 					list.add(rule.getRuleId());
 					return list;
 				} else if (rule.getType() == 4) {// 跳过
+					Log4jHelper.LOGGER.info(String.format("[%s]->开始计算规则[%s]->ruleId=%d->跳过[%s]", pde.getFormCode(),
+							rule.getName(), rule.getUser(), id));
 					List<Integer> list = new ArrayList<Integer>();
 					list.add(rule.getRuleId());
 					return list;
@@ -158,8 +169,12 @@ public class ConditionUtil {
 
 	public static List<Integer> getUserIdsByPosition(ApprovePositionEntity ape, ProcessDataEntity pde) {
 		if (ape.getType() == 1) {
+			Log4jHelper.LOGGER.info(String.format("[%s]->开始通过岗位[%s]的角色获取人员->positionId=%d", pde.getFormCode(),
+					ape.getName(), ape.getId()));
 			return RoleService.getInstance().getUserIdsByRoleId(ape.getRule() + "");
 		} else if (ape.getType() == 2) {
+			Log4jHelper.LOGGER.info(String.format("[%s]->开始通过岗位[%s]的规则获取人员->positionId=%d", pde.getFormCode(),
+					ape.getName(), ape.getId()));
 			return getUserIdsByPositionIdWithRule(ape.getRule(), pde);
 		}
 		return new ArrayList<Integer>();
