@@ -216,6 +216,9 @@ public class ConditionUtil {
 
 			if (isLevelO2Start) {
 				levelLeft = " ( ";
+				if (i == acs.size() - 1) {
+					levelRight = " ) ";
+				}
 			}
 			if (isLevelO2End) {
 				levelRight = " ) ";
