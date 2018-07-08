@@ -60,7 +60,7 @@ export default {
       var willCommit = true;
       for (var i = 0; i < children.length; i++) {
         if (children[i].validateFrom) {
-          var isPass = children[i].validateFrom(true,function(name, data) {
+          var isPass = children[i].validateFrom(true, function(name, data) {
             dataWillCommit[name] = data;
           });
           willCommit = isPass && willCommit;
@@ -129,7 +129,7 @@ export default {
               item.onSuccess(item);
               return;
             }
-          } else if (response.message) {
+          } else if (response.code == "500" && response.message) {
             // $(self.$el)
             //   .find(".btn-commit")
             //   .removeAttr("disabled");
@@ -137,6 +137,9 @@ export default {
               type: "warning",
               message: response.message
             });
+            return;
+          }else{
+            return;
           }
           if (self.cfg.onSuccess) {
             if (self.cfg.onSuccess(self.cfg.mode, response)) {
