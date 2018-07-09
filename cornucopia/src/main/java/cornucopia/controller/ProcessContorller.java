@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import org.dom4j.DocumentException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -107,6 +108,7 @@ public class ProcessContorller {
 		return jr;
 	}
 
+	@Transactional
 	@RequestMapping(value = { "/applySave" }, method = RequestMethod.POST)
 	public JsonResult<Integer> applySave(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {
@@ -166,18 +168,18 @@ public class ProcessContorller {
 		}
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/applyRetry" }, method = RequestMethod.POST)
 	public JsonResult<Integer> applyRetry(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {
 		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//fromCode");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
 		processDataEntity.setBizData(pdvm.getXmlStr());
-		
+
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		processDataEntity.setUpdateBy(user.getId());
 		processDataEntity.setLevelCount(processDataEntity.getLevelCount());
-		
+
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
 				.getProcessInstAuth(processDataEntity.getId(), user.getId());
@@ -193,18 +195,18 @@ public class ProcessContorller {
 		}
 		return jr;
 	}
-	
+
 	@RequestMapping(value = { "/applyReturn" }, method = RequestMethod.POST)
 	public JsonResult<Integer> applyReturn(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {
 		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//fromCode");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
 		processDataEntity.setBizData(pdvm.getXmlStr());
-		
+
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		processDataEntity.setUpdateBy(user.getId());
 		processDataEntity.setLevelCount(0);
-		
+
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
 				.getProcessInstAuth(processDataEntity.getId(), user.getId());
@@ -246,7 +248,7 @@ public class ProcessContorller {
 				count, processDatas);
 		return dtr;
 	}
-	
+
 	@RequestMapping(value = { "/dealedList" }, method = RequestMethod.POST)
 	public DataTableResult<ProcessDataEntity> dealedList(HttpServletRequest request, DataTableParameter dtp) {
 		PagingParameters pp = new PagingParameters();
