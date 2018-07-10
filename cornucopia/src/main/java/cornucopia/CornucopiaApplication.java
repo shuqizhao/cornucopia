@@ -42,13 +42,19 @@ public class CornucopiaApplication {
 		BasicDataSource dataSource = new BasicDataSource();
 		try {
 			String driver = AppSettings.getInstance(AppSettings.class).get("db_driver");
-			String url  = AppSettings.getInstance(AppSettings.class).get("db_url");
-			String user  = AppSettings.getInstance(AppSettings.class).get("db_user");
-			String pwd  = AppSettings.getInstance(AppSettings.class).get("db_pwd");
+			String url = AppSettings.getInstance(AppSettings.class).get("db_url");
+			String user = AppSettings.getInstance(AppSettings.class).get("db_user");
+			String pwd = AppSettings.getInstance(AppSettings.class).get("db_pwd");
+			String db_maxActive = AppSettings.getInstance(AppSettings.class).get("db_maxActive");
+			String db_validationQuery = AppSettings.getInstance(AppSettings.class).get("db_validationQuery");
+			String db_testWhileIdle = AppSettings.getInstance(AppSettings.class).get("db_testWhileIdle");
 			dataSource.setDriverClassName(driver);
 			dataSource.setUrl(url);
 			dataSource.setUsername(user);
 			dataSource.setPassword(pwd);
+			dataSource.setMaxActive(Integer.parseInt(db_maxActive));
+			dataSource.setValidationQuery(db_validationQuery);
+			dataSource.setTestWhileIdle(Boolean.parseBoolean(db_testWhileIdle));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
