@@ -108,7 +108,7 @@ public class ProcessContorller {
 		return jr;
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	@RequestMapping(value = { "/applySave" }, method = RequestMethod.POST)
 	public JsonResult<Integer> applySave(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {

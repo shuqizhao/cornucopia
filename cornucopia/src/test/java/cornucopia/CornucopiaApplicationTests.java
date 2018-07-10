@@ -7,6 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import cornucopia.entity.ProcessDataEntity;
+import cornucopia.service.ProcessDataService;
 import cornucopia.util.ActivitiHelper;
 
 @RunWith(SpringRunner.class)
@@ -30,10 +32,10 @@ public class CornucopiaApplicationTests {
 		// boolean result = ConditionUtil.calculateCondition((List<ConditionEntity>)acs,
 		// pde);
 		// System.out.println(result);
-		// ProcessDataEntity processDataEntity = new ProcessDataEntity();
-		// ProcessDataService.getInstance().insert(processDataEntity);
+		 ProcessDataEntity processDataEntity = new ProcessDataEntity();
+		 ProcessDataService.getInstance().insert(processDataEntity);
 
-		ProcessEngine processEngine = ActivitiHelper.GetEngine();
-		System.out.println(processEngine);
+//		ProcessEngine processEngine = ActivitiHelper.GetEngine();
+//		System.out.println(processEngine);
 	}
 }
