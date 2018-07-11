@@ -1,9 +1,5 @@
 <template>
 <div>
-    <!-- <el-steps direction="vertical" :space="80" :active="activeCount"  style="margin-left: 70px;">
-        <el-step v-for="step in steps" :title="step.name" :description="step.userName" :key="step.id"></el-step>
-        
-    </el-steps> -->
     <ul class="timeline">
 
     <!-- timeline time label -->
@@ -25,7 +21,7 @@
 
             <div class="timeline-body" v-show="step.userName">
                 <!-- small box -->
-                <div class="small-box bg-aqua">
+                <div :class="step.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'">
                     <el-popover
                         placement="top-start"
                         :title="step.userName"
@@ -34,7 +30,7 @@
                         <el-button :type="step.isCurrent==1?'success':'info'" style="width:100%" slot="reference">{{step.userName}}</el-button>
                         </el-popover>
                    
-                    <a class="small-box-footer">{{step.createTime}}</a>
+                    <a class="small-box-footer">{{step.createTime||'处理中...'}}</a>
                 </div>
             </div>
         </div>
@@ -79,3 +75,8 @@ export default {
   }
 };
 </script>
+<style>
+.bg-aqua1{
+    background-color: rgb(194, 191, 191);
+}
+</style>
