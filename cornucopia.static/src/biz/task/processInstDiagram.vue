@@ -11,14 +11,13 @@
     <!-- /.timeline-label -->
 
     <!-- timeline item -->
-    <li v-for="step in steps" :key="step.id">
+    <li v-for="(step,index) in steps" :key="step.id">
         <!-- timeline icon -->
-        <i class="fa fa-arrow-down bg-blue"></i>
+        <!-- <span class="pull-left badge bg-blue">{{index+1}}</span> -->
+        <i class="fa fa-share bg-blue">{{index+1}}</i>
         <div class="timeline-item" >
-            <!-- <span class="time"><i class="fa fa-clock-o"></i> 12:05</span> -->
-
             <h3 class="timeline-header"><a><b>{{step.name}}</b></a></h3>
-
+            
             <div class="timeline-body" v-show="step.userName">
                 <!-- small box -->
                 <div :class="step.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'">
