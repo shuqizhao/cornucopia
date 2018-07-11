@@ -30,7 +30,7 @@
                         placement="top-start"
                         :title="step.userName"
                         trigger="hover"
-                        :content="step.email">
+                        :content="step.email+' '+step.personNumber">
                         <el-button :type="step.isCurrent==1?'success':'info'" style="width:100%" slot="reference">{{step.userName}}</el-button>
                         </el-popover>
                    
