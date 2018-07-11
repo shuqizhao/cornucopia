@@ -7,6 +7,7 @@ public class ProcessInstDiagramEntity extends BaseEntity {
 	private String userName;
 	private int levelCount;
 	private int isCurrent;
+	private String email;
 
 	public int getProcessId() {
 		return processId;
@@ -54,5 +55,13 @@ public class ProcessInstDiagramEntity extends BaseEntity {
 
 	public void setIsCurrent(int isCurrent) {
 		this.isCurrent = isCurrent;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

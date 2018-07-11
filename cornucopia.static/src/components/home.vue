@@ -145,7 +145,6 @@
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <center>
-        <h3 class="control-sidebar-heading">流程图</h3>
         <processInstDiagram></processInstDiagram>
     </center>
   </aside>
