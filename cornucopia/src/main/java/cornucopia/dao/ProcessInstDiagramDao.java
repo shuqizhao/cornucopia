@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 
 import cornucopia.entity.ProcessInstDiagramEntity;
 import cornucopia.model.ProcessInstAuthViewModel;
@@ -24,4 +25,7 @@ public interface ProcessInstDiagramDao {
 
 	@Select("call sp_process_inst_auth(#{processDataId},#{userId})")
 	public List<ProcessInstAuthViewModel> getProcessInstAuth(@Param("processDataId")int processDataId,@Param("userId")int userId);
+
+	@Update("call sp_process_inst_update_current(#{pdId},#{levelCount})")
+	public int updateCurrent(@Param("pdId")int processDataId,@Param("levelCount") int levelCount);
 }

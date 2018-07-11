@@ -26,6 +26,7 @@ import cornucopia.model.ProcessDataViewModel;
 import cornucopia.model.ProcessInstAuthViewModel;
 import cornucopia.service.OrderService;
 import cornucopia.service.ProcessCategoryService;
+import cornucopia.service.ProcessDataHistoryService;
 import cornucopia.service.ProcessDataService;
 import cornucopia.service.ProcessInstDiagramService;
 import cornucopia.service.ProcessService;
@@ -135,6 +136,7 @@ public class ProcessContorller {
 		ProcessService.getInstance().StartProcess(processDataEntity);
 		processDataEntity.setStepName("发起申请");
 		int result = ProcessDataService.getInstance().insert(processDataEntity);
+		ProcessDataHistoryService.getInstance().insert(processDataEntity);
 		ProcessService.getInstance().buildProcessInstDiagram(processDataEntity);
 		// XmlUtil.createElementForPd(processDataEntity, "//approve", "pdId",
 		// processDataEntity.getId()+"");
@@ -145,6 +147,7 @@ public class ProcessContorller {
 		return jr;
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	@RequestMapping(value = { "/applyAgree" }, method = RequestMethod.POST)
 	public JsonResult<Integer> applyAgree(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {
@@ -159,6 +162,8 @@ public class ProcessContorller {
 				.getProcessInstAuth(processDataEntity.getId(), user.getId());
 		if (auths != null && auths.size() > 0) {
 			ProcessService.getInstance().Complete(processDataEntity);
+			ProcessDataHistoryService.getInstance().insert(processDataEntity);
+			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(), processDataEntity.getLevelCount());
 			int result = ProcessDataService.getInstance().update(processDataEntity);
 			jr.setCode(200);
 			jr.setData(result);
@@ -169,6 +174,7 @@ public class ProcessContorller {
 		return jr;
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	@RequestMapping(value = { "/applyRetry" }, method = RequestMethod.POST)
 	public JsonResult<Integer> applyRetry(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {
@@ -186,6 +192,8 @@ public class ProcessContorller {
 		if (auths != null && auths.size() > 0) {
 			ProcessService.getInstance().Complete(processDataEntity);
 			processDataEntity.setStepName("重发起");
+			ProcessDataHistoryService.getInstance().insert(processDataEntity);
+			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(), 0);
 			int result = ProcessDataService.getInstance().update(processDataEntity);
 			jr.setCode(200);
 			jr.setData(result);
@@ -196,6 +204,7 @@ public class ProcessContorller {
 		return jr;
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	@RequestMapping(value = { "/applyReturn" }, method = RequestMethod.POST)
 	public JsonResult<Integer> applyReturn(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {
@@ -213,6 +222,8 @@ public class ProcessContorller {
 		if (auths != null && auths.size() > 0) {
 			ProcessService.getInstance().Return(processDataEntity);
 			processDataEntity.setStepName("被退回");
+			ProcessDataHistoryService.getInstance().insert(processDataEntity);
+			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(), -1);
 			int result = ProcessDataService.getInstance().update(processDataEntity);
 			jr.setCode(200);
 			jr.setData(result);

@@ -21,8 +21,7 @@ public class ProcessDataService {
 	ProcessDataDao processDataDao = MyBatisHelper.getMapper(ProcessDataDao.class);
 
 	public int insert(ProcessDataEntity processDataEntity) {
-		 processDataDao.insert(processDataEntity);
-		return ProcessDataHistoryService.getInstance().insert(processDataEntity);
+		return processDataDao.insert(processDataEntity);
 	}
 
 	public List<ProcessDataEntity> launchedList(PagingParameters pp, int userId) {
@@ -49,7 +48,6 @@ public class ProcessDataService {
 	}
 
 	public int update(ProcessDataEntity processDataEntity) {
-		ProcessDataHistoryService.getInstance().insert(processDataEntity);
 		return processDataDao.update(processDataEntity);
 	}
 

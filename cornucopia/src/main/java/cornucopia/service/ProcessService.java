@@ -120,6 +120,7 @@ public class ProcessService {
 		for (int nextUserId : nextUserIds) {
 			if (nextUserId == 666666) {
 				variables.put("to", "0");
+				pde.setStepName("结束");
 				Log4jHelper.LOGGER.info(
 						String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "查找到审核人员666666,准备完成DOA", task.getId()));
 			} else {

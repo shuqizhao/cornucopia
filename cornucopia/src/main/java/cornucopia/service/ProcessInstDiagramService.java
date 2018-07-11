@@ -34,4 +34,8 @@ public class ProcessInstDiagramService {
 	public List<ProcessInstAuthViewModel> getProcessInstAuth(int processDataId,int userId) {
 		return processInstDiagramDao.getProcessInstAuth(processDataId, userId);
 	}
+	
+	public int updateCurrent(int processDataId,int levelCount) {
+		return processInstDiagramDao.updateCurrent(processDataId,levelCount);
+	}
 }
