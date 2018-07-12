@@ -71,6 +71,7 @@ export default {
               } else {
                 self.cfg1.mode = "detailEdit";
                 self.cfg2.mode = "detailEdit";
+                self.$refs.comments.stopSendMsg();
               }
             }
           }

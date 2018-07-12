@@ -108,6 +108,11 @@ export default {
     },
     setCurrentName:function(name){
         this.currentName = name;
+    },
+    stopSendMsg:function(){
+        $(this.$el)
+        .find(".input-group")
+        .hide();
     }
   },
   data() {
