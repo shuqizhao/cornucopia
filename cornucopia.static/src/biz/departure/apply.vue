@@ -4,6 +4,7 @@
       <mform ref="applicant" :cfg="cfg"></mform>
       <mform ref="applyInfo" :cfg="cfg1"></mform>
       <mform ref="attachment" :cfg="cfg2"></mform>
+      <comment ref="comments" :cfg="cfgComment"></comment>
       <buttonBar v-show="!isApprove" ref="submit" :cfg="cfg3"></buttonBar>
       <buttonBar v-show="isApprove" ref="agree" :cfg="cfg4"></buttonBar>
     </div>
@@ -30,16 +31,21 @@ export default {
             self.closeLoading();
             let dataJson = JSON.parse(response.data);
             Object.keys(dataJson).forEach(function(key) {
-              let obj = dataJson[key][0];
-              Object.keys(obj).forEach(function(subKey) {
-                if (self.$refs[key] && self.$refs[key].detail) {
-                  try {
-                    self.$refs[key].detail[subKey] = obj[subKey];
-                  } catch (err) {
-                    console.log(err);
+              if(key=='comments'){
+                self.$refs.comments.setMessages(dataJson.comments);
+              }
+              else{
+                let obj = dataJson[key][0];
+                Object.keys(obj).forEach(function(subKey) {
+                  if (self.$refs[key] && self.$refs[key].detail) {
+                    try {
+                      self.$refs[key].detail[subKey] = obj[subKey];
+                    } catch (err) {
+                      console.log(err);
+                    }
                   }
-                }
-              });
+                });
+              }
             });
           }
         }
@@ -55,8 +61,8 @@ export default {
             if (response.data.length > 0) {
               self.cfg4.buttons[0].hidden = false;
               self.cfg4.buttons[2].hidden = false;
-              for(var i=0;i<response.data.length;i++){
-                if(response.data[i].buttonType=='Retry'){
+              for (var i = 0; i < response.data.length; i++) {
+                if (response.data[i].buttonType == "Retry") {
                   self.cfg4.buttons[1].hidden = false;
                   self.cfg4.buttons[0].hidden = true;
                   self.cfg4.buttons[2].hidden = true;
@@ -361,6 +367,10 @@ export default {
             }
           }
         ]
+      },
+      cfgComment: {
+        title: "留言",
+        name: "comments"
       }
     };
   }

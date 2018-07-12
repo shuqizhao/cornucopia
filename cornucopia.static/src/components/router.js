@@ -34,6 +34,9 @@ Vue.component('buttonBar', function(resolve) {
     require(['../components/buttonBar.vue'], resolve)
 })
 
+Vue.component('comment', function(resolve) {
+    require(['../components/comment.vue'], resolve)
+})
 
 jQuery.ajaxSetup({
     xhrFields: {
