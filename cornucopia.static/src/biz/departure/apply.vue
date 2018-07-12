@@ -14,70 +14,71 @@ export default {
   mounted: function() {
     let self = this;
     this.setBreadcrumbTitle(this, "发起新流程", "离职申请");
-    var processId = self.$route.query.processId;
-    var dataId = self.$route.query.id;
-    if (dataId) {
-      self.isApprove = true;
-      self.openLoading();
-      self.get(
-        self.getGlobalData().ApiBaseUrl +
-          "/process/getBizData?processId=" +
-          processId +
-          "&id=" +
-          dataId,
-        "",
-        function(response) {
-          if (response.code == 200) {
-            self.closeLoading();
-            let dataJson = JSON.parse(response.data);
-            Object.keys(dataJson).forEach(function(key) {
-              if(key=='comments'){
-                self.$refs.comments.setMessages(dataJson.comments);
-              }
-              else{
-                let obj = dataJson[key][0];
-                Object.keys(obj).forEach(function(subKey) {
-                  if (self.$refs[key] && self.$refs[key].detail) {
-                    try {
-                      self.$refs[key].detail[subKey] = obj[subKey];
-                    } catch (err) {
-                      console.log(err);
+    this.$nextTick(function() {
+      var processId = self.$route.query.processId;
+      var dataId = self.$route.query.id;
+      if (dataId) {
+        self.isApprove = true;
+        self.openLoading();
+        self.get(
+          self.getGlobalData().ApiBaseUrl +
+            "/process/getBizData?processId=" +
+            processId +
+            "&id=" +
+            dataId,
+          "",
+          function(response) {
+            if (response.code == 200) {
+              self.closeLoading();
+              let dataJson = JSON.parse(response.data);
+              Object.keys(dataJson).forEach(function(key) {
+                if (key == "comments") {
+                  self.$refs.comments.setMessages(dataJson.comments);
+                } else {
+                  let obj = dataJson[key][0];
+                  Object.keys(obj).forEach(function(subKey) {
+                    if (self.$refs[key] && self.$refs[key].detail) {
+                      try {
+                        self.$refs[key].detail[subKey] = obj[subKey];
+                      } catch (err) {
+                        console.log(err);
+                      }
                     }
-                  }
-                });
-              }
-            });
-          }
-        }
-      );
-
-      self.get(
-        self.getGlobalData().ApiBaseUrl +
-          "/process/getProcessInstAuth?processDataId=" +
-          dataId,
-        "",
-        function(response) {
-          if (response.code == 200) {
-            if (response.data.length > 0) {
-              self.cfg4.buttons[0].hidden = false;
-              self.cfg4.buttons[2].hidden = false;
-              for (var i = 0; i < response.data.length; i++) {
-                if (response.data[i].buttonType == "Retry") {
-                  self.cfg4.buttons[1].hidden = false;
-                  self.cfg4.buttons[0].hidden = true;
-                  self.cfg4.buttons[2].hidden = true;
+                  });
                 }
-              }
-            } else {
-              self.cfg1.mode = "detailEdit";
-              self.cfg2.mode = "detailEdit";
+              });
             }
           }
-        }
-      );
-    } else {
-      self.isApprove = false;
-    }
+        );
+
+        self.get(
+          self.getGlobalData().ApiBaseUrl +
+            "/process/getProcessInstAuth?processDataId=" +
+            dataId,
+          "",
+          function(response) {
+            if (response.code == 200) {
+              if (response.data.length > 0) {
+                self.cfg4.buttons[0].hidden = false;
+                self.cfg4.buttons[2].hidden = false;
+                for (var i = 0; i < response.data.length; i++) {
+                  if (response.data[i].buttonType == "Retry") {
+                    self.cfg4.buttons[1].hidden = false;
+                    self.cfg4.buttons[0].hidden = true;
+                    self.cfg4.buttons[2].hidden = true;
+                  }
+                }
+              } else {
+                self.cfg1.mode = "detailEdit";
+                self.cfg2.mode = "detailEdit";
+              }
+            }
+          }
+        );
+      } else {
+        self.isApprove = false;
+      }
+    });
   },
   created: function() {
     var dataId = this.$route.query.id;
@@ -202,6 +203,9 @@ export default {
         ],
         afterEditRender: function() {
           //  $(self.$el).find(".box-footer").hide();
+        },
+        onLoaded: function(data) {
+           self.$refs.comments.setCurrentName(data.name);
         }
       },
       cfg1: {

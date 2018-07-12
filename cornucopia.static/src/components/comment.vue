@@ -53,7 +53,7 @@
         <!-- /.box-body -->
         <div class="box-footer">
             <div class="input-group">
-                <input type="text" name="message" autocomplete="off" placeholder="输入消息 ..." class="form-control message">
+                <input type="text" @keyup.13="sendMsgKeyUp($event)"  name="message" autocomplete="off" placeholder="输入消息 ..." class="form-control message">
                 <span class="input-group-btn">
                     <button type="button" @click="sendMsg" class="btn btn-warning btn-flat">发送</button>
                     </span>
@@ -73,14 +73,26 @@ export default {
       var message = $(this.$el)
         .find(".message")
         .val();
+        if(message==''){
+            this.$message({
+                type: "warning",
+                message: '留言不能为空!'
+            });
+            return;
+        }
       this.detail.messages.push({
         msg: message,
         time: myDate.toLocaleString(),
-        name: "shuqizhao"
+        name: this.currentName
       });
       $(this.$el)
         .find(".message")
         .val("");
+    },
+    sendMsgKeyUp: function(ev) {
+      if (ev.keyCode == 13) {
+        this.sendMsg();
+      }
     },
     validateFrom: function(isOuter, callback) {
       if (callback) {
@@ -88,16 +100,20 @@ export default {
       }
       return true;
     },
-    setMessages:function(msgs){
-        this.detail.messages=msgs;
+    setMessages: function(msgs) {
+      this.detail.messages = msgs;
     },
-    addMessage:function(msg){
-         this.detail.messages.push(msg);
+    addMessage: function(msg) {
+      this.detail.messages.push(msg);
+    },
+    setCurrentName:function(name){
+        this.currentName = name;
     }
   },
   data() {
     return {
-      detail: { messages: [] }
+      detail: { messages: [] },
+      currentName: "无名"
     };
   }
 };
