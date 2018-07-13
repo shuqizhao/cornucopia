@@ -61,6 +61,7 @@ export default {
               if (response.data.length > 0) {
                 self.cfg4.buttons[0].hidden = false;
                 self.cfg4.buttons[2].hidden = false;
+                self.cfgComment.mode='edit';
                 for (var i = 0; i < response.data.length; i++) {
                   if (response.data[i].buttonType == "Retry") {
                     self.cfg4.buttons[1].hidden = false;
@@ -71,14 +72,13 @@ export default {
               } else {
                 self.cfg1.mode = "detailEdit";
                 self.cfg2.mode = "detailEdit";
-                self.cfgComment.mode='detail'
-                // self.$refs.comments.stopSendMsg();
               }
             }
           }
         );
       } else {
         self.isApprove = false;
+        self.cfgComment.mode='edit';
       }
     });
   },
