@@ -71,7 +71,8 @@ export default {
               } else {
                 self.cfg1.mode = "detailEdit";
                 self.cfg2.mode = "detailEdit";
-                self.$refs.comments.stopSendMsg();
+                self.cfgComment.mode='detail'
+                // self.$refs.comments.stopSendMsg();
               }
             }
           }
@@ -204,9 +205,6 @@ export default {
         ],
         afterEditRender: function() {
           //  $(self.$el).find(".box-footer").hide();
-        },
-        onLoaded: function(data) {
-           self.$refs.comments.setCurrentName(data.name);
         }
       },
       cfg1: {
@@ -316,11 +314,19 @@ export default {
       },
       cfg3: {
         save: this.getGlobalData().ApiBaseUrl + "/process/applySave",
+        saveButtonTitle: "发起申请",
         dataType: "xml",
-        extraData: {
-          approve: {
-            processId: this.$route.query.processId
-          }
+        getExtraData: function() {
+          return {
+            approve: {
+              processId: self.$route.query.processId
+            }
+          };
+        },
+        getExtraDataSkipValidate: function() {
+          return {
+            comments: self.$refs.comments.getSendMsg('发起申请')
+          };
         },
         onSuccess: function() {
           self.$router.push({ path: "/launchedtask" });
@@ -328,14 +334,20 @@ export default {
         }
       },
       cfg4: {
-        // save: this.getGlobalData().ApiBaseUrl + "/process/applyApprove",
         hideSave: true,
         hideCancel: true,
         dataType: "xml",
-        extraData: {
-          approve: {
-            processId: this.$route.query.processId
-          }
+        getExtraData: function() {
+          return {
+            approve: {
+              processId: self.$route.query.processId
+            }
+          };
+        },
+        getExtraDataSkipValidate:function(){
+          return {
+            comments: self.$refs.comments.getSendMsg(self.$refs.agree.currentAction)
+          };
         },
         buttons: [
           {
@@ -374,8 +386,9 @@ export default {
         ]
       },
       cfgComment: {
-        title: "留言",
-        name: "comments"
+        title: "审批历史记录",
+        name: "comments",
+        mode:"detail"
       }
     };
   }

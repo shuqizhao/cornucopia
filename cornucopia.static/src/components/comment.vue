@@ -2,7 +2,7 @@
      <!-- DIRECT CHAT -->
     <div class="box box-info direct-chat direct-chat-info">
         <div class="box-header with-border">
-            <i class="fa fa-comments"></i><h3 class="box-title">留言</h3>
+            <i class="fa fa-comments"></i><h3 class="box-title">{{cfg.title||'留言'}}</h3>
 
             <div class="box-tools pull-right">
             <!-- <span data-toggle="tooltip" title="3 New Messages" class="badge bg-yellow">3</span> -->
@@ -19,7 +19,7 @@
                     <div v-show="index%2==0" class="direct-chat-msg" :key="index+'i'">
                         <div class="direct-chat-info clearfix">
                         <span class="direct-chat-name pull-left">{{item.name}}</span>
-                        <span class="direct-chat-timestamp pull-right">{{item.time}}</span>
+                        <span class="direct-chat-timestamp pull-right"><i style="color:red;">[{{item.action}}]</i> {{item.time}}</span>
                         </div>
                         <!-- /.direct-chat-info -->
                         <img class="direct-chat-img" src="/src/assets/avatar.jpg" alt="message user image">
@@ -35,7 +35,7 @@
                     <div v-show="index%2==1" class="direct-chat-msg right" :key="index+'j'">
                         <div class="direct-chat-info clearfix">
                         <span class="direct-chat-name pull-right">{{item.name}}</span>
-                        <span class="direct-chat-timestamp pull-left">{{item.time}}</span>
+                        <span class="direct-chat-timestamp pull-left"><i style="color:red;">[{{item.action}}]</i> {{item.time}}</span>
                         </div>
                         <!-- /.direct-chat-info -->
                         <img class="direct-chat-img" src="/src/assets/avatar.jpg" alt="message user image">
@@ -51,13 +51,8 @@
             <!--/.direct-chat-messages-->
         </div>
         <!-- /.box-body -->
-        <div class="box-footer">
-            <div class="input-group">
-                <input type="text" @keyup.13="sendMsgKeyUp($event)"  name="message" autocomplete="off" placeholder="输入消息 ..." class="form-control message">
-                <span class="input-group-btn">
-                    <button type="button" @click="sendMsg" class="btn btn-warning btn-flat">发送</button>
-                    </span>
-            </div>
+        <div v-show="cfg.mode!='detail'" class="box-footer">
+            <textarea name="message" autocomplete="off" class="form-control message" style="width:100%"/>
         </div>
         <!-- /.box-footer-->
     </div>
@@ -66,22 +61,18 @@
 <script>
 export default {
   props: ["cfg"],
-  mounted: function() {},
+  mounted: function() {
+      this.currentName = this.getCookie("loginUser");
+  },
   methods: {
-    sendMsg: function() {
-      var myDate = new Date();
+    sendMsg: function(action) {
       var message = $(this.$el)
         .find(".message")
         .val();
-        if(message==''){
-            this.$message({
-                type: "warning",
-                message: '留言不能为空!'
-            });
-            return;
-        }
+      var myDate = new Date();
       this.detail.messages.push({
-        msg: message,
+        msg: message+'\r\n'+myDate.toLocaleString(),
+        action:action,
         time: myDate.toLocaleString(),
         name: this.currentName
       });
@@ -89,12 +80,23 @@ export default {
         .find(".message")
         .val("");
     },
-    sendMsgKeyUp: function(ev) {
-      if (ev.keyCode == 13) {
-        this.sendMsg();
-      }
+    getSendMsg: function(action) {
+      var message = $(this.$el)
+        .find(".message")
+        .val();
+      var myDate = new Date();
+      this.detail.messages.push({
+        msg: message+'\r\n'+myDate.toLocaleString(),
+        action:action,
+        time: myDate.toLocaleString(),
+        name: this.currentName
+      });
+      $(this.$el)
+        .find(".message")
+        .val("");
+    return this.detail.messages;
     },
-    validateFrom: function(isOuter, callback) {
+    validateFrom: function(isOuter, callback,item,willCommit) {
       if (callback) {
         callback(this.cfg.name, this.detail.messages);
       }
@@ -111,7 +113,7 @@ export default {
     },
     stopSendMsg:function(){
         $(this.$el)
-        .find(".input-group")
+        .find(".box-footer")
         .hide();
     }
   },

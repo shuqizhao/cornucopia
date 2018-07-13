@@ -3,7 +3,7 @@
         <center>
         <el-button
         type="primary" v-show="!cfg.hideSave"
-          @click="btnPost({name:'保存',url:cfg.save})">保存</el-button>
+          @click="btnPost({name:cfg.saveButtonTitle||'保存',url:cfg.save})">{{cfg.saveButtonTitle||'保存'}}</el-button>
           <span v-for="item in this.cfg.buttons" :key="item.name" style="margin-right:5px;">
             <el-button v-show="!(item.hidden||false)"
           :type="item.type||'primary'"
@@ -55,6 +55,7 @@ export default {
     },
     btnSave: function(item) {
       var self = this;
+      self.currentAction=item.name;
       var dataWillCommit = {};
       var children = this.$parent.$children;
       var willCommit = true;
@@ -62,7 +63,7 @@ export default {
         if (children[i].validateFrom) {
           var isPass = children[i].validateFrom(true, function(name, data) {
             dataWillCommit[name] = data;
-          });
+          },item,willCommit);
           willCommit = isPass && willCommit;
         }
       }
@@ -70,8 +71,10 @@ export default {
       if (!willCommit) {
         return;
       }
-
-      dataWillCommit = $.extend(true, dataWillCommit, self.cfg.extraData);
+      
+      if(self.cfg.getExtraData){
+        dataWillCommit = $.extend(true, dataWillCommit, self.cfg.getExtraData());
+      }
 
       var isOk = true;
       if (self.cfg.validate) {
@@ -92,6 +95,9 @@ export default {
           type: "warning"
         })
         .then(() => {
+          if(self.cfg.getExtraDataSkipValidate){
+            dataWillCommit = $.extend(true, dataWillCommit, self.cfg.getExtraDataSkipValidate());
+          }
           self.postUrl(dataWillCommit, null, item);
         })
         .catch(() => {});
@@ -224,7 +230,9 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      currentAction:''
+    };
   }
 };
 </script>
