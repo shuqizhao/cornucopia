@@ -62,18 +62,17 @@
 export default {
   props: ["cfg"],
   mounted: function() {
-      this.currentName = this.getCookie("loginUser");
+    this.currentName = this.getCookie("loginUser");
   },
   methods: {
     sendMsg: function(action) {
       var message = $(this.$el)
         .find(".message")
         .val();
-      var myDate = new Date();
       this.detail.messages.push({
-        msg: message+'\r\n'+myDate.toLocaleString(),
-        action:action,
-        time: myDate.toLocaleString(),
+        msg: message + "\r\n" + this.getNowFormatDate(),
+        action: action,
+        time: this.getNowFormatDate(),
         name: this.currentName
       });
       $(this.$el)
@@ -84,19 +83,18 @@ export default {
       var message = $(this.$el)
         .find(".message")
         .val();
-      var myDate = new Date();
       this.detail.messages.push({
-        msg: message+'\r\n'+myDate.toLocaleString(),
-        action:action,
-        time: myDate.toLocaleString(),
+        msg: message + "\r\n" + this.getNowFormatDate(),
+        action: action,
+        time: this.getNowFormatDate(),
         name: this.currentName
       });
       $(this.$el)
         .find(".message")
         .val("");
-    return this.detail.messages;
+      return this.detail.messages;
     },
-    validateFrom: function(isOuter, callback,item,willCommit) {
+    validateFrom: function(isOuter, callback, item, willCommit) {
       if (callback) {
         callback(this.cfg.name, this.detail.messages);
       }
@@ -108,13 +106,39 @@ export default {
     addMessage: function(msg) {
       this.detail.messages.push(msg);
     },
-    setCurrentName:function(name){
-        this.currentName = name;
+    setCurrentName: function(name) {
+      this.currentName = name;
     },
-    stopSendMsg:function(){
-        $(this.$el)
+    stopSendMsg: function() {
+      $(this.$el)
         .find(".box-footer")
         .hide();
+    },
+    getNowFormatDate: function() {
+      var date = new Date();
+      var seperator1 = "/";
+      var seperator2 = ":";
+      var month = date.getMonth() + 1;
+      var strDate = date.getDate();
+      if (month >= 1 && month <= 9) {
+        month = "0" + month;
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+      }
+      var currentdate =
+        date.getFullYear() +
+        seperator1 +
+        month +
+        seperator1 +
+        strDate +
+        " " +
+        date.getHours() +
+        seperator2 +
+        date.getMinutes() +
+        seperator2 +
+        date.getSeconds();
+      return currentdate;
     }
   },
   data() {
