@@ -24,8 +24,7 @@
                         <!-- /.direct-chat-info -->
                         <img class="direct-chat-img" src="/src/assets/avatar.jpg" alt="message user image">
                         <!-- /.direct-chat-img -->
-                        <div class="direct-chat-text">
-                            {{item.msg}}
+                        <div class="direct-chat-text" v-html="item.msg">
                         </div>
                         <!-- /.direct-chat-text -->
                     </div>
@@ -40,8 +39,7 @@
                         <!-- /.direct-chat-info -->
                         <img class="direct-chat-img" src="/src/assets/avatar.jpg" alt="message user image">
                         <!-- /.direct-chat-img -->
-                        <div class="direct-chat-text">
-                            {{item.msg}}
+                        <div class="direct-chat-text" v-html="item.msg">
                         </div>
                         <!-- /.direct-chat-text -->
                     </div>
@@ -65,26 +63,26 @@ export default {
     this.currentName = this.getCookie("loginUser");
   },
   methods: {
-    sendMsg: function(action) {
-      var message = $(this.$el)
-        .find(".message")
-        .val();
-      this.detail.messages.push({
-        msg: message + "\r\n" + this.getNowFormatDate(),
-        action: action,
-        time: this.getNowFormatDate(),
-        name: this.currentName
-      });
-      $(this.$el)
-        .find(".message")
-        .val("");
-    },
+    // sendMsg: function(action) {
+    //   var message = $(this.$el)
+    //     .find(".message")
+    //     .val();
+    //   this.detail.messages.push({
+    //     msg: message + "my_br" + this.getNowFormatDate(),
+    //     action: action,
+    //     time: this.getNowFormatDate(),
+    //     name: this.currentName
+    //   });
+    //   $(this.$el)
+    //     .find(".message")
+    //     .val("");
+    // },
     getSendMsg: function(action) {
       var message = $(this.$el)
         .find(".message")
         .val();
       this.detail.messages.push({
-        msg: message + "\r\n" + this.getNowFormatDate(),
+        msg: message + "<br/>" + this.getNowFormatDate(),
         action: action,
         time: this.getNowFormatDate(),
         name: this.currentName
@@ -92,6 +90,8 @@ export default {
       $(this.$el)
         .find(".message")
         .val("");
+    debugger;
+      this.clearMsgsBeforeCommit();
       return this.detail.messages;
     },
     validateFrom: function(isOuter, callback, item, willCommit) {
@@ -101,6 +101,7 @@ export default {
       return true;
     },
     setMessages: function(msgs) {
+      this.clearMsgsBeforeLoad(msgs);
       this.detail.messages = msgs;
     },
     addMessage: function(msg) {
@@ -113,6 +114,22 @@ export default {
       $(this.$el)
         .find(".box-footer")
         .hide();
+    },
+    clearMsgsBeforeCommit:function(){
+        var msgs = this.detail.messages;
+        for(var i=0;i<msgs.length;i++){
+          msgs[i].msg = msgs[i].msg.replace(/\<br\/\>/g, 'my_br');
+          msgs[i].msg = msgs[i].msg.replace(/&nbsp;/g, 'my_space');
+          msgs[i].msg = msgs[i].msg.replace(/\r\n/g, 'my_br'); //IE9、FF、chrome
+	      msgs[i].msg = msgs[i].msg.replace(/\n/g, 'my_br'); //IE7-8
+	      msgs[i].msg = msgs[i].msg.replace(/\s/g, 'my_space'); //空格处理
+      }
+    },
+    clearMsgsBeforeLoad:function(msgs){
+        for(var i=0;i<msgs.length;i++){
+          msgs[i].msg = msgs[i].msg.replace(/my_br/g, '<br/>');
+	      msgs[i].msg = msgs[i].msg.replace(/my_space/g, '&nbsp;');
+      }
     },
     getNowFormatDate: function() {
       var date = new Date();

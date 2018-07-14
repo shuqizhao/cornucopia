@@ -33,7 +33,10 @@ export default {
               let dataJson = JSON.parse(response.data);
               Object.keys(dataJson).forEach(function(key) {
                 if (key == "comments") {
-                  self.$refs.comments.setMessages(dataJson.comments);
+                  setTimeout(function(){
+                    self.$refs.comments.setMessages(dataJson.comments);
+                },200);
+                  
                 } else {
                   let obj = dataJson[key][0];
                   Object.keys(obj).forEach(function(subKey) {
