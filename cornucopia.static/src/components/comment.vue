@@ -18,8 +18,8 @@
                     <!-- Message. Default to the left -->
                     <div v-show="index%2==0" class="direct-chat-msg" :key="index+'i'">
                         <div class="direct-chat-info clearfix">
-                        <span class="direct-chat-name pull-left">{{item.name}}</span>
-                        <span class="direct-chat-timestamp pull-right"><i style="color:red;">[{{item.action}}]</i> {{item.time}}</span>
+                        <span class="direct-chat-name pull-left">{{item.name}} <i style="color:red;font-size:14px;">[{{item.action}}]</i></span>
+                        <!-- <span class="direct-chat-timestamp pull-right"><i style="color:red;font-size:14px;">[{{item.action}}]</i> {{item.time}}</span> -->
                         </div>
                         <!-- /.direct-chat-info -->
                         <img class="direct-chat-img" src="/src/assets/avatar.jpg" alt="message user image">
@@ -31,10 +31,10 @@
                     <!-- /.direct-chat-msg -->
 
                     <!-- Message to the right -->
-                    <div v-show="index%2==1" class="direct-chat-msg right" :key="index+'j'">
+                    <div v-show="index%2==1" class="direct-chat-msg left" :key="index+'j'">
                         <div class="direct-chat-info clearfix">
-                        <span class="direct-chat-name pull-right">{{item.name}}</span>
-                        <span class="direct-chat-timestamp pull-left"><i style="color:red;">[{{item.action}}]</i> {{item.time}}</span>
+                        <span class="direct-chat-name pull-left">{{item.name}} <i style="color:red;font-size:14px;">[{{item.action}}]</i></span>
+                        <!-- <span class="direct-chat-timestamp pull-left"><i style="color:red;font-size:14px;">[{{item.action}}]</i> {{item.time}}</span> -->
                         </div>
                         <!-- /.direct-chat-info -->
                         <img class="direct-chat-img" src="/src/assets/avatar.jpg" alt="message user image">
@@ -78,10 +78,11 @@ export default {
     //     .val("");
     // },
     getSendMsg: function(action) {
+      var msgs = $.extend([], this.detail.messages);
       var message = $(this.$el)
         .find(".message")
         .val();
-      this.detail.messages.push({
+      msgs.push({
         msg: message + "<br/>" + this.getNowFormatDate(),
         action: action,
         time: this.getNowFormatDate(),
@@ -90,9 +91,8 @@ export default {
       $(this.$el)
         .find(".message")
         .val("");
-    debugger;
-      this.clearMsgsBeforeCommit();
-      return this.detail.messages;
+      this.clearMsgsBeforeCommit(msgs);
+      return msgs;
     },
     validateFrom: function(isOuter, callback, item, willCommit) {
       if (callback) {
@@ -115,20 +115,19 @@ export default {
         .find(".box-footer")
         .hide();
     },
-    clearMsgsBeforeCommit:function(){
-        var msgs = this.detail.messages;
-        for(var i=0;i<msgs.length;i++){
-          msgs[i].msg = msgs[i].msg.replace(/\<br\/\>/g, 'my_br');
-          msgs[i].msg = msgs[i].msg.replace(/&nbsp;/g, 'my_space');
-          msgs[i].msg = msgs[i].msg.replace(/\r\n/g, 'my_br'); //IE9、FF、chrome
-	      msgs[i].msg = msgs[i].msg.replace(/\n/g, 'my_br'); //IE7-8
-	      msgs[i].msg = msgs[i].msg.replace(/\s/g, 'my_space'); //空格处理
+    clearMsgsBeforeCommit: function(msgs) {
+      for (var i = 0; i < msgs.length; i++) {
+        msgs[i].msg = msgs[i].msg.replace(/\<br\/\>/g, "my_br");
+        msgs[i].msg = msgs[i].msg.replace(/&nbsp;/g, "my_space");
+        msgs[i].msg = msgs[i].msg.replace(/\r\n/g, "my_br"); //IE9、FF、chrome
+        msgs[i].msg = msgs[i].msg.replace(/\n/g, "my_br"); //IE7-8
+        msgs[i].msg = msgs[i].msg.replace(/\s/g, "my_space"); //空格处理
       }
     },
-    clearMsgsBeforeLoad:function(msgs){
-        for(var i=0;i<msgs.length;i++){
-          msgs[i].msg = msgs[i].msg.replace(/my_br/g, '<br/>');
-	      msgs[i].msg = msgs[i].msg.replace(/my_space/g, '&nbsp;');
+    clearMsgsBeforeLoad: function(msgs) {
+      for (var i = 0; i < msgs.length; i++) {
+        msgs[i].msg = msgs[i].msg.replace(/my_br/g, "<br/>");
+        msgs[i].msg = msgs[i].msg.replace(/my_space/g, "&nbsp;");
       }
     },
     getNowFormatDate: function() {
@@ -166,3 +165,10 @@ export default {
   }
 };
 </script>
+<style>
+.direct-chat-text,
+.direct-chat-name {
+  font-size: 14px;
+}
+</style>
+
