@@ -4,6 +4,7 @@ public class ProcessInstAuthViewModel {
 	private int userId;
 	private String buttonName;
 	private String buttonType;
+	private String currentStep;
 
 	public int getUserId() {
 		return userId;
@@ -27,5 +28,13 @@ public class ProcessInstAuthViewModel {
 
 	public void setButtonType(String buttonType) {
 		this.buttonType = buttonType;
+	}
+
+	public String getCurrentStep() {
+		return currentStep;
+	}
+
+	public void setCurrentStep(String currentStep) {
+		this.currentStep = currentStep;
 	}
 }

@@ -78,25 +78,30 @@ export default {
     //     .val("");
     // },
     getSendMsg: function(action) {
-    //   var msgs = $.extend([], this.detail.messages);
+      //   var msgs = $.extend([], this.detail.messages);
       //   var msgs =this.detail.messages.concat([])
       var msgs = [];
-      debugger;
       for (var i = 0; i < this.detail.messages.length; i++) {
         var item = this.detail.messages[i];
         msgs.push({
-          msg: item.msg+'',
-          action: item.action+'',
-          time: item.time+'',
-          name: item.name+''
+          msg: item.msg + "",
+          action: item.action + "",
+          time: item.time + "",
+          name: item.name + ""
         });
       }
       var message = $(this.$el)
         .find(".message")
         .val();
+      var actionStr ='';
+      if(this.currentStep){
+          actionStr = this.currentStep + "-" + action;
+      }else{
+          actionStr = action;
+      }
       msgs.push({
         msg: message + "<br/>" + this.getNowFormatDate(),
-        action: action,
+        action: actionStr,
         time: this.getNowFormatDate(),
         name: this.currentName
       });
@@ -122,13 +127,15 @@ export default {
     setCurrentName: function(name) {
       this.currentName = name;
     },
+    setCurrentStep: function(name) {
+      this.currentStep = name;
+    },
     stopSendMsg: function() {
       $(this.$el)
         .find(".box-footer")
         .hide();
     },
     clearMsgsBeforeCommit: function(msgs) {
-        debugger;
       for (var i = 0; i < msgs.length; i++) {
         msgs[i].msg = msgs[i].msg.replace(/\<br\/\>/g, "my_br");
         msgs[i].msg = msgs[i].msg.replace(/&nbsp;/g, "my_space");
@@ -173,7 +180,8 @@ export default {
   data() {
     return {
       detail: { messages: [] },
-      currentName: "无名"
+      currentName: "无名",
+      currentStep: ""
     };
   }
 };

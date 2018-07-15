@@ -62,6 +62,14 @@ export default {
           function(response) {
             if (response.code == 200) {
               if (response.data.length > 0) {
+                self.processInstAuth = response.data;
+                for(var i=0;i<self.processInstAuth.length;i++){
+                  let index = i;
+                  setTimeout(function(){
+                    self.$refs.comments.setCurrentStep(self.processInstAuth[index].currentStep);
+                  },200);
+                  break;
+                }
                 self.cfg4.buttons[0].hidden = false;
                 self.cfg4.buttons[2].hidden = false;
                 self.cfgComment.mode='edit';
@@ -95,6 +103,7 @@ export default {
     let self = this;
     return {
       isApprove: false,
+      processInstAuth:[],
       cfg0: {
         title: "单据信息",
         detailTitle: "单据信息",
