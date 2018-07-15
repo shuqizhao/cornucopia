@@ -60,7 +60,7 @@
 export default {
   props: ["cfg"],
   mounted: function() {
-    this.currentName = this.getCookie("loginUser");
+    this.currentName = this.getGlobalData().LoginUser.name;
   },
   methods: {
     // sendMsg: function(action) {

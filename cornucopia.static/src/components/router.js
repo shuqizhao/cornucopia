@@ -297,6 +297,18 @@ Vue.prototype.getSync = function(url, params, onSuccess) {
     });
 }
 
+if (Vue.prototype.getCookie("adAuthCookie")) {
+    $.ajax({
+        url: jsonData.ApiBaseUrl + jsonData.UserUrl,
+        success: function(result) {
+            if (result.code == 200) {
+                jsonData.LoginUser = result.data
+            }
+        },
+        dataType: 'json'
+    });
+}
+
 const router = new VueRouter({
     routes: systemRouters
 });

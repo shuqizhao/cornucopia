@@ -165,7 +165,7 @@ export default {
   name: "app",
   mounted: function() {
     this.getMenus();
-    this.displayName = this.getCookie("loginUser");
+    this.displayName = this.getGlobalData().LoginUser.name;
     if(this.collapse=="true"){
       $('.sidebar-mini').addClass('sidebar-collapse');
     }

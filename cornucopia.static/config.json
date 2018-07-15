@@ -1,10 +1,11 @@
 {
     "ApiBaseUrl": "http://localhost:8888",
-    "Domain":"",
+    "Domain": "",
     "Avatar": "/src/assets/avatar.jpg",
     "LoginTitle": "<b>Cornucopia</b>",
     "LoginBoxMsg": "",
     "LoginUrl": "/auth/login",
+    "UserUrl": "/user/getApplicant",
     "LoginCookeName": "adAuthCookie",
     "HomeTitle": "<b>流程</b>管理系统",
     "HomeMiniTitle": "<b>B</b>pm",

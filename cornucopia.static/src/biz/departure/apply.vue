@@ -82,19 +82,11 @@ export default {
       } else {
         self.isApprove = false;
         self.cfgComment.mode='edit';
+         setTimeout(function(){
+            self.$refs.applicant.detail=self.getGlobalData().LoginUser;
+          },200);
       }
     });
-  },
-  created: function() {
-    var dataId = this.$route.query.id;
-    if (!dataId) {
-      this.cfg.get = {
-        url: this.getGlobalData().ApiBaseUrl + "/user/getApplicant",
-        params: {
-          id: this.$route.query.id
-        }
-      };
-    }
   },
   destroyed: function() {
     this.setBreadcrumbTitle(this, "", "");
