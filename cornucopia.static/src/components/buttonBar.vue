@@ -100,7 +100,7 @@ export default {
           }
           self.postUrl(dataWillCommit, null, item);
         })
-        .catch(() => {});
+        .catch((err) => {console.log(err)});
     },
     postUrl: function(data, handler, item) {
       var self = this;
