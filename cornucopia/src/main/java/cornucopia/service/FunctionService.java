@@ -2,8 +2,9 @@ package cornucopia.service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -159,9 +160,11 @@ public class FunctionService {
 	}
 
 	public Map<String, Object> parseJSON2Map(String jsonStr) {
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		JSONObject json = JSONObject.parseObject(jsonStr);
-		for (Object k : json.keySet()) {
+		List<Object> keys = new ArrayList<>(json.keySet());
+		Collections.reverse(keys);
+		for (Object k : keys) {
 			Object v = json.get(k);
 			if (v instanceof JSONArray) {
 				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();

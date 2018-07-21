@@ -176,9 +176,9 @@ export default {
          getExtraData: function() {
           return {
             process: {
-              processNodeId: this.currentProcessNodeId,
-              processId: this.currentProcessId,
-              approveId: this.currentApproveId
+              processNodeId: self.currentProcessNodeId,
+              processId: self.currentProcessId,
+              approveId: self.currentApproveId
             }
           }
         },
