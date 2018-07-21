@@ -40,7 +40,7 @@ export default {
             type: "select",
             onChange: function(s1, toolData) {
               self.currentProcessId = s1;
-              self.cfg1.extraData.process.processId = s1;
+              // self.cfg1.extraData.process.processId = s1;
               self.currentProcessNodeId = 0;
               self.currentApproveId = 0;
               var items = [
@@ -74,7 +74,7 @@ export default {
             type: "select",
             onChange: function(s1, toolData) {
               self.currentProcessNodeId = s1;
-              self.cfg1.extraData.process.processNodeId = s1;
+              // self.cfg1.extraData.process.processNodeId = s1;
               self.currentApproveId = 0;
               var items = [
                 {
@@ -118,7 +118,7 @@ export default {
             type: "select",
             onChange: function(s1, toolData) {
               self.currentApproveId = s1;
-              self.cfg1.extraData.process.approveId = s1;
+              // self.cfg1.extraData.process.approveId = s1;
               var items = [
                 {
                   name: "postionName",
@@ -173,11 +173,13 @@ export default {
       },
       cfg1: {
         save: this.getGlobalData().ApiBaseUrl + "/approve/matrixUpdate",
-        extraData: {
-          process: {
-            processNodeId: this.currentProcessNodeId,
-            processId: this.currentProcessId,
-            approveId: this.currentApproveId
+         getExtraData: function() {
+          return {
+            process: {
+              processNodeId: this.currentProcessNodeId,
+              processId: this.currentProcessId,
+              approveId: this.currentApproveId
+            }
           }
         },
         validate: function() {

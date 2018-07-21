@@ -45,8 +45,8 @@ export default {
             title: "职位",
             type: "hidden",
             data: []
-          }
-          ,{
+          },
+          {
             name: "type",
             title: "类型",
             type: "select",
@@ -58,21 +58,21 @@ export default {
             ],
             onChange: function(s1) {
               if (s1 == 1) {
-                self.cfg.items[3].type="select"
+                self.cfg.items[3].type = "select";
                 self.cfg.items[3].data = self.roles;
-                self.$set(self.$refs.form.detail,"user","");
-              }else if(s1==2){
-                self.cfg.items[3].url="functionPopup";
-                self.cfg.items[3].type="popup";
+                self.$set(self.$refs.form.detail, "user", "");
+              } else if (s1 == 2) {
+                self.cfg.items[3].url = "functionPopup";
+                self.cfg.items[3].type = "popup";
                 self.cfg.items[3].data = [];
-                self.$refs.form.detail.user="";
-              }else if(s1==3){
-                self.cfg.items[3].type="text"
+                self.$refs.form.detail.user = "";
+              } else if (s1 == 3) {
+                self.cfg.items[3].type = "text";
                 self.cfg.items[3].data = "";
-                self.$refs.form.detail.user="";
-              }else if(s1==4){
-                self.cfg.items[3].type="readonly"
-                self.$refs.form.detail.user="999999";
+                self.$refs.form.detail.user = "";
+              } else if (s1 == 4) {
+                self.cfg.items[3].type = "readonly";
+                self.$refs.form.detail.user = "999999";
               }
             }
           },
@@ -97,27 +97,30 @@ export default {
           return true;
         },
         onLoaded: function(detail) {
-          if(detail.type==1){
+          if (detail.type == 1) {
             self.get(
               self.getGlobalData().ApiBaseUrl + "/approve/getAllRoles",
               "",
               function(response) {
                 if (response.code == 200) {
                   self.roles = response.data;
-                  self.cfg.items[3].type="select";
+                  self.cfg.items[3].type = "select";
                   self.cfg.items[3].data = self.roles;
-                  self.$set(self.$refs.form.detail,"user",parseInt(detail.user));
+                  self.$set(
+                    self.$refs.form.detail,
+                    "user",
+                    parseInt(detail.user)
+                  );
                 }
               }
             );
-          }else if(detail.type==2){
-            self.cfg.items[3].url="functionPopup";
-            self.cfg.items[3].type="popup";
-          }
-          else if(detail.type==3){
-            self.cfg.items[3].type="text";
-          }else if(detail.type==4){
-            self.cfg.items[3].type="readonly";
+          } else if (detail.type == 2) {
+            self.cfg.items[3].url = "functionPopup";
+            self.cfg.items[3].type = "popup";
+          } else if (detail.type == 3) {
+            self.cfg.items[3].type = "text";
+          } else if (detail.type == 4) {
+            self.cfg.items[3].type = "readonly";
           }
         }
       },
@@ -359,21 +362,24 @@ export default {
             type: "btn-success",
             icon: "el-icon-view",
             onClick: function() {
-              self.$refs.editList.showPopup('conditionPreview');
+              self.$refs.editList.showPopup("conditionPreview");
             }
           }
         ]
       },
       cfg2: {
         save: this.getGlobalData().ApiBaseUrl + "/approve/ruleChildUpdate",
-        extraData: {
-          rule: {
-            id: self.$parent.$parent.$parent.$parent.$parent.currentRuleId2,
-            parentId: self.$parent.$parent.$parent.$parent.$parent.currentRuleId
-          }
+        getExtraData: function() {
+          return {
+            rule: {
+              id: self.$parent.$parent.$parent.$parent.$parent.currentRuleId2,
+              parentId:
+                self.$parent.$parent.$parent.$parent.$parent.currentRuleId
+            }
+          };
         }
       },
-      roles:[]
+      roles: []
     };
   }
 };

@@ -7,15 +7,14 @@
 </template>
 <script>
 export default {
-  mounted:function(){
-  },
+  mounted: function() {},
   data() {
     var self = this;
     return {
       cfg: {
         title: "新增岗位子规则",
         mode: "create",
-        name:'rule',
+        name: "rule",
         hideFooter: true,
         items: [
           {
@@ -27,8 +26,9 @@ export default {
             name: "jobId",
             title: "职位",
             type: "hidden",
-            data:[]
-          },{
+            data: []
+          },
+          {
             name: "type",
             title: "类型",
             type: "select",
@@ -40,22 +40,22 @@ export default {
             ],
             onChange: function(s1) {
               if (s1 == 1) {
-                self.cfg.items[3].type="select"
+                self.cfg.items[3].type = "select";
                 self.cfg.items[3].data = self.roles;
-                self.$set(self.$refs.form.detail,"user","");
+                self.$set(self.$refs.form.detail, "user", "");
                 // self.$refs.form.detail.user="";
-              }else if(s1==2){
-                self.cfg.items[3].url="functionPopup";
-                self.cfg.items[3].type="popup";
+              } else if (s1 == 2) {
+                self.cfg.items[3].url = "functionPopup";
+                self.cfg.items[3].type = "popup";
                 self.cfg.items[3].data = [];
-                self.$refs.form.detail.user="";
-              }else if(s1==3){
-                self.cfg.items[3].type="text"
+                self.$refs.form.detail.user = "";
+              } else if (s1 == 3) {
+                self.cfg.items[3].type = "text";
                 self.cfg.items[3].data = "";
-                self.$refs.form.detail.user="";
-              }else if(s1==4){
-                self.cfg.items[3].type="readonly"
-                self.$refs.form.detail.user="999999";
+                self.$refs.form.detail.user = "";
+              } else if (s1 == 4) {
+                self.cfg.items[3].type = "readonly";
+                self.$refs.form.detail.user = "999999";
               }
             }
           },
@@ -95,7 +95,7 @@ export default {
       cfg1: {
         title: "条件公式",
         mode: "create",
-        name:'ruleConditions',
+        name: "ruleConditions",
         dialogWidth: "95%",
         items: [
           {
@@ -137,14 +137,14 @@ export default {
                 name: "函数"
               }
             ],
-            onChange: function(index, item, s1, tableCell,tableData,status) {
+            onChange: function(index, item, s1, tableCell, tableData, status) {
               if (!tableCell[index]) {
                 tableCell[index] = {};
               }
-              if(status!=1){
-                tableData[index]["var1"]="";
+              if (status != 1) {
+                tableData[index]["var1"] = "";
               }
-              
+
               if (s1 == 3) {
                 tableCell[index]["var1"] = "popup";
               } else {
@@ -230,20 +230,19 @@ export default {
                 name: "函数"
               }
             ],
-            onChange: function(index, item, s1, tableCell,tableData,status) {
+            onChange: function(index, item, s1, tableCell, tableData, status) {
               if (!tableCell[index]) {
                 tableCell[index] = {};
               }
-              if(status!=1){
-                tableData[index]["var2"]="";
+              if (status != 1) {
+                tableData[index]["var2"] = "";
               }
-              
+
               if (s1 == 3) {
                 tableCell[index]["var2"] = "popup";
               } else {
                 tableCell[index]["var2"] = "text";
               }
-
             }
           },
           {
@@ -325,18 +324,21 @@ export default {
             type: "btn-success",
             icon: "el-icon-view",
             onClick: function() {
-              self.$refs.editList.showPopup('conditionPreview');
+              self.$refs.editList.showPopup("conditionPreview");
             }
           }
         ]
       },
-      cfg2:{
-        save:this.getGlobalData().ApiBaseUrl + "/approve/ruleChildAdd",
-        extraData:{
-          rule:{
-            id:0,
-            parentId:self.$parent.$parent.$parent.$parent.$parent.currentRuleId
-          }
+      cfg2: {
+        save: this.getGlobalData().ApiBaseUrl + "/approve/ruleChildAdd",
+        getExtraData: function() {
+          return {
+            rule: {
+              id: 0,
+              parentId:
+                self.$parent.$parent.$parent.$parent.$parent.currentRuleId
+            }
+          };
         }
       }
     };

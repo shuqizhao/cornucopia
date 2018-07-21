@@ -285,11 +285,13 @@ export default {
       },
       cfg2:{
         save:this.getGlobalData().ApiBaseUrl + "/approve/add",
-        extraData:{
-          approve:{
-            processId:self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value1,
-            processNodeId:self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2,
-            parentId:self.$parent.$parent.cfg.title=='审批路线(二)'?self.$parent.$parent.$parent.$parent.$parent.currentApproveId:0
+        getExtraData: function() {
+          return {
+            approve:{
+              processId:self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value1,
+              processNodeId:self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2,
+              parentId:self.$parent.$parent.cfg.title=='审批路线(二)'?self.$parent.$parent.$parent.$parent.$parent.currentApproveId:0
+            }
           }
         }
       }

@@ -56,7 +56,7 @@ export default {
         mode: "edit",
         name: "approveConditions",
         dialogWidth: "95%",
-        showCheckBox:true,
+        showCheckBox: true,
         get: {
           url: this.getGlobalData().ApiBaseUrl + "/approve/getConditions",
           params: {
@@ -106,14 +106,14 @@ export default {
                 name: "函数"
               }
             ],
-            onChange: function(index, item, s1, tableCell,tableData,status) {
+            onChange: function(index, item, s1, tableCell, tableData, status) {
               if (!tableCell[index]) {
                 tableCell[index] = {};
               }
-              if(status!=1){
-                tableData[index]["var1"]="";
+              if (status != 1) {
+                tableData[index]["var1"] = "";
               }
-              
+
               if (s1 == 3) {
                 tableCell[index]["var1"] = "popup";
                 // this.parainstId = tableData[index][var2];
@@ -200,21 +200,20 @@ export default {
                 name: "函数"
               }
             ],
-            onChange: function(index, item, s1, tableCell,tableData,status) {
+            onChange: function(index, item, s1, tableCell, tableData, status) {
               if (!tableCell[index]) {
                 tableCell[index] = {};
               }
-              if(status!=1){
-                tableData[index]["var2"]="";
+              if (status != 1) {
+                tableData[index]["var2"] = "";
               }
-              
+
               if (s1 == 3) {
                 tableCell[index]["var2"] = "popup";
                 // this.parainstId = tableData[index][var2];
               } else {
                 tableCell[index]["var2"] = "text";
               }
-
             }
           },
           {
@@ -296,24 +295,25 @@ export default {
             type: "btn-success",
             icon: "el-icon-view",
             onClick: function() {
-              self.$refs.editList.showPopup('conditionPreview');
+              self.$refs.editList.showPopup("conditionPreview");
             }
           }
         ]
       },
       cfg2: {
         save: this.getGlobalData().ApiBaseUrl + "/approve/update",
-        extraData: {
-          approve: {
-            processId: self.$parent.$parent.value1,
-            processNodeId: self.$parent.$parent.value2
-          }
+        getExtraData: function() {
+          return {
+            approve: {
+              processId: self.$parent.$parent.value1,
+              processNodeId: self.$parent.$parent.value2
+            }
+          };
         }
       },
       id: 0
     };
   },
-  methods: {
-  }
+  methods: {}
 };
 </script>
