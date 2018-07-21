@@ -118,11 +118,18 @@ public class FunctionService {
 			} else {
 				sp += "'" + value + "',";
 			}
-			sp = sp.substring(0, sp.length() - 1);
 		}
+		sp = sp.substring(0, sp.length() - 1);
 		sp += ")";
-		Log4jHelper.LOGGER.info(String.format("准备执行函数->%s->parainstId=%s", sp, parainstId));
-		return funcdao.executeGetUserIds(sp);
+		Log4jHelper.LOGGER.info(String.format("[%s]->准备执行函数->%s->parainstId=%s", pde.getFormCode(), sp, parainstId));
+		List<Integer> userIds = funcdao.executeGetUserIds(sp);
+		String userIdsStr = "";
+		for (int userId : userIds) {
+			userIdsStr += userId + ",";
+		}
+		Log4jHelper.LOGGER.info(String.format("[%s]->执行函数完成->%s->Result:%s->parainstId=%s", pde.getFormCode(), sp,
+				userIdsStr, parainstId));
+		return userIds;
 	}
 
 	public String executeGetText(String parainstId, String bizData) {

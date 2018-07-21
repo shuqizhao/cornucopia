@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
 import cornucopia.entity.ParainstEntity;
+import cornucopia.model.FunctionParainstViewModel;
 import cornucopia.model.FunctionViewModel;
 import cornucopia.entity.FunctionEntity;
 import cornucopia.entity.FunctionParameterEntity;
@@ -109,8 +110,8 @@ public class FunctionController {
 	}
 	
 	@RequestMapping(value = { "/addOrUpdateParainst" }, method = RequestMethod.POST)
-	public JsonResult<Integer> addOrUpdateParainst(String parainstId,int functionId,String parainstJson) {
-		int id = FunctionService.getInstance().addOrUpdateParainst(parainstId,functionId,parainstJson);
+	public JsonResult<Integer> addOrUpdateParainst(@RequestBody FunctionParainstViewModel fpv) {
+		int id = FunctionService.getInstance().addOrUpdateParainst(fpv.getParainstId(),fpv.getFunctionId(),fpv.getParainstJson());
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(id);
