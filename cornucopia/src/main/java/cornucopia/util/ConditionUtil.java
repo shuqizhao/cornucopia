@@ -98,12 +98,16 @@ public class ConditionUtil {
 						List<Integer> userIds = getUserIdsByPosition(ape, pde);
 						if (processService != null) {
 							processService.build(pde, userIds, currentUserId, i);
+						}else {
+							return userIds;
 						}
-						return userIds;
 					}
 				}
 			}
 			i++;
+		}
+		if (processService != null) {
+			return null;
 		}
 		if (pde.getLevelCount() == ams.size()) {
 			List<Integer> result = new ArrayList<Integer>();

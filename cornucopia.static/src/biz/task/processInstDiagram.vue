@@ -29,7 +29,7 @@
                         <el-button :type="step.isCurrent==1?'success':'info'" style="width:100%" slot="reference">{{step.userName}}</el-button>
                         </el-popover>
                    
-                    <a class="small-box-footer">{{step.createTime||'处理中...'}}</a>
+                    <a class="small-box-footer">{{step.createTime||(step.isCurrent==1?'处理中...':'')}}</a>
                 </div>
             </div>
         </div>
