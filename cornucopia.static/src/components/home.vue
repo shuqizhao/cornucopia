@@ -171,6 +171,9 @@ export default {
     }
   },
   beforeUpdate:function(){
+    if(!this.$route.query.showDiagram){
+      $('.control-sidebar').removeClass('control-sidebar-open');
+    }
   },
   data() {
     return {
