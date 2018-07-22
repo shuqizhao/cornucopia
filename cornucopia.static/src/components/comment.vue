@@ -52,7 +52,7 @@
         </div>
         <!-- /.box-body -->
         <div v-show="cfg.mode!='detail'" class="box-footer">
-            <textarea name="message" autocomplete="off" class="form-control message" style="width:100%"/>
+            <textarea name="message" autocomplete="off" class="form-control message" placeholder="留言..." style="width:100%"/>
         </div>
         <!-- /.box-footer-->
     </div>
