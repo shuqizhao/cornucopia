@@ -34,6 +34,7 @@ export default {
               Object.keys(dataJson).forEach(function(key) {
                 if (key == "comments") {
                   setTimeout(function(){
+                    self.$parent.$refs.diagram.loadDiagram();
                     self.$refs.comments.setMessages(dataJson.comments);
                 },200);
                   

@@ -145,7 +145,7 @@
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <center>
-        <processInstDiagram></processInstDiagram>
+        <processInstDiagram ref="diagram"></processInstDiagram>
     </center>
   </aside>
   <!-- /.control-sidebar -->

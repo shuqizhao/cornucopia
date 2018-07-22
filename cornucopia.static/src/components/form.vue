@@ -1051,4 +1051,7 @@ export default {
 .el-input__inner .has-error{
   border-color: #f56c6c
 }
+.el-input.is-disabled .el-input__inner {
+  color: brown
+}
 </style>

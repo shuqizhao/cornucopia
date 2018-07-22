@@ -42,40 +42,45 @@
 <script>
 export default {
   mounted: function() {
-    var self = this;
-    var processDataId = self.$route.query.id;
-    var showDiagram = self.$route.query.showDiagram;
-    if (processDataId&&showDiagram) {
-      self.get(
-        self.getGlobalData().ApiBaseUrl + "/process/getProcessInstDiagram",
-        { processDataId: processDataId },
-        function(r) {
-          if (r.code == 200) {
-              self.steps = r.data;
-              self.steps.push({
-                  id:99999,
-                  name:'结束'
-              });
-              for(var i=0;i<r.data.length;i++){
-                  if(r.data[i].isCurrent==1){
-                      self.activeCount=i+1;
-                  }
-              }
-          }
-        }
-      );
-    }
+    //   this.loadDiagram();
   },
   data() {
     return {
-        steps:[],
-        activeCount:0
+      steps: [],
+      activeCount: 0
     };
+  },
+  methods: {
+    loadDiagram: function() {
+      var self = this;
+      var processDataId = self.$route.query.id;
+      var showDiagram = self.$route.query.showDiagram;
+      if (processDataId && showDiagram) {
+        self.get(
+          self.getGlobalData().ApiBaseUrl + "/process/getProcessInstDiagram",
+          { processDataId: processDataId },
+          function(r) {
+            if (r.code == 200) {
+              self.steps = r.data;
+              self.steps.push({
+                id: 99999,
+                name: "结束"
+              });
+              for (var i = 0; i < r.data.length; i++) {
+                if (r.data[i].isCurrent == 1) {
+                  self.activeCount = i + 1;
+                }
+              }
+            }
+          }
+        );
+      }
+    }
   }
 };
 </script>
 <style>
-.bg-aqua1{
-    background-color: rgb(194, 191, 191);
+.bg-aqua1 {
+  background-color: rgb(194, 191, 191);
 }
 </style>
