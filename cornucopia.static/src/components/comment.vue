@@ -16,7 +16,7 @@
             <div class="direct-chat-messages" style="height:100%">
                 <template v-for="(item,index) in detail.messages">
                     <!-- Message. Default to the left -->
-                    <div v-show="index%2==0" class="direct-chat-msg" :key="index+'i'">
+                    <div v-show="!item.isReply" class="direct-chat-msg" :key="index+'i'">
                         <div class="direct-chat-info clearfix">
                         <span class="direct-chat-name pull-left">{{item.name}} <i style="color:red;font-size:14px;">[{{item.action}}]</i></span>
                         <!-- <span class="direct-chat-timestamp pull-right"><i style="color:red;font-size:14px;">[{{item.action}}]</i> {{item.time}}</span> -->
@@ -26,14 +26,16 @@
                         <!-- /.direct-chat-img -->
                         <div class="direct-chat-text" v-html="item.msg">
                         </div>
+                        <div><a :id='"btnReply"+item.name+index' :hidden='isHideReply' @click="replyClick(item,$event,index)">回复</a></div>
+                        <div><a :id='"btnSave"+item.name+index' :hidden='true' @click="saveClick(item,$event,index)">保存</a></div>
                         <!-- /.direct-chat-text -->
                     </div>
                     <!-- /.direct-chat-msg -->
 
                     <!-- Message to the right -->
-                    <div v-show="index%2==1" class="direct-chat-msg left" :key="index+'j'">
+                    <div v-show="item.isReply" class="direct-chat-msg right" :key="index+'j'">
                         <div class="direct-chat-info clearfix">
-                        <span class="direct-chat-name pull-left">{{item.name}} <i style="color:red;font-size:14px;">[{{item.action}}]</i></span>
+                        <span class="direct-chat-name pull-right">{{item.name}} <i style="color:red;font-size:14px;">[{{item.action}}]</i></span>
                         <!-- <span class="direct-chat-timestamp pull-left"><i style="color:red;font-size:14px;">[{{item.action}}]</i> {{item.time}}</span> -->
                         </div>
                         <!-- /.direct-chat-info -->
@@ -63,23 +65,7 @@ export default {
     this.currentName = this.getGlobalData().LoginUser.name;
   },
   methods: {
-    // sendMsg: function(action) {
-    //   var message = $(this.$el)
-    //     .find(".message")
-    //     .val();
-    //   this.detail.messages.push({
-    //     msg: message + "my_br" + this.getNowFormatDate(),
-    //     action: action,
-    //     time: this.getNowFormatDate(),
-    //     name: this.currentName
-    //   });
-    //   $(this.$el)
-    //     .find(".message")
-    //     .val("");
-    // },
     getSendMsg: function(action) {
-      //   var msgs = $.extend([], this.detail.messages);
-      //   var msgs =this.detail.messages.concat([])
       var msgs = [];
       for (var i = 0; i < this.detail.messages.length; i++) {
         var item = this.detail.messages[i];
@@ -175,13 +161,40 @@ export default {
         seperator2 +
         date.getSeconds();
       return currentdate;
+    },
+    replyClick:function(item,event,index){
+      if(event.currentTarget.innerText=='回复'){
+        event.currentTarget.innerText='取消'
+        $(event.currentTarget).after('<textarea id="'+item.name+index+'" style="width:100%">'+this.currentName+'回复'+item.name+':</textarea>');
+        $('#btnSave'+item.name+index).show();
+      }else{
+        event.currentTarget.innerText='回复'
+        $('#'+item.name+index).remove();
+        $('#btnSave'+item.name+index).hide();
+      }
+      
+    },
+    saveClick:function(item,event,index){
+      var message = $('#'+item.name+index).val();
+      var actionStr =this.currentName+'@'+item.name
+      this.detail.messages.splice(index+1,0,{
+        isReply:true,
+        msg: message + "<br/>" + this.getNowFormatDate(),
+        action: actionStr,
+        time: this.getNowFormatDate(),
+        name: ''
+      });
+      $('#'+item.name+index).remove();
+      $('#btnSave'+item.name+index).hide();
+      $('#btnReply'+item.name+index).text('回复');
     }
   },
   data() {
     return {
       detail: { messages: [] },
       currentName: "无名",
-      currentStep: ""
+      currentStep: "",
+      isHideReply:true
     };
   }
 };

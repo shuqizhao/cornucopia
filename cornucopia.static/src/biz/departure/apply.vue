@@ -67,6 +67,7 @@ export default {
                 for(var i=0;i<self.processInstAuth.length;i++){
                   let index = i;
                   setTimeout(function(){
+                    self.$refs.comments.isHideReply = false;
                     self.$refs.comments.setCurrentStep(self.processInstAuth[index].currentStep);
                   },200);
                   break;
