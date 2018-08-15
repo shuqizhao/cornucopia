@@ -1,0 +1,30 @@
+{
+    "run": {
+        "default": "",
+        "items": [
+            {
+                "name": "cornucopia",
+                "projectName": "cornucopia",
+                "workingDirectory": "d:\\MyProjects\\cornucopia\\cornucopia",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            }
+        ]
+    },
+    "debug": {
+        "default": "",
+        "items": [
+            {
+                "name": "cornucopia",
+                "projectName": "cornucopia",
+                "workingDirectory": "d:\\MyProjects\\cornucopia\\cornucopia",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            }
+        ]
+    }
+}
