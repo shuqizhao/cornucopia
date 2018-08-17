@@ -323,9 +323,9 @@ public class ApproveController {
 						.filter((ApproveMatrixEntity r) -> r.getApproveCondition2Id() == approve.getId()
 								&& r.getApprovePositionId() == ap.getId())
 						.collect(Collectors.toList());
-				bean.setValue("id_" + approve.getId(), new Boolean(approveMatrixEntityTemps.size() > 0));
+				bean.setValue("id_" + approve.getId(), approveMatrixEntityTemps.size() > 0);
 			}
-			bean.setValue("postionId", new Integer(ap.getId()));
+			bean.setValue("postionId", ap.getId());
 			bean.setValue("postionName", ap.getName());
 			result.add(bean.getObject());
 		}
