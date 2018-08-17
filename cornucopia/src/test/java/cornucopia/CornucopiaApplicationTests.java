@@ -7,8 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import cornucopia.entity.ProcessDataEntity;
-import cornucopia.service.ProcessDataService;
+// import cornucopia.entity.ProcessDataEntity;
+// import cornucopia.service.ProcessDataService;
 import cornucopia.util.ActivitiHelper;
 
 @RunWith(SpringRunner.class)
