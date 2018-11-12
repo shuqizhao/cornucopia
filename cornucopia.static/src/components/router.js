@@ -14,6 +14,10 @@ Vue.component('list', function(resolve) {
     require(['../components/list.vue'], resolve)
 })
 
+Vue.component('listV2', function(resolve) {
+    require(['../components/listOfEleme.vue'], resolve)
+})
+
 Vue.component('editList', function(resolve) {
     require(['../components/editList.vue'], resolve)
 })
