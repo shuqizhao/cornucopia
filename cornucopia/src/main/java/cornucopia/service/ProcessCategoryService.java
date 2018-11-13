@@ -27,4 +27,8 @@ public class ProcessCategoryService extends BaseService<ProcessCategoryDao, Proc
 	public List<ProcessCategoryEntity> list(PagingParameters pp){
 		return tdao.list(pp);
 	}
+
+	public int insert(ProcessCategoryEntity processCategoryEntity){
+		return tdao.insert(processCategoryEntity);
+	}
 }

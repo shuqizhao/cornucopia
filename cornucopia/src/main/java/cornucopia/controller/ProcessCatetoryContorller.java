@@ -3,8 +3,10 @@ package cornucopia.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
@@ -49,4 +51,59 @@ public class ProcessCatetoryContorller {
 		jr.setData(processCategories);
 		return jr;
 	}
+
+	@RequestMapping(value = { "/add" }, method = RequestMethod.POST)
+	public JsonResult<Integer> add(@RequestBody ProcessCategoryEntity processCategoryEntity) {
+		ProcessCategoryService.getInstance().insert(processCategoryEntity);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(processCategoryEntity.getId());
+		return jr;
+	}
+
+	@RequestMapping(value = { "/disable" }, method = RequestMethod.POST)
+	public JsonResult<Integer> disable(@RequestParam(value = "Ids") int id) {
+		int result = ProcessCategoryService.getInstance().disable(id);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(result);
+		return jr;
+	}
+
+	@RequestMapping(value = { "/enable" }, method = RequestMethod.POST)
+	public JsonResult<Integer> enable(@RequestParam(value = "Ids") int id) {
+		int result = ProcessCategoryService.getInstance().enable(id);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(result);
+		return jr;
+	}
+
+	@RequestMapping(value = { "/delete" }, method = RequestMethod.POST)
+	public JsonResult<Integer> delete(@RequestParam(value = "Ids") int id) {
+		int result = ProcessCategoryService.getInstance().delete(id);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(result);
+		return jr;
+	}
+
+	@RequestMapping(value = { "/get" }, method = RequestMethod.GET)
+	public JsonResult<ProcessCategoryEntity> get(int id) {
+		ProcessCategoryEntity processCategoryEntity = ProcessCategoryService.getInstance().get(id);
+		JsonResult<ProcessCategoryEntity> jr = new JsonResult<ProcessCategoryEntity>();
+		jr.setCode(200);
+		jr.setData(processCategoryEntity);
+		return jr;
+	}
+
+	@RequestMapping(value = { "/update" }, method = RequestMethod.POST)
+	public JsonResult<Integer> update(@RequestBody ProcessCategoryEntity processCategoryEntity) {
+		int result = ProcessCategoryService.getInstance().update(processCategoryEntity);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(result);
+		return jr;
+	}
+
 }

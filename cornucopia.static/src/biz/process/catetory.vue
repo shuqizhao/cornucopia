@@ -38,6 +38,10 @@ export default {
             ]
           },
            {
+            title: "图标",
+            name: "icon"
+          },
+           {
             title: "排序",
             name: "orderNum"
           },

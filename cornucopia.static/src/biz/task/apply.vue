@@ -3,7 +3,7 @@
          <div class="box box-default">
           <div v-for="category in this.categories" :key="category.id" class="box box-default">
             <div class="box-header with-border">
-              <i :class="'fa'+category.icon"></i>
+              <i :class="'fa '+category.icon"></i>
 
               <h3 class="box-title">{{category.name}}</h3>
             </div>

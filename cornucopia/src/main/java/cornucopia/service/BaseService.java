@@ -27,9 +27,9 @@ public class BaseService<Dao extends BaseDao<Entity>, Entity> {
 		return tdao.exists(getName(), name);
 	}
 
-	public int insert(Entity t) {
-		return tdao.insert(getName(), t);
-	}
+	// public int insert(Entity t) {
+	// 	return tdao.insert(getName(), t);
+	// }
 
 	public int disable(int id) {
 		return tdao.disable(getName(), id);
@@ -45,5 +45,9 @@ public class BaseService<Dao extends BaseDao<Entity>, Entity> {
 
 	public Entity get(int id) {
 		return tdao.get(getName(), id);
+	}
+
+	public int update(Entity t) {
+		return tdao.update(getName(), t);
 	}
 }
