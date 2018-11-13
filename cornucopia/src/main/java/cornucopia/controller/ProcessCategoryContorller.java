@@ -20,7 +20,7 @@ import cornucopia.util.PagingParameters;
 
 @RestController
 @RequestMapping("/processCatetory")
-public class ProcessCatetoryContorller {
+public class ProcessCategoryContorller {
 
 	@RequestMapping(value = { "/list" }, method = RequestMethod.POST)
 	public DataTableResult<ProcessCategoryEntity> list(DataTableParameter dtp) {
