@@ -32,6 +32,6 @@ public interface BaseDao<T> {
 	@Select("call sp_common_get(#{tn},#{id})")
 	public T get(@Param("tn") String tn, @Param("id") int id);
 
-	@Select("call sp_common_update(#{tn},#{t.id},#{t.name})")
-	public int update(@Param("tn") String tn, @Param("t") T t);
+	// @Select("call sp_common_update(#{tn},#{t.id},#{t.name})")
+	// public int update(@Param("tn") String tn, @Param("t") T t);
 }

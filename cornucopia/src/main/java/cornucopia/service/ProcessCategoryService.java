@@ -31,4 +31,7 @@ public class ProcessCategoryService extends BaseService<ProcessCategoryDao, Proc
 	public int insert(ProcessCategoryEntity processCategoryEntity){
 		return tdao.insert(processCategoryEntity);
 	}
+	public int update(ProcessCategoryEntity processCategoryEntity){
+		return tdao.update(processCategoryEntity);
+	}
 }

@@ -3,6 +3,8 @@ package cornucopia.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cornucopia.entity.JsonResult;
 import cornucopia.entity.ProcessCategoryEntity;
 import cornucopia.entity.ProcessEntity;
+import cornucopia.entity.UserEntity;
 import cornucopia.service.ProcessCategoryService;
 import cornucopia.service.ProcessService;
 import cornucopia.util.DataTableParameter;
@@ -53,7 +56,13 @@ public class ProcessCategoryContorller {
 	}
 
 	@RequestMapping(value = { "/add" }, method = RequestMethod.POST)
-	public JsonResult<Integer> add(@RequestBody ProcessCategoryEntity processCategoryEntity) {
+	public JsonResult<Integer> add(HttpServletRequest request,@RequestBody ProcessCategoryEntity processCategoryEntity) {
+		UserEntity userEntity = (UserEntity) request.getSession().getAttribute("user");
+		int userId = 0;
+		if (userEntity != null) {
+			userId = userEntity.getId();
+		}
+		processCategoryEntity.setCreateBy(userId);
 		ProcessCategoryService.getInstance().insert(processCategoryEntity);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
@@ -98,7 +107,13 @@ public class ProcessCategoryContorller {
 	}
 
 	@RequestMapping(value = { "/update" }, method = RequestMethod.POST)
-	public JsonResult<Integer> update(@RequestBody ProcessCategoryEntity processCategoryEntity) {
+	public JsonResult<Integer> update(HttpServletRequest request,@RequestBody ProcessCategoryEntity processCategoryEntity) {
+		UserEntity userEntity = (UserEntity) request.getSession().getAttribute("user");
+		int userId = 0;
+		if (userEntity != null) {
+			userId = userEntity.getId();
+		}
+		processCategoryEntity.setUpdateBy(userId);
 		int result = ProcessCategoryService.getInstance().update(processCategoryEntity);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);

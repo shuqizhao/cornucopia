@@ -77,6 +77,11 @@ export default {
               text: "启用",
               url: this.getGlobalData().ApiBaseUrl + "/processCategory/enable",
               functionName:'processCategoryEnable'
+            },
+            {
+              text: "删除",
+              url: this.getGlobalData().ApiBaseUrl + "/processCategory/delete",
+              functionName:'processCategoryDelete'
             }
           ],
           common: [

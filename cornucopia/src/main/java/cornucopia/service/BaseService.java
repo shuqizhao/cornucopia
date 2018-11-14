@@ -47,7 +47,7 @@ public class BaseService<Dao extends BaseDao<Entity>, Entity> {
 		return tdao.get(getName(), id);
 	}
 
-	public int update(Entity t) {
-		return tdao.update(getName(), t);
-	}
+	// public int update(Entity t) {
+	// 	return tdao.update(getName(), t);
+	// }
 }

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.mapping.StatementType;
 
 import cornucopia.entity.ProcessCategoryEntity;
@@ -20,7 +21,10 @@ public interface ProcessCategoryDao extends BaseDao<ProcessCategoryEntity> {
 	@Options(statementType = StatementType.CALLABLE)
 	public List<ProcessCategoryEntity> list(@Param("pp") PagingParameters pp);
 
-	@Insert("call sp_process_category_insert(#{t.name},#{t.icon},#{t.orderNum})")
+	@Insert("call sp_process_category_insert(#{t.name},#{t.icon},#{t.orderNum},#{t.createBy})")
 	@SelectKey(statement = "Select LAST_INSERT_ID()", keyProperty = "t.id", before = false, resultType = int.class)
 	public int insert(@Param("t") ProcessCategoryEntity t);
+
+	@Update("call sp_process_category_update(#{t.id},#{t.name},#{t.icon},#{t.orderNum},#{t.isEnabled},#{t.updateBy})")
+	public int update(@Param("t") ProcessCategoryEntity t);
 }
