@@ -35,8 +35,8 @@ public class ProcessService {
 		return processDao.getAllProcess();
 	}
 
-	public int exists(String processName) {
-		return processDao.exists(processName);
+	public int exists(String processName,String pre) {
+		return processDao.exists(processName,pre);
 	}
 
 	public int insert(ProcessEntity processEntity) {

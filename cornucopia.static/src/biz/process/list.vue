@@ -1,7 +1,7 @@
 <template>
   <el-row>
-    <el-col :span="6"><list :cfg="cfg"></list></el-col>
-    <el-col :span="6" id="id1"><list ref="nodeList" :cfg="cfg1"></list></el-col>
+    <el-col :span="8"><list :cfg="cfg"></list></el-col>
+    <el-col :span="4" id="id1"><list ref="nodeList" :cfg="cfg1"></list></el-col>
     <el-col :span="12" id="id2"><list ref="diagramList" :cfg="cfg2"></list></el-col>
   </el-row>
 </template>
@@ -16,7 +16,7 @@ export default {
         parentTitle: "系统管理",
         simpleUrl: this.getGlobalData().ApiBaseUrl + "/process/alllist",
         lengthMenu: [[-1], ["ALL"]],
-        sDom: 'f<"dataTables_function"/>',
+        sDom: '<"dataTables_function"/>f',
         bServerSide: false,
         hideCheckBox: true,
         showSelectedRowColor: true,
@@ -27,8 +27,24 @@ export default {
             isHide: true
           },
           {
+            title: "排序",
+            name: "orderNum"
+          },
+          {
+            title: "分类",
+            name: "categoryId"
+          },
+          {
             title: "流程名",
             name: "name"
+          },
+          {
+            title: "前缀",
+            name: "pre"
+          },
+          {
+            title: "路由",
+            name: "url"
           }
           // {
           //   title: "是否启用",
@@ -54,22 +70,27 @@ export default {
               url: "processAdd",
               mode: "modal",
               functionName: "processAdd"
+            },{
+              text: "修改流程",
+              url: "processUpdate",
+              mode: "modal",
+              functionName: "processAdd"
+            },
+          ],
+          more: [
+            {
+              text: "停用",
+              url: this.getGlobalData().ApiBaseUrl + "/process/disable"
+            },
+            {
+              text: "启用",
+              url: this.getGlobalData().ApiBaseUrl + "/process/enable"
+            },
+            {
+              text: "删除",
+              url: this.getGlobalData().ApiBaseUrl + "/process/delete"
             }
           ]
-          // more: [
-          //   {
-          //     text: "停用",
-          //     url: this.getGlobalData().ApiBaseUrl + "/process/disable"
-          //   },
-          //   {
-          //     text: "启用",
-          //     url: this.getGlobalData().ApiBaseUrl + "/process/enable"
-          //   },
-          //   {
-          //     text: "删除",
-          //     url: this.getGlobalData().ApiBaseUrl + "/process/delete"
-          //   }
-          // ]
         },
         onClickRow: function(data, target) {
           self.processId = data.id;
@@ -267,7 +288,4 @@ export default {
 };
 </script>
 <style>
-.dataTables_filter {
-  margin-bottom: -40px;
-}
 </style>

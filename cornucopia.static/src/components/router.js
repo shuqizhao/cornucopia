@@ -268,6 +268,23 @@ Vue.prototype.post = function(url, params, onSuccess) {
     });
 }
 
+// Vue.prototype.post = function(p) {
+//     $.ajax({
+//         type: 'POST',
+//         xhrFields: {
+//             withCredentials: true
+//         },
+//         async: p.async || true,
+//         url: jsonData.ApiBaseUrl + p.url,
+//         data: p.params || [],
+//         success: function(result) {
+//             if (p.onSuccess) {
+//                 p.onSuccess(result);
+//             }
+//         }
+//     });
+// }
+
 Vue.prototype.get = function(url, params, onSuccess) {
     $.ajax({
         type: 'GET',
@@ -283,6 +300,23 @@ Vue.prototype.get = function(url, params, onSuccess) {
         }
     });
 }
+
+// Vue.prototype.get = function(p) {
+//     $.ajax({
+//         type: 'GET',
+//         xhrFields: {
+//             withCredentials: true
+//         },
+//         async: p.async || true,
+//         url: jsonData.ApiBaseUrl + p.url,
+//         data: p.params || '',
+//         success: function(result) {
+//             if (p.onSuccess) {
+//                 p.onSuccess(result);
+//             }
+//         }
+//     });
+// }
 
 Vue.prototype.getSync = function(url, params, onSuccess) {
     $.ajax({

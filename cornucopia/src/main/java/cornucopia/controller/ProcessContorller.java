@@ -48,8 +48,8 @@ public class ProcessContorller {
 	}
 
 	@RequestMapping(value = { "/exists" }, method = RequestMethod.POST)
-	public JsonResult<Integer> exists(String name) {
-		int isExists = ProcessService.getInstance().exists(name);
+	public JsonResult<Integer> exists(String name,String pre) {
+		int isExists = ProcessService.getInstance().exists(name,pre);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(isExists);
@@ -57,7 +57,13 @@ public class ProcessContorller {
 	}
 
 	@RequestMapping(value = { "/add" }, method = RequestMethod.POST)
-	public JsonResult<Integer> add(ProcessEntity processEntity) {
+	public JsonResult<Integer> add(HttpServletRequest request,@RequestBody ProcessEntity processEntity) {
+		UserEntity userEntity = (UserEntity) request.getSession().getAttribute("user");
+		int userId = 0;
+		if (userEntity != null) {
+			userId = userEntity.getId();
+		}
+		processEntity.setCreateBy(userId);
 		ProcessService.getInstance().insert(processEntity);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
