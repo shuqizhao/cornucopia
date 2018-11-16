@@ -56,10 +56,10 @@ export default {
       var processDataId = self.$route.query.id;
       var showDiagram = self.$route.query.showDiagram;
       if (processDataId && showDiagram) {
-        self.get(
-          self.getGlobalData().ApiBaseUrl + "/process/getProcessInstDiagram",
-          { processDataId: processDataId },
-          function(r) {
+        self.get({
+          url: "/process/getProcessInstDiagram",
+          data: { processDataId: processDataId },
+          success: function(r) {
             if (r.code == 200) {
               self.steps = r.data;
               self.steps.push({
@@ -73,7 +73,7 @@ export default {
               }
             }
           }
-        );
+        });
       }
     }
   }

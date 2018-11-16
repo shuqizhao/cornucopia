@@ -85,14 +85,10 @@ export default {
           }
         },
         validate: function(data, saveData) {
-          $.ajax({
-            type: "POST",
-            xhrFields: {
-              withCredentials: true
-            },
-            url: self.getGlobalData().ApiBaseUrl + "/process/exists",
-            data: data,
-            success: function(response) {
+          self.post({
+            url:"/process/exists",
+            data:data,
+            success:function(response){
               if (response.code == 200 && response.data == 0) {
                 saveData(data);
               } else {
@@ -106,18 +102,9 @@ export default {
           return false;
         },
         onLoaded: function(detail) {
-          // self.get({
-          //   url: "/processCategory/all",
-          //   onSuccess: function(response) {
-          //     if ((response.code = 200)) {
-          //       self.cfg.items[5].data = response.data;
-          //     }
-          //   }
-          // });
-          self.get(
-            self.getGlobalData().ApiBaseUrl + "/process/category",
-            "",
-            function(response) {
+          self.get({
+            url: "/process/category",
+            success: function(response) {
               if ((response.code = 200)) {
                 var tempArr =[];
                 for(var i=0;i<response.data.length;i++){
@@ -126,7 +113,7 @@ export default {
                 self.cfg.items[5].data = tempArr;
               }
             }
-          );
+          });
         }
       }
     };

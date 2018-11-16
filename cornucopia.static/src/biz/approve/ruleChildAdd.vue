@@ -80,16 +80,15 @@ export default {
           return true;
         },
         onLoaded: function() {
-          self.get(
-            self.getGlobalData().ApiBaseUrl + "/approve/getAllRoles",
-            "",
-            function(response) {
+          self.get({
+            url: "/approve/getAllRoles",
+            success: function(response) {
               if ((response.code = 200)) {
                 self.roles = response.data;
                 self.cfg.items[1].data = self.roles;
               }
             }
-          );
+          });
         }
       },
       cfg1: {

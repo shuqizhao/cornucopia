@@ -256,10 +256,10 @@ export default {
     for (var i = 0; i < self.cfg.items.length; i++) {
       var item = self.cfg.items[i];
       // self.$set(self.detail, item.name, "");
-      if(item.type=="uploader"){
-        self.$set(self.detail,item.name,[]);
+      if (item.type == "uploader") {
+        self.$set(self.detail, item.name, []);
         // self.$set(self.detail,item.name,[]);
-      }else{
+      } else {
         self.$set(self.detail, item.name, "");
       }
     }
@@ -269,7 +269,7 @@ export default {
     self.isMounted = true;
 
     if (this.cfg.mode != "create") {
-      if(!self.cfg.get){
+      if (!self.cfg.get) {
         return;
       }
       self.openLoading();
@@ -286,7 +286,6 @@ export default {
     $(this.$el)
       .find('input[type="file"]')
       .hide();
-    
   },
   beforeUpdate: function() {
     // $(".el-transfer__button").click(function() {
@@ -302,9 +301,16 @@ export default {
     }
     this.iframeLoad();
     // alert("update01")
-    if(this.cfg.mode=='detail'||(this.cfg.mode=='detailEdit'&&this.cfg.detailEditMode!='edit')){
-          $(this.$el).find('.el-upload--picture-card').hide();
-          $(this.$el).find('.el-upload-list__item-delete').hide();
+    if (
+      this.cfg.mode == "detail" ||
+      (this.cfg.mode == "detailEdit" && this.cfg.detailEditMode != "edit")
+    ) {
+      $(this.$el)
+        .find(".el-upload--picture-card")
+        .hide();
+      $(this.$el)
+        .find(".el-upload-list__item-delete")
+        .hide();
     }
   },
   data() {
@@ -319,9 +325,9 @@ export default {
       dialogImageUrl: "",
       dialogImageName: "",
       dialogVisible: false,
-      currentComponent:"",
-      popUpValue:"",
-      popUpItem:{}
+      currentComponent: "",
+      popUpValue: "",
+      popUpItem: {}
     };
   },
   methods: {
@@ -329,40 +335,45 @@ export default {
       var className = this.$parent.$parent.$el.className;
       return className.indexOf("el-dialog__wrapper") != -1;
     },
-    onSelectChange:function(item){
-      if(item.onChange){
-        item.onChange(this.detail[item.name])
+    onSelectChange: function(item) {
+      if (item.onChange) {
+        item.onChange(this.detail[item.name]);
       }
-      $('#'+item.name).val(this.detail[item.name]).keyup();
+      $("#" + item.name)
+        .val(this.detail[item.name])
+        .keyup();
     },
-    onFileUploadBeforeDelete:function(file){
-      if(this.cfg.mode=='detail'||(this.cfg.mode=='detailEdit'&&this.cfg.detailEditMode!='edit')){
-          return false;
+    onFileUploadBeforeDelete: function(file) {
+      if (
+        this.cfg.mode == "detail" ||
+        (this.cfg.mode == "detailEdit" && this.cfg.detailEditMode != "edit")
+      ) {
+        return false;
       }
       var id = "";
-      if(file.response){
+      if (file.response) {
         id = file.response.message;
-      }else{
+      } else {
         id = file.itemId;
       }
-      $("#"+id)
+      $("#" + id)
         .parent()
         .find("li")
         .tooltip("hide");
     },
     handleRemove(file, fileList) {
-      this.drawUploader(fileList)
+      this.drawUploader(fileList);
       var id = "";
-      if(file.response){
+      if (file.response) {
         id = file.response.message;
-      }else{
+      } else {
         id = file.itemId;
       }
-      if(fileList.length==0){
-        $("#"+id).val('')
+      if (fileList.length == 0) {
+        $("#" + id).val("");
       }
       this.detail[id] = fileList;
-      $("#"+id).valid();
+      $("#" + id).valid();
     },
     handlePictureCardPreview(file) {
       window.open(file.url);
@@ -373,64 +384,74 @@ export default {
     onFileUpload: function(response, file, fileList) {
       var self = this;
       if (response.code == 200) {
-        $("#"+response.message).val(response.data)
-        if(self.commiting){
-          $("#"+response.message).valid();
+        $("#" + response.message).val(response.data);
+        if (self.commiting) {
+          $("#" + response.message).valid();
         }
         self.detail[response.message] = fileList;
-        self.drawUploader(fileList)
+        self.drawUploader(fileList);
       }
     },
-    drawUploader:function(fileList){
+    drawUploader: function(fileList) {
       for (var i = 0; i < fileList.length; i++) {
-          var item = fileList[i];
-          var id = ""
-          if(item.response){
-            id = item.response.message;
-          }else{
-            id = item.itemId;
-          }
-          $("#"+id)
+        var item = fileList[i];
+        var id = "";
+        if (item.response) {
+          id = item.response.message;
+        } else {
+          id = item.itemId;
+        }
+        $("#" + id)
+          .parent()
+          .find("li:eq(" + i + ")")
+          .find("div")
+          .remove();
+        if (
+          item.name.indexOf(".jpg") != -1 ||
+          item.name.indexOf(".png") != -1
+        ) {
+          $("#" + id)
             .parent()
             .find("li:eq(" + i + ")")
-            .find("div")
-            .remove();
-          if (item.name.indexOf(".jpg") != -1||item.name.indexOf(".png") != -1) {
-            $("#"+id)
-              .parent()
-              .find("li:eq(" + i + ")")
-              .append(
-                '<div style="position: absolute; top: 120px; left: 0;z-">' +
-                  item.name +
-                  "</div>"
-              );
-          } else {
-            $("#"+id)
-              .parent()
-              .find("li:eq(" + i + ")")
-              .append(
-                '<div><img width="100%" style="margin-top:-35px;" src="/src/assets/file.png"></img><div style="position: absolute; top: 120px; left: 0;z-">' +
-                  item.name +
-                  "</div></div>"
-              );
-          }
+            .append(
+              '<div style="position: absolute; top: 120px; left: 0;z-">' +
+                item.name +
+                "</div>"
+            );
+        } else {
+          $("#" + id)
+            .parent()
+            .find("li:eq(" + i + ")")
+            .append(
+              '<div><img width="100%" style="margin-top:-35px;" src="/src/assets/file.png"></img><div style="position: absolute; top: 120px; left: 0;z-">' +
+                item.name +
+                "</div></div>"
+            );
+        }
 
-          $("#"+id)
-            .parent()
-            .find("li:eq(" + i + ")")
-            .attr("data-toggle", "tooltip")
-            .attr("data-placement", "top")
-            .attr("data-original-title", item.name)
-            .tooltip();
-        }
-        if(this.cfg.mode=='detail'||(this.cfg.mode=='detailEdit'&&this.cfg.detailEditMode!='edit')){
-          $(this.$el).find('.el-upload--picture-card').hide();
-          $(this.$el).find('.el-upload-list__item-delete').hide();
-        }
+        $("#" + id)
+          .parent()
+          .find("li:eq(" + i + ")")
+          .attr("data-toggle", "tooltip")
+          .attr("data-placement", "top")
+          .attr("data-original-title", item.name)
+          .tooltip();
+      }
+      if (
+        this.cfg.mode == "detail" ||
+        (this.cfg.mode == "detailEdit" && this.cfg.detailEditMode != "edit")
+      ) {
+        $(this.$el)
+          .find(".el-upload--picture-card")
+          .hide();
+        $(this.$el)
+          .find(".el-upload-list__item-delete")
+          .hide();
+      }
     },
     onLimited: function(files, fileList) {
       self.$message({
-        message: "只能上传"+fileList.length+"个文件!",
+        message: "只能上传" + fileList.length + "个文件!",
         type: "warning"
       });
     },
@@ -620,18 +641,18 @@ export default {
       //   .find(".form")
       //   .validate(lastCfg);
       var self = this;
-      self.validateFrom(false,function(name,data){
-          $(self.$el)
+      self.validateFrom(false, function(name, data) {
+        $(self.$el)
           .find(".btn-commit")
           .attr("disabled", "disabled");
-          self.saveData(data, handler);
-      })
+        self.saveData(data, handler);
+      });
     },
-    validateFrom: function(isOut,onSuccess, onFail) {
+    validateFrom: function(isOut, onSuccess, onFail) {
       var self = this;
       self.commiting = true;
       var validateCfg = {
-        ignore: ":hidden",//不验证的元素
+        ignore: ":hidden", //不验证的元素
         onfocusout: false,
         onclick: false,
         focusInvalid: false,
@@ -666,12 +687,12 @@ export default {
           }
 
           if (self.commiting && error.text()) {
-              self.$notify({
-                title: "验证未通过",
-                message: error.text(),
-                position: "bottom-right",
-                type: "warning"
-              });
+            self.$notify({
+              title: "验证未通过",
+              message: error.text(),
+              position: "bottom-right",
+              type: "warning"
+            });
           }
         },
         success: function(error, element) {
@@ -680,13 +701,13 @@ export default {
               .parent()
               .find(".el-upload--picture-card")
               .tooltip("destroy");
-          }else if ($(element).attr("controltype") == "select") {
+          } else if ($(element).attr("controltype") == "select") {
             $(element)
               .parent()
               .find(".el-input__inner")
               .removeClass("has-error")
               .tooltip("destroy");
-          } else{
+          } else {
             $(element).tooltip("destroy");
             $(element).removeClass("has-error");
           }
@@ -714,7 +735,7 @@ export default {
           //   .attr("disabled", "disabled");
           // self.saveData(data, handler);
           if (onSuccess) {
-            onSuccess(self.cfg.name,data);
+            onSuccess(self.cfg.name, data);
           }
         }
       };
@@ -722,7 +743,8 @@ export default {
       $(self.$el)
         .find(".form")
         .validate(lastCfg);
-      if (isOut&&
+      if (
+        isOut &&
         $(self.$el)
           .find(".form")
           .valid()
@@ -804,42 +826,48 @@ export default {
             if (data[this.id].length == 0) {
               data[this.id].push(0);
             }
-          } else if (contentType == "select"
-          ||contentType == "text"
-          ||contentType == "textarea"
-          ||contentType == "combox"
-          ||contentType == "hidden"
-          ||contentType == "popup"
-          ||contentType == "readonly"
-          ||contentType == "timer") {
-            data[this.id] = self.detail[this.id]||"";
+          } else if (
+            contentType == "select" ||
+            contentType == "text" ||
+            contentType == "textarea" ||
+            contentType == "combox" ||
+            contentType == "hidden" ||
+            contentType == "popup" ||
+            contentType == "readonly" ||
+            contentType == "timer"
+          ) {
+            data[this.id] = self.detail[this.id] || "";
           } else if (contentType == "uploader") {
-              data[this.id] = [];
-              for(var i=0;i<self.detail[this.id].length;i++){
-                var item = self.detail[this.id][i];
-                var varId="";
-                var varItemId="";
-                var varName ="";
-                var varUrl ="";
-                if(item.response){
-                  varId = item.response.data;
-                  varItemId = item.response.message;
-                  varName = item.name;
-                  varUrl = self.getGlobalData().ApiBaseUrl+"/download?id="+item.response.data;
-                }else{
-                  varId = item.id;
-                  varItemId = item.itemId;
-                  varName = item.name;
-                  varUrl = self.getGlobalData().ApiBaseUrl+"/download?id="+item.id;
-                }
-                data[this.id].push({
-                  id:varId,
-                  itemId:varItemId,
-                  name:varName,
-                  url:varUrl,
-                  // response:item.response
-                });
+            data[this.id] = [];
+            for (var i = 0; i < self.detail[this.id].length; i++) {
+              var item = self.detail[this.id][i];
+              var varId = "";
+              var varItemId = "";
+              var varName = "";
+              var varUrl = "";
+              if (item.response) {
+                varId = item.response.data;
+                varItemId = item.response.message;
+                varName = item.name;
+                varUrl =
+                  self.getGlobalData().ApiBaseUrl +
+                  "/download?id=" +
+                  item.response.data;
+              } else {
+                varId = item.id;
+                varItemId = item.itemId;
+                varName = item.name;
+                varUrl =
+                  self.getGlobalData().ApiBaseUrl + "/download?id=" + item.id;
               }
+              data[this.id].push({
+                id: varId,
+                itemId: varItemId,
+                name: varName,
+                url: varUrl
+                // response:item.response
+              });
+            }
           }
         });
       return data;
@@ -918,13 +946,17 @@ export default {
     },
     fillData: function(onSuccess) {
       let self = this;
-      self.get(self.cfg.get.url, self.cfg.get.params, function(result) {
-        if (result.code == "200") {
-          self.detail = result.data;
-          if (onSuccess) {
-            onSuccess();
+      self.get({
+        url: self.cfg.get.url,
+        data: self.cfg.get.params,
+        success: function(result) {
+          if (result.code == "200") {
+            self.detail = result.data;
+            if (onSuccess) {
+              onSuccess();
+            }
+            self.closeLoading();
           }
-          self.closeLoading();
         }
       });
     },
@@ -1022,36 +1054,36 @@ export default {
       this.detail[this.popUpItem.name] = value;
     }
   },
-  watch:{
-    detail:{
-        handler:function(val,oldval){
-            var self = this;
-            for(var i=0;i<this.cfg.items.length;i++){
-              var item = this.cfg.items[i];
-              if(item.type=="uploader"){
-                for(var j in val){
-                  if(j == item.name){
-                    setTimeout(function(){
-                      self.drawUploader(val[j]);
-                    },200)
-                  }
-                }
+  watch: {
+    detail: {
+      handler: function(val, oldval) {
+        var self = this;
+        for (var i = 0; i < this.cfg.items.length; i++) {
+          var item = this.cfg.items[i];
+          if (item.type == "uploader") {
+            for (var j in val) {
+              if (j == item.name) {
+                setTimeout(function() {
+                  self.drawUploader(val[j]);
+                }, 200);
               }
             }
-        },
-        deep:true
+          }
+        }
+      },
+      deep: true
     }
   }
 };
 </script>
 <style>
-.has-error{
-      border-color: #f56c6c
+.has-error {
+  border-color: #f56c6c;
 }
-.el-input__inner .has-error{
-  border-color: #f56c6c
+.el-input__inner .has-error {
+  border-color: #f56c6c;
 }
 .el-input.is-disabled .el-input__inner {
-  color: brown
+  color: brown;
 }
 </style>

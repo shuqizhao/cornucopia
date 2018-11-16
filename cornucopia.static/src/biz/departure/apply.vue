@@ -20,24 +20,18 @@ export default {
       if (dataId) {
         self.isApprove = true;
         self.openLoading();
-        self.get(
-          self.getGlobalData().ApiBaseUrl +
-            "/process/getBizData?processId=" +
-            processId +
-            "&id=" +
-            dataId,
-          "",
-          function(response) {
+        self.get({
+          url: "/process/getBizData?processId=" + processId + "&id=" + dataId,
+          success: function(response) {
             if (response.code == 200) {
               self.closeLoading();
               let dataJson = JSON.parse(response.data);
               Object.keys(dataJson).forEach(function(key) {
                 if (key == "comments") {
-                  setTimeout(function(){
+                  setTimeout(function() {
                     self.$parent.$refs.diagram.loadDiagram();
                     self.$refs.comments.setMessages(dataJson.comments);
-                },200);
-                  
+                  }, 200);
                 } else {
                   let obj = dataJson[key][0];
                   Object.keys(obj).forEach(function(subKey) {
@@ -53,28 +47,27 @@ export default {
               });
             }
           }
-        );
+        });
 
-        self.get(
-          self.getGlobalData().ApiBaseUrl +
-            "/process/getProcessInstAuth?processDataId=" +
-            dataId,
-          "",
-          function(response) {
+        self.get({
+          url: "/process/getProcessInstAuth?processDataId=" + dataId,
+          success: function(response) {
             if (response.code == 200) {
               if (response.data.length > 0) {
                 self.processInstAuth = response.data;
-                for(var i=0;i<self.processInstAuth.length;i++){
+                for (var i = 0; i < self.processInstAuth.length; i++) {
                   let index = i;
-                  setTimeout(function(){
+                  setTimeout(function() {
                     self.$refs.comments.isHideReply = false;
-                    self.$refs.comments.setCurrentStep(self.processInstAuth[index].currentStep);
-                  },200);
+                    self.$refs.comments.setCurrentStep(
+                      self.processInstAuth[index].currentStep
+                    );
+                  }, 200);
                   break;
                 }
                 self.cfg4.buttons[0].hidden = false;
                 self.cfg4.buttons[2].hidden = false;
-                self.cfgComment.mode='edit';
+                self.cfgComment.mode = "edit";
                 for (var i = 0; i < response.data.length; i++) {
                   if (response.data[i].buttonType == "Retry") {
                     self.cfg4.buttons[1].hidden = false;
@@ -88,13 +81,13 @@ export default {
               }
             }
           }
-        );
+        });
       } else {
         self.isApprove = false;
-        self.cfgComment.mode='edit';
-         setTimeout(function(){
-            self.$refs.applicant.detail=self.getGlobalData().LoginUser;
-          },200);
+        self.cfgComment.mode = "edit";
+        setTimeout(function() {
+          self.$refs.applicant.detail = self.getGlobalData().LoginUser;
+        }, 200);
       }
     });
   },
@@ -105,7 +98,7 @@ export default {
     let self = this;
     return {
       isApprove: false,
-      processInstAuth:[],
+      processInstAuth: [],
       cfg0: {
         title: "单据信息",
         detailTitle: "单据信息",
@@ -331,7 +324,7 @@ export default {
         },
         getExtraDataSkipValidate: function() {
           return {
-            comments: self.$refs.comments.getSendMsg('发起申请')
+            comments: self.$refs.comments.getSendMsg("发起申请")
           };
         },
         onSuccess: function() {
@@ -350,9 +343,11 @@ export default {
             }
           };
         },
-        getExtraDataSkipValidate:function(){
+        getExtraDataSkipValidate: function() {
           return {
-            comments: self.$refs.comments.getSendMsg(self.$refs.agree.currentAction)
+            comments: self.$refs.comments.getSendMsg(
+              self.$refs.agree.currentAction
+            )
           };
         },
         buttons: [
@@ -394,7 +389,7 @@ export default {
       cfgComment: {
         title: "审批历史记录",
         name: "comments",
-        mode:"detail"
+        mode: "detail"
       }
     };
   }

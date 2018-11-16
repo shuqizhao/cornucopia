@@ -3,15 +3,18 @@
 </template>
 <script>
 export default {
-  mounted:function(){
+  mounted: function() {
     var self = this;
-    self.get(self.getGlobalData().ApiBaseUrl + "/process/alllist",'',function(r){
-      if(r.code==200){
-        var data =[];
-        for(var i=0;i<r.data.length;i++){
-          data.push({id:r.data[i].id,value:r.data[i].name});
+    self.get({
+      url: "/process/alllist",
+      success: function(r) {
+        if (r.code == 200) {
+          var data = [];
+          for (var i = 0; i < r.data.length; i++) {
+            data.push({ id: r.data[i].id, value: r.data[i].name });
+          }
+          self.cfg.columns[1].data = data;
         }
-        self.cfg.columns[1].data=data;
       }
     });
   },
@@ -28,14 +31,15 @@ export default {
             title: "单号",
             name: "formCode",
             isSearch: true
-          },{
+          },
+          {
             title: "流程类型",
             name: "processName",
             isSearch: true,
-            type:"combox",
-            data:[]
+            type: "combox",
+            data: []
           },
-            {
+          {
             title: "发起时间",
             name: "createTime",
             isSearch: true,
@@ -53,7 +57,7 @@ export default {
             title: "最新审批人",
             name: "updateName"
           },
-           {
+          {
             title: "最新操作时间",
             name: "updateTime",
             isSearch: true,
@@ -61,9 +65,19 @@ export default {
           }
         ],
         fnRowCallback: function(row, data) {
-          $("td:eq(0)", row).html('<a target="_blank" href="#/'+data.url+'?processId='+data.processId+'&id='+data.id+'&showDiagram=1">'+data.formCode+'</a>');
+          $("td:eq(0)", row).html(
+            '<a target="_blank" href="#/' +
+              data.url +
+              "?processId=" +
+              data.processId +
+              "&id=" +
+              data.id +
+              '&showDiagram=1">' +
+              data.formCode +
+              "</a>"
+          );
         },
-        idName: "id",
+        idName: "id"
         // functions: {
         //   more: [
         //     {
@@ -77,14 +91,14 @@ export default {
         //       functionName:'userEnable'
         //     }
         //   ],
-          // common: [
-          //   {
-          //     text: "添加用户",
-          //     url: "/auth/userAdd",
-          //     mode: "navigate",
-          //     functionName:'userAdd'
-          //   }
-          // ]
+        // common: [
+        //   {
+        //     text: "添加用户",
+        //     url: "/auth/userAdd",
+        //     mode: "navigate",
+        //     functionName:'userAdd'
+        //   }
+        // ]
         // },
         // operations: [
         //   {

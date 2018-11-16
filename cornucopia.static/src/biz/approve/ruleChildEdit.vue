@@ -9,16 +9,15 @@
 export default {
   mounted: function() {
     var self = this;
-    self.get(
-      self.getGlobalData().ApiBaseUrl + "/approve/getAllRoles",
-      "",
-      function(response) {
+    self.get({
+      url: "/approve/getAllRoles",
+      success: function(response) {
         if (response.code == 200) {
           self.roles = response.data;
           self.cfg.items[1].data = self.roles;
         }
       }
-    );
+    });
   },
   data() {
     var self = this;
@@ -98,10 +97,9 @@ export default {
         },
         onLoaded: function(detail) {
           if (detail.type == 1) {
-            self.get(
-              self.getGlobalData().ApiBaseUrl + "/approve/getAllRoles",
-              "",
-              function(response) {
+            self.get({
+              url: "/approve/getAllRoles",
+              success: function(response) {
                 if (response.code == 200) {
                   self.roles = response.data;
                   self.cfg.items[3].type = "select";
@@ -113,7 +111,7 @@ export default {
                   );
                 }
               }
-            );
+            });
           } else if (detail.type == 2) {
             self.cfg.items[3].url = "functionPopup";
             self.cfg.items[3].type = "popup";

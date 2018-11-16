@@ -32,13 +32,13 @@ export default {
             title: "岗位名",
             type: "text",
             width: "90%",
-            isRequire:true
+            isRequire: true
           },
           {
             name: "type",
             title: "岗位类型",
             width: "90%",
-            isRequire:true,
+            isRequire: true,
             type: "select",
             data: [{ id: 1, value: "角色" }, { id: 2, value: "规则" }],
             onChange: function(s1) {
@@ -65,24 +65,24 @@ export default {
           {
             name: "rule",
             title: "岗位计算",
-            isRequire:true,
+            isRequire: true,
             width: "90%",
             type: "select"
           },
           {
             name: "vitualTitle",
             title: "虚拟职位",
-            isRequire:true,
+            isRequire: true,
             width: "90%",
             type: "text"
           },
           {
             name: "approveType",
             title: "审核类型",
-            isRequire:true,
+            isRequire: true,
             width: "90%",
             type: "select",
-            data:[{id:0,value:'竞签'},{id:1,value:'会签'}]
+            data: [{ id: 0, value: "竞签" }, { id: 1, value: "会签" }]
           }
         ],
         rules: {
@@ -138,25 +138,23 @@ export default {
           return false;
         },
         onLoaded: function() {
-          self.get(
-            self.getGlobalData().ApiBaseUrl + "/approve/getAllRoles",
-            "",
-            function(response) {
+          self.get({
+            url: "/approve/getAllRoles",
+            success: function(response) {
               if ((response.code = 200)) {
                 self.roles = response.data;
               }
             }
-          );
+          });
 
-          self.get(
-            self.getGlobalData().ApiBaseUrl + "/approve/getAllRules",
-            "",
-            function(response) {
+          self.get({
+            url: "/approve/getAllRules",
+            success: function(response) {
               if ((response.code = 200)) {
                 self.pals = response.data;
               }
             }
-          );
+          });
         }
       },
       roles: [],

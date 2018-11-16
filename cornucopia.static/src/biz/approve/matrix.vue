@@ -8,11 +8,12 @@
 export default {
   mounted: function() {
     var self = this;
-    self.get(this.getGlobalData().ApiBaseUrl + "/process/alllist", "", function(
-      response
-    ) {
-      if (response.code == 200) {
-        self.$set(self.cfg.tools[0], "data", response.data);
+    self.get({
+      url: "/process/alllist",
+      success: function(response) {
+        if (response.code == 200) {
+          self.$set(self.cfg.tools[0], "data", response.data);
+        }
       }
     });
   },
@@ -53,19 +54,16 @@ export default {
               self.$set(self.cfg, "items", items);
               self.$set(self.$refs.editList, "tableData", []);
 
-              self.get(
-                self.getGlobalData().ApiBaseUrl +
-                  "/processnode/alllist?processId=" +
-                  s1,
-                "",
-                function(response) {
+              self.get({
+                url: "/processnode/alllist?processId=" + s1,
+                success: function(response) {
                   if (response.code == 200) {
                     self.$set(self.cfg.tools[1], "data", response.data);
                     toolData.processNodeId = "";
                     toolData.approveId = "";
                   }
                 }
-              );
+              });
             }
           },
           {
@@ -86,30 +84,23 @@ export default {
               self.$set(self.cfg, "items", items);
               self.$set(self.$refs.editList, "tableData", []);
 
-              self.get(
-                self.getGlobalData().ApiBaseUrl +
-                  "/approve/alllist?processNodeId=" +
-                  s1,
-                "",
-                function(response) {
+              self.get({
+                url: "/approve/alllist?processNodeId=" + s1,
+                success: function(response) {
                   if (response.code == 200) {
                     self.$set(self.cfg.tools[2], "data", response.data);
                     toolData.approveId = "";
                   }
                 }
-              );
-              self.get(
-                self.getGlobalData().ApiBaseUrl +
-                  "/approve/matrix?processNodeId=" +
-                  s1 +
-                  "&conditionId=0",
-                "",
-                function(response) {
+              });
+              self.get({
+                url: "/approve/matrix?processNodeId=" + s1 + "&conditionId=0",
+                success: function(response) {
                   if (response.code == 200) {
                     self.$set(self.$refs.editList, "tableData", response.data);
                   }
                 }
-              );
+              });
             }
           },
           {
@@ -128,12 +119,9 @@ export default {
               ];
               self.$set(self.cfg, "items", items);
               self.$set(self.$refs.editList, "tableData", []);
-              self.get(
-                self.getGlobalData().ApiBaseUrl +
-                  "/approve/allchildren?approveId=" +
-                  s1,
-                "",
-                function(response) {
+              self.get({
+                url: "/approve/allchildren?approveId=" + s1,
+                success: function(response) {
                   if (response.code == 200) {
                     var items = [
                       {
@@ -153,34 +141,33 @@ export default {
                     self.$set(self.cfg, "items", items);
                   }
                 }
-              );
-              self.get(
-                self.getGlobalData().ApiBaseUrl +
+              });
+              self.get({
+                url:
                   "/approve/matrix?processNodeId=" +
                   self.currentProcessNodeId +
                   "&conditionId=" +
                   s1,
-                "",
                 function(response) {
                   if (response.code == 200) {
                     self.$set(self.$refs.editList, "tableData", response.data);
                   }
                 }
-              );
+              });
             }
           }
         ]
       },
       cfg1: {
         save: this.getGlobalData().ApiBaseUrl + "/approve/matrixUpdate",
-         getExtraData: function() {
+        getExtraData: function() {
           return {
             process: {
               processNodeId: self.currentProcessNodeId,
               processId: self.currentProcessId,
               approveId: self.currentApproveId
             }
-          }
+          };
         },
         validate: function() {
           if (self.currentApproveId == 0) {

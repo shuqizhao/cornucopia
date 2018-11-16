@@ -70,12 +70,13 @@ export default {
               url: "processAdd",
               mode: "modal",
               functionName: "processAdd"
-            },{
+            },
+            {
               text: "修改流程",
               url: "processUpdate",
               mode: "modal",
               functionName: "processAdd"
-            },
+            }
           ],
           more: [
             {
@@ -119,18 +120,15 @@ export default {
             }
           });
           self.openLoading(self.$refs.diagramList);
-          self.get(
-            self.getGlobalData().ApiBaseUrl +
-              "/processdiagram/getAll?processId=" +
-              data.id,
-            "",
-            function(response) {
+          self.get({
+            url: "/processdiagram/getAll?processId=" + data.id,
+            success: function(response) {
               if (response.code == 200) {
                 self.$refs.diagramList.loadSimpleData(response.data);
                 self.closeLoading(self.$refs.diagramList);
               }
             }
-          );
+          });
         }
       },
       cfg1: {
@@ -248,17 +246,14 @@ export default {
               url: this.getGlobalData().ApiBaseUrl + "/processdiagram/deploy",
               functionName: "deployDiagram",
               onSuccess: function() {
-                self.get(
-                  self.getGlobalData().ApiBaseUrl +
-                    "/processdiagram/getAll?processId=" +
-                    self.processId,
-                  "",
-                  function(response) {
+                self.get({
+                  url: "/processdiagram/getAll?processId=" + self.processId,
+                  success: function(response) {
                     if (response.code == 200) {
                       self.$refs.diagramList.loadSimpleData(response.data);
                     }
                   }
-                );
+                });
               }
             }
           ],

@@ -26,8 +26,8 @@ export default {
             name: "name",
             title: "流程名",
             type: "text",
-            isRequire:true,
-            width:"90%"
+            isRequire: true,
+            width: "90%"
           },
           {
             name: "fileId",
@@ -36,8 +36,8 @@ export default {
             desc: "只能上传bpmn文件",
             accept: ".bpmn",
             url: this.getGlobalData().ApiBaseUrl + "/upload",
-            isRequire:true,
-            width:"90%"
+            isRequire: true,
+            width: "90%"
           },
           {
             name: "picFileId",
@@ -46,8 +46,8 @@ export default {
             desc: "只能上传png文件",
             accept: ".png",
             url: this.getGlobalData().ApiBaseUrl + "/upload",
-            isRequire:true,
-            width:"90%"
+            isRequire: true,
+            width: "90%"
           }
         ],
         rules: {
@@ -57,7 +57,7 @@ export default {
           fileId: {
             required: true
           },
-          picFileId:{
+          picFileId: {
             required: true
           }
         },
@@ -65,20 +65,17 @@ export default {
           name: {
             required: "流程名必须填写"
           },
-           fileId: {
+          fileId: {
             required: "流程图必须上传"
           },
-           picFileId: {
+          picFileId: {
             required: "流程图片必须上传"
           }
         },
         onSuccess: function() {
-          self.get(
-            self.getGlobalData().ApiBaseUrl +
-              "/processdiagram/getAll?processId=" +
-              self.processId,
-            "",
-            function(response) {
+          self.get({
+            url: "/processdiagram/getAll?processId=" + self.processId,
+            success: function(response) {
               if (response.code == 200) {
                 self.$parent.$parent.$parent.$parent.$parent.$refs.diagramList.loadSimpleData(
                   response.data
@@ -87,7 +84,7 @@ export default {
                 self.$parent.$parent.currentComponent = "";
               }
             }
-          );
+          });
           return false;
         },
         validate: function(data, saveData) {

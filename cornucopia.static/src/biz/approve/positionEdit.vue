@@ -45,15 +45,15 @@ export default {
           {
             name: "name",
             title: "岗位名",
-            isRequire:true,
+            isRequire: true,
             type: "text",
-            width:"90%"
+            width: "90%"
           },
           {
             name: "type",
             title: "岗位类型",
-            isRequire:true,
-            width:"90%",
+            isRequire: true,
+            width: "90%",
             type: "select",
             data: [{ id: 1, value: "角色" }, { id: 2, value: "规则" }],
             onChange: function(s1) {
@@ -68,25 +68,25 @@ export default {
           {
             name: "rule",
             title: "岗位计算",
-            isRequire:true,
-            width:"90%",
+            isRequire: true,
+            width: "90%",
             type: "select",
-            data:[]
+            data: []
           },
           {
             name: "vitualTitle",
             title: "虚拟职位",
-            isRequire:true,
+            isRequire: true,
             width: "90%",
             type: "text"
           },
           {
             name: "approveType",
             title: "审核类型",
-            isRequire:true,
+            isRequire: true,
             width: "90%",
             type: "select",
-            data:[{id:0,value:'竞签'},{id:1,value:'会签'}]
+            data: [{ id: 0, value: "竞签" }, { id: 1, value: "会签" }]
           }
         ],
         rules: {
@@ -142,10 +142,9 @@ export default {
           var s1 = detail.type;
           var s2 = detail.rule;
           detail.rule = "";
-          self.get(
-            self.getGlobalData().ApiBaseUrl + "/approve/getAllRoles",
-            "",
-            function(response) {
+          self.get({
+            url: "/approve/getAllRoles",
+            success: function(response) {
               if ((response.code = 200)) {
                 self.roles = response.data;
                 if (s1 == 1) {
@@ -154,12 +153,11 @@ export default {
                 }
               }
             }
-          );
+          });
 
-          self.get(
-            self.getGlobalData().ApiBaseUrl + "/approve/getAllRules",
-            "",
-            function(response) {
+          self.get({
+            url: "/approve/getAllRules",
+            success: function(response) {
               if ((response.code = 200)) {
                 self.pals = response.data;
                 if (s1 == 2) {
@@ -168,7 +166,7 @@ export default {
                 }
               }
             }
-          );
+          });
         }
       },
       roles: [],

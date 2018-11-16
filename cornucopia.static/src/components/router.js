@@ -252,88 +252,105 @@ Vue.prototype.newGuid = function() {
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }
 
-Vue.prototype.post = function(url, params, onSuccess) {
-    $.ajax({
-        type: 'POST',
-        xhrFields: {
-            withCredentials: true
-        },
-        url: url,
-        data: params,
-        success: function(result) {
-            if (onSuccess) {
-                onSuccess(result);
-            }
-        }
-    });
-}
-
-// Vue.prototype.post = function(p) {
+// Vue.prototype.post = function(url, params, onSuccess) {
 //     $.ajax({
 //         type: 'POST',
 //         xhrFields: {
 //             withCredentials: true
 //         },
-//         async: p.async || true,
-//         url: jsonData.ApiBaseUrl + p.url,
-//         data: p.params || [],
+//         url: url,
+//         data: params,
 //         success: function(result) {
-//             if (p.onSuccess) {
-//                 p.onSuccess(result);
+//             if (onSuccess) {
+//                 onSuccess(result);
 //             }
 //         }
 //     });
 // }
 
-Vue.prototype.get = function(url, params, onSuccess) {
+Vue.prototype.post = function(p) {
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         xhrFields: {
             withCredentials: true
         },
-        url: url,
-        data: params,
+        async: p.async || true,
+        url: jsonData.ApiBaseUrl + p.url,
+        data: p.data || [],
         success: function(result) {
-            if (onSuccess) {
-                onSuccess(result);
+            if (p.success) {
+                p.success(result);
             }
         }
     });
 }
 
-// Vue.prototype.get = function(p) {
+// Vue.prototype.get = function(url, params, onSuccess) {
 //     $.ajax({
 //         type: 'GET',
 //         xhrFields: {
 //             withCredentials: true
 //         },
-//         async: p.async || true,
-//         url: jsonData.ApiBaseUrl + p.url,
-//         data: p.params || '',
+//         url: url,
+//         data: params,
 //         success: function(result) {
-//             if (p.onSuccess) {
-//                 p.onSuccess(result);
+//             if (onSuccess) {
+//                 onSuccess(result);
 //             }
 //         }
 //     });
 // }
 
-Vue.prototype.getSync = function(url, params, onSuccess) {
+Vue.prototype.get = function(p) {
     $.ajax({
         type: 'GET',
         xhrFields: {
             withCredentials: true
         },
-        async: false,
-        url: url,
-        data: params,
+        async: p.async || true,
+        url: jsonData.ApiBaseUrl + p.url,
+        data: p.params || '',
         success: function(result) {
-            if (onSuccess) {
-                onSuccess(result);
+            if (p.success) {
+                p.success(result);
             }
         }
     });
 }
+
+// Vue.prototype.getSync = function(url, params, onSuccess) {
+//     $.ajax({
+//         type: 'GET',
+//         xhrFields: {
+//             withCredentials: true
+//         },
+//         async: false,
+//         url: url,
+//         data: params,
+//         success: function(result) {
+//             if (onSuccess) {
+//                 onSuccess(result);
+//             }
+//         }
+//     });
+// }
+
+// Vue.prototype.getSync = function(p) {
+//     $.ajax({
+//         type: 'GET',
+//         xhrFields: {
+//             withCredentials: true
+//         },
+//         async: false,
+//         url: url,
+//         data: params,
+//         success: function(result) {
+//             if (onSuccess) {
+//                 onSuccess(result);
+//             }
+//         }
+//     });
+// }
 
 if (Vue.prototype.getCookie("adAuthCookie")) {
     $.ajax({
