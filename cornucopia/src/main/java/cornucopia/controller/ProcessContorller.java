@@ -101,7 +101,7 @@ public class ProcessContorller {
 	@RequestMapping(value = { "/category" }, method = RequestMethod.GET)
 	public JsonResult<List<ProcessCategoryEntity>> category() {
 		List<ProcessCategoryEntity> processCategories = ProcessCategoryService.getInstance().getAllByOrder();
-		List<ProcessEntity> processes = ProcessService.getInstance().getAllProcess();
+		List<ProcessEntity> processes = ProcessService.getInstance().getAllEnableProcess();
 		for (ProcessCategoryEntity processCategoryEntity : processCategories) {
 			List<ProcessEntity> temp = processes.stream()
 					.filter((ProcessEntity r) -> r.getCategoryId() == processCategoryEntity.getId())

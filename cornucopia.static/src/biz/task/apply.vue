@@ -25,17 +25,16 @@
 export default {
   mounted: function() {
     var self = this;
-    this.setBreadcrumbTitle(this, "发起新流程", "发起新流程");
-    this.get(
-      self.getGlobalData().ApiBaseUrl + "/process/category",
-      "",
-      function(response) {
+    self.setBreadcrumbTitle(this, "发起新流程", "发起新流程");
+    self.get({
+      url: "/process/category",
+      success: function(response) {
         if ((response.code = 200)) {
           self.categories = response.data;
           // self.$set(self, self.categories, response.data);
         }
       }
-    );
+    });
   },
   destroyed: function() {
     this.setBreadcrumbTitle(this, "", "");

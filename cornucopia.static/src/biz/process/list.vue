@@ -45,11 +45,12 @@ export default {
           {
             title: "路由",
             name: "url"
-          }
-          // {
-          //   title: "是否启用",
-          //   name: "isEnabled"
-          // },
+          },
+          {
+            title: "是否启用",
+            name: "isEnabled",
+            type:'yesno'
+          },
           // {
           //   title: "创建时间",
           //   name: "createTime"
@@ -57,11 +58,11 @@ export default {
         ],
         idName: "id",
         fnRowCallback: function(row, data) {
-          // if (data.isEnabled) {
-          //   $("td:eq(1)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
-          // } else {
-          //   $("td:eq(1)", row).html('<i class="el-icon-close"></i>');
-          // }
+          if (data.isEnabled) {
+            $("td:eq(5)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
+          } else {
+            $("td:eq(5)", row).html('<i class="el-icon-close"></i>');
+          }
         },
         functions: {
           common: [

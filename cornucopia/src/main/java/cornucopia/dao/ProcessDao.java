@@ -14,6 +14,9 @@ public interface ProcessDao {
 	@Select("call sp_process_all()")
 	public List<ProcessEntity> getAllProcess();
 
+	@Select("call sp_process_all_enable()")
+	public List<ProcessEntity> getAllEnableProcess();
+
 	@Select("call sp_process_exists(#{processName},#{pre})")
 	public int exists(@Param("processName") String processName,@Param("pre") String pre);
 
