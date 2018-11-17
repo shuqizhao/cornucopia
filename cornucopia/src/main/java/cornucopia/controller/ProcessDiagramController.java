@@ -18,7 +18,7 @@ import cornucopia.service.ProcessDiagramService;
 @RequestMapping("/processdiagram")
 public class ProcessDiagramController {
 	@RequestMapping(value = { "/upload" }, method = RequestMethod.POST)
-	public JsonResult<Integer> upload(@RequestBody ProcessDiagramViewModel pdvm) {
+	public JsonResult<Integer> upload( ProcessDiagramViewModel pdvm) {
 		ProcessDiagramEntity processDiagramEntity = new ProcessDiagramEntity();
 		processDiagramEntity.setProcessId(pdvm.getProcessId());
 		processDiagramEntity.setPicFileId(pdvm.getPicFileId()[0].getId());

@@ -56,7 +56,7 @@ public class ProcessCategoryContorller {
 	}
 
 	@RequestMapping(value = { "/add" }, method = RequestMethod.POST)
-	public JsonResult<Integer> add(HttpServletRequest request,@RequestBody ProcessCategoryEntity processCategoryEntity) {
+	public JsonResult<Integer> add(HttpServletRequest request, ProcessCategoryEntity processCategoryEntity) {
 		UserEntity userEntity = (UserEntity) request.getSession().getAttribute("user");
 		int userId = 0;
 		if (userEntity != null) {
@@ -107,7 +107,7 @@ public class ProcessCategoryContorller {
 	}
 
 	@RequestMapping(value = { "/update" }, method = RequestMethod.POST)
-	public JsonResult<Integer> update(HttpServletRequest request,@RequestBody ProcessCategoryEntity processCategoryEntity) {
+	public JsonResult<Integer> update(HttpServletRequest request, ProcessCategoryEntity processCategoryEntity) {
 		UserEntity userEntity = (UserEntity) request.getSession().getAttribute("user");
 		int userId = 0;
 		if (userEntity != null) {

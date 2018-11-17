@@ -31,7 +31,7 @@ public class WhiteListController {
 	}
 
 	@RequestMapping(value = { "/add" }, method = RequestMethod.POST)
-	public JsonResult<Integer> add(@RequestBody WhiteListEntity whiteListEntity) {
+	public JsonResult<Integer> add( WhiteListEntity whiteListEntity) {
 		WhiteListService.getInstance().addWhiteListByPage(whiteListEntity);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
@@ -67,7 +67,7 @@ public class WhiteListController {
 	}
 
 	@RequestMapping(value = { "/update" }, method = RequestMethod.POST)
-	public JsonResult<Integer> update(@RequestBody WhiteListEntity whiteListEntity) {
+	public JsonResult<Integer> update( WhiteListEntity whiteListEntity) {
 		int result = WhiteListService.getInstance().updateWhiteListEntity(whiteListEntity);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);

@@ -57,7 +57,7 @@ public class FunctionController {
 	}
 
 	@RequestMapping(value = { "/add" }, method = RequestMethod.POST)
-	public JsonResult<Integer> add(@RequestBody FunctionViewModel funcVm) {
+	public JsonResult<Integer> add( FunctionViewModel funcVm) {
 		FunctionService.getInstance().insert(funcVm.getFunction());
 		for (FunctionParameterEntity fp : funcVm.getFunctionParas()) {
 			fp.setFuncId(funcVm.getFunction().getId());
@@ -70,7 +70,7 @@ public class FunctionController {
 	}
 	
 	@RequestMapping(value = { "/update" }, method = RequestMethod.POST)
-	public JsonResult<Integer> update(@RequestBody FunctionViewModel funcVm) {
+	public JsonResult<Integer> update( FunctionViewModel funcVm) {
 		FunctionService.getInstance().update(funcVm.getFunction());
 		for (FunctionParameterEntity fp : funcVm.getFunctionParas()) {
 			fp.setFuncId(funcVm.getFunction().getId());
@@ -110,7 +110,7 @@ public class FunctionController {
 	}
 	
 	@RequestMapping(value = { "/addOrUpdateParainst" }, method = RequestMethod.POST)
-	public JsonResult<Integer> addOrUpdateParainst(@RequestBody FunctionParainstViewModel fpv) {
+	public JsonResult<Integer> addOrUpdateParainst( FunctionParainstViewModel fpv) {
 		int id = FunctionService.getInstance().addOrUpdateParainst(fpv.getParainstId(),fpv.getFunctionId(),fpv.getParainstJson());
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);

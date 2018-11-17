@@ -66,7 +66,7 @@ public class ProcessContorller {
 	}
 
 	@RequestMapping(value = { "/add" }, method = RequestMethod.POST)
-	public JsonResult<Integer> add(HttpServletRequest request,@RequestBody ProcessEntity processEntity) {
+	public JsonResult<Integer> add(HttpServletRequest request, ProcessEntity processEntity) {
 		UserEntity userEntity = (UserEntity) request.getSession().getAttribute("user");
 		int userId = 0;
 		if (userEntity != null) {
@@ -141,7 +141,7 @@ public class ProcessContorller {
 
 	@Transactional(rollbackFor = Exception.class)
 	@RequestMapping(value = { "/applySave" }, method = RequestMethod.POST)
-	public JsonResult<Integer> applySave(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
+	public JsonResult<Integer> applySave(HttpServletRequest request,  ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {
 		ProcessDataEntity processDataEntity = new ProcessDataEntity();
 		processDataEntity.setBizData(pdvm.getXmlStr());
@@ -179,7 +179,7 @@ public class ProcessContorller {
 
 	@Transactional(rollbackFor = Exception.class)
 	@RequestMapping(value = { "/applyAgree" }, method = RequestMethod.POST)
-	public JsonResult<Integer> applyAgree(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
+	public JsonResult<Integer> applyAgree(HttpServletRequest request,  ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {
 		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//fromCode");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
@@ -206,7 +206,7 @@ public class ProcessContorller {
 
 	@Transactional(rollbackFor = Exception.class)
 	@RequestMapping(value = { "/applyRetry" }, method = RequestMethod.POST)
-	public JsonResult<Integer> applyRetry(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
+	public JsonResult<Integer> applyRetry(HttpServletRequest request,  ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {
 		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//fromCode");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
@@ -236,7 +236,7 @@ public class ProcessContorller {
 
 	@Transactional(rollbackFor = Exception.class)
 	@RequestMapping(value = { "/applyReturn" }, method = RequestMethod.POST)
-	public JsonResult<Integer> applyReturn(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
+	public JsonResult<Integer> applyReturn(HttpServletRequest request,  ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {
 		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//fromCode");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
