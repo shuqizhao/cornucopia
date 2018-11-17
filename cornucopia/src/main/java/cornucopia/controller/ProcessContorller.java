@@ -57,8 +57,8 @@ public class ProcessContorller {
 	}
 
 	@RequestMapping(value = { "/exists" }, method = RequestMethod.POST)
-	public JsonResult<Integer> exists(String name,String pre) {
-		int isExists = ProcessService.getInstance().exists(name,pre);
+	public JsonResult<Integer> exists(int id,String name,String pre) {
+		int isExists = ProcessService.getInstance().exists(id,name,pre);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(isExists);

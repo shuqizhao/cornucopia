@@ -21,6 +21,10 @@ export default {
         save: "/process/update",
         items: [
           {
+            name: "id",
+            type: "hidden"
+          },
+          {
             name: "name",
             title: "流程名",
             type: "text",
@@ -119,7 +123,7 @@ export default {
                 for(var i=0;i<response.data.length;i++){
                   tempArr.push({'id':response.data[i].id,'value':response.data[i].name});
                 }
-                self.cfg.items[5].data = tempArr;
+                self.cfg.items[6].data = tempArr;
               }
             }
           });

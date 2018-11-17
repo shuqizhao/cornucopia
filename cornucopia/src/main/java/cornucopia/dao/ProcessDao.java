@@ -18,8 +18,8 @@ public interface ProcessDao {
 	@Select("call sp_process_all_enable()")
 	public List<ProcessEntity> getAllEnableProcess();
 
-	@Select("call sp_process_exists(#{processName},#{pre})")
-	public int exists(@Param("processName") String processName,@Param("pre") String pre);
+	@Select("call sp_process_exists(#{id},#{processName},#{pre})")
+	public int exists(@Param("id") int id,@Param("processName") String processName,@Param("pre") String pre);
 
 	@Insert("call sp_process_insert(#{process.name},#{process.icon},#{process.orderNum},#{process.url},#{process.pre},#{process.createBy},#{process.categoryId})")
 	@SelectKey(statement="Select LAST_INSERT_ID()", keyProperty="process.id", before=false, resultType=int.class)
