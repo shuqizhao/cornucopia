@@ -83,4 +83,8 @@ public class MenuService {
 		}
 		return 1;
 	}
+
+	public int insert(MenuEntity menuEntity) {
+		return menuDao.insert(menuEntity);
+	}
 }

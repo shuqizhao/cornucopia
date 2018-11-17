@@ -28,7 +28,7 @@ export default {
             isRequire: true
           },
           {
-            name: "router",
+            name: "routerName",
             title: "前端路由",
             type: "text"
           },
@@ -65,7 +65,7 @@ export default {
         ],
         onLoaded: function(detail) {
           self.get({
-            url: "/auth/listResource",
+            url: "/resource/all",
             success: function(response) {
               if (response.code == 200) {
                 self.cfg.items[1].data = response.data;

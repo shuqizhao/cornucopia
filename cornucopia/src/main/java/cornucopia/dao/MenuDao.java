@@ -30,4 +30,7 @@ public interface MenuDao {
 
 	@Select("call sp_menu_router_all(#{userId})")
 	public List<MenuEntity> getAllRouters(@Param("userId") int userId);
+
+	@Insert("call sp_menu_insert(#{menu.name},#{menu.parentId},#{menu.routerName},#{menu.url},#{menu.functionName},#{menu.api},#{menu.icon},#{menu.type},#{menu.createBy})")
+	public int insert(@Param("menu")MenuEntity menuEntity);
 }
