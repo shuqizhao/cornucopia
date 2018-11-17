@@ -80,6 +80,21 @@ public class ProcessContorller {
 		return jr;
 	}
 
+	@RequestMapping(value = { "/update" }, method = RequestMethod.POST)
+	public JsonResult<Integer> update(HttpServletRequest request,ProcessEntity processEntity) {
+		UserEntity userEntity = (UserEntity) request.getSession().getAttribute("user");
+		int userId = 0;
+		if (userEntity != null) {
+			userId = userEntity.getId();
+		}
+		processEntity.setCreateBy(userId);
+		ProcessService.getInstance().update(processEntity);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(processEntity.getId());
+		return jr;
+	}
+
 	@RequestMapping(value = { "/disable" }, method = RequestMethod.POST)
 	public JsonResult<Integer> disable(@RequestParam(value = "Ids") int id) {
 		int result = ProcessService.getInstance().disable(id);

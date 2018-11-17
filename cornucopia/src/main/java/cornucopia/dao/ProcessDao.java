@@ -25,6 +25,9 @@ public interface ProcessDao {
 	@SelectKey(statement="Select LAST_INSERT_ID()", keyProperty="process.id", before=false, resultType=int.class)
 	public int insert(@Param("process") ProcessEntity processEntity);
 
+	@Update("call sp_process_update(#{process.id},#{process.name},#{process.icon},#{process.orderNum},#{process.url},#{process.pre},#{process.updateBy},#{process.categoryId})")
+	public int update(@Param("process") ProcessEntity processEntity);
+
 	@Update("call sp_process_disable(#{id})")
 	public int disable(@Param("id")int id);
 	

@@ -258,6 +258,8 @@ Vue.prototype.post = function(p) {
         xhrFields: {
             withCredentials: true
         },
+        // contentType: p.contentType || "application/json;charset=utf-8",
+        // dataType: p.dataType || "json",
         async: p.async || true,
         url: jsonData.ApiBaseUrl + p.url,
         data: p.data || [],

@@ -47,6 +47,10 @@ public class ProcessService {
 		return processDao.insert(processEntity);
 	}
 
+	public int update(ProcessEntity processEntity) {
+		return processDao.update(processEntity);
+	}
+
 	public int disable(int id) {
 		return processDao.disable(id);
 	}

@@ -878,15 +878,9 @@ export default {
       if (data == null) {
         data = self.getData();
       }
-      $.ajax({
-        type: "POST",
-        contentType: "application/json;charset=utf-8",
-        dataType: "json",
-        xhrFields: {
-          withCredentials: true
-        },
+      self.post({
         url: self.cfg.save,
-        data: JSON.stringify(data),
+        data: data,
         success: function(response) {
           if (response.code && response.code == "201") {
             window.open(response.data);
