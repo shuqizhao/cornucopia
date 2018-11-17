@@ -65,7 +65,7 @@ public class ApproveController {
 	}
 
 	@RequestMapping(value = { "/add" }, method = RequestMethod.POST)
-	public JsonResult<Integer> add( ApproveViewModel approveVm) {
+	public JsonResult<Integer> add(@RequestBody ApproveViewModel approveVm) {
 		ApproveService.getInstance().insert(approveVm.getApprove());
 		for (ApproveConditionEntity ac : approveVm.getApproveConditions()) {
 			ac.setApproveId(approveVm.getApprove().getId());
@@ -146,7 +146,7 @@ public class ApproveController {
 	}
 
 	@RequestMapping(value = { "/positionAdd" }, method = RequestMethod.POST)
-	public JsonResult<Integer> positionAdd( ApprovePositionEntity pos) {
+	public JsonResult<Integer> positionAdd(@RequestBody ApprovePositionEntity pos) {
 		int id = ApprovePositionService.getInstance().insert(pos);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
