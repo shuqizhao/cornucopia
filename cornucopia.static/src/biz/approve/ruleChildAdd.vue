@@ -329,7 +329,7 @@ export default {
         ]
       },
       cfg2: {
-        save: this.getGlobalData().ApiBaseUrl + "/approve/ruleChildAdd",
+        save: "/approve/ruleChildAdd",
         getExtraData: function() {
           return {
             rule: {

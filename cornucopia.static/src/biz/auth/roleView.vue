@@ -12,12 +12,12 @@ export default {
         editTitle: "编辑角色的资源",
         mode: "detailEdit",
         get: {
-          url: this.getGlobalData().ApiBaseUrl+"/role/get",
+          url: "/role/get",
           params: {
             id: this.$route.query.id
           }
         },
-        save: this.getGlobalData().ApiBaseUrl+"/role/update",
+        save: "/role/update",
         items: [
           {
             name: "Id",
@@ -32,7 +32,7 @@ export default {
             name: "Menus",
             title: "资源",
             type: "select2select",
-            url: this.getGlobalData().ApiBaseUrl+"/role/resources?id=" + this.$route.query.id
+            url: "/role/resources?id=" + this.$route.query.id
           }
         ],
         afterEditRender: function() {

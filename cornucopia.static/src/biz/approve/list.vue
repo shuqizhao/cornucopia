@@ -18,11 +18,10 @@ export default {
         hideToolBar: true,
         dialogWidth: "95%",
         hideCheckBox: true,
-        option1Url: this.getGlobalData().ApiBaseUrl + "/process/alllist",
+        option1Url: "/process/alllist",
         option2Url:
-          this.getGlobalData().ApiBaseUrl + "/processnode/alllist?processId=",
-        url:
-          this.getGlobalData().ApiBaseUrl + "/approve/alllist?processNodeId=",
+          "/processnode/alllist?processId=",
+        url:"/approve/alllist?processNodeId=",
         functions: [
           {
             text: "新增",
@@ -82,7 +81,6 @@ export default {
           self.currentApproveId2 = 0;
           self.$refs.tree1.clearData();
           self.$refs.positionList.reloadSimpleData(
-            self.getGlobalData().ApiBaseUrl +
               "/approve/positionlist?processNodeId=" +
               (self.$refs.tree.value2 || 0)
           );
@@ -95,8 +93,7 @@ export default {
         dialogWidth: "95%",
         hideCheckBox: true,
         hideToolBar: true,
-        url:
-          this.getGlobalData().ApiBaseUrl + "/approve/allchildren?approveId=",
+        url:"/approve/allchildren?approveId=",
         onNodeClick: function(data) {
           self.currentApproveId2 = data.id;
         },
@@ -204,15 +201,15 @@ export default {
           more: [
             {
               text: "停用",
-              url: this.getGlobalData().ApiBaseUrl + "/process/disable"
+              url: "/process/disable"
             },
             {
               text: "启用",
-              url: this.getGlobalData().ApiBaseUrl + "/process/enable"
+              url: "/process/enable"
             },
             {
               text: "删除",
-              url: this.getGlobalData().ApiBaseUrl + "/process/delete"
+              url: "/process/delete"
             }
           ]
         },

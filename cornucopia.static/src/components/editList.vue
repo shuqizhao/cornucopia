@@ -353,14 +353,9 @@ export default {
     },
     fillData: function(onSuccess) {
       var self = this;
-      $.ajax({
-        type: "get",
-        xhrFields: {
-          withCredentials: true
-        },
+      self.get({
         url: self.cfg.get.url,
         data: self.cfg.get.params,
-        // async: false,
         success: function(result) {
           if (result.code == "200") {
             if (result.data && result.data.length > 0) {

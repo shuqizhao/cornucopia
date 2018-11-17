@@ -9,7 +9,7 @@ export default {
       cfg: {
         title: "添加流程节点",
         mode: "create",
-        save: this.getGlobalData().ApiBaseUrl + "/processnode/add",
+        save:  "/processnode/add",
         items: [
           {
             name: "name",
@@ -30,7 +30,6 @@ export default {
         validate: function(data, saveData) {
           data["processId"] = $("#id1").attr("processId");
           self.$parent.$parent.cfg.simpleUrl =
-            self.getGlobalData().ApiBaseUrl +
             "/processnode/alllist?processId=" +
             data["processId"];
           if (!data["processId"]) {
@@ -40,12 +39,8 @@ export default {
             });
             return false;
           }
-          $.ajax({
-            type: "POST",
-            xhrFields: {
-              withCredentials: true
-            },
-            url: self.getGlobalData().ApiBaseUrl + "/processnode/exists",
+          $.post({
+            url: "/processnode/exists",
             data: data,
             success: function(response) {
               if (response.code == 200 && response.data == 0) {

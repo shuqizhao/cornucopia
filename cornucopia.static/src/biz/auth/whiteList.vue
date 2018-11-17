@@ -15,7 +15,7 @@ export default {
         // },
         title: "白名单管理",
         parentTitle: "系统管理",
-        url: this.getGlobalData().ApiBaseUrl + "/auth/whiteList",
+        url:  "/auth/whiteList",
         columns: [
           {
             title: "名称",
@@ -82,12 +82,12 @@ export default {
           more: [
             {
               text: "停用",
-              url: this.getGlobalData().ApiBaseUrl + "/whitelist/disable",
+              url:  "/whitelist/disable",
               functionName:'whitelistDisable',
             },
             {
               text: "启用",
-              url: this.getGlobalData().ApiBaseUrl + "/whitelist/enable",
+              url:  "/whitelist/enable",
               functionName:'whitelistEnable',
             }
           ],

@@ -15,7 +15,7 @@ export default {
         },
         title: "用户管理",
         parentTitle: "系统管理",
-        url: this.getGlobalData().ApiBaseUrl + "/user/list",
+        url:  "/user/list",
         columns: [
           {
             title: "用户名",
@@ -91,12 +91,12 @@ export default {
           more: [
             {
               text: "停用",
-              url: this.getGlobalData().ApiBaseUrl + "/user/disable",
+              url:  "/user/disable",
               functionName:'userDisable'
             },
             {
               text: "启用",
-              url: this.getGlobalData().ApiBaseUrl + "/user/enable",
+              url:  "/user/enable",
               functionName:'userEnable'
             }
           ],

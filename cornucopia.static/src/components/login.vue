@@ -55,14 +55,10 @@ export default {
     submit: function() {
       var self = this;
       var config = this.getGlobalData();
-      var loginUrl = config.ApiBaseUrl + config.LoginUrl;
+      var loginUrl = config.LoginUrl;
 
-      $.ajax({
+      self.post({
         url: loginUrl,
-        xhrFields: {
-          withCredentials: true
-        },
-        type: "POST",
         data: {
           Un: $("#un").val(),
           Pwd: $("#pwd").val()

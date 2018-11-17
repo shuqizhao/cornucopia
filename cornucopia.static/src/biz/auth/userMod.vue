@@ -9,7 +9,7 @@ export default {
       cfg: {
         title: "修改密码",
         mode: "create",
-        save: self.getGlobalData().ApiBaseUrl + "/auth/usermod",
+        save: "/auth/usermod",
         modal: "true",
         items: [
           {
@@ -61,12 +61,8 @@ export default {
           }
         },
         validate: function(data, saveData) {
-          $.ajax({
-            type: "POST",
-            xhrFields: {
-              withCredentials: true
-            },
-            url: self.getGlobalData().ApiBaseUrl + "/auth/checkpwd",
+          self.post({
+            url: "/auth/checkpwd",
             data: data,
             success: function(response) {
               if (response.code == 200 && response.data == 1) {

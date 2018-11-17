@@ -9,7 +9,7 @@ export default {
       cfg: {
         title: "添加流程",
         mode: "create",
-        save: this.getGlobalData().ApiBaseUrl + "/processCategory/add",
+        save:  "/processCategory/add",
         items: [
           {
             name: "name",

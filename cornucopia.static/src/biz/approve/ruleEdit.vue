@@ -14,9 +14,9 @@ export default {
       cfg: {
         title: "编辑岗位规则",
         mode: "edit",
-        save: this.getGlobalData().ApiBaseUrl + "/approve/ruleUpdate",
+        save:  "/approve/ruleUpdate",
         get: {
-          url: this.getGlobalData().ApiBaseUrl + "/approve/getRule",
+          url:  "/approve/getRule",
           params: {
             id: this.$parent.$parent.$parent.$parent.$parent.currentRuleId
           }

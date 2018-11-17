@@ -11,24 +11,15 @@ export default {
     // this.openLoading(self.$refs.func,"func");
     var parainstId = self.$parent.$parent.getPopupValue();
     if (parainstId) {
-      this.openLoading(self.$refs.para,"para");
-      $.ajax({
-        type: "GET",
-        xhrFields: {
-          withCredentials: true
-        },
-        url:
-          self.getGlobalData().ApiBaseUrl +
-          "/function/getParainst?parainstId=" +
-          parainstId,
+      this.openLoading(self.$refs.para, "para");
+      self.get({
+        url: "/function/getParainst?parainstId=" + parainstId,
         success: function(response) {
           if (response.code == 200) {
             self.parainst = response.data;
             self.getPara(self.parainst.functionId);
             self.$refs.func.reloadSimpleData(
-              self.getGlobalData().ApiBaseUrl +
-                "/function/alllist?id=" +
-                self.parainst.functionId
+              "/function/alllist?id=" + self.parainst.functionId
             );
           }
         }
@@ -41,7 +32,7 @@ export default {
       cfg: {
         title: "选择函数",
         // parentTitle: "权限管理",
-        simpleUrl: this.getGlobalData().ApiBaseUrl + "/function/alllist?id=0",
+        simpleUrl: "/function/alllist?id=0",
         lengthMenu: [[-1], ["ALL"]],
         sDom: 'f<"dataTables_function"/>',
         bServerSide: false,
@@ -68,10 +59,10 @@ export default {
             self.id = data.id;
             $(row).css("background-color", "#D6D5C3");
           }
-          self.closeLoading(self,"func");
+          self.closeLoading(self, "func");
         },
         onClickRow: function(data, target) {
-          self.openLoading(self.$refs.para,"para");
+          self.openLoading(self.$refs.para, "para");
           self.id = data.id;
           self.getPara(data.id);
         }
@@ -79,7 +70,7 @@ export default {
       cfg1: {
         title: "参数",
         mode: "create",
-        save: this.getGlobalData().ApiBaseUrl + "/function/addOrUpdateParainst",
+        save: "/function/addOrUpdateParainst",
         items: [],
         rules: {},
         messages: {},
@@ -120,12 +111,8 @@ export default {
   methods: {
     getPara: function(id) {
       var self = this;
-      $.ajax({
-        type: "GET",
-        xhrFields: {
-          withCredentials: true
-        },
-        url: self.getGlobalData().ApiBaseUrl + "/function/getPara?id=" + id,
+      self.get({
+        url: "/function/getPara?id=" + id,
         success: function(response) {
           if (response.code == 200) {
             if (self.parainst.parainstJson) {
@@ -149,7 +136,7 @@ export default {
                 required: dataItem.desc + "必须填写"
               };
             }
-            self.closeLoading(self,"para");
+            self.closeLoading(self, "para");
           }
         }
       });

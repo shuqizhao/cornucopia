@@ -13,7 +13,7 @@ export default {
       cfg: {
         title: "新增岗位规则",
         mode: "create",
-        save:this.getGlobalData().ApiBaseUrl + "/approve/ruleadd",
+        save: "/approve/ruleadd",
         items: [
           {
             name: "name",

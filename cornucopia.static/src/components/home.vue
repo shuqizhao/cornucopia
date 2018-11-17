@@ -199,12 +199,9 @@ export default {
     getMenus: function() {
       var self = this;
       var config = this.getGlobalData();
-      var menuUrl = config.ApiBaseUrl + config.HomeMenusUrl;
-      $.ajax({
+      var menuUrl = config.HomeMenusUrl;
+      self.get({
         url: menuUrl,
-        xhrFields: {
-          withCredentials: true
-        },
         success: function(result) {
           if (result.code == 200) {
             self.menus = result.data;

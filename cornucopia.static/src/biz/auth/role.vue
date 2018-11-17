@@ -12,7 +12,7 @@ export default {
       cfg: {
         title: "角色管理",
         parentTitle: "权限管理",
-        simpleUrl: this.getGlobalData().ApiBaseUrl + "/role/alllist",
+        simpleUrl:  "/role/alllist",
         lengthMenu: [[-1], ["ALL"]],
         sDom: 'f<"dataTables_function"/>',
         bServerSide: false,
@@ -56,28 +56,23 @@ export default {
           more: [
             {
               text: "停用",
-              url: this.getGlobalData().ApiBaseUrl + "/role/disable"
+              url:  "/role/disable"
             },
             {
               text: "启用",
-              url: this.getGlobalData().ApiBaseUrl + "/role/enable"
+              url:  "/role/enable"
             },
             {
               text: "删除",
-              url: this.getGlobalData().ApiBaseUrl + "/role/delete"
+              url:  "/role/delete"
             }
           ]
         },
         onClickRow: function(data, target) {
           self.$refs.tree.cfg.title = data.name;
           self.openLoading(self.$refs.tree);
-          $.ajax({
-            type: "GET",
-            xhrFields: {
-              withCredentials: true
-            },
+          self.get({
             url:
-              self.getGlobalData().ApiBaseUrl +
               "/auth/getCheckedList?roleId=" +
               data.id,
             success: function(response) {
@@ -98,7 +93,7 @@ export default {
       treeCfg: {
         title: "资源管理",
         parentTitle: "权限管理",
-        url: this.getGlobalData().ApiBaseUrl + "/auth/allResource",
+        url:  "/auth/allResource",
         functions: [
           {
             text: "保存",
@@ -119,17 +114,12 @@ export default {
                   type: "info"
                 })
                 .then(() => {
-                  $.ajax({
-                    type: "POST",
-                    xhrFields: {
-                      withCredentials: true
-                    },
+                  self.post({
                     data: {
                       roleId: self.currentRoleId,
                       checkedList: self.$refs.tree.getCheckedKeys()
                     },
-                    url:
-                      self.getGlobalData().ApiBaseUrl + "/auth/saveCheckedList",
+                    url:"/auth/saveCheckedList",
                     success: function(response) {
                       if (response.code == "200") {
                         self.$message({

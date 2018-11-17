@@ -12,12 +12,12 @@ export default {
         editTitle: "编辑用户的角色",
         mode: "detailEdit",
         get: {
-          url: this.getGlobalData().ApiBaseUrl + "/user/get",
+          url:  "/user/get",
           params: {
             id: this.$route.query.id
           }
         },
-        save: this.getGlobalData().ApiBaseUrl + "/user/update",
+        save:  "/user/update",
         items: [
           {
             name: "id",
@@ -40,7 +40,7 @@ export default {
             type: "transfer",
             width:"700px",
             url:
-              this.getGlobalData().ApiBaseUrl +
+              
               "/user/roles?id=" + this.$route.query.id
           },
         ],

@@ -337,7 +337,7 @@ export default {
     }
 
     var dataTableCfg = {
-      sAjaxSource: this.cfg.url,
+      sAjaxSource: this.getGlobalData().ApiBaseUrl+this.cfg.url,
       aoColumns: aoColumns,
       aoColumnDefs: [
         {
@@ -629,16 +629,9 @@ export default {
               }
               form.submit();
             } else {
-              $.ajax({
+              self.post({
                 url: url,
-                // contentType: "application/json;charset=utf-8",
-                // dataType: "json",
                 traditional: true,
-                //  crossDomain: false,
-                xhrFields: {
-                  withCredentials: true
-                },
-                type: "POST",
                 data: { Ids: formData },
                 success: function(response) {
                   if(onSuccess){
@@ -695,12 +688,7 @@ export default {
       }
       // self.openLoading();
       var data = [];
-      $.ajax({
-        type: "GET",
-        // async:false,
-        xhrFields: {
-          withCredentials: true
-        },
+      self.get({
         url: simpleUrl||self.cfg.simpleUrl,
         success: function(response) {
           if (response.code == "200") {

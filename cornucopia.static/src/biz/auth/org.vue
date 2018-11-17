@@ -9,7 +9,7 @@ export default {
       cfg: {
         title: "组织机构",
         parentTitle: "权限管理",
-        url: this.getGlobalData().ApiBaseUrl + "/auth/allOrg",
+        url:  "/auth/allOrg",
       }
     };
   }

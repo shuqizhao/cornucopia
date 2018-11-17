@@ -95,11 +95,7 @@ export default {
         url += self.currentId;
       }
       self.openLoading();
-      $.ajax({
-        type: "GET",
-        xhrFields: {
-          withCredentials: true
-        },
+      self.get({
         url: url,
         success: function(response) {
           if (response.code == "200") {
@@ -135,11 +131,7 @@ export default {
         return;
       }
       // self.openLoading();
-      $.ajax({
-        type: "GET",
-        xhrFields: {
-          withCredentials: true
-        },
+      self.get({
         url: self.cfg.option1Url,
         success: function(response) {
           if (response.code == "200") {
@@ -175,11 +167,7 @@ export default {
         return;
       }
       // self.openLoading();
-      $.ajax({
-        type: "GET",
-        xhrFields: {
-          withCredentials: true
-        },
+      self.get({
         url: self.cfg.option2Url + id,
         success: function(response) {
           if (response.code == "200") {

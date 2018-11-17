@@ -14,7 +14,7 @@ export default {
       cfg: {
         title: "流程管理",
         parentTitle: "系统管理",
-        simpleUrl: this.getGlobalData().ApiBaseUrl + "/process/alllist",
+        simpleUrl:  "/process/alllist",
         lengthMenu: [[-1], ["ALL"]],
         sDom: '<"dataTables_function"/>f',
         bServerSide: false,
@@ -81,15 +81,15 @@ export default {
           more: [
             {
               text: "停用",
-              url: this.getGlobalData().ApiBaseUrl + "/process/disable"
+              url:  "/process/disable"
             },
             {
               text: "启用",
-              url: this.getGlobalData().ApiBaseUrl + "/process/enable"
+              url:  "/process/enable"
             },
             {
               text: "删除",
-              url: this.getGlobalData().ApiBaseUrl + "/process/delete"
+              url:  "/process/delete"
             }
           ]
         },
@@ -128,7 +128,7 @@ export default {
       cfg1: {
         title: "流程节点管理",
         parentTitle: "系统管理",
-        // simpleUrl: this.getGlobalData().ApiBaseUrl + "/processnode/alllist",
+        // simpleUrl:  "/processnode/alllist",
         lengthMenu: [[-1], ["ALL"]],
         sDom: '<"dataTables_function"/>',
         bServerSide: false,
@@ -173,15 +173,15 @@ export default {
           // more: [
           //   {
           //     text: "停用",
-          //     url: this.getGlobalData().ApiBaseUrl + "/processnode/disable"
+          //     url:  "/processnode/disable"
           //   },
           //   {
           //     text: "启用",
-          //     url: this.getGlobalData().ApiBaseUrl + "/processnode/enable"
+          //     url:  "/processnode/enable"
           //   },
           //   {
           //     text: "删除",
-          //     url: this.getGlobalData().ApiBaseUrl + "/processnode/delete"
+          //     url:  "/processnode/delete"
           //   }
           // ]
         }
@@ -189,7 +189,7 @@ export default {
       cfg2: {
         title: "流程图管理",
         parentTitle: "系统管理",
-        // simpleUrl: this.getGlobalData().ApiBaseUrl + "/processnode/alllist",
+        // simpleUrl:  "/processnode/alllist",
         lengthMenu: [[-1], ["ALL"]],
         sDom: '<"dataTables_function"/>',
         bServerSide: false,
@@ -237,7 +237,7 @@ export default {
             {
               text: "部署流程图",
               url: "deployDiagram",
-              url: this.getGlobalData().ApiBaseUrl + "/processdiagram/deploy",
+              url:  "/processdiagram/deploy",
               functionName: "deployDiagram",
               onSuccess: function() {
                 self.get({
@@ -254,15 +254,15 @@ export default {
           more: [
             {
               text: "停用",
-              url: this.getGlobalData().ApiBaseUrl + "/process/disable"
+              url:  "/process/disable"
             },
             {
               text: "启用",
-              url: this.getGlobalData().ApiBaseUrl + "/processnode/enable"
+              url:  "/processnode/enable"
             },
             {
               text: "删除",
-              url: this.getGlobalData().ApiBaseUrl + "/processnode/delete"
+              url:  "/processnode/delete"
             }
           ]
         }

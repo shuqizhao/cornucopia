@@ -137,7 +137,7 @@ export default {
       cfg2: {
         title: "参数列表",
         mode: "create",
-        save: this.getGlobalData().ApiBaseUrl + "/function/add"
+        save:  "/function/add"
       }
     };
   },

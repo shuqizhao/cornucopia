@@ -9,7 +9,7 @@ export default {
       cfg: {
         title: "资源管理列表",
         parentTitle:'权限管理',
-        url: this.getGlobalData().ApiBaseUrl + "/menu/list",
+        url:  "/menu/list",
         columns: [
           {
             title: "id",

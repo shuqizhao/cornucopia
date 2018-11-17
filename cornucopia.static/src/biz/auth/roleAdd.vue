@@ -9,7 +9,7 @@ export default {
       cfg: {
         title: "添加角色",
         mode: "create",
-        save: this.getGlobalData().ApiBaseUrl + "/role/add",
+        save:  "/role/add",
         items: [
           {
             name: "name",
@@ -28,12 +28,8 @@ export default {
           }
         },
         validate: function(data, saveData) {
-          $.ajax({
-            type: "POST",
-            xhrFields: {
-              withCredentials: true
-            },
-            url: self.getGlobalData().ApiBaseUrl + "/role/exists",
+          self.post({
+            url: "/role/exists",
             data: data,
             success: function(response) {
               if (response.code == 200 && response.data == 0) {

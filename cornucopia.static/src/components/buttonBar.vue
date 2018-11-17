@@ -108,15 +108,9 @@ export default {
       if (self.cfg.dataType == "xml" && item && item.dataType != "json") {
         data = { xmlStr: "<root>" + self.parse2xml(data) + "</root>" };
       }
-      $.ajax({
-        type: "POST",
-        contentType: "application/json;charset=utf-8",
-        dataType: "json",
-        xhrFields: {
-          withCredentials: true
-        },
+      self.post({
         url: item ? item.url : self.cfg.save,
-        data: JSON.stringify(data),
+        data: data,
         success: function(response) {
           self.closeLoading(self.$parent);
           if (response.code && response.code == "201") {

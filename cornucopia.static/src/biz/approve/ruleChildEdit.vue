@@ -28,7 +28,7 @@ export default {
         name: "rule",
         hideFooter: true,
         get: {
-          url: this.getGlobalData().ApiBaseUrl + "/approve/getRule",
+          url:  "/approve/getRule",
           params: {
             id: self.$parent.$parent.$parent.$parent.$parent.currentRuleId2
           }
@@ -128,7 +128,7 @@ export default {
         name: "ruleConditions",
         dialogWidth: "95%",
         get: {
-          url: this.getGlobalData().ApiBaseUrl + "/approve/getRuleCondititons",
+          url:  "/approve/getRuleCondititons",
           params: {
             id: self.$parent.$parent.$parent.$parent.$parent.currentRuleId2
           }
@@ -366,7 +366,7 @@ export default {
         ]
       },
       cfg2: {
-        save: this.getGlobalData().ApiBaseUrl + "/approve/ruleChildUpdate",
+        save:  "/approve/ruleChildUpdate",
         getExtraData: function() {
           return {
             rule: {

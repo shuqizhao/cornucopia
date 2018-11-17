@@ -849,16 +849,12 @@ export default {
                 varId = item.response.data;
                 varItemId = item.response.message;
                 varName = item.name;
-                varUrl =
-                  self.getGlobalData().ApiBaseUrl +
-                  "/download?id=" +
-                  item.response.data;
+                varUrl = "/download?id=" + item.response.data;
               } else {
                 varId = item.id;
                 varItemId = item.itemId;
                 varName = item.name;
-                varUrl =
-                  self.getGlobalData().ApiBaseUrl + "/download?id=" + item.id;
+                varUrl = "/download?id=" + item.id;
               }
               data[this.id].push({
                 id: varId,
@@ -956,8 +952,7 @@ export default {
     },
     bindSelect2Select: function(id, url) {
       var self = this;
-      $.ajax({
-        type: "GET",
+      self.get({
         url: url,
         success: function(data) {
           $("#" + id + "1").selectToSelect({
@@ -990,9 +985,7 @@ export default {
 
       self.data1[id] = [];
       self.value1[id] = [];
-      $.ajax({
-        type: "GET",
-        url: url,
+      self.get({
         async: false,
         success: function(data) {
           if (data.left) {

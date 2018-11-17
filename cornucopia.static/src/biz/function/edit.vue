@@ -27,7 +27,7 @@ export default {
         mode: "edit",
         hideFooter: true,
         get: {
-          url: this.getGlobalData().ApiBaseUrl + "/function/get",
+          url:  "/function/get",
           params: {
             id: self.$parent.$parent.$parent.id
           }
@@ -73,7 +73,7 @@ export default {
         name: "functionParas",
         showCheckBox:true,
         get: {
-          url: this.getGlobalData().ApiBaseUrl + "/function/getPara",
+          url:  "/function/getPara",
           params: {
             id: self.$parent.$parent.$parent.id
           }
@@ -170,7 +170,7 @@ export default {
       cfg2: {
         title: "参数列表",
         mode: "edit",
-        save: this.getGlobalData().ApiBaseUrl + "/function/update"
+        save:  "/function/update"
       }
     };
   },

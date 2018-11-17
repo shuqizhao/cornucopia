@@ -20,7 +20,7 @@ export default {
       cfg: {
         title: "上传流程图",
         mode: "create",
-        save: this.getGlobalData().ApiBaseUrl + "/processdiagram/upload",
+        save:  "/processdiagram/upload",
         items: [
           {
             name: "name",
@@ -35,7 +35,7 @@ export default {
             type: "uploader",
             desc: "只能上传bpmn文件",
             accept: ".bpmn",
-            url: this.getGlobalData().ApiBaseUrl + "/upload",
+            url:  "/upload",
             isRequire: true,
             width: "90%"
           },
@@ -45,7 +45,7 @@ export default {
             type: "uploader",
             desc: "只能上传png文件",
             accept: ".png",
-            url: this.getGlobalData().ApiBaseUrl + "/upload",
+            url:  "/upload",
             isRequire: true,
             width: "90%"
           }

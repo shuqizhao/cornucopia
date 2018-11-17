@@ -284,7 +284,7 @@ export default {
         ]
       },
       cfg2:{
-        save:this.getGlobalData().ApiBaseUrl + "/approve/add",
+        save:"/approve/add",
         getExtraData: function() {
           return {
             approve:{

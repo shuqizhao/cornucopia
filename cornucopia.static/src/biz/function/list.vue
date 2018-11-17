@@ -9,7 +9,7 @@ export default {
       cfg: {
         title: "函数管理",
         parentTitle: "权限管理",
-        simpleUrl: this.getGlobalData().ApiBaseUrl + "/function/alllist?id=0",
+        simpleUrl:  "/function/alllist?id=0",
         lengthMenu: [[-1], ["ALL"]],
         sDom: 'f<"dataTables_function"/>',
         bServerSide: false,
@@ -66,15 +66,15 @@ export default {
           more: [
             {
               text: "停用",
-              url: this.getGlobalData().ApiBaseUrl + "/function/disable"
+              url:  "/function/disable"
             },
             {
               text: "启用",
-              url: this.getGlobalData().ApiBaseUrl + "/function/enable"
+              url:  "/function/enable"
             },
             {
               text: "删除",
-              url: this.getGlobalData().ApiBaseUrl + "/function/delete"
+              url:  "/function/delete"
             }
           ]
         },

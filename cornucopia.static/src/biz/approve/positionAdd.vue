@@ -20,7 +20,7 @@ export default {
       cfg: {
         title: "添加审批岗位",
         mode: "create",
-        save: this.getGlobalData().ApiBaseUrl + "/approve/positionAdd",
+        save: "/approve/positionAdd",
         items: [
           {
             name: "id",
@@ -130,7 +130,6 @@ export default {
           self.$parent.$parent.$parent.$parent.$parent.$refs.positionList.currentComponent =
             "";
           self.$parent.$parent.$parent.$parent.$parent.$refs.positionList.reloadSimpleData(
-            self.getGlobalData().ApiBaseUrl +
               "/approve/positionlist?processNodeId=" +
               (self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2 ||
                 0)

@@ -17,7 +17,7 @@ export default {
         name: "approve",
         hideFooter: true,
         get: {
-          url: this.getGlobalData().ApiBaseUrl + "/approve/get",
+          url: "/approve/get",
           params: {
             id:
               self.$parent.$parent.cfg.title == "审批路线(二)"
@@ -58,7 +58,7 @@ export default {
         dialogWidth: "95%",
         showCheckBox: true,
         get: {
-          url: this.getGlobalData().ApiBaseUrl + "/approve/getConditions",
+          url:  "/approve/getConditions",
           params: {
             id:
               self.$parent.$parent.cfg.title == "审批路线(二)"
@@ -301,7 +301,7 @@ export default {
         ]
       },
       cfg2: {
-        save: this.getGlobalData().ApiBaseUrl + "/approve/update",
+        save:  "/approve/update",
         getExtraData: function() {
           return {
             approve: {

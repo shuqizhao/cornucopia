@@ -9,7 +9,7 @@ export default {
       cfg: {
         title: "添加用户",
         mode: "create",
-        save: this.getGlobalData().ApiBaseUrl + "/user/add",
+        save:  "/user/add",
         items: [
           {
             name: "name",
@@ -74,12 +74,8 @@ export default {
           }
         },
         validate: function(data,saveData) {
-          $.ajax({
-            type: "POST",
-            xhrFields: {
-              withCredentials: true
-            },
-            url: self.getGlobalData().ApiBaseUrl + "/user/exists",
+          self.post({
+            url: "/user/exists",
             data: data,
             success: function(response) {
               if (response.code == 200 && response.data == 0) {

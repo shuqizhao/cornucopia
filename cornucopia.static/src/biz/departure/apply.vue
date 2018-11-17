@@ -147,7 +147,7 @@ export default {
         hideFooter: "true",
         name: "applicant",
         // get: {
-        //   // url: this.getGlobalData().ApiBaseUrl + "/user/getApplicant",
+        //   // url:  "/user/getApplicant",
         //   params: {
         //     id: this.$route.query.id
         //   }
@@ -289,7 +289,7 @@ export default {
         desc: "任意文件，不能超过2M",
         name: "attachment",
         get: {
-          url: this.getGlobalData().ApiBaseUrl + "/role/get",
+          url:  "/role/get",
           params: {
             id: this.$route.query.id
           }
@@ -306,13 +306,13 @@ export default {
             limit: 10,
             // mode:'xml',
             hideLabel: "true",
-            url: this.getGlobalData().ApiBaseUrl + "/upload"
+            url:  "/upload"
           }
         ],
         afterEditRender: function() {}
       },
       cfg3: {
-        save: this.getGlobalData().ApiBaseUrl + "/process/applySave",
+        save:  "/process/applySave",
         saveButtonTitle: "发起申请",
         dataType: "xml",
         getExtraData: function() {
@@ -354,7 +354,7 @@ export default {
           {
             name: "同意",
             type: "success",
-            url: this.getGlobalData().ApiBaseUrl + "/process/applyAgree",
+            url:  "/process/applyAgree",
             onSuccess: function() {
               self.$router.push({ path: "/mytask" });
             },
@@ -363,7 +363,7 @@ export default {
           {
             name: "重发起",
             type: "success",
-            url: this.getGlobalData().ApiBaseUrl + "/process/applyRetry",
+            url:  "/process/applyRetry",
             onSuccess: function() {
               self.$router.push({ path: "/mytask" });
             },
@@ -371,7 +371,7 @@ export default {
           },
           {
             name: "退回",
-            url: this.getGlobalData().ApiBaseUrl + "/process/applyReturn",
+            url:  "/process/applyReturn",
             hidden: true,
             onSuccess: function() {
               self.$router.push({ path: "/mytask" });

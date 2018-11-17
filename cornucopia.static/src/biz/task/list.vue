@@ -25,7 +25,7 @@ export default {
         // isShowSearchArea:"true",
         scrollCollapse: true,
         title: "我的任务",
-        url: this.getGlobalData().ApiBaseUrl + "/process/taskList",
+        url:  "/process/taskList",
         columns: [
           {
             title: "单号",
@@ -84,12 +84,12 @@ export default {
         //   more: [
         //     {
         //       text: "停用",
-        //       url: this.getGlobalData().ApiBaseUrl + "/user/disable",
+        //       url:  "/user/disable",
         //       functionName:'userDisable'
         //     },
         //     {
         //       text: "启用",
-        //       url: this.getGlobalData().ApiBaseUrl + "/user/enable",
+        //       url:  "/user/enable",
         //       functionName:'userEnable'
         //     }
         //   ],

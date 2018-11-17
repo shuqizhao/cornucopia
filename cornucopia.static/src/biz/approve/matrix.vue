@@ -159,7 +159,7 @@ export default {
         ]
       },
       cfg1: {
-        save: this.getGlobalData().ApiBaseUrl + "/approve/matrixUpdate",
+        save: "/approve/matrixUpdate",
         getExtraData: function() {
           return {
             process: {

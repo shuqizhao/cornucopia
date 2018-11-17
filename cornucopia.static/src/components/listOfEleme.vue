@@ -356,11 +356,7 @@ export default {
       if(!self.cfg.get){
           return;
       }
-      $.ajax({
-        type: "get",
-        xhrFields: {
-          withCredentials: true
-        },
+      self.get({
         url: self.cfg.get.url,
         data: self.cfg.get.params,
         // async: false,

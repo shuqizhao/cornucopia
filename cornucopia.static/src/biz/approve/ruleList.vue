@@ -18,7 +18,7 @@ export default {
         // dialogWidth: "95%",
         hideCheckBox: true,
         url:
-          this.getGlobalData().ApiBaseUrl + "/approve/rulelist",
+           "/approve/rulelist",
         functions: [
           {
             text: "新增",
@@ -59,7 +59,7 @@ export default {
         hideCheckBox: true,
         hideToolBar: true,
         url:
-          this.getGlobalData().ApiBaseUrl + "/approve/getRuleChildren?ruleId=",
+           "/approve/getRuleChildren?ruleId=",
         onNodeClick: function(data) {
           self.currentRuleId2 = data.id;
         },

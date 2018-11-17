@@ -10,7 +10,7 @@ export default {
         isShowSearchArea:"true",
         title: "流程分类",
         parentTitle: "系统管理",
-        url: this.getGlobalData().ApiBaseUrl + "/processCategory/list",
+        url:  "/processCategory/list",
         columns: [
           {
             title: "分类名",
@@ -70,17 +70,17 @@ export default {
           more: [
             {
               text: "停用",
-              url: this.getGlobalData().ApiBaseUrl + "/processCategory/disable",
+              url:  "/processCategory/disable",
               functionName:'processCategoryDisable'
             },
             {
               text: "启用",
-              url: this.getGlobalData().ApiBaseUrl + "/processCategory/enable",
+              url:  "/processCategory/enable",
               functionName:'processCategoryEnable'
             },
             {
               text: "删除",
-              url: this.getGlobalData().ApiBaseUrl + "/processCategory/delete",
+              url:  "/processCategory/delete",
               functionName:'processCategoryDelete'
             }
           ],

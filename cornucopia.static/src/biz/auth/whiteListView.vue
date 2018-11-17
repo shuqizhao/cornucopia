@@ -13,12 +13,12 @@ export default {
         mode: "detailEdit",
         editFunctionName:'whitelistUpdate',
         get: {
-          url: this.getGlobalData().ApiBaseUrl + "/whitelist/get",
+          url:  "/whitelist/get",
           params: {
             id: this.$route.query.id
           }
         },
-        save: this.getGlobalData().ApiBaseUrl + "/whitelist/update",
+        save:  "/whitelist/update",
         items: [
           {
             name: "id",

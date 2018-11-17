@@ -29,9 +29,9 @@ export default {
       cfg: {
         title: "编辑审批岗位",
         mode: "edit",
-        save: this.getGlobalData().ApiBaseUrl + "/approve/positionUpdate",
+        save: "/approve/positionUpdate",
         get: {
-          url: this.getGlobalData().ApiBaseUrl + "/approve/getPosition",
+          url: "/approve/getPosition",
           params: {
             id: self.$parent.$parent.$parent.$parent.$parent.currentPositionId
           }
@@ -131,7 +131,6 @@ export default {
           self.$parent.$parent.$parent.$parent.$parent.$refs.positionList.currentComponent =
             "";
           self.$parent.$parent.$parent.$parent.$parent.$refs.positionList.reloadSimpleData(
-            self.getGlobalData().ApiBaseUrl +
               "/approve/positionlist?processNodeId=" +
               (self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2 ||
                 0)

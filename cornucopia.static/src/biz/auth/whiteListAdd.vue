@@ -9,7 +9,7 @@ export default {
       cfg: {
         title: "添加白名单",
         mode: "create",
-        save: this.getGlobalData().ApiBaseUrl + "/whitelist/add",
+        save:  "/whitelist/add",
         items: [
           {
             name: "name",
