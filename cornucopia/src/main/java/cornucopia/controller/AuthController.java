@@ -70,6 +70,15 @@ public class AuthController {
 		return jr;
 	}
 
+	@RequestMapping(value = { "/listResource" }, method = RequestMethod.GET)
+	public JsonResult<List<MenuEntity>> listResource() {
+		List<MenuEntity> menus = MenuService.getInstance().getAllMenus();
+		JsonResult<List<MenuEntity>> jr = new JsonResult<List<MenuEntity>>();
+		jr.setCode(200);
+		jr.setData(menus);
+		return jr;
+	}
+
 	@RequestMapping(value = { "/getCheckedList" }, method = RequestMethod.GET)
 	public JsonResult<List<Integer>> getCheckedList(int roleId) {
 		List<Integer> checkedList = MenuService.getInstance().getCheckedList(roleId);

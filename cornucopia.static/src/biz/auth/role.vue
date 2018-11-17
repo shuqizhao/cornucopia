@@ -136,15 +136,24 @@ export default {
                   });
                 });
             }
-          }
-          // {
-          //   text: "全选",
-          //   type: "btn-success",
-          //   icon:'el-icon-circle-check-outline',
-          //   onClick:function(){
-          //     self.$refs.tree.checkAll();
-          //   }
-          // },
+          },
+          {
+            text: "新增",
+            type: "btn-success",
+            icon:'el-icon-circle-plus-outline',
+            onClick:function(){
+              self.$refs.tree.dialogVisible = true;
+              self.$refs.tree.currentComponent = "resourceAdd";
+            }
+          },
+          {
+            text: "修改",
+            type: "btn-success",
+            icon:'el-icon-circle-check-outline',
+            onClick:function(){
+              
+            }
+          },
           // {
           //   text: "清空",
           //   type: "btn-success",

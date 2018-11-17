@@ -63,7 +63,7 @@
         </el-tree>
   </div>
 
-  <el-dialog :visible.sync="dialogVisible" :width="this.cfg.dialogWidth?this.cfg.dialogWidth:'65%'" >
+  <el-dialog :visible.sync="dialogVisible" :width="this.cfg.dialogWidth" >
     <component :isDialog="true" style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
   </el-dialog>
 </div>

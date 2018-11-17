@@ -19,16 +19,16 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form class="form-inline form" onsubmit='return false;' role="form">
+        <form class="form-inline form" onsubmit='return false;' role="form" style="text-align:center">
             <div class="box-body">
                 <template v-for="item in cfg.items" >
                     <input v-if="item.type=='hidden'" :id="item.name" type="hidden" :key="item.name" class="form-control" :value="detail[item.name]" :controltype='item.type' />
                     <br v-if="item.br==true" :key="item.name"/>
                     <br v-if="item.br==true" :key="item.name"/>
-                    <table v-if="item.type!='hidden'" :key="item.name" class="form-group" :style="'margin-left:50px;margin-bottom:15px;width:'+item.width">
+                    <table v-if="item.type!='hidden'" :key="item.name" class="form-group" :style="'margin-left:0px;margin-bottom:15px;width:'+item.width" align="center">
                       <tr>
-                        <td v-if="!item.hideLabel" style="text-align:right;" :width="item.lableWidth?item.lableWidth:'85px'">{{item.title}}：<label v-if="item.isRequire" style="color:red;">*</label></td>
-                        <td :width="item.width?item.width:'92%'">
+                        <td v-if="!item.hideLabel" style="text-align:right;" :width="item.lableWidth?item.lableWidth:'100px'">{{item.title}}：<label v-if="item.isRequire" style="color:red;">*</label></td>
+                        <td :width="item.width?item.width:'85%'">
                             <div v-if="item.type=='baidutext'">
                                 <div v-if="cfg.mode=='detailEdit'||cfg.mode=='create'" class="textarea">
                                     <hiden :id="item.name" :name="item.name" class="form-control" rows="5" :controltype='item.type'/>
@@ -55,7 +55,7 @@
                                 <iframe v-else-if="item.type=='textnginx'" readonly='false' :id="item.name" :name="item.name"  scrolling="no" frameborder="0" class="form-control embed-responsive-item" :controltype='item.type' style="min-height:190px;" src="/src/ref/codemirror/codemirrornginx.html"></iframe>
                                 <input v-else-if="item.type=='pwd'" :id="item.name" :name="item.name" type="password" :placeholder="item.placeholder" class="input-xlarge form-control" style="width:100%;" :value="detail[item.name]" :controltype='item.type' />
                                 <select v-else-if="item.type=='combox'" :id="item.name" style='width:100%' class="input-xlarge form-control" :controltype='item.type'>
-                                    <option v-for="option in item.data" v-bind:key="option.id" :selected="option.id==detail[item.name]?'selected':''" :value="option.id">{{option.value}}</option>
+                                    <option v-for="option in item.data" v-bind:key="option.id" :selected="option.id==detail[item.name]?'selected':''" :value="option">{{option.value}}</option>
                                     
                                 </select>
                                 <div v-else-if="item.type=='timer'">
@@ -131,11 +131,11 @@
                                     <el-select v-model="detail[item.name]" @change="onSelectChange(item)" filterable style="width:100%" placeholder="请选择">
                                       <el-option
                                         v-for="opItem in item.data"
-                                        :key="opItem.id"
-                                        :label="opItem.value"
-                                        :value="opItem.id">
-                                        <span style="float: left">{{ opItem.value }}</span>
-                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ opItem.desc }}</span>
+                                        :key="opItem[item.displayId||'id']"
+                                        :label="opItem[item.displayValue||'value']"
+                                        :value="opItem[item.displayId||'id']">
+                                        <span style="float: left">{{ opItem[item.displayValue||'value'] }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ opItem[item.displayDesc||'desc'] }}</span>
                                       </el-option>
                                     </el-select>
                                 </div>
@@ -190,11 +190,11 @@
                                     <el-select v-model="detail[item.name]" :disabled="true" @change="onSelectChange(item)" filterable style="width:100%" placeholder="请选择">
                                       <el-option
                                         v-for="opItem in item.data"
-                                        :key="opItem.id"
-                                        :label="opItem.value"
-                                        :value="opItem.id">
-                                        <span style="float: left">{{ opItem.value }}</span>
-                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ opItem.desc }}</span>
+                                        :key="opItem[item.displayId||'id']"
+                                        :label="opItem[item.displayValue||'value']"
+                                        :value="opItem[item.displayId||'id']">
+                                        <span style="float: left">{{ opItem[item.displayValue||'value'] }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ opItem[item.displayDesc||'desc'] }}</span>
                                       </el-option>
                                     </el-select>
                                 </div>

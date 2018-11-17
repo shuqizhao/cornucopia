@@ -26,6 +26,11 @@ public class MenuService {
 		return menus;
 	}
 
+	public List<MenuEntity> getAllMenus() {
+		List<MenuEntity> menus = menuDao.getAllMenuList();
+		return menus;
+	}
+
 	public List<MenuEntity> getAllMenusAndBtns() {
 		List<MenuEntity> menus = menuDao.getAllMenusAndBtns();
 		return menus;
