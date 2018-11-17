@@ -38,6 +38,15 @@ import cornucopia.util.XmlUtil;
 @RestController
 @RequestMapping("/process")
 public class ProcessContorller {
+	@RequestMapping(value = { "/get" }, method = RequestMethod.GET)
+	public JsonResult<ProcessEntity> get(String id) {
+		ProcessEntity processes = ProcessService.getInstance().get(id);
+		JsonResult<ProcessEntity> jr = new JsonResult<ProcessEntity>();
+		jr.setCode(200);
+		jr.setData(processes);
+		return jr;
+	}
+
 	@RequestMapping(value = { "/alllist" }, method = RequestMethod.GET)
 	public JsonResult<List<ProcessEntity>> alllist() {
 		List<ProcessEntity> processes = ProcessService.getInstance().getAllProcess();

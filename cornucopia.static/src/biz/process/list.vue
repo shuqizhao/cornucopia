@@ -48,9 +48,8 @@ export default {
           },
           {
             title: "是否启用",
-            name: "isEnabled",
-            type:'yesno'
-          },
+            name: "isEnabled"
+          }
           // {
           //   title: "创建时间",
           //   name: "createTime"
@@ -76,7 +75,7 @@ export default {
               text: "修改流程",
               url: "processUpdate",
               mode: "modal",
-              functionName: "processAdd"
+              functionName: "processUpdate"
             }
           ],
           more: [
@@ -96,21 +95,15 @@ export default {
         },
         onClickRow: function(data, target) {
           self.processId = data.id;
+          $("#id1").attr("processId", data.id);
           self.openLoading(self.$refs.nodeList, "nodeList");
-          $.ajax({
-            type: "GET",
-            xhrFields: {
-              withCredentials: true
-            },
-            url:
-              self.getGlobalData().ApiBaseUrl +
-              "/processnode/alllist?processId=" +
-              data.id,
+          self.get({
+            url: "/processnode/alllist?processId=" + data.id,
             success: function(response) {
               if (response.code == "200") {
                 self.closeLoading(self.$refs.nodeList, "nodeList");
                 // self.closeLoading(self,"id2");
-                $("#id1").attr("processId", data.id);
+                // $("#id1").attr("processId", data.id);
                 self.$refs.nodeList.loadSimpleData(response.data);
               } else if (response.message) {
                 self.$message({

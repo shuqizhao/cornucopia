@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Update;
 import cornucopia.entity.ProcessEntity;
 
 public interface ProcessDao {
+
 	@Select("call sp_process_all()")
 	public List<ProcessEntity> getAllProcess();
 

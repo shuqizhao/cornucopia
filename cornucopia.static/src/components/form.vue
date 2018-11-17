@@ -273,7 +273,7 @@ export default {
         return;
       }
       self.openLoading();
-      this.fillData(function() {
+      self.fillData(function() {
         if (self.cfg.onLoaded) {
           self.cfg.onLoaded(self.detail);
         }
@@ -283,7 +283,7 @@ export default {
         self.cfg.onLoaded(self.detail);
       }
     }
-    $(this.$el)
+    $(self.$el)
       .find('input[type="file"]')
       .hide();
   },

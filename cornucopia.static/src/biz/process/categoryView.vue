@@ -12,12 +12,12 @@ export default {
         editTitle: "编辑流程分类",
         mode: "detailEdit",
         get: {
-          url: this.getGlobalData().ApiBaseUrl + "/processCategory/get",
+          url: "/processCategory/get",
           params: {
             id: this.$route.query.id
           }
         },
-        save: this.getGlobalData().ApiBaseUrl + "/processCategory/update",
+        save: "/processCategory/update",
         items: [
           {
             name: "id",
