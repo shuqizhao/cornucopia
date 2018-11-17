@@ -39,7 +39,7 @@ export default {
             });
             return false;
           }
-          $.post({
+          self.post({
             url: "/processnode/exists",
             data: data,
             success: function(response) {
