@@ -155,7 +155,7 @@ public class ApproveController {
 	}
 
 	@RequestMapping(value = { "/positionUpdate" }, method = RequestMethod.POST)
-	public JsonResult<Integer> positionUpdate(@RequestBody ApprovePositionEntity pos) {
+	public JsonResult<Integer> positionUpdate(ApprovePositionEntity pos) {
 		int id = ApprovePositionService.getInstance().update(pos);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
