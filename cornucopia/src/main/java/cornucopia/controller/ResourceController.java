@@ -17,6 +17,15 @@ import cornucopia.service.MenuService;
 @RequestMapping("/resource")
 public class ResourceController {
 
+    @RequestMapping(value = { "/get" }, method = RequestMethod.GET)
+	public JsonResult<MenuEntity> get(int id) {
+		MenuEntity menu = MenuService.getInstance().get(id);
+		JsonResult<MenuEntity> jr = new JsonResult<MenuEntity>();
+		jr.setCode(200);
+		jr.setData(menu);
+		return jr;
+    }
+
 	@RequestMapping(value = { "/all" }, method = RequestMethod.GET)
 	public JsonResult<List<MenuEntity>> all() {
 		List<MenuEntity> menus = MenuService.getInstance().getAllMenus();
@@ -35,6 +44,21 @@ public class ResourceController {
 		}
 		menuEntity.setCreateBy(userId);
 		MenuService.getInstance().insert(menuEntity);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(menuEntity.getId());
+		return jr;
+    }
+    
+    @RequestMapping(value = { "/update" }, method = RequestMethod.POST)
+	public JsonResult<Integer> update(HttpServletRequest request, MenuEntity menuEntity) {
+		UserEntity userEntity = (UserEntity) request.getSession().getAttribute("user");
+		int userId = 0;
+		if (userEntity != null) {
+			userId = userEntity.getId();
+		}
+		menuEntity.setUpdateBy(userId);
+		MenuService.getInstance().update(menuEntity);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(menuEntity.getId());

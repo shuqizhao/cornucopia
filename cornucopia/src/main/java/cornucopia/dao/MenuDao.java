@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import cornucopia.entity.MenuEntity;
 
@@ -33,4 +34,10 @@ public interface MenuDao {
 
 	@Insert("call sp_menu_insert(#{menu.name},#{menu.parentId},#{menu.routerName},#{menu.url},#{menu.functionName},#{menu.api},#{menu.icon},#{menu.type},#{menu.createBy})")
 	public int insert(@Param("menu")MenuEntity menuEntity);
+
+	@Select("call sp_menu_get(#{id})")
+	public MenuEntity get(@Param("id")int id);
+
+	@Update("call sp_menu_update(#{menu.id},#{menu.name},#{menu.parentId},#{menu.routerName},#{menu.url},#{menu.functionName},#{menu.api},#{menu.icon},#{menu.type},#{menu.updateBy})")
+	public int update(@Param("menu")MenuEntity menuEntity);
 }

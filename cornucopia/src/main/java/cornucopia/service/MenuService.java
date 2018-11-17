@@ -87,4 +87,12 @@ public class MenuService {
 	public int insert(MenuEntity menuEntity) {
 		return menuDao.insert(menuEntity);
 	}
+
+	public MenuEntity get(int id) {
+		return menuDao.get(id);
+	}
+
+	public int update(MenuEntity menuEntity) {
+		return menuDao.update(menuEntity);
+	}
 }

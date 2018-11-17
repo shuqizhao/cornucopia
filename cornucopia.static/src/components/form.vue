@@ -836,7 +836,11 @@ export default {
             contentType == "readonly" ||
             contentType == "timer"
           ) {
-            data[this.id] = self.detail[this.id] || "";
+            if(self.detail[this.id]==0){
+              data[this.id] = 0;
+            }else{
+              data[this.id] = self.detail[this.id] || "";
+            }
           } else if (contentType == "uploader") {
             data[this.id] = [];
             for (var i = 0; i < self.detail[this.id].length; i++) {

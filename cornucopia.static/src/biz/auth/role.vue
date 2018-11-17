@@ -149,9 +149,24 @@ export default {
           {
             text: "修改",
             type: "btn-success",
-            icon:'el-icon-circle-check-outline',
+            icon:'el-icon-edit-outline',
             onClick:function(){
-              
+              var checkedKeys = self.$refs.tree.getCheckedKeys();
+              if(checkedKeys.length==0||(checkedKeys.length==1&&checkedKeys[0]==0)){
+                self.$message({
+                  type: "warning",
+                  message: '请选择资源!'
+                });
+              }else if(checkedKeys.length>1){
+                self.$message({
+                  type: "warning",
+                  message: '只能选择一个资源!'
+                });
+              }else{
+                $("body").attr("menuId", checkedKeys[0]);
+                self.$refs.tree.dialogVisible = true;
+                self.$refs.tree.currentComponent = "resourceUpdate";
+              }
             }
           },
           // {
