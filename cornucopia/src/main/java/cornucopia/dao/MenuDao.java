@@ -14,8 +14,8 @@ public interface MenuDao {
 	@Select("call sp_menu_all_by_user_id(#{userId})")
 	public List<MenuEntity> getAllMenus(@Param("userId") int userId);
 	
-	@Select("call sp_menu_all()")
-    public List<MenuEntity> getAllMenuList();
+	@Select("call sp_menu_all(#{menuId})")
+    public List<MenuEntity> getAllMenuList(@Param("menuId")int menuId);
 	
 	@Select("call sp_menu_btn_all()")
     public List<MenuEntity> getAllMenusAndBtns();

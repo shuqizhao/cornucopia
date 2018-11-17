@@ -27,8 +27,8 @@ public class ResourceController {
     }
 
 	@RequestMapping(value = { "/all" }, method = RequestMethod.GET)
-	public JsonResult<List<MenuEntity>> all() {
-		List<MenuEntity> menus = MenuService.getInstance().getAllMenus();
+	public JsonResult<List<MenuEntity>> all(int menuId) {
+		List<MenuEntity> menus = MenuService.getInstance().getAllMenuList(menuId);
 		JsonResult<List<MenuEntity>> jr = new JsonResult<List<MenuEntity>>();
 		jr.setCode(200);
 		jr.setData(menus);

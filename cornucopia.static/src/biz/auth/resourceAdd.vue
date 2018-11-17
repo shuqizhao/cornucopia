@@ -65,7 +65,7 @@ export default {
         ],
         onLoaded: function(detail) {
           self.get({
-            url: "/resource/all",
+            url: "/resource/all?menuId=0",
             success: function(response) {
               if (response.code == 200) {
                 self.cfg.items[1].data = response.data;
