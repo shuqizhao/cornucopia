@@ -111,6 +111,7 @@ export default {
       self.post({
         url: item ? item.url : self.cfg.save,
         data: data,
+        dataType: "json",
         success: function(response) {
           self.closeLoading(self.$parent);
           if (response.code && response.code == "201") {

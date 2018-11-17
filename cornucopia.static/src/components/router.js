@@ -253,22 +253,39 @@ Vue.prototype.newGuid = function() {
 }
 
 Vue.prototype.post = function(p) {
-    $.ajax({
-        type: 'POST',
-        xhrFields: {
-            withCredentials: true
-        },
-        // contentType: p.contentType || "application/json;charset=utf-8",
-        // dataType: p.dataType || "json",
-        async: p.async || true,
-        url: jsonData.ApiBaseUrl + p.url,
-        data: p.data || [],
-        success: function(result) {
-            if (p.success) {
-                p.success(result);
+    if (p.dataType == 'json') {
+        $.ajax({
+            type: 'POST',
+            xhrFields: {
+                withCredentials: true
+            },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            async: p.async || true,
+            url: jsonData.ApiBaseUrl + p.url,
+            data: JSON.stringify(p.data) || [],
+            success: function(result) {
+                if (p.success) {
+                    p.success(result);
+                }
             }
-        }
-    });
+        });
+    } else {
+        $.ajax({
+            type: 'POST',
+            xhrFields: {
+                withCredentials: true
+            },
+            async: p.async || true,
+            url: jsonData.ApiBaseUrl + p.url,
+            data: p.data || [],
+            success: function(result) {
+                if (p.success) {
+                    p.success(result);
+                }
+            }
+        });
+    }
 }
 
 Vue.prototype.get = function(p) {
