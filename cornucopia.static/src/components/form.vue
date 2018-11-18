@@ -127,8 +127,7 @@
                                     </div>
                                 </div>
                                 <div v-else-if="item.type=='select'">
-                                  <input :id="item.name" :name="item.name" style="height:0.5px;width:0px;padding:0px;margin:0px;" :value="detail[item.name]" class="form-control" :controltype='item.type'  />
-                                    <el-select v-model="detail[item.name]" @change="onSelectChange(item)" filterable style="width:100%" placeholder="请选择">
+                                    <el-select v-model="detail[item.name]" @change="onSelectChange(item)" filterable style="width:100%;margin-top:20px;" placeholder="请选择">
                                       <el-option
                                         v-for="opItem in item.data"
                                         :key="opItem[item.displayId||'id']"
@@ -138,6 +137,7 @@
                                         <span style="float: right; color: #8492a6; font-size: 13px">{{ opItem[item.displayDesc||'desc'] }}</span>
                                       </el-option>
                                     </el-select>
+                                    <input :id="item.name" :name="item.name" style="height:0px;width:0px;padding:0px;margin:0px;" :value="detail[item.name]" class="form-control" :controltype='item.type'  />
                                 </div>
                                 <div v-else-if="item.type=='popup'">
                                   <input :id="item.name" :name="item.name" type="hidden" :value="detail[item.name]" class="form-control" :controltype='item.type'  />
