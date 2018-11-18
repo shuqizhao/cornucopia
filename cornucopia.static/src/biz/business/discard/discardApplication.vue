@@ -55,12 +55,12 @@ export default {
           //  $(self.$el).find("#Name").attr("disabled", true);
         },
         rules: {
-          title: {
+          position: {
             required: true
           }
         },
         messages: {
-          title: {
+          position: {
             required: "职位必须填写"
           }
         }

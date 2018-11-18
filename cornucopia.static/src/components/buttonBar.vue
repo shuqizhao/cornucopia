@@ -66,6 +66,15 @@ export default {
           },item,willCommit);
           willCommit = isPass && willCommit;
         }
+        var childOfLevel02 = children[i].$children;
+        for(var j = 0; j < childOfLevel02.length; j++){
+          if(childOfLevel02[j].validateFrom){
+            var isPass = childOfLevel02[j].validateFrom(true, function(name, data) {
+              dataWillCommit[name] = data;
+            },item,willCommit);
+            willCommit = isPass && willCommit;
+          }
+        }
       }
 
       if (!willCommit) {

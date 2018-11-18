@@ -13,7 +13,6 @@
 export default {
   mounted: function() {
     let self = this;
-    this.setBreadcrumbTitle(this, "发起新流程", "固定资产报废流程");
     this.$nextTick(function() {
       var processId = self.$route.query.processId;
       var dataId = self.$route.query.id;
