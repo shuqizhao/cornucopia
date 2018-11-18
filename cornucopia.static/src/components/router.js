@@ -42,6 +42,10 @@ Vue.component('comment', function(resolve) {
     require(['../components/comment.vue'], resolve)
 })
 
+Vue.component('apply', function(resolve) {
+    require(['../components/apply.vue'], resolve)
+})
+
 jQuery.ajaxSetup({
     xhrFields: {
         withCredentials: true

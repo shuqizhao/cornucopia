@@ -85,6 +85,7 @@ export default {
           }
         },
         validate: function(data, saveData) {
+          data.id = 0;
           self.post({
             url:"/process/exists",
             data:data,

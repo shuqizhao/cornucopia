@@ -836,7 +836,7 @@ export default {
             contentType == "readonly" ||
             contentType == "timer"
           ) {
-            if(self.detail[this.id]==0){
+            if(self.detail[this.id]===0){
               data[this.id] = 0;
             }else{
               data[this.id] = self.detail[this.id] || "";
