@@ -57,11 +57,16 @@ export default {
         rules: {
           position: {
             required: true
+          },
+          discardType: {
+            required: true
+          },remarks: {
+            required: true
           }
         },
         messages: {
           position: {
-            required: "职位必须填写"
+            required: "位置必须填写"
           }
         }
       }
