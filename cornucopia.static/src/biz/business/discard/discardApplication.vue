@@ -20,49 +20,33 @@ export default {
             type: "hidden"
           },
           {
-            name: "title",
-            title: "职位",
-            type: "text",
+            name: "discardType",
+            title: "报废类别",
+            type: "select",
+            data: [
+              { id: 0, value: "车辆" },
+              { id: 1, value: "物料" },
+              { id: 2, value: "锁" }
+            ],
             width: "300px;",
             isRequire: true
           },
           {
-            name: "managerId",
-            title: "直接主管",
+            name: "area",
+            title: "区域",
             type: "text",
             width: "300px;"
           },
           {
-            name: "entryDate",
-            title: "入职日期",
-            type: "timer",
-            width: "300px;",
-            isRequire: true
-          },
-          {
-            name: "leaveDate",
-            title: "离职日期",
+            name: "position",
+            title: "位置",
             type: "text",
             width: "300px;",
             isRequire: true
           },
           {
-            name: "phone",
-            title: "联系电话",
-            type: "text",
-            width: "300px;",
-            isRequire: true
-          },
-          {
-            name: "workEmail",
-            title: "个人邮箱",
-            type: "text",
-            width: "300px;",
-            isRequire: true
-          },
-          {
-            name: "reason",
-            title: "离职原因",
+            name: "remarks",
+            title: "备注",
             type: "textarea",
             isRequire: true
           }
