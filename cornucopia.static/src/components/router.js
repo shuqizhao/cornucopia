@@ -249,6 +249,19 @@ Vue.prototype.setBreadcrumbTitle = function(self, parentTitle, title) {
     self.$root.$children[0].$children[0].$children[0].$children[0].breadcrumbParentTitle = parentTitle;
 }
 
+Vue.prototype.findRef = function(self, refName) {
+    if(self.$root.$children.length>0){
+        for(var i=0;i< self.$root.$children.length;i++){
+            var child = self.$root.$children[i];
+            if(child.$refs.length>0&&child.$refs[refName]){
+                return child.$refs[refName];
+            }else{
+                return Vue.prototype.findRef(self,refName);
+            }
+        }
+    }
+}
+
 function S4() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
