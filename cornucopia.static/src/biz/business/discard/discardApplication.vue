@@ -1,23 +1,29 @@
 <template>
     <div>
         <mform ref="applyInfo" :cfg="cfg1"></mform>
+        <component v-bind:is="currentComponent"></component>
     </div>
 </template>
 <script>
+import lock from "./lock.vue";
+import materiel from "./materiel.vue";
 export default {
+  methods: {
+  },
   mounted: function() {
-    let self = this;
+    self = this;
     self.get({
       url: "/data/get?parentCode=x",
       sccuess: function(response) {
         if (response.code == 200) {
-          self.findCfgItem(self.cfg1,"discardType").data = response.data;
+          self.findCfgItem(self.cfg1, "discardType").data = response.data;
         }
       }
     });
   },
   data() {
     return {
+      currentComponent: "",
       cfg1: {
         title: "申请信息",
         detailTitle: "申请信息",
@@ -40,7 +46,17 @@ export default {
               { id: 2, value: "锁" }
             ],
             width: "300px;",
-            isRequire: true
+            isRequire: true,
+            onChange: function(value) {
+              // var a = self.findRef('applyInfo').$parent;
+              if (value === 0) {
+                self.currentComponent = lock;
+              } else if (value === 1) {
+                self.currentComponent = materiel;
+              } else {
+                self.currentComponent = lock;
+              }
+            }
           },
           {
             name: "area",
