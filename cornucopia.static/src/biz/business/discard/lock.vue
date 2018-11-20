@@ -1,11 +1,14 @@
 <template>
     <div>
-        <editList ref="editList" :cfg="cfg1"></editList>
+        <editList ref="lock" :cfg="cfg1"></editList>
     </div>
 </template>
 <script>
 export default {
   mounted: function() {
+    self = this;
+  },
+  updated: function() {
     self = this;
   },
   data() {
@@ -81,7 +84,7 @@ export default {
             type: "btn-success",
             icon: "el-icon-circle-plus",
             onClick: function() {
-              self.$refs.editList.insertNew({});
+              self.$refs.lock.insertNew({});
             }
           },
           {
@@ -89,7 +92,7 @@ export default {
             type: "btn-success",
             icon: "el-icon-edit",
             onClick: function() {
-              self.$refs.editList.deleteSelected();
+              self.$refs.lock.deleteSelected();
             }
           },
           {
@@ -97,7 +100,7 @@ export default {
             type: "btn-success",
             icon: "el-icon-edit",
             onClick: function() {
-              self.$refs.editList.upSelected();
+              self.$refs.lock.upSelected();
             }
           },
           {
@@ -105,7 +108,7 @@ export default {
             type: "btn-success",
             icon: "el-icon-edit",
             onClick: function() {
-              self.$refs.editList.downSelected();
+              self.$refs.lock.downSelected();
             }
           }
         ]
