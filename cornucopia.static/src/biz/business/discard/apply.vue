@@ -9,13 +9,14 @@ export default {
   mounted: function() {
     let self = this;
     this.setBreadcrumbTitle(this, "发起新流程", "固定资产报废流程");
-    if(self.$refs.apply){
+    if (self.$refs.apply) {
       self.$refs.apply.currentComponent = discardApplication;
     }
   },
   updated: function() {
     let self = this;
-    self.$refs.apply.currentComponent = discardApplication;
+    // self.$refs.apply.currentComponent = discardApplication;
+    self.findRef("apply").currentComponent = discardApplication;
   },
   destroyed: function() {
     this.setBreadcrumbTitle(this, "", "");

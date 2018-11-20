@@ -249,17 +249,34 @@ Vue.prototype.setBreadcrumbTitle = function(self, parentTitle, title) {
     self.$root.$children[0].$children[0].$children[0].$children[0].breadcrumbParentTitle = parentTitle;
 }
 
-Vue.prototype.findRef = function(self, refName) {
-    if(self.$root.$children.length>0){
-        for(var i=0;i< self.$root.$children.length;i++){
-            var child = self.$root.$children[i];
-            if(child.$refs.length>0&&child.$refs[refName]){
+function findRefStep(children, refName) {
+    if (children && children.length > 0) {
+        for (var i = 0; i < children.length; i++) {
+            var child = children[i];
+            if (child.$refs[refName]) {
                 return child.$refs[refName];
-            }else{
-                return Vue.prototype.findRef(self,refName);
+            } else {
+                var a = findRefStep(child.$children, refName);
+                if (a) {
+                    return a;
+                }
             }
         }
     }
+    return null;
+}
+
+Vue.prototype.findRef = function(refName) {
+    return findRefStep(this.$root.$children, refName);
+}
+
+Vue.prototype.findCfgItem = function(cfg, itemName) {
+    for (var i = 0; i < cfg.items.length; i++) {
+        if (cfg.items[i].name == itemName) {
+            return cfg.items[i];
+        }
+    }
+    return null;
 }
 
 function S4() {

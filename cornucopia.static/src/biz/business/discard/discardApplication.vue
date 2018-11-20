@@ -5,6 +5,17 @@
 </template>
 <script>
 export default {
+  mounted: function() {
+    let self = this;
+    self.get({
+      url: "/data/get?parentCode=x",
+      sccuess: function(response) {
+        if (response.code == 200) {
+          self.findCfgItem(self.cfg1,"discardType").data = response.data;
+        }
+      }
+    });
+  },
   data() {
     return {
       cfg1: {
@@ -60,7 +71,8 @@ export default {
           },
           discardType: {
             required: true
-          },remarks: {
+          },
+          remarks: {
             required: true
           }
         },
