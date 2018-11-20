@@ -27,33 +27,55 @@ export default {
             type: "hidden"
           },
           {
-            name: "name",
-            title: "参数名",
+            name: "area",
+            title: "区域",
             type: "text"
           },
           {
-            name: "type",
-            title: "参数类型",
+            name: "city",
+            title: "城市",
+            type: "text"
+          },
+          {
+            name: "bikeType",
+            title: "车型",
             type: "combox",
-            data: [
-              {
-                id: 1,
-                name: "文本"
-              },
-              {
-                id: 2,
-                name: "数字"
-              },
-              {
-                id: 3,
-                name: "日期"
-              }
-            ]
+            data:[{id:'0',value:'Classic 3.0'}]
           },
           {
-            name: "desc",
-            title: "描述",
+            name: "dealMoney",
+            title: "预计处置金额",
+            type: "money"
+          },
+          {
+            name: "fixMoney",
+            title: "预计维修成本",
+            type: "money"
+          },
+          {
+            name: "reason",
+            title: "资产报废原因",
+            type: "combox"
+          },
+          {
+            name: "dealType",
+            title: "处理方式",
+            type: "combox"
+          },
+          {
+            name: "commitDate",
+            title: "报废提交时间",
+            type: "datetime"
+          },
+          {
+            name: "bikeId",
+            title: "Bike Id",
             type: "text"
+          },
+          {
+            name: "warehouse",
+            title: "仓库",
+            type: "combox"
           }
         ],
         rules: {

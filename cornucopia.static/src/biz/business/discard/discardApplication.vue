@@ -7,6 +7,7 @@
 <script>
 import lock from "./lock.vue";
 import materiel from "./materiel.vue";
+import bike from "./bike.vue";
 export default {
   methods: {
   },
@@ -48,13 +49,13 @@ export default {
             width: "300px;",
             isRequire: true,
             onChange: function(value) {
-              // var a = self.findRef('applyInfo').$parent;
+              var a = self.findRef('applyInfo').$parent;
               if (value === 0) {
-                self.currentComponent = lock;
+                a.currentComponent = bike;
               } else if (value === 1) {
-                self.currentComponent = materiel;
+                a.currentComponent = materiel;
               } else {
-                self.currentComponent = lock;
+                a.currentComponent = lock;
               }
             }
           },
