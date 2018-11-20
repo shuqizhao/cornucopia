@@ -1,6 +1,6 @@
 <template>
-    <home v-if="isLogin" :collapse="this.collapse+''"></home>
-    <login v-else></login>
+    <home ref="home" v-if="isLogin" :collapse="this.collapse+''"></home>
+    <login ref="login" v-else></login>
 </template>
 
 <script>
