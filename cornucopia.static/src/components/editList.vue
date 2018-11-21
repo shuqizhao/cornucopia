@@ -82,6 +82,12 @@
                         <el-button slot="append" icon="el-icon-search" @click="onClick(scope.$index,item)"></el-button>
                       </el-input>
                     </div>
+                    <div v-else-if="item.type=='number'">
+                      <el-input-number :name="item.name" v-model="tableData[scope.$index][item.name]" controls-position="right" :min="item.min||0" :max="item.max||'Infinity'"></el-input-number>
+                    </div>
+                    <div v-else-if="item.type=='money'">
+                      <el-input-number :name="item.name" v-model="tableData[scope.$index][item.name]" controls-position="right" :precision="item.precision||2" :step="item.step||1" :min="item.min||0" :max="item.max||'Infinity'"></el-input-number>
+                    </div>
                     <center v-else-if="item.type=='checkbox'">
                       <el-checkbox  :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" ></el-checkbox>
                     </center>
