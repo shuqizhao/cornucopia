@@ -38,7 +38,7 @@
             :data="tableData"
             border
             @selection-change="handleSelectionChange"
-            style="width: 100%">
+            >
             <el-table-column v-if="cfg.showCheckBox"
             type="selection"
             width="55">
@@ -46,6 +46,7 @@
             <el-table-column v-for="item in this.cfg.items" :key="item.name"
             :show-overflow-tooltip="true"
             :label="item.title"
+            min-width="150px;"
             :width="item.type=='hidden'?'0px':''"
             >
             <template slot-scope="scope">
@@ -67,8 +68,8 @@
                   </div>
                 </div>
                 <div v-else>
-                    <el-input v-if="item.type=='text'" :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" ></el-input>
-                    <el-select v-else-if="item.type=='combox'" :name="item.name" v-model="tableData[scope.$index][item.name]"
+                    <el-input v-if="item.type=='text'" :name="item.name" size='small' v-model="tableData[scope.$index][item.name]" placeholder="" ></el-input>
+                    <el-select v-else-if="item.type=='combox'" :name="item.name" size='small' v-model="tableData[scope.$index][item.name]"
                     @change="item.onChange?item.onChange(scope.$index,item,tableData[scope.$index][item.name],tableCell,tableData):''" placeholder="">
                         <el-option
                         v-for="opItem in item.data"
@@ -83,13 +84,13 @@
                       </el-input>
                     </div>
                     <div v-else-if="item.type=='number'">
-                      <el-input-number :name="item.name" v-model="tableData[scope.$index][item.name]" controls-position="right" :min="item.min||0" :max="item.max||'Infinity'"></el-input-number>
+                      <el-input-number :name="item.name" v-model="tableData[scope.$index][item.name]" size='small' controls-position="right" :min="item.min||0" :max="item.max||'Infinity'"></el-input-number>
                     </div>
                     <div v-else-if="item.type=='money'">
-                      <el-input-number :name="item.name" v-model="tableData[scope.$index][item.name]" controls-position="right" :precision="item.precision||2" :step="item.step||1" :min="item.min||0" :max="item.max||'Infinity'"></el-input-number>
+                      <el-input-number :name="item.name" v-model="tableData[scope.$index][item.name]" size='small' controls-position="right" :precision="item.precision||2" :step="item.step||1" :min="item.min||0" :max="item.max||'Infinity'"></el-input-number>
                     </div>
                     <div v-else-if="item.type=='date'">
-                      <el-date-picker :name="item.name" v-model="tableData[scope.$index][item.name]" type="date"  placeholder="选择日期" :picker-options="pickerOptions1"></el-date-picker>
+                      <el-date-picker :name="item.name" v-model="tableData[scope.$index][item.name]" size='small' type="date"  placeholder="选择日期" :picker-options="pickerOptions1"></el-date-picker>
                     </div>
                     <center v-else-if="item.type=='checkbox'">
                       <el-checkbox  :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" ></el-checkbox>
@@ -168,6 +169,35 @@ export default {
   data() {
     var self = this;
     return {
+      pickerOptions1: {
+        disabledDate(time) {
+          return time.getTime() < Date.now();
+        }
+        // shortcuts: [
+        //   {
+        //     text: "今天",
+        //     onClick(picker) {
+        //       picker.$emit("pick", new Date());
+        //     }
+        //   },
+        //   {
+        //     text: "昨天",
+        //     onClick(picker) {
+        //       const date = new Date();
+        //       date.setTime(date.getTime() - 3600 * 1000 * 24);
+        //       picker.$emit("pick", date);
+        //     }
+        //   },
+        //   {
+        //     text: "一周前",
+        //     onClick(picker) {
+        //       const date = new Date();
+        //       date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+        //       picker.$emit("pick", date);
+        //     }
+        //   }
+        // ]
+      },
       tableData: [],
       tableCell: [],
       toolData: [],
@@ -403,35 +433,6 @@ export default {
     hidePopup: function() {
       this.dialogVisible = false;
       this.currentComponent = "";
-    },
-    pickerOptions1: {
-      disabledDate(time) {
-        return time.getTime() < Date.now();
-      },
-      // shortcuts: [
-      //   {
-      //     text: "今天",
-      //     onClick(picker) {
-      //       picker.$emit("pick", new Date());
-      //     }
-      //   },
-      //   {
-      //     text: "昨天",
-      //     onClick(picker) {
-      //       const date = new Date();
-      //       date.setTime(date.getTime() - 3600 * 1000 * 24);
-      //       picker.$emit("pick", date);
-      //     }
-      //   },
-      //   {
-      //     text: "一周前",
-      //     onClick(picker) {
-      //       const date = new Date();
-      //       date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-      //       picker.$emit("pick", date);
-      //     }
-      //   }
-      // ]
     }
   }
 };

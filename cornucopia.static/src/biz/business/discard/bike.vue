@@ -25,10 +25,10 @@ export default {
           }
         },
         items: [
-          {
-            name: "id",
-            type: "hidden"
-          },
+          // {
+          //   name: "id",
+          //   type: "hidden"
+          // },
           {
             name: "area",
             title: "区域",
@@ -68,7 +68,7 @@ export default {
           {
             name: "commitDate",
             title: "报废提交时间",
-            type: "datetime"
+            type: "date"
           },
           {
             name: "bikeId",
@@ -79,7 +79,57 @@ export default {
             name: "warehouse",
             title: "仓库",
             type: "combox"
-          }
+          },
+          {
+            name: "fontWheel",
+            title: "回收前轮",
+            type: "number"
+          },
+          {
+            name: "backWheel",
+            title: "回收后轮",
+            type: "number"
+          },
+          {
+            name: "handlebar",
+            title: "回收车把",
+            type: "number"
+          },
+          // {
+          //   name: "seatTube",
+          //   title: "回收座管",
+          //   type: "number"
+          // },
+          // {
+          //   name: "standpipe",
+          //   title: "回收立管",
+          //   type: "number"
+          // },
+          // {
+          //   name: "frontFork",
+          //   title: "回收前叉",
+          //   type: "number"
+          // },
+          // {
+          //   name: "basketry",
+          //   title: "回收篮筐",
+          //   type: "number"
+          // },
+          // {
+          //   name: "solarPanels",
+          //   title: "回收太阳能板",
+          //   type: "number"
+          // },
+          // {
+          //   name: "lock",
+          //   title: "回收锁",
+          //   type: "number"
+          // },
+          // {
+          //   name: "cushion",
+          //   title: "回收坐垫",
+          //   type: "number"
+          // }
         ],
         rules: {
           name: {
