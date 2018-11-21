@@ -32,7 +32,8 @@ export default {
           {
             name: "area",
             title: "区域",
-            type: "text"
+            type: "text",
+            isRequire: true
           },
           {
             name: "city",
@@ -95,44 +96,44 @@ export default {
             title: "回收车把",
             type: "number"
           },
-          // {
-          //   name: "seatTube",
-          //   title: "回收座管",
-          //   type: "number"
-          // },
-          // {
-          //   name: "standpipe",
-          //   title: "回收立管",
-          //   type: "number"
-          // },
-          // {
-          //   name: "frontFork",
-          //   title: "回收前叉",
-          //   type: "number"
-          // },
-          // {
-          //   name: "basketry",
-          //   title: "回收篮筐",
-          //   type: "number"
-          // },
-          // {
-          //   name: "solarPanels",
-          //   title: "回收太阳能板",
-          //   type: "number"
-          // },
-          // {
-          //   name: "lock",
-          //   title: "回收锁",
-          //   type: "number"
-          // },
-          // {
-          //   name: "cushion",
-          //   title: "回收坐垫",
-          //   type: "number"
-          // }
+          {
+            name: "seatTube",
+            title: "回收座管",
+            type: "number"
+          },
+          {
+            name: "standpipe",
+            title: "回收立管",
+            type: "number"
+          },
+          {
+            name: "frontFork",
+            title: "回收前叉",
+            type: "number"
+          },
+          {
+            name: "basketry",
+            title: "回收篮筐",
+            type: "number"
+          },
+          {
+            name: "solarPanels",
+            title: "回收太阳能板",
+            type: "number"
+          },
+          {
+            name: "lock",
+            title: "回收锁",
+            type: "number"
+          },
+          {
+            name: "cushion",
+            title: "回收坐垫",
+            type: "number"
+          }
         ],
         rules: {
-          name: {
+          area: {
             required: true
           },
           desc: {
@@ -140,7 +141,7 @@ export default {
           }
         },
         messages: {
-          name: {
+          area: {
             required: "参数必填"
           },
           desc: {

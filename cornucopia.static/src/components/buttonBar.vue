@@ -55,24 +55,49 @@ export default {
     },
     btnSave: function(item) {
       var self = this;
-      self.currentAction=item.name;
+      self.currentAction = item.name;
       var dataWillCommit = {};
       var children = this.$parent.$children;
       var willCommit = true;
       for (var i = 0; i < children.length; i++) {
         if (children[i].validateFrom) {
-          var isPass = children[i].validateFrom(true, function(name, data) {
-            dataWillCommit[name] = data;
-          },item,willCommit);
+          var isPass = children[i].validateFrom(
+            true,
+            function(name, data) {
+              dataWillCommit[name] = data;
+            },
+            item,
+            willCommit
+          );
           willCommit = isPass && willCommit;
         }
         var childOfLevel02 = children[i].$children;
-        for(var j = 0; j < childOfLevel02.length; j++){
-          if(childOfLevel02[j].validateFrom){
-            var isPass = childOfLevel02[j].validateFrom(true, function(name, data) {
-              dataWillCommit[name] = data;
-            },item,willCommit);
+        for (var j = 0; j < childOfLevel02.length; j++) {
+          if (childOfLevel02[j].validateFrom) {
+            var isPass = childOfLevel02[j].validateFrom(
+              true,
+              function(name, data) {
+                dataWillCommit[name] = data;
+              },
+              item,
+              willCommit
+            );
             willCommit = isPass && willCommit;
+          }
+
+          var childOfLevel03 = childOfLevel02[j].$children;
+          for (var k = 0; k < childOfLevel03.length; k++) {
+            if (childOfLevel03[k].validateFrom) {
+              var isPass = childOfLevel03[k].validateFrom(
+                true,
+                function(name, data) {
+                  dataWillCommit[name] = data;
+                },
+                item,
+                willCommit
+              );
+              willCommit = isPass && willCommit;
+            }
           }
         }
       }
@@ -80,9 +105,13 @@ export default {
       if (!willCommit) {
         return;
       }
-      
-      if(self.cfg.getExtraData){
-        dataWillCommit = $.extend(true, dataWillCommit, self.cfg.getExtraData());
+
+      if (self.cfg.getExtraData) {
+        dataWillCommit = $.extend(
+          true,
+          dataWillCommit,
+          self.cfg.getExtraData()
+        );
       }
 
       var isOk = true;
@@ -104,12 +133,18 @@ export default {
           type: "warning"
         })
         .then(() => {
-          if(self.cfg.getExtraDataSkipValidate){
-            dataWillCommit = $.extend(true, dataWillCommit, self.cfg.getExtraDataSkipValidate());
+          if (self.cfg.getExtraDataSkipValidate) {
+            dataWillCommit = $.extend(
+              true,
+              dataWillCommit,
+              self.cfg.getExtraDataSkipValidate()
+            );
           }
           self.postUrl(dataWillCommit, null, item);
         })
-        .catch((err) => {console.log(err)});
+        .catch(err => {
+          console.log(err);
+        });
     },
     postUrl: function(data, handler, item) {
       var self = this;
@@ -148,7 +183,7 @@ export default {
               message: response.message
             });
             return;
-          }else{
+          } else {
             return;
           }
           if (self.cfg.onSuccess) {
@@ -235,7 +270,7 @@ export default {
   },
   data() {
     return {
-      currentAction:''
+      currentAction: ""
     };
   }
 };

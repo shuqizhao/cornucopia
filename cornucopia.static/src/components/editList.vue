@@ -45,7 +45,7 @@
             </el-table-column>
             <el-table-column v-for="item in this.cfg.items" :key="item.name"
             :show-overflow-tooltip="true"
-            :label="item.title"
+            :label="item.isRequire==true?item.title+'*':item.title"
             min-width="150px;"
             :width="item.type=='hidden'?'0px':''"
             >
@@ -84,10 +84,10 @@
                       </el-input>
                     </div>
                     <div v-else-if="item.type=='number'">
-                      <el-input-number :name="item.name" v-model="tableData[scope.$index][item.name]" size='small' controls-position="right" :min="item.min||0" :max="item.max||'Infinity'"></el-input-number>
+                      <el-input-number :name="item.name" v-model="tableData[scope.$index][item.name]" size='small' controls-position="right" :min="item.min||0" :max="item.max||9999999"></el-input-number>
                     </div>
                     <div v-else-if="item.type=='money'">
-                      <el-input-number :name="item.name" v-model="tableData[scope.$index][item.name]" size='small' controls-position="right" :precision="item.precision||2" :step="item.step||1" :min="item.min||0" :max="item.max||'Infinity'"></el-input-number>
+                      <el-input-number :name="item.name" v-model="tableData[scope.$index][item.name]" size='small' controls-position="right" :precision="item.precision||2" :step="item.step||0.1" :min="item.min||0" :max="item.max||9999999"></el-input-number>
                     </div>
                     <div v-else-if="item.type=='date'">
                       <el-date-picker :name="item.name" v-model="tableData[scope.$index][item.name]" size='small' type="date"  placeholder="选择日期" :picker-options="pickerOptions1"></el-date-picker>
@@ -294,6 +294,7 @@ export default {
       }
     },
     validateFrom: function(isOut, onSuccess, onFail) {
+      debugger;
       var self = this;
       self.commiting = true;
       var validateCfg = {
