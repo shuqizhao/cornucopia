@@ -88,6 +88,9 @@
                     <div v-else-if="item.type=='money'">
                       <el-input-number :name="item.name" v-model="tableData[scope.$index][item.name]" controls-position="right" :precision="item.precision||2" :step="item.step||1" :min="item.min||0" :max="item.max||'Infinity'"></el-input-number>
                     </div>
+                    <div v-else-if="item.type=='date'">
+                      <el-date-picker :name="item.name" v-model="tableData[scope.$index][item.name]" type="date"  placeholder="选择日期" :picker-options="pickerOptions1"></el-date-picker>
+                    </div>
                     <center v-else-if="item.type=='checkbox'">
                       <el-checkbox  :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" ></el-checkbox>
                     </center>
@@ -260,7 +263,7 @@ export default {
         onSuccess();
       }
     },
-    validateFrom: function(isOut,onSuccess, onFail) {
+    validateFrom: function(isOut, onSuccess, onFail) {
       var self = this;
       self.commiting = true;
       var validateCfg = {
@@ -393,13 +396,42 @@ export default {
     getTableData: function() {
       return this.tableData;
     },
-    showPopup:function(url){
+    showPopup: function(url) {
       this.dialogVisible = true;
       this.currentComponent = url;
     },
-    hidePopup:function(){
+    hidePopup: function() {
       this.dialogVisible = false;
-      this.currentComponent = '';
+      this.currentComponent = "";
+    },
+    pickerOptions1: {
+      disabledDate(time) {
+        return time.getTime() < Date.now();
+      },
+      // shortcuts: [
+      //   {
+      //     text: "今天",
+      //     onClick(picker) {
+      //       picker.$emit("pick", new Date());
+      //     }
+      //   },
+      //   {
+      //     text: "昨天",
+      //     onClick(picker) {
+      //       const date = new Date();
+      //       date.setTime(date.getTime() - 3600 * 1000 * 24);
+      //       picker.$emit("pick", date);
+      //     }
+      //   },
+      //   {
+      //     text: "一周前",
+      //     onClick(picker) {
+      //       const date = new Date();
+      //       date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+      //       picker.$emit("pick", date);
+      //     }
+      //   }
+      // ]
     }
   }
 };
