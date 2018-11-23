@@ -294,7 +294,6 @@ export default {
       }
     },
     validateFrom: function(isOut, onSuccess, onFail) {
-      debugger;
       var self = this;
       self.commiting = true;
       var validateCfg = {

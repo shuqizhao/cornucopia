@@ -44,12 +44,15 @@
                                 
                                 <!-- <textarea v-else-if="item.type=='textarea'" :id="item.name" :name="item.name" style='width:100%' class="form-control" rows="5" :controltype='item.type' :value="detail[item.name]"></textarea> -->
                                 <div v-else-if="item.type=='textarea'">
-                                  <input :id="item.name" :name="item.name" style="height:0.5px;width:0px;padding:0px;margin:0px;" class="form-control" :controltype='item.type'/>
                                   <el-input
                                     type="textarea"
+                                    :placeholder="item.placeholder"
+                                    @change	="onTextAreaKeyUp(item)"
                                     :autosize="{ minRows: 2, maxRows: 100}"
                                     v-model="detail[item.name]">
                                     </el-input>
+                                    <!-- <input :id="item.name" type="hidden" class="form-control" :value="detail[item.name]" :controltype='item.type'/> -->
+                                  <input :id="item.name" :name="item.name" style="height:0.5px;width:0px;padding:0px;margin:0px;" :value="detail[item.name]" class="form-control" :controltype='item.type'/>
                                 </div>
                                 <iframe v-else-if="item.type=='textxml'" readonly='false' :id="item.name" :name="item.name"  scrolling="no" frameborder="0" class="form-control embed-responsive-item" :controltype='item.type' style="min-height:190px;" src="/src/ref/codemirror/codemirror.html"></iframe>
                                 <iframe v-else-if="item.type=='textnginx'" readonly='false' :id="item.name" :name="item.name"  scrolling="no" frameborder="0" class="form-control embed-responsive-item" :controltype='item.type' style="min-height:190px;" src="/src/ref/codemirror/codemirrornginx.html"></iframe>
@@ -334,6 +337,11 @@ export default {
     showDialog: function() {
       var className = this.$parent.$parent.$el.className;
       return className.indexOf("el-dialog__wrapper") != -1;
+    },
+    onTextAreaKeyUp:function(item){
+      $("#" + item.name)
+        .val(this.detail[item.name])
+        .keyup();
     },
     onSelectChange: function(item) {
       if (item.onChange) {
@@ -678,6 +686,15 @@ export default {
               .attr("data-original-title", error.text())
               .addClass("has-error")
               .tooltip("show");
+          }else if (element.attr("controltype") == "textarea") {
+            element
+              .parent()
+              .find(".el-textarea__inner")
+              .attr("data-toggle", "tooltip")
+              .attr("data-placement", "top")
+              .attr("data-original-title", error.text())
+              .addClass("has-error")
+              .tooltip("show");
           } else {
             element.attr("data-toggle", "tooltip");
             element.attr("data-placement", "top");
@@ -705,6 +722,12 @@ export default {
             $(element)
               .parent()
               .find(".el-input__inner")
+              .removeClass("has-error")
+              .tooltip("destroy");
+          }else if ($(element).attr("controltype") == "textarea") {
+            $(element)
+              .parent()
+              .find(".el-textarea__inner")
               .removeClass("has-error")
               .tooltip("destroy");
           } else {

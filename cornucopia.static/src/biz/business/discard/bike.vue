@@ -16,14 +16,14 @@ export default {
       cfg1: {
         title: "报废明细",
         mode: "create",
-        name: "functionParas",
+        name: "DiscardBike",
         showCheckBox: true,
-        get: {
-          url: "/function/getPara",
-          params: {
-            id: self.$parent.$parent.$parent.id
-          }
-        },
+        // get: {
+        //   url: "/function/getPara",
+        //   params: {
+        //     id: self.$parent.$parent.$parent.id
+        //   }
+        // },
         items: [
           // {
           //   name: "id",

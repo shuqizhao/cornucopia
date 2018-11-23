@@ -16,7 +16,7 @@ export default {
       cfg1: {
         title: "报废明细",
         mode: "create",
-        name: "functionParas",
+        name: "DiscardLock",
         showCheckBox: true,
         get: {
           url: "/function/getPara",

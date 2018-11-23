@@ -96,6 +96,12 @@ export default {
         messages: {
           position: {
             required: "位置必须填写"
+          },
+          discardType: {
+            required: "报废类别必须填写"
+          },
+          remarks: {
+            required: "备注必须填写"
           }
         }
       }
