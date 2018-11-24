@@ -10,6 +10,7 @@
     </div>
 </template>
 <script>
+import {xml2json} from "../ref/json2xml"
 export default {
   mounted: function() {
     let self = this;
@@ -28,7 +29,7 @@ export default {
               Object.keys(dataJson).forEach(function(key) {
                 if (key == "comments") {
                   setTimeout(function() {
-                    self.$parent.$refs.diagram.loadDiagram();
+                    self.findRef('diagram').loadDiagram();
                     self.$refs.comments.setMessages(dataJson.comments);
                   }, 200);
                 } else {
@@ -39,6 +40,15 @@ export default {
                         self.$refs[key].detail[subKey] = obj[subKey];
                       } catch (err) {
                         console.log(err);
+                      }
+                    }else{
+                      var other = self.findRef(key);
+                      if(other&&other.detail){
+                        try {
+                          other.detail[subKey] = obj[subKey];
+                        } catch (err) {
+                          console.log(err);
+                        }
                       }
                     }
                   });
@@ -75,7 +85,7 @@ export default {
                   }
                 }
               } else {
-                self.cfg1.mode = "detailEdit";
+                // self.cfg1.mode = "detailEdit";
                 self.cfg2.mode = "detailEdit";
               }
             }

@@ -41,7 +41,7 @@ function json2xml(json) {
 function xml2json(xml) {
     var dom = window.ActiveXObject ? (new ActiveXObject("Microsoft.XMLDOM")) : null;
     dom = dom ? dom : document.implementation.createDocument(null, "body");
-    dom.firstChild.innerHTML = xml;
+    dom.firstChild.innerHTML = xml.replace('<?xml version="1.0" encoding="UTF-8"?>', '');
     var a = dom.firstChild.firstChild;
     var t = function(v) {
         return v.getAttribute ? v.getAttribute("type") : "null";

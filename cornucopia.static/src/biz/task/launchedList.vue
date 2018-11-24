@@ -1,5 +1,5 @@
 <template>
-  <listV2 :cfg="cfg"></listV2>
+  <list :cfg="cfg"></list>
 </template>
 <script>
 export default {

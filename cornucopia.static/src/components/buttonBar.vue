@@ -16,7 +16,7 @@
     </div>
 </template>
 <script>
-import {json2xml} from "../ref/json2xml"
+// import {json2xml} from "../ref/json2xml"
 export default {
   props: ["cfg"],
   methods: {
@@ -151,7 +151,7 @@ export default {
       var self = this;
       self.openLoading(self.$parent, null, "正在提交...", 15000);
       if (self.cfg.dataType == "xml" && item && item.dataType != "json") {
-        data = { xmlStr: json2xml(data) };
+        data = { xmlStr: "<root>"+self.parse2xml(data) +"</root>"};
       }
       self.post({
         url: item ? item.url : self.cfg.save,
@@ -227,47 +227,47 @@ export default {
         }
       });
     },
-    // parse2xml: function(data) {
-    //   var xmldata = "";
-    //   for (var i in data) {
-    //     if (!Array.isArray(data[i])) {
-    //       xmldata += "<" + i + ">";
-    //     }
-    //     if (Array.isArray(data[i])) {
-    //       for (var j = 0; j < data[i].length; j++) {
-    //         xmldata += "<" + i + ">";
-    //         xmldata += this.parse2xml(data[i][j]);
-    //         xmldata += "</" + i + ">";
-    //       }
-    //     } else if (typeof data[i] == "object") {
-    //       xmldata += this.parse2xml(data[i]);
-    //     } else {
-    //       xmldata += data[i];
-    //     }
-    //     if (!Array.isArray(data[i])) {
-    //       xmldata += "</" + i + ">";
-    //     }
-    //   }
-    //   return xmldata;
-    // },
-    // parse2json: function(xmlStr) {
-    //   var root = document.createElement("XMLROOT");
-    //   root.innerHTML = xmlStr;
-    //   return this.parse(root);
-    // },
-    // parse: function(node) {
-    //   var result = {};
-    //   for (var i = 0; i < node.childNodes.length; ++i) {
-    //     if (node.childNodes[i].nodeType == 1) {
-    //       result[node.childNodes[i].nodeName.toLowerCase()] = this.parse(
-    //         node.childNodes[i]
-    //       );
-    //     } else if (node.childNodes[i].nodeType == 3) {
-    //       return node.childNodes[i].nodeValue;
-    //     }
-    //   }
-    //   return result;
-    // }
+    parse2xml: function(data) {
+      var xmldata = "";
+      for (var i in data) {
+        if (!Array.isArray(data[i])) {
+          xmldata += "<" + i + ">";
+        }
+        if (Array.isArray(data[i])) {
+          for (var j = 0; j < data[i].length; j++) {
+            xmldata += "<" + i + ">";
+            xmldata += this.parse2xml(data[i][j]);
+            xmldata += "</" + i + ">";
+          }
+        } else if (typeof data[i] == "object") {
+          xmldata += this.parse2xml(data[i]);
+        } else {
+          xmldata += data[i];
+        }
+        if (!Array.isArray(data[i])) {
+          xmldata += "</" + i + ">";
+        }
+      }
+      return xmldata.replace(/undefined/g, '');
+    },
+    parse2json: function(xmlStr) {
+      var root = document.createElement("XMLROOT");
+      root.innerHTML = xmlStr;
+      return this.parse(root);
+    },
+    parse: function(node) {
+      var result = {};
+      for (var i = 0; i < node.childNodes.length; ++i) {
+        if (node.childNodes[i].nodeType == 1) {
+          result[node.childNodes[i].nodeName.toLowerCase()] = this.parse(
+            node.childNodes[i]
+          );
+        } else if (node.childNodes[i].nodeType == 3) {
+          return node.childNodes[i].nodeValue;
+        }
+      }
+      return result;
+    }
   },
   data() {
     return {
