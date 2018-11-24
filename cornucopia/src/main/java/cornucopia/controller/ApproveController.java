@@ -337,7 +337,7 @@ public class ApproveController {
 
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = { "/matrixUpdate" }, method = RequestMethod.POST)
-	public JsonResult<Integer> matrixUpdate( Map<String, Object> reqMap) {
+	public JsonResult<Integer> matrixUpdate(@RequestBody Map<String, Object> reqMap) {
 		LinkedHashMap<String, Integer> process = (LinkedHashMap<String, Integer>) reqMap.get("process");
 		int processId = process.get("processId");
 		int processNodeId = process.get("processNodeId");

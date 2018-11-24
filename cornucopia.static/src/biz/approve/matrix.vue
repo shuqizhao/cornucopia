@@ -121,6 +121,7 @@ export default {
               self.$set(self.$refs.editList, "tableData", []);
               self.get({
                 url: "/approve/allchildren?approveId=" + s1,
+                async: false,
                 success: function(response) {
                   if (response.code == 200) {
                     var items = [
@@ -148,7 +149,8 @@ export default {
                   self.currentProcessNodeId +
                   "&conditionId=" +
                   s1,
-                function(response) {
+                async: false,
+                success(response) {
                   if (response.code == 200) {
                     self.$set(self.$refs.editList, "tableData", response.data);
                   }

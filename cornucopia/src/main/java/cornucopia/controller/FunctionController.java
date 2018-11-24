@@ -2,6 +2,7 @@ package cornucopia.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,7 +57,7 @@ public class FunctionController {
 	}
 
 	@RequestMapping(value = { "/add" }, method = RequestMethod.POST)
-	public JsonResult<Integer> add( FunctionViewModel funcVm) {
+	public JsonResult<Integer> add(@RequestBody FunctionViewModel funcVm) {
 		FunctionService.getInstance().insert(funcVm.getFunction());
 		for (FunctionParameterEntity fp : funcVm.getFunctionParas()) {
 			fp.setFuncId(funcVm.getFunction().getId());
@@ -69,7 +70,7 @@ public class FunctionController {
 	}
 	
 	@RequestMapping(value = { "/update" }, method = RequestMethod.POST)
-	public JsonResult<Integer> update( FunctionViewModel funcVm) {
+	public JsonResult<Integer> update(@RequestBody FunctionViewModel funcVm) {
 		FunctionService.getInstance().update(funcVm.getFunction());
 		for (FunctionParameterEntity fp : funcVm.getFunctionParas()) {
 			fp.setFuncId(funcVm.getFunction().getId());
