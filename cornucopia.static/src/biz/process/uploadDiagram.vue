@@ -21,6 +21,7 @@ export default {
         title: "上传流程图",
         mode: "create",
         save:  "/processdiagram/upload",
+        dataType:'json',
         items: [
           {
             name: "name",
@@ -35,7 +36,7 @@ export default {
             type: "uploader",
             desc: "只能上传bpmn文件",
             accept: ".bpmn",
-            url:  "/upload",
+            url:  this.getGlobalData().ApiBaseUrl+"/upload",
             isRequire: true,
             width: "90%"
           },
@@ -45,7 +46,7 @@ export default {
             type: "uploader",
             desc: "只能上传png文件",
             accept: ".png",
-            url:  "/upload",
+            url:  this.getGlobalData().ApiBaseUrl+"/upload",
             isRequire: true,
             width: "90%"
           }

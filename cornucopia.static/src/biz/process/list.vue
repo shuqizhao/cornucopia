@@ -1,8 +1,8 @@
 <template>
   <el-row>
-    <el-col :span="9"><list :cfg="cfg"></list></el-col>
+    <el-col :span="11"><list :cfg="cfg"></list></el-col>
     <el-col :span="4" id="id1"><list ref="nodeList" :cfg="cfg1"></list></el-col>
-    <el-col :span="11" id="id2"><list ref="diagramList" :cfg="cfg2"></list></el-col>
+    <el-col :span="9" id="id2"><list ref="diagramList" :cfg="cfg2"></list></el-col>
   </el-row>
 </template>
 <script>

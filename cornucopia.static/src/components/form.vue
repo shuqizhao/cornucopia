@@ -904,6 +904,7 @@ export default {
       self.post({
         url: self.cfg.save,
         data: data,
+        dataType : self.cfg.dataType,
         success: function(response) {
           if (response.code && response.code == "201") {
             window.open(response.data);

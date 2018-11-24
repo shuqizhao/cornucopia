@@ -632,6 +632,7 @@ export default {
               self.post({
                 url: url,
                 traditional: true,
+                // dataType:'json',
                 data: { Ids: formData },
                 success: function(response) {
                   if(onSuccess){

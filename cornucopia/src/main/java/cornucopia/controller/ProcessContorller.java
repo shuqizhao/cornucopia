@@ -95,8 +95,8 @@ public class ProcessContorller {
 	}
 
 	@RequestMapping(value = { "/disable" }, method = RequestMethod.POST)
-	public JsonResult<Integer> disable(@RequestParam(value = "Ids") int id) {
-		int result = ProcessService.getInstance().disable(id);
+	public JsonResult<Integer> disable(@RequestParam(value = "Ids[]") int[] ids) {
+		int result = ProcessService.getInstance().disable(ids[0]);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(result);
@@ -104,8 +104,8 @@ public class ProcessContorller {
 	}
 
 	@RequestMapping(value = { "/enable" }, method = RequestMethod.POST)
-	public JsonResult<Integer> enable(@RequestParam(value = "Ids") int id) {
-		int result = ProcessService.getInstance().enable(id);
+	public JsonResult<Integer> enable(@RequestParam(value = "Ids[]") int[] ids) {
+		int result = ProcessService.getInstance().enable(ids[0]);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(result);
@@ -113,8 +113,8 @@ public class ProcessContorller {
 	}
 
 	@RequestMapping(value = { "/delete" }, method = RequestMethod.POST)
-	public JsonResult<Integer> delete(@RequestParam(value = "Ids") int id) {
-		int result = ProcessService.getInstance().delete(id);
+	public JsonResult<Integer> delete(@RequestParam(value = "Ids[]") int[] ids) {
+		int result = ProcessService.getInstance().delete(ids[0]);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(result);
