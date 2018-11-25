@@ -2,7 +2,7 @@
     <div>
       <mform v-show="isApprove" ref="approve" :cfg="cfg0"></mform>
       <mform ref="applicant" :cfg="cfg"></mform>
-      <component ref="applyComponent" v-bind:is="applyComponent"></component>
+      <component ref="cellar" v-bind:is="cellar"></component>
       <mform ref="attachment" :cfg="cfg2"></mform>
       <comment ref="comments" :cfg="cfgComment"></comment>
       <buttonBar v-show="!isApprove" ref="submit" :cfg="cfg3"></buttonBar>
@@ -10,7 +10,6 @@
     </div>
 </template>
 <script>
-import {xml2json} from "../ref/json2xml"
 export default {
   mounted: function() {
     let self = this;
@@ -26,6 +25,7 @@ export default {
             if (response.code == 200) {
               self.closeLoading();
               let dataJson = JSON.parse(response.data);
+              self.$emit('afterDataLoad', dataJson)
               Object.keys(dataJson).forEach(function(key) {
                 if (key == "comments") {
                   setTimeout(function() {
@@ -107,7 +107,7 @@ export default {
     let self = this;
     return {
       isApprove: false,
-      applyComponent:'',
+      cellar:'',
       processInstAuth: [],
       cfg0: {
         title: "单据信息",

@@ -10,6 +10,16 @@ import materiel from "./materiel.vue";
 import bike from "./bike.vue";
 export default {
   methods: {
+    changeDetail: function(value) {
+      var a = self.findRef("applyInfo").$parent;
+      if (value == 0) {
+        a.discardComponent = bike;
+      } else if (value == 1) {
+        a.discardComponent = materiel;
+      } else {
+        a.discardComponent = lock;
+      }
+    }
   },
   mounted: function() {
     self = this;
@@ -49,14 +59,8 @@ export default {
             width: "300px;",
             isRequire: true,
             onChange: function(value) {
-              var a = self.findRef('applyInfo').$parent;
-              if (value === 0) {
-                a.discardComponent = bike;
-              } else if (value === 1) {
-                a.discardComponent = materiel;
-              } else {
-                a.discardComponent = lock;
-              }
+              var a = self.findRef("applyInfo").$parent;
+              a.changeDetail(value);
             }
           },
           {
