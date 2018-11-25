@@ -1,8 +1,8 @@
 <template>
   <el-row>
-    <el-col :span="6"><tree  ref="tree" :cfg="treeCfg"></tree></el-col>
-    <el-col :span="6"><tree  ref="tree1" :cfg="treeCfg1"></tree></el-col>
-    <el-col :span="12"><list ref="positionList" :cfg="cfg1"></list></el-col>
+    <el-col :span="4"><tree  ref="tree" :cfg="treeCfg"></tree></el-col>
+    <el-col :span="4"><tree  ref="tree1" :cfg="treeCfg1"></tree></el-col>
+    <el-col :span="16"><list ref="positionList" :cfg="cfg1"></list></el-col>
   </el-row>
 </template>
 <script>
@@ -164,6 +164,30 @@ export default {
             name: "isEnabled"
           },
           {
+            title: "虚拟职位",
+            name: "vitualTitle"
+          },
+          {
+            name: "preSign",
+            title: "前加签",
+            type: "yesno"
+          },
+          {
+            name: "afterSign",
+            title: "后加签",
+            type: "yesno"
+          },
+          {
+            name: "transfer",
+            title: "转办",
+            type: "yesno"
+          },
+          {
+            name: "modify",
+            title: "申请人修订",
+            type: "yesno"
+          },
+          {
             title: "创建时间",
             name: "createTime"
           }
@@ -174,6 +198,30 @@ export default {
             $("td:eq(3)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
           } else {
             $("td:eq(3)", row).html('<i class="el-icon-close"></i>');
+          }
+
+          if (data.preSign) {
+            $("td:eq(5)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
+          } else {
+            $("td:eq(5)", row).html('<i class="el-icon-close"></i>');
+          }
+
+          if (data.afterSign) {
+            $("td:eq(6)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
+          } else {
+            $("td:eq(6)", row).html('<i class="el-icon-close"></i>');
+          }
+
+          if (data.transfer) {
+            $("td:eq(7)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
+          } else {
+            $("td:eq(7)", row).html('<i class="el-icon-close"></i>');
+          }
+
+          if (data.modify) {
+            $("td:eq(8)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
+          } else {
+            $("td:eq(8)", row).html('<i class="el-icon-close"></i>');
           }
 
           if (data.type==1) {

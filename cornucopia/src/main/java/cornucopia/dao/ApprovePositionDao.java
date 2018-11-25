@@ -16,7 +16,7 @@ public interface ApprovePositionDao {
 	@Select("call sp_approve_position_all(#{processNodeId})")
 	public List<ApprovePositionEntity> getAll(@Param("processNodeId") int processNodeId);
 
-	@Insert("call sp_approve_position_insert(#{pos.name},#{pos.processNodeId},#{pos.type},#{pos.rule},#{pos.vitualTitle},#{pos.approveType})")
+	@Insert("call sp_approve_position_insert(#{pos.name},#{pos.processNodeId},#{pos.type},#{pos.rule},#{pos.vitualTitle},#{pos.approveType},#{pos.preSign},#{pos.afterSign},#{pos.transfer},#{pos.modify})")
 	@SelectKey(statement = "Select LAST_INSERT_ID()", keyProperty = "pos.id", before = false, resultType = int.class)
 	public int insert(@Param("pos") ApprovePositionEntity approvePositionEntity);
 
@@ -32,7 +32,7 @@ public interface ApprovePositionDao {
 	@Select("call sp_approve_position_get(#{id})")
 	public ApprovePositionEntity getPosition(@Param("id") int id);
 
-	@Update("call sp_approve_position_update(#{pos.id},#{pos.name},#{pos.type},#{pos.rule},#{pos.vitualTitle},#{pos.approveType})")
+	@Update("call sp_approve_position_update(#{pos.id},#{pos.name},#{pos.type},#{pos.rule},#{pos.vitualTitle},#{pos.approveType},#{pos.preSign},#{pos.afterSign},#{pos.transfer},#{pos.modify})")
 	public int update(@Param("pos") ApprovePositionEntity pos);
 
 	@Select("call sp_approve_position_all_with_viewmodel(#{processNodeId})")

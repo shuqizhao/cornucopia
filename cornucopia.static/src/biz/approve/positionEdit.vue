@@ -87,6 +87,30 @@ export default {
             width: "90%",
             type: "select",
             data: [{ id: 0, value: "竞签" }, { id: 1, value: "会签" }]
+          },
+          {
+            name: "preSign",
+            title: "前加签",
+            width: "90%",
+            type: "yesno"
+          },
+          {
+            name: "afterSign",
+            title: "后加签",
+            width: "90%",
+            type: "yesno"
+          },
+          {
+            name: "transfer",
+            title: "转办",
+            width: "90%",
+            type: "yesno"
+          },
+          {
+            name: "modify",
+            title: "申请人修订",
+            width: "90%",
+            type: "yesno"
           }
         ],
         rules: {
