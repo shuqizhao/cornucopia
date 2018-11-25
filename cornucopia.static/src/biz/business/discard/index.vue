@@ -15,8 +15,8 @@ export default {
   },
   updated: function() {
     let self = this;
-    // self.$refs.apply.currentComponent = discardApplication;
-    self.findRef("apply").currentComponent = discardApplication;
+    self.$refs.apply.currentComponent = discardApplication;
+    // self.findRef("apply").currentComponent = discardApplication;
   },
   destroyed: function() {
     this.setBreadcrumbTitle(this, "", "");
