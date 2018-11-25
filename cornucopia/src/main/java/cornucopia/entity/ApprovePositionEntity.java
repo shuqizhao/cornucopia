@@ -6,10 +6,10 @@ public class ApprovePositionEntity extends BaseEntity {
 	private int processNodeId;
 	private String vitualTitle;
 	private int approveType;
-	private int preSign;
-	private int afterSign;
-	private int transfer;
-	private int modify;
+	private Boolean preSign;
+	private Boolean afterSign;
+	private Boolean transfer;
+	private Boolean modify;
 
 	public int getType() {
 		return type;
@@ -55,56 +55,56 @@ public class ApprovePositionEntity extends BaseEntity {
 	/**
 	 * @return the modify
 	 */
-	public int getModify() {
+	public Boolean getModify() {
 		return modify;
 	}
 
 	/**
 	 * @param modify the modify to set
 	 */
-	public void setModify(int modify) {
+	public void setModify(Boolean modify) {
 		this.modify = modify;
 	}
 
 	/**
 	 * @return the transfer
 	 */
-	public int getTransfer() {
+	public Boolean getTransfer() {
 		return transfer;
 	}
 
 	/**
 	 * @param transfer the transfer to set
 	 */
-	public void setTransfer(int transfer) {
+	public void setTransfer(Boolean transfer) {
 		this.transfer = transfer;
 	}
 
 	/**
 	 * @return the afterSign
 	 */
-	public int getAfterSign() {
+	public Boolean getAfterSign() {
 		return afterSign;
 	}
 
 	/**
 	 * @param afterSign the afterSign to set
 	 */
-	public void setAfterSign(int afterSign) {
+	public void setAfterSign(Boolean afterSign) {
 		this.afterSign = afterSign;
 	}
 
 	/**
 	 * @return the preSign
 	 */
-	public int getPreSign() {
+	public Boolean getPreSign() {
 		return preSign;
 	}
 
 	/**
 	 * @param preSign the preSign to set
 	 */
-	public void setPreSign(int preSign) {
+	public void setPreSign(Boolean preSign) {
 		this.preSign = preSign;
 	}
 }

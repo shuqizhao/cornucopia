@@ -103,7 +103,7 @@
                                     </div>
                                 </div>
                                 <div v-else-if="item.type=='yesno'">
-                                  <el-checkbox :id="item.name"  :name="item.name" :checked="detail[item.name]==1" class="form-control" :controltype='item.type' border size="medium"></el-checkbox>
+                                  <el-checkbox :id="item.name"  :name="item.name" v-model="detail[item.name]" class="form-control" :controltype='item.type' border size="medium"></el-checkbox>
                                 </div>
                                 <div v-else-if="item.type=='select2select'" v-bind="bindSelect2Select(item.name,item.url)">
                                     <div :id="item.name+'1'"></div>

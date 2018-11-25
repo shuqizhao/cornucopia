@@ -151,14 +151,14 @@ export default {
           return true;
         },
         onSuccess: function() {
-          self.$parent.$parent.$parent.$parent.$parent.$refs.positionList.dialogVisible = false;
-          self.$parent.$parent.$parent.$parent.$parent.$refs.positionList.currentComponent =
-            "";
-          self.$parent.$parent.$parent.$parent.$parent.$refs.positionList.reloadSimpleData(
+          self.findRef("positionList").dialogVisible = false;
+          self.findRef("positionList").currentComponent = "";
+          self
+            .findRef("positionList")
+            .reloadSimpleData(
               "/approve/positionlist?processNodeId=" +
-              (self.$parent.$parent.$parent.$parent.$parent.$refs.tree.value2 ||
-                0)
-          );
+                (self.findRef("tree").value2 || 0)
+            );
           return false;
         },
         onLoaded: function(detail) {
