@@ -1,7 +1,7 @@
 <template>
     <div>
         <mform ref="applyInfo" :cfg="cfg1"></mform>
-        <component v-bind:is="currentComponent"></component>
+        <component v-bind:is="discardComponent"></component>
     </div>
 </template>
 <script>
@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      currentComponent: "",
+      discardComponent: "",
       cfg1: {
         title: "申请信息",
         detailTitle: "申请信息",
@@ -51,11 +51,11 @@ export default {
             onChange: function(value) {
               var a = self.findRef('applyInfo').$parent;
               if (value === 0) {
-                a.currentComponent = bike;
+                a.discardComponent = bike;
               } else if (value === 1) {
-                a.currentComponent = materiel;
+                a.discardComponent = materiel;
               } else {
-                a.currentComponent = lock;
+                a.discardComponent = lock;
               }
             }
           },

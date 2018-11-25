@@ -2,7 +2,7 @@
     <div>
       <mform v-show="isApprove" ref="approve" :cfg="cfg0"></mform>
       <mform ref="applicant" :cfg="cfg"></mform>
-      <component v-bind:is="currentComponent"></component>
+      <component ref="applyComponent" v-bind:is="applyComponent"></component>
       <mform ref="attachment" :cfg="cfg2"></mform>
       <comment ref="comments" :cfg="cfgComment"></comment>
       <buttonBar v-show="!isApprove" ref="submit" :cfg="cfg3"></buttonBar>
@@ -107,7 +107,7 @@ export default {
     let self = this;
     return {
       isApprove: false,
-      currentComponent:'',
+      applyComponent:'',
       processInstAuth: [],
       cfg0: {
         title: "单据信息",
