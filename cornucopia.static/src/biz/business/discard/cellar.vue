@@ -20,34 +20,35 @@ export default {
         applyInfo.discardComponent = lock;
       }
     },
-    afterDataLoad: function(data, allData) {
+    afterDataLoad: function(refName, data, allData) {
       let self = this;
-      self.changeDetail(data.discardType);
+      if (refName == "applyInfo") {
+        self.changeDetail(data.discardType);
 
-      setTimeout(function() {
-        if (data.discardType == 0) {
-          // self.$refs.discard.$refs.bike.tableData = allData.DiscardBike;
-          self.findRef('bike').tableData = allData.DiscardBike;
-        } else if (data.discardType == 1) {
-          self.$refs.discard.tableData = allData.DiscardLock;
-        } else {
-          // self.$refs.discard.tableData = allData.DiscardLock
-        }
-      }, 200);
+        setTimeout(function() {
+          if (data.discardType == 0) {
+            self.findRef("bike").tableData = allData.DiscardBike;
+          } else if (data.discardType == 1) {
+            self.findRef("materiel").tableData = allData.DiscardMateriel;
+          } else {
+            self.findRef("lock").tableData = allData.DiscardLock;
+          }
+        }, 200);
+      }
     }
   },
   mounted: function() {
     this.setBreadcrumbTitle(this, "发起新流程", "固定资产报废流程");
     self = this;
-    self.get({
-      url: "/data/get?parentCode=x",
-      sccuess: function(response) {
-        if (response.code == 200) {
-          self.findCfgItem(self.cfgApplyInfo, "discardType").data =
-            response.data;
-        }
-      }
-    });
+    // self.get({
+    //   url: "/data/get?parentCode=x",
+    //   sccuess: function(response) {
+    //     if (response.code == 200) {
+    //       self.findCfgItem(self.cfgApplyInfo, "discardType").data =
+    //         response.data;
+    //     }
+    //   }
+    // });
   },
   data() {
     return {
@@ -69,9 +70,9 @@ export default {
             title: "报废类别",
             type: "select",
             data: [
-              { id: 0, value: "车辆" },
-              { id: 1, value: "物料" },
-              { id: 2, value: "锁" }
+              { id: "0", value: "车辆" },
+              { id: "1", value: "物料" },
+              { id: "2", value: "锁" }
             ],
             width: "300px;",
             isRequire: true,

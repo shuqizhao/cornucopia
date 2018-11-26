@@ -56,7 +56,7 @@ export default {
                   var theCompent = self.findRef(key);
                   if (theCompent && theCompent.$parent.afterDataLoad) {
                     try {
-                      theCompent.$parent.afterDataLoad(obj,dataJson);
+                      theCompent.$parent.afterDataLoad(key, obj, dataJson);
                     } catch (err) {
                       console.log(err);
                     }
