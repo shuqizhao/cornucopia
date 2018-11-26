@@ -25,7 +25,7 @@ export default {
             if (response.code == 200) {
               self.closeLoading();
               let dataJson = JSON.parse(response.data);
-              self.$emit("afterDataLoad", dataJson);
+              // self.$emit("afterDataLoad", dataJson);
               Object.keys(dataJson).forEach(function(key) {
                 if (key == "comments") {
                   setTimeout(function() {
