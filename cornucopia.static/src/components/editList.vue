@@ -16,9 +16,9 @@
           </button>
           <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
         </div>
-        <hr/>
+        <hr v-if="cfg.mode!='detail'" />
       </div>
-    <div>
+    <div v-if="cfg.mode!='detail'">
         <button v-for="item in cfg.functions" :key="item.text" @click="item.onClick" :class="'btn '+item.type+' btn-buttons '+item.icon" style="margin-right:10px;">{{item.text}}</button>
         <span v-for="item in cfg.tools" :key="item.text" style="margin-bottom:25px;margin-left:15px;display:inline-block;">
           <label>{{item.title}}：</label>
@@ -68,8 +68,8 @@
                   </div>
                 </div>
                 <div v-else>
-                    <el-input v-if="item.type=='text'" :name="item.name" size='small' v-model="tableData[scope.$index][item.name]" placeholder="" ></el-input>
-                    <el-select v-else-if="item.type=='combox'" :name="item.name" size='small' v-model="tableData[scope.$index][item.name]"
+                    <el-input v-if="item.type=='text'" :disabled="cfg.mode=='detail'" :name="item.name" size='small' v-model="tableData[scope.$index][item.name]" placeholder="" ></el-input>
+                    <el-select v-else-if="item.type=='combox'" :disabled="cfg.mode=='detail'" :name="item.name" size='small' v-model="tableData[scope.$index][item.name]"
                     @change="item.onChange?item.onChange(scope.$index,item,tableData[scope.$index][item.name],tableCell,tableData):''" placeholder="">
                         <el-option
                         v-for="opItem in item.data"
@@ -79,21 +79,21 @@
                         </el-option>
                     </el-select>
                     <div v-else-if="item.type=='popup'">
-                      <el-input :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" >
-                        <el-button slot="append" icon="el-icon-search" @click="onClick(scope.$index,item)"></el-button>
+                      <el-input :name="item.name" :disabled="cfg.mode=='detail'" v-model="tableData[scope.$index][item.name]" placeholder="" >
+                        <el-button :disabled="cfg.mode=='detail'" slot="append" icon="el-icon-search" @click="onClick(scope.$index,item)"></el-button>
                       </el-input>
                     </div>
                     <div v-else-if="item.type=='number'">
-                      <el-input-number :name="item.name" v-model="tableData[scope.$index][item.name]" size='small' controls-position="right" :min="item.min||0" :max="item.max||9999999"></el-input-number>
+                      <el-input-number :disabled="cfg.mode=='detail'" :name="item.name" v-model="tableData[scope.$index][item.name]" size='small' controls-position="right" :min="item.min||0" :max="item.max||9999999"></el-input-number>
                     </div>
                     <div v-else-if="item.type=='money'">
-                      <el-input-number :name="item.name" v-model="tableData[scope.$index][item.name]" size='small' controls-position="right" :precision="item.precision||2" :step="item.step||0.1" :min="item.min||0" :max="item.max||9999999"></el-input-number>
+                      <el-input-number :disabled="cfg.mode=='detail'" :name="item.name" v-model="tableData[scope.$index][item.name]" size='small' controls-position="right" :precision="item.precision||2" :step="item.step||0.1" :min="item.min||0" :max="item.max||9999999"></el-input-number>
                     </div>
                     <div v-else-if="item.type=='date'">
-                      <el-date-picker :name="item.name" v-model="tableData[scope.$index][item.name]" size='small' type="date"  placeholder="选择日期" :picker-options="pickerOptions1"></el-date-picker>
+                      <el-date-picker :disabled="cfg.mode=='detail'" :name="item.name" v-model="tableData[scope.$index][item.name]" size='small' type="date"  placeholder="选择日期" :picker-options="pickerOptions1"></el-date-picker>
                     </div>
                     <center v-else-if="item.type=='checkbox'">
-                      <el-checkbox  :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" ></el-checkbox>
+                      <el-checkbox :disabled="cfg.mode=='detail'" :name="item.name" v-model="tableData[scope.$index][item.name]" placeholder="" ></el-checkbox>
                     </center>
                     <label v-else :name="item.name" placeholder="" >{{tableData[scope.$index][item.name]}}</label>
                 </div>
