@@ -19,6 +19,9 @@ export default {
       } else {
         a.discardComponent = lock;
       }
+    },
+    afterDataLoad: function(data,allData) {
+      this.changeDetail(data.discardType);
     }
   },
   mounted: function() {

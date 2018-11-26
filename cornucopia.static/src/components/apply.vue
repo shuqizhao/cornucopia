@@ -25,15 +25,23 @@ export default {
             if (response.code == 200) {
               self.closeLoading();
               let dataJson = JSON.parse(response.data);
-              self.$emit('afterDataLoad', dataJson)
+              self.$emit("afterDataLoad", dataJson);
               Object.keys(dataJson).forEach(function(key) {
                 if (key == "comments") {
                   setTimeout(function() {
-                    self.findRef('diagram').loadDiagram();
+                    self.findRef("diagram").loadDiagram();
                     self.$refs.comments.setMessages(dataJson.comments);
                   }, 200);
                 } else {
                   let obj = dataJson[key][0];
+                  var theCompent = self.findRef(key);
+                  if (theCompent && theCompent.afterDataLoad) {
+                    try {
+                      theCompent.afterDataLoad(obj,dataJson);
+                    } catch (err) {
+                      console.log(err);
+                    }
+                  }
                   Object.keys(obj).forEach(function(subKey) {
                     if (self.$refs[key] && self.$refs[key].detail) {
                       try {
@@ -41,9 +49,9 @@ export default {
                       } catch (err) {
                         console.log(err);
                       }
-                    }else{
+                    } else {
                       var other = self.findRef(key);
-                      if(other&&other.detail){
+                      if (other && other.detail) {
                         try {
                           other.detail[subKey] = obj[subKey];
                         } catch (err) {
@@ -107,7 +115,7 @@ export default {
     let self = this;
     return {
       isApprove: false,
-      cellar:'',
+      cellar: "",
       processInstAuth: [],
       cfg0: {
         title: "单据信息",
@@ -225,7 +233,7 @@ export default {
         desc: "任意文件，不能超过2M",
         name: "attachment",
         get: {
-          url:  "/role/get",
+          url: "/role/get",
           params: {
             id: this.$route.query.id
           }
@@ -242,13 +250,13 @@ export default {
             limit: 10,
             // mode:'xml',
             hideLabel: "true",
-            url:  "/upload"
+            url: "/upload"
           }
         ],
         afterEditRender: function() {}
       },
       cfg3: {
-        save:  "/process/applySave",
+        save: "/process/applySave",
         saveButtonTitle: "发起申请",
         dataType: "xml",
         getExtraData: function() {
@@ -290,7 +298,7 @@ export default {
           {
             name: "同意",
             type: "success",
-            url:  "/process/applyAgree",
+            url: "/process/applyAgree",
             onSuccess: function() {
               self.$router.push({ path: "/mytask" });
             },
@@ -299,7 +307,7 @@ export default {
           {
             name: "重发起",
             type: "success",
-            url:  "/process/applyRetry",
+            url: "/process/applyRetry",
             onSuccess: function() {
               self.$router.push({ path: "/mytask" });
             },
@@ -307,7 +315,7 @@ export default {
           },
           {
             name: "退回",
-            url:  "/process/applyReturn",
+            url: "/process/applyReturn",
             hidden: true,
             onSuccess: function() {
               self.$router.push({ path: "/mytask" });
