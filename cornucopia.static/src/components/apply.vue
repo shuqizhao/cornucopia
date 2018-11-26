@@ -34,14 +34,6 @@ export default {
                   }, 200);
                 } else {
                   let obj = dataJson[key][0];
-                  var theCompent = self.findRef(key);
-                  if (theCompent && theCompent.afterDataLoad) {
-                    try {
-                      theCompent.afterDataLoad(obj,dataJson);
-                    } catch (err) {
-                      console.log(err);
-                    }
-                  }
                   Object.keys(obj).forEach(function(subKey) {
                     if (self.$refs[key] && self.$refs[key].detail) {
                       try {
@@ -60,6 +52,14 @@ export default {
                       }
                     }
                   });
+                  var theCompent = self.findRef(key);
+                  if (theCompent && theCompent.afterDataLoad) {
+                    try {
+                      theCompent.afterDataLoad(obj,dataJson);
+                    } catch (err) {
+                      console.log(err);
+                    }
+                  }
                 }
               });
             }
