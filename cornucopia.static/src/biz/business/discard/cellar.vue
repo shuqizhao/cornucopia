@@ -1,7 +1,7 @@
 <template>
     <div>
         <mform ref="applyInfo" :cfg="cfg1"></mform>
-        <component v-bind:is="discardComponent"></component>
+        <component ref="discard" v-bind:is="discardComponent"></component>
     </div>
 </template>
 <script>
@@ -11,20 +11,30 @@ import bike from "./bike.vue";
 export default {
   methods: {
     changeDetail: function(value) {
-      var a = self.findRef("applyInfo").$parent;
+      var applyInfo = self.findRef("applyInfo").$parent;
       if (value == 0) {
-        a.discardComponent = bike;
+        applyInfo.discardComponent = bike;
       } else if (value == 1) {
-        a.discardComponent = materiel;
+        applyInfo.discardComponent = materiel;
       } else {
-        a.discardComponent = lock;
+        applyInfo.discardComponent = lock;
       }
     },
     afterDataLoad: function(data,allData) {
       this.changeDetail(data.discardType);
+      debugger;
+       if (data.discardType == 0) {
+        this.$refs.discard.dataTable = allData.DiscardBike
+      } else if (data.discardType == 1) {
+        this.$refs.discard.dataTable = allData.DiscardLock
+      } else {
+        this.$refs.discard.dataTable = allData.DiscardLock
+      }
+      
     }
   },
   mounted: function() {
+    this.setBreadcrumbTitle(this, "发起新流程", "固定资产报废流程");
     self = this;
     self.get({
       url: "/data/get?parentCode=x",
