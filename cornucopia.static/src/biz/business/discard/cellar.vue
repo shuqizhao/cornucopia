@@ -1,6 +1,6 @@
 <template>
     <div>
-        <mform ref="applyInfo" :cfg="cfg1"></mform>
+        <mform ref="applyInfo" :cfg="cfgApplyInfo"></mform>
         <component ref="discard" v-bind:is="discardComponent"></component>
     </div>
 </template>
@@ -40,7 +40,7 @@ export default {
       url: "/data/get?parentCode=x",
       sccuess: function(response) {
         if (response.code == 200) {
-          self.findCfgItem(self.cfg1, "discardType").data = response.data;
+          self.findCfgItem(self.cfgApplyInfo, "discardType").data = response.data;
         }
       }
     });
@@ -48,7 +48,7 @@ export default {
   data() {
     return {
       discardComponent: "",
-      cfg1: {
+      cfgApplyInfo: {
         title: "申请信息",
         detailTitle: "申请信息",
         editTitle: "申请信息",
