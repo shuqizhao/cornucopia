@@ -20,17 +20,20 @@ export default {
         applyInfo.discardComponent = lock;
       }
     },
-    afterDataLoad: function(data,allData) {
-      this.changeDetail(data.discardType);
-      debugger;
-       if (data.discardType == 0) {
-        this.$refs.discard.dataTable = allData.DiscardBike
-      } else if (data.discardType == 1) {
-        this.$refs.discard.dataTable = allData.DiscardLock
-      } else {
-        this.$refs.discard.dataTable = allData.DiscardLock
-      }
-      
+    afterDataLoad: function(data, allData) {
+      let self = this;
+      self.changeDetail(data.discardType);
+
+      setTimeout(function() {
+        if (data.discardType == 0) {
+          // self.$refs.discard.$refs.bike.tableData = allData.DiscardBike;
+          self.findRef('bike').tableData = allData.DiscardBike;
+        } else if (data.discardType == 1) {
+          self.$refs.discard.tableData = allData.DiscardLock;
+        } else {
+          // self.$refs.discard.tableData = allData.DiscardLock
+        }
+      }, 200);
     }
   },
   mounted: function() {
@@ -40,7 +43,8 @@ export default {
       url: "/data/get?parentCode=x",
       sccuess: function(response) {
         if (response.code == 200) {
-          self.findCfgItem(self.cfgApplyInfo, "discardType").data = response.data;
+          self.findCfgItem(self.cfgApplyInfo, "discardType").data =
+            response.data;
         }
       }
     });

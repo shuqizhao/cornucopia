@@ -52,10 +52,11 @@ export default {
                       }
                     }
                   });
+                  // debugger;
                   var theCompent = self.findRef(key);
-                  if (theCompent && theCompent.afterDataLoad) {
+                  if (theCompent && theCompent.$parent.afterDataLoad) {
                     try {
-                      theCompent.afterDataLoad(obj,dataJson);
+                      theCompent.$parent.afterDataLoad(obj,dataJson);
                     } catch (err) {
                       console.log(err);
                     }
