@@ -2,9 +2,12 @@ package cornucopia.model;
 
 public class ProcessInstAuthViewModel {
 	private int userId;
-	private String buttonName;
-	private String buttonType;
+	private String doaName;
 	private String currentStep;
+	private String preSign;
+	private String afterSign;
+	private String modify;
+	private String transfer;
 
 	public int getUserId() {
 		return userId;
@@ -14,20 +17,12 @@ public class ProcessInstAuthViewModel {
 		this.userId = userId;
 	}
 
-	public String getButtonName() {
-		return buttonName;
-	}
-
-	public void setButtonName(String buttonName) {
-		this.buttonName = buttonName;
-	}
-
 	public String getButtonType() {
-		return buttonType;
+		return doaName;
 	}
 
-	public void setButtonType(String buttonType) {
-		this.buttonType = buttonType;
+	public void setButtonType(String doaName) {
+		this.doaName = doaName;
 	}
 
 	public String getCurrentStep() {
@@ -36,5 +31,62 @@ public class ProcessInstAuthViewModel {
 
 	public void setCurrentStep(String currentStep) {
 		this.currentStep = currentStep;
+	}
+
+	
+	/**
+	 * @return the transfer
+	 */
+	public String getTransfer() {
+		return transfer;
+	}
+
+	/**
+	 * @param transfer the transfer to set
+	 */
+	public void setTransfer(String transfer) {
+		this.transfer = transfer;
+	}
+
+	/**
+	 * @return the modify
+	 */
+	public String getModify() {
+		return modify;
+	}
+
+	/**
+	 * @param modify the modify to set
+	 */
+	public void setModify(String modify) {
+		this.modify = modify;
+	}
+
+	/**
+	 * @return the afterSign
+	 */
+	public String getAfterSign() {
+		return afterSign;
+	}
+
+	/**
+	 * @param afterSign the afterSign to set
+	 */
+	public void setAfterSign(String afterSign) {
+		this.afterSign = afterSign;
+	}
+
+	/**
+	 * @return the preSign
+	 */
+	public String getPreSign() {
+		return preSign;
+	}
+
+	/**
+	 * @param preSign the preSign to set
+	 */
+	public void setPreSign(String preSign) {
+		this.preSign = preSign;
 	}
 }
