@@ -154,15 +154,15 @@ public class ProcessContorller {
 
 		String formCode = OrderService.getInstance().getOrderNo(pre);
 		processDataEntity.setFormCode(formCode);
-		XmlUtil.createElementForPd(processDataEntity, "//approve", "fromCode", formCode);
+		XmlUtil.createOrUpdateElementForPd(processDataEntity, "//approve", "fromCode", formCode);
 
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		XmlUtil.createElementForPd(processDataEntity, "//approve", "createTime", df.format(new Date()));
+		XmlUtil.createOrUpdateElementForPd(processDataEntity, "//approve", "createTime", df.format(new Date()));
 
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		processDataEntity.setCreateBy(user.getId());
 		processDataEntity.setUpdateBy(user.getId());
-		XmlUtil.createElementForPd(processDataEntity, "//approve", "createBy", user.getId() + "");
+		XmlUtil.createOrUpdateElementForPd(processDataEntity, "//approve", "createBy", user.getId() + "");
 
 		ProcessService.getInstance().StartProcess(processDataEntity);
 		processDataEntity.setStepName("发起申请");

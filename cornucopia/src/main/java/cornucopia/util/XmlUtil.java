@@ -32,7 +32,7 @@ public class XmlUtil {
 		}
 	}
 
-	public static String createElement(String xml, String xpath, String tag, String value)
+	public static String createOrUpdateElement(String xml, String xpath, String tag, String value)
 			throws DocumentException, UnsupportedEncodingException {
 		SAXReader saxReader = new SAXReader();
 		Document document = saxReader.read(new ByteArrayInputStream(xml.getBytes("UTF-8")));
@@ -40,8 +40,14 @@ public class XmlUtil {
 		if (node != null) {
 			if (node instanceof Element) {
 				Element el = (Element) node;
-				Element childEl = el.addElement(tag);
-				childEl.setText(value);
+				Node childNode = el.selectSingleNode("//" + tag);
+				if (childNode != null) {
+					childNode.setText(value);
+				} else {
+					Element childEl = el.addElement(tag);
+					childEl.setText(value);
+				}
+
 				return document.asXML();
 			}
 			return xml;
@@ -50,9 +56,9 @@ public class XmlUtil {
 		}
 	}
 
-	public static void createElementForPd(ProcessDataEntity pd, String xpath, String tag, String value)
+	public static void createOrUpdateElementForPd(ProcessDataEntity pd, String xpath, String tag, String value)
 			throws DocumentException, UnsupportedEncodingException {
-		String xml = createElement(pd.getBizData(), xpath, tag, value);
+		String xml = createOrUpdateElement(pd.getBizData(), xpath, tag, value);
 		pd.setBizData(xml);
 	}
 }
