@@ -1,12 +1,12 @@
 <template>
   <div>
-    <mform v-show="isApprove" ref="approve" :cfg="cfg0"></mform>
-    <mform ref="applicant" :cfg="cfg"></mform>
+    <mform v-show="isApprove" ref="approve" :cfg="cfgApprove"></mform>
+    <mform ref="applicant" :cfg="cfgApplicant"></mform>
     <component ref="cellar" v-bind:is="cellar"></component>
-    <mform ref="attachment" :cfg="cfg2"></mform>
+    <mform ref="attachment" :cfg="cfgAttachment"></mform>
     <comment ref="comments" :cfg="cfgComment"></comment>
-    <buttonBar v-show="!isApprove" ref="submit" :cfg="cfg3"></buttonBar>
-    <buttonBar v-show="isApprove" ref="agree" :cfg="cfg4"></buttonBar>
+    <buttonBar v-show="!isApprove" ref="submit" :cfg="cfgSubmit"></buttonBar>
+    <buttonBar v-show="isApprove" ref="agree" :cfg="cfgAgree"></buttonBar>
   </div>
 </template>
 <script>
@@ -49,9 +49,9 @@ export default {
                   }
                 });
                 // debugger;
-                var theCompent = self.findRef('cellar');
+                var theCompent = self.findRef("cellar");
                 if (theCompent && theCompent.afterDataLoad) {
-                  theCompent.afterDataLoad(key, obj, dataJson , processInstAuth);
+                  theCompent.afterDataLoad(key, obj, dataJson, processInstAuth);
                 }
               }
             });
@@ -79,20 +79,36 @@ export default {
                     self.processInstAuth.currentStep
                   );
                 }, 200);
-                self.cfg4.buttons[0].hidden = false;
-                self.cfg4.buttons[2].hidden = false;
+
                 self.cfgComment.mode = "edit";
-                for (var i = 0; i < response.data.length; i++) {
-                  if (response.data[i].buttonType == "Retry") {
-                    self.cfg4.buttons[1].hidden = false;
-                    self.cfg4.buttons[0].hidden = true;
-                    self.cfg4.buttons[2].hidden = true;
-                  }
+
+                if (self.processInstAuth.doaName == "Retry") {
+                   self.findCfgBtn(cfgAgree, "重发起").hidden = false;
+                  //  self.findCfgBtn(cfgAgree, "作废").hidden = false;
+                }else if (self.processInstAuth.doaName == "PreSign") {
+                  self.findCfgBtn(cfgAgree, "同意").hidden = false;
+                  self.findCfgBtn(cfgAgree, "退回").hidden = false;
+                }else if (self.processInstAuth.doaName == "AfterSign") {
+                  self.findCfgBtn(cfgAgree, "同意").hidden = false;
+                  self.findCfgBtn(cfgAgree, "退回").hidden = false;
+                }else if (self.processInstAuth.doaName == "Transfer") {
+                  self.findCfgBtn(cfgAgree, "同意").hidden = false;
+                  self.findCfgBtn(cfgAgree, "退回").hidden = false;
+                }else if (self.processInstAuth.doaName == "Modify") {
+                  self.findCfgBtn(cfgAgree, "同意").hidden = false;
+                  self.findCfgBtn(cfgAgree, "退回").hidden = false;
+                } else {
+                  self.findCfgBtn(cfgAgree, "同意").hidden = false;
+                  self.findCfgBtn(cfgAgree, "退回").hidden = false;
+                  self.findCfgBtn(cfgAgree, "前加签").hidden = false;
+                  self.findCfgBtn(cfgAgree, "后加签").hidden = false;
+                  self.findCfgBtn(cfgAgree, "转办").hidden = false;
+                  self.findCfgBtn(cfgAgree, "申请人修订").hidden = false;
                 }
                 self.getBizData(processId, dataId, self.processInstAuth);
               } else {
                 // self.cfg1.mode = "detailEdit";
-                self.cfg2.mode = "detailEdit";
+                self.cfgAttachment.mode = "detailEdit";
               }
             }
           }
@@ -115,7 +131,7 @@ export default {
       isApprove: false,
       cellar: "",
       processInstAuth: {},
-      cfg0: {
+      cfgApprove: {
         title: "单据信息",
         detailTitle: "单据信息",
         editTitle: "单据信息",
@@ -155,7 +171,7 @@ export default {
           // }
         ]
       },
-      cfg: {
+      cfgApplicant: {
         title: "申请人信息",
         detailTitle: "申请人信息",
         editTitle: "申请人信息",
@@ -222,7 +238,7 @@ export default {
           //  $(self.$el).find(".box-footer").hide();
         }
       },
-      cfg2: {
+      cfgAttachment: {
         title: "附件",
         detailTitle: "附件",
         editTitle: "附件",
@@ -253,7 +269,7 @@ export default {
         ],
         afterEditRender: function() {}
       },
-      cfg3: {
+      cfgSubmit: {
         save: "/process/applySave",
         saveButtonTitle: "发起申请",
         dataType: "xml",
@@ -274,7 +290,7 @@ export default {
           return false;
         }
       },
-      cfg4: {
+      cfgAgree: {
         hideSave: true,
         hideCancel: true,
         dataType: "xml",

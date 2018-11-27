@@ -279,6 +279,15 @@ Vue.prototype.findCfgItem = function(cfg, itemName) {
     return null;
 }
 
+Vue.prototype.findCfgBtn = function(cfg, btnName) {
+    for (var i = 0; i < cfg.buttons.length; i++) {
+        if (cfg.buttons[i].name == btnName) {
+            return cfg.buttons[i];
+        }
+    }
+    return null;
+}
+
 function S4() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
