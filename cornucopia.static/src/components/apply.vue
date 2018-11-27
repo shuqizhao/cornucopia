@@ -113,12 +113,12 @@ export default {
                     self.findCfgBtn(self.cfgAgree, "申请人修订").hidden = false;
                   }
                 }
-                self.getBizData(processId, dataId, self.processInstAuth);
               } else {
                 // self.cfg1.mode = "detailEdit";
                 self.cfgAttachment.mode = "detailEdit";
               }
             }
+            self.getBizData(processId, dataId, self.processInstAuth);
           }
         });
       } else {
