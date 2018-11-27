@@ -49,9 +49,9 @@ export default {
                   }
                 });
                 // debugger;
-                var theCompent = self.findRef(key);
-                if (theCompent && theCompent.$parent.afterDataLoad) {
-                  theCompent.$parent.afterDataLoad(key, obj, dataJson , processInstAuth);
+                var theCompent = self.findRef('cellar');
+                if (theCompent && theCompent.afterDataLoad) {
+                  theCompent.afterDataLoad(key, obj, dataJson , processInstAuth);
                 }
               }
             });
