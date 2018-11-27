@@ -6,7 +6,7 @@ import cornucopia.dao.ProcessDataDao;
 import cornucopia.entity.ProcessDataEntity;
 import cornucopia.util.MyBatisHelper;
 import cornucopia.util.PagingParameters;
-import cornucopia.util.XmlUtil;
+import cornucopia.util.XmlExercise;
 
 public class ProcessDataService {
 	private static ProcessDataService instance = new ProcessDataService();
@@ -42,8 +42,8 @@ public class ProcessDataService {
 
 	public String getBizData(int id) {
 		ProcessDataEntity processDataEntity = get(id);
-		String bizDataXmlStr = processDataEntity.getBizData();
-		String bizDataJsonStr = XmlUtil.toJSONString(bizDataXmlStr);
+		String bizData = processDataEntity.getBizData();
+		String bizDataJsonStr = XmlExercise.xml2json(bizData);
 		return bizDataJsonStr;
 	}
 

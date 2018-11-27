@@ -151,7 +151,7 @@ export default {
       var self = this;
       self.openLoading(self.$parent, null, "正在提交...", 15000);
       if (self.cfg.dataType == "xml" && item && item.dataType != "json") {
-        data = { xmlStr: "<root>"+self.parse2xml(data) +"</root>",jsonStr: JSON.stringify({root:data})};
+        data = { xmlStr: "",jsonStr: JSON.stringify(data)};
       }
       self.post({
         url: item ? item.url : self.cfg.save,

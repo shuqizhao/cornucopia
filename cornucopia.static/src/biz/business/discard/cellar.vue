@@ -28,7 +28,7 @@ export default {
         applyInfo.cfg.mode='detail';
         setTimeout(function() {
           if (data.discardType == 0) {
-            self.findRef("bike").insertNew(allData.DiscardBike);
+            self.findRef("bike").tableData = allData.DiscardBike;
             self.findRef("bike").cfg.mode='detail';
           } else if (data.discardType == 1) {
             self.findRef("materiel").tableData = allData.DiscardMateriel;

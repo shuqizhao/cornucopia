@@ -1,11 +1,11 @@
 package cornucopia.model;
 
-import cornucopia.util.XmlUtil;
+import cornucopia.util.XmlExercise;
 
 public class ProcessDataViewModel {
 	
 	public String getXmlStr() {
-		return XmlUtil.json2xml(jsonStr);
+		return XmlExercise.json2xml(jsonStr);
 	}
 	
 	public void setXmlStr(String xmlStr) {

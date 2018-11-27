@@ -2,22 +2,14 @@ package cornucopia.util;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
-import net.sf.json.xml.XMLSerializer;
 import cornucopia.entity.ProcessDataEntity;
 
 public class XmlUtil {
@@ -63,100 +55,4 @@ public class XmlUtil {
 		String xml = createElement(pd.getBizData(), xpath, tag, value);
 		pd.setBizData(xml);
 	}
-
-	public static String toJSONString(String xml) {
-		
-		return xml2JSON(xml);
-    }
-
-    /**
-     * JSON(数组)字符串<STRONG>转换</STRONG>成XML字符串
-     * 
-     * @param jsonString
-     * @return
-     */
-    public static String json2xml(String jsonString) {
-        XMLSerializer xmlSerializer = new XMLSerializer();
-        return xmlSerializer.write(JSONSerializer.toJSON(jsonString));
-    }
-
-	/**
-     * 转换一个xml格式的字符串到json格式
-     * 
-     * @param xml
-     *            xml格式的字符串
-     * @return 成功返回json 格式的字符串;失败反回null
-     */
-    @SuppressWarnings("unchecked")
-    public static  String xml2JSON(String xml) {
-        JSONObject obj = new JSONObject();
-        try {
-            Document doc = DocumentHelper.parseText(xml);
-            Element root = doc.getRootElement();
-            obj.put(root.getName(), iterateElement(root));
-            return obj.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * 一个迭代方法
-     * 
-     * @param element
-     * @return java.util.Map 实例
-     */
-    @SuppressWarnings("unchecked")
-    private static Map  iterateElement(Element element) {
-        List jiedian = element.elements();
-        Element et = null;
-        Map obj = new HashMap();
-        Object temp;
-        List list = null;
-        for (int i = 0; i < jiedian.size(); i++) {
-            list = new LinkedList();
-            et = (Element) jiedian.get(i);
-            if (et.getTextTrim().equals("")) {
-                if (et.elements().size() == 0)
-                    continue;
-                if (obj.containsKey(et.getName())) {
-                    temp = obj.get(et.getName());
-                    if(temp instanceof List){
-                        list = (List)temp;
-                        list.add(iterateElement(et));
-                    }else if(temp instanceof Map){
-                        list.add((HashMap)temp);
-                        list.add(iterateElement(et));
-                    }else{
-                        list.add((String)temp);
-                        list.add(iterateElement(et));
-                    }
-                    obj.put(et.getName(), list);
-                }else{
-                    obj.put(et.getName(), iterateElement(et));
-                }
-            } else {
-                if (obj.containsKey(et.getName())) {
-                    temp = obj.get(et.getName());
-                    if(temp instanceof List){
-                        list = (List)temp;
-                        list.add(et.getTextTrim());
-                    }else if(temp instanceof Map){
-                        list.add((HashMap)temp);
-                        list.add(iterateElement(et));
-                    }else{
-                        list.add((String)temp);
-                        list.add(et.getTextTrim());
-                    }
-                    obj.put(et.getName(), list);
-                }else{
-                    obj.put(et.getName(), et.getTextTrim());
-                }
-                
-            }
-            
-        }
-        return obj;
-    }
 }
