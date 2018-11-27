@@ -320,6 +320,38 @@ export default {
             }
           },
           {
+            name: "转办",
+            url: "/process/applyReturn",
+            hidden: true,
+            onSuccess: function() {
+              self.$router.push({ path: "/mytask" });
+            }
+          },
+          {
+            name: "前加签",
+            url: "/process/applyReturn",
+            hidden: true,
+            onSuccess: function() {
+              self.$router.push({ path: "/mytask" });
+            }
+          },
+          {
+            name: "后加签",
+            url: "/process/applyReturn",
+            hidden: true,
+            onSuccess: function() {
+              self.$router.push({ path: "/mytask" });
+            }
+          },
+          {
+            name: "申请人修订",
+            url: "/process/applyReturn",
+            hidden: true,
+            onSuccess: function() {
+              self.$router.push({ path: "/mytask" });
+            }
+          },
+          {
             name: "关闭",
             type: "warning",
             onClick: function() {
