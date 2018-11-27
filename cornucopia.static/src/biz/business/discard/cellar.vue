@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <mform ref="applyInfo" :cfg="cfgApplyInfo"></mform>
-        <component ref="discard" v-bind:is="discardComponent"></component>
-    </div>
+  <div>
+    <mform ref="applyInfo" :cfg="cfgApplyInfo"></mform>
+    <component ref="discard" v-bind:is="discardComponent"></component>
+  </div>
 </template>
 <script>
 import lock from "./lock.vue";
@@ -20,16 +20,16 @@ export default {
         applyInfo.discardComponent = lock;
       }
     },
-    afterDataLoad: function(refName, data, allData) {
+    afterDataLoad: function(refName, data, allData, auth) {
       let self = this;
       if (refName == "applyInfo") {
         self.changeDetail(data.discardType);
-        var applyInfo = self.findRef('applyInfo');
-        applyInfo.cfg.mode='detail';
+        var applyInfo = self.findRef("applyInfo");
+        applyInfo.cfg.mode = "detail";
         setTimeout(function() {
           if (data.discardType == 0) {
             self.findRef("bike").tableData = allData.DiscardBike;
-            self.findRef("bike").cfg.mode='detail';
+            self.findRef("bike").cfg.mode = "detail";
           } else if (data.discardType == 1) {
             self.findRef("materiel").tableData = allData.DiscardMateriel;
           } else {

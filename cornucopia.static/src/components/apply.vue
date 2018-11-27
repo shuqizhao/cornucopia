@@ -1,16 +1,65 @@
 <template>
-    <div>
-      <mform v-show="isApprove" ref="approve" :cfg="cfg0"></mform>
-      <mform ref="applicant" :cfg="cfg"></mform>
-      <component ref="cellar" v-bind:is="cellar"></component>
-      <mform ref="attachment" :cfg="cfg2"></mform>
-      <comment ref="comments" :cfg="cfgComment"></comment>
-      <buttonBar v-show="!isApprove" ref="submit" :cfg="cfg3"></buttonBar>
-      <buttonBar v-show="isApprove" ref="agree" :cfg="cfg4"></buttonBar>
-    </div>
+  <div>
+    <mform v-show="isApprove" ref="approve" :cfg="cfg0"></mform>
+    <mform ref="applicant" :cfg="cfg"></mform>
+    <component ref="cellar" v-bind:is="cellar"></component>
+    <mform ref="attachment" :cfg="cfg2"></mform>
+    <comment ref="comments" :cfg="cfgComment"></comment>
+    <buttonBar v-show="!isApprove" ref="submit" :cfg="cfg3"></buttonBar>
+    <buttonBar v-show="isApprove" ref="agree" :cfg="cfg4"></buttonBar>
+  </div>
 </template>
 <script>
 export default {
+  methods: {
+    getBizData: function(processId, dataId, processInstAuth) {
+      let self = this;
+      self.openLoading();
+      self.get({
+        url: "/process/getBizData?processId=" + processId + "&id=" + dataId,
+        success: function(response) {
+          if (response.code == 200) {
+            self.closeLoading();
+            let dataJson = JSON.parse(response.data);
+            // self.$emit("afterDataLoad", dataJson);
+            Object.keys(dataJson).forEach(function(key) {
+              if (key == "comments") {
+                setTimeout(function() {
+                  self.findRef("diagram").loadDiagram();
+                  self.$refs.comments.setMessages(dataJson.comments);
+                }, 200);
+              } else {
+                let obj = dataJson[key];
+                Object.keys(obj).forEach(function(subKey) {
+                  if (self.$refs[key] && self.$refs[key].detail) {
+                    try {
+                      self.$refs[key].detail[subKey] = obj[subKey];
+                    } catch (err) {
+                      console.log(err);
+                    }
+                  } else {
+                    var other = self.findRef(key);
+                    if (other && other.detail) {
+                      try {
+                        other.detail[subKey] = obj[subKey];
+                      } catch (err) {
+                        console.log(err);
+                      }
+                    }
+                  }
+                });
+                // debugger;
+                var theCompent = self.findRef(key);
+                if (theCompent && theCompent.$parent.afterDataLoad) {
+                  theCompent.$parent.afterDataLoad(key, obj, dataJson , processInstAuth);
+                }
+              }
+            });
+          }
+        }
+      });
+    }
+  },
   mounted: function() {
     let self = this;
     this.$nextTick(function() {
@@ -18,67 +67,18 @@ export default {
       var dataId = self.$route.query.id;
       if (dataId) {
         self.isApprove = true;
-        self.openLoading();
-        self.get({
-          url: "/process/getBizData?processId=" + processId + "&id=" + dataId,
-          success: function(response) {
-            if (response.code == 200) {
-              self.closeLoading();
-              let dataJson = JSON.parse(response.data);
-              // self.$emit("afterDataLoad", dataJson);
-              Object.keys(dataJson).forEach(function(key) {
-                if (key == "comments") {
-                  setTimeout(function() {
-                    self.findRef("diagram").loadDiagram();
-                    self.$refs.comments.setMessages(dataJson.comments);
-                  }, 200);
-                } else {
-                  let obj = dataJson[key];
-                  Object.keys(obj).forEach(function(subKey) {
-                    if (self.$refs[key] && self.$refs[key].detail) {
-                      try {
-                        self.$refs[key].detail[subKey] = obj[subKey];
-                      } catch (err) {
-                        console.log(err);
-                      }
-                    } else {
-                      var other = self.findRef(key);
-                      if (other && other.detail) {
-                        try {
-                          other.detail[subKey] = obj[subKey];
-                        } catch (err) {
-                          console.log(err);
-                        }
-                      }
-                    }
-                  });
-                  // debugger;
-                  var theCompent = self.findRef(key);
-                  if (theCompent && theCompent.$parent.afterDataLoad) {
-                      theCompent.$parent.afterDataLoad(key, obj, dataJson);
-                  }
-                }
-              });
-            }
-          }
-        });
-
         self.get({
           url: "/process/getProcessInstAuth?processDataId=" + dataId,
           success: function(response) {
             if (response.code == 200) {
               if (response.data.length > 0) {
-                self.processInstAuth = response.data;
-                for (var i = 0; i < self.processInstAuth.length; i++) {
-                  let index = i;
-                  setTimeout(function() {
-                    self.$refs.comments.isHideReply = false;
-                    self.$refs.comments.setCurrentStep(
-                      self.processInstAuth[index].currentStep
-                    );
-                  }, 200);
-                  break;
-                }
+                self.processInstAuth = response.data[0];
+                setTimeout(function() {
+                  self.$refs.comments.isHideReply = false;
+                  self.$refs.comments.setCurrentStep(
+                    self.processInstAuth.currentStep
+                  );
+                }, 200);
                 self.cfg4.buttons[0].hidden = false;
                 self.cfg4.buttons[2].hidden = false;
                 self.cfgComment.mode = "edit";
@@ -89,6 +89,7 @@ export default {
                     self.cfg4.buttons[2].hidden = true;
                   }
                 }
+                self.getBizData(processId, dataId, self.processInstAuth);
               } else {
                 // self.cfg1.mode = "detailEdit";
                 self.cfg2.mode = "detailEdit";
@@ -113,7 +114,7 @@ export default {
     return {
       isApprove: false,
       cellar: "",
-      processInstAuth: [],
+      processInstAuth: {},
       cfg0: {
         title: "单据信息",
         detailTitle: "单据信息",
