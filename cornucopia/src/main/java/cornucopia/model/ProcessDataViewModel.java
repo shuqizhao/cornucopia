@@ -1,13 +1,24 @@
 package cornucopia.model;
 
+import cornucopia.util.XmlUtil;
+
 public class ProcessDataViewModel {
-	private String xmlStr;
-
+	
 	public String getXmlStr() {
-		return xmlStr;
+		return XmlUtil.json2xml(jsonStr);
+	}
+	
+	public void setXmlStr(String xmlStr) {
 	}
 
-	public void setXmlStr(String xmlStr) {
-		this.xmlStr = xmlStr;
+	private String jsonStr;
+
+	public String getJsonStr() {
+		return jsonStr;
 	}
+
+	public void setJsonStr(String jsonStr) {
+		this.jsonStr = jsonStr;
+	}
+
 }

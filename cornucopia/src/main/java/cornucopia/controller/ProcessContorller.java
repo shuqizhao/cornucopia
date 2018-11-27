@@ -145,6 +145,7 @@ public class ProcessContorller {
 			throws DocumentException, UnsupportedEncodingException {
 		ProcessDataEntity processDataEntity = new ProcessDataEntity();
 		processDataEntity.setBizData(pdvm.getXmlStr());
+		processDataEntity.setJsonData(pdvm.getJsonStr());
 
 		String processId = XmlUtil.selectSingleText(processDataEntity.getBizData(), "//processId");
 		processDataEntity.setProcessId(Integer.parseInt(processId));
@@ -184,6 +185,7 @@ public class ProcessContorller {
 		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//fromCode");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
 		processDataEntity.setBizData(pdvm.getXmlStr());
+		processDataEntity.setJsonData(pdvm.getJsonStr());
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		processDataEntity.setUpdateBy(user.getId());
 		processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
@@ -211,6 +213,7 @@ public class ProcessContorller {
 		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//fromCode");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
 		processDataEntity.setBizData(pdvm.getXmlStr());
+		processDataEntity.setJsonData(pdvm.getJsonStr());
 
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		processDataEntity.setUpdateBy(user.getId());
@@ -241,6 +244,7 @@ public class ProcessContorller {
 		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//fromCode");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
 		processDataEntity.setBizData(pdvm.getXmlStr());
+		processDataEntity.setJsonData(pdvm.getJsonStr());
 
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		processDataEntity.setUpdateBy(user.getId());

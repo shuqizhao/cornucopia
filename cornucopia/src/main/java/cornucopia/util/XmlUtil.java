@@ -16,8 +16,8 @@ import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 
 import net.sf.json.JSONObject;
-
-
+import net.sf.json.JSONSerializer;
+import net.sf.json.xml.XMLSerializer;
 import cornucopia.entity.ProcessDataEntity;
 
 public class XmlUtil {
@@ -67,7 +67,18 @@ public class XmlUtil {
 	public static String toJSONString(String xml) {
 		
 		return xml2JSON(xml);
-	}
+    }
+
+    /**
+     * JSON(数组)字符串<STRONG>转换</STRONG>成XML字符串
+     * 
+     * @param jsonString
+     * @return
+     */
+    public static String json2xml(String jsonString) {
+        XMLSerializer xmlSerializer = new XMLSerializer();
+        return xmlSerializer.write(JSONSerializer.toJSON(jsonString));
+    }
 
 	/**
      * 转换一个xml格式的字符串到json格式

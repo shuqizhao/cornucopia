@@ -4,6 +4,7 @@ public class ProcessDataEntity extends BaseEntity {
 	private int processId;
 	private String processName;
 	private String bizData;
+	private String jsonData;
 	private String formCode;
 	private String procinstId;
 	private int levelCount;
@@ -27,6 +28,14 @@ public class ProcessDataEntity extends BaseEntity {
 
 	public void setBizData(String bizData) {
 		this.bizData = bizData;
+	}
+
+	public String getJsonData() {
+		return jsonData;
+	}
+
+	public void setJsonData(String jsonData) {
+		this.jsonData = jsonData;
 	}
 
 	public String getFormCode() {
