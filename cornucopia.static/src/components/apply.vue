@@ -83,27 +83,35 @@ export default {
                 self.cfgComment.mode = "edit";
 
                 if (self.processInstAuth.doaName == "Retry") {
-                   self.findCfgBtn(cfgAgree, "重发起").hidden = false;
+                   self.findCfgBtn(self.cfgAgree, "重发起").hidden = false;
                   //  self.findCfgBtn(cfgAgree, "作废").hidden = false;
                 }else if (self.processInstAuth.doaName == "PreSign") {
-                  self.findCfgBtn(cfgAgree, "同意").hidden = false;
-                  self.findCfgBtn(cfgAgree, "退回").hidden = false;
+                  self.findCfgBtn(self.cfgAgree, "同意").hidden = false;
+                  self.findCfgBtn(self.cfgAgree, "退回").hidden = false;
                 }else if (self.processInstAuth.doaName == "AfterSign") {
-                  self.findCfgBtn(cfgAgree, "同意").hidden = false;
-                  self.findCfgBtn(cfgAgree, "退回").hidden = false;
+                  self.findCfgBtn(self.cfgAgree, "同意").hidden = false;
+                  self.findCfgBtn(self.cfgAgree, "退回").hidden = false;
                 }else if (self.processInstAuth.doaName == "Transfer") {
-                  self.findCfgBtn(cfgAgree, "同意").hidden = false;
-                  self.findCfgBtn(cfgAgree, "退回").hidden = false;
+                  self.findCfgBtn(self.cfgAgree, "同意").hidden = false;
+                  self.findCfgBtn(self.cfgAgree, "退回").hidden = false;
                 }else if (self.processInstAuth.doaName == "Modify") {
-                  self.findCfgBtn(cfgAgree, "同意").hidden = false;
-                  self.findCfgBtn(cfgAgree, "退回").hidden = false;
+                  self.findCfgBtn(self.cfgAgree, "同意").hidden = false;
+                  self.findCfgBtn(self.cfgAgree, "退回").hidden = false;
                 } else {
-                  self.findCfgBtn(cfgAgree, "同意").hidden = false;
-                  self.findCfgBtn(cfgAgree, "退回").hidden = false;
-                  self.findCfgBtn(cfgAgree, "前加签").hidden = false;
-                  self.findCfgBtn(cfgAgree, "后加签").hidden = false;
-                  self.findCfgBtn(cfgAgree, "转办").hidden = false;
-                  self.findCfgBtn(cfgAgree, "申请人修订").hidden = false;
+                  self.findCfgBtn(self.cfgAgree, "同意").hidden = false;
+                  self.findCfgBtn(self.cfgAgree, "退回").hidden = false;
+                  if(self.processInstAuth.preSign==1){
+                    self.findCfgBtn(self.cfgAgree, "前加签").hidden = false;
+                  }
+                  if(self.processInstAuth.afterSign==1){
+                    self.findCfgBtn(self.cfgAgree, "后加签").hidden = false;
+                  }
+                  if(self.processInstAuth.transfer==1){
+                    self.findCfgBtn(self.cfgAgree, "转办").hidden = false;
+                  }
+                  if(self.processInstAuth.modify==1){
+                    self.findCfgBtn(self.cfgAgree, "申请人修订").hidden = false;
+                  }
                 }
                 self.getBizData(processId, dataId, self.processInstAuth);
               } else {
@@ -337,6 +345,7 @@ export default {
           },
           {
             name: "转办",
+            type: "success",
             url: "/process/applyReturn",
             hidden: true,
             onSuccess: function() {
@@ -345,6 +354,7 @@ export default {
           },
           {
             name: "前加签",
+            type: "success",
             url: "/process/applyReturn",
             hidden: true,
             onSuccess: function() {
@@ -353,6 +363,7 @@ export default {
           },
           {
             name: "后加签",
+            type: "success",
             url: "/process/applyReturn",
             hidden: true,
             onSuccess: function() {
@@ -361,6 +372,7 @@ export default {
           },
           {
             name: "申请人修订",
+            type: "success",
             url: "/process/applyReturn",
             hidden: true,
             onSuccess: function() {
