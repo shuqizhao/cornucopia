@@ -1,6 +1,5 @@
 package cornucopia.util;
 
-import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -8,13 +7,16 @@ import org.dom4j.Element;
 
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import net.sf.json.JSONObject;
+
 
 import cornucopia.entity.ProcessDataEntity;
 
@@ -63,65 +65,87 @@ public class XmlUtil {
 	}
 
 	public static String toJSONString(String xml) {
-		JSONObject jSONObject;
-		try {
-			jSONObject = elementToJSONObject(strToDocument(xml).getRootElement());
-			return jSONObject.toJSONString();
-		} catch (DocumentException e) {
-			e.printStackTrace();
-		}
-		return "";
+		
+		return xml2JSON(xml);
 	}
 
 	/**
-	 * String 转 org.dom4j.Document
-	 * 
-	 * @param xml
-	 * @return
-	 * @throws DocumentException
-	 */
-	public static Document strToDocument(String xml) throws DocumentException {
-		return DocumentHelper.parseText(xml);
-	}
+     * 转换一个xml格式的字符串到json格式
+     * 
+     * @param xml
+     *            xml格式的字符串
+     * @return 成功返回json 格式的字符串;失败反回null
+     */
+    @SuppressWarnings("unchecked")
+    public static  String xml2JSON(String xml) {
+        JSONObject obj = new JSONObject();
+        try {
+            Document doc = DocumentHelper.parseText(xml);
+            Element root = doc.getRootElement();
+            obj.put(root.getName(), iterateElement(root));
+            return obj.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-	/**
-	 * org.dom4j.Document 转 com.alibaba.fastjson.JSONObject
-	 * 
-	 * @param xml
-	 * @return
-	 * @throws DocumentException
-	 */
-	public static JSONObject documentToJSONObject(String xml) throws DocumentException {
-		return elementToJSONObject(strToDocument(xml).getRootElement());
-	}
-
-	/**
-	 * org.dom4j.Element 转 com.alibaba.fastjson.JSONObject
-	 * 
-	 * @param node
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public static JSONObject elementToJSONObject(Element node) {
-		JSONObject result = new JSONObject();
-		// 当前节点的名称、文本内容和属性
-		List<Attribute> listAttr = node.attributes();// 当前节点的所有属性的list
-		for (Attribute attr : listAttr) {// 遍历当前节点的所有属性
-			result.put(attr.getName(), attr.getValue());
-		}
-		// 递归遍历当前节点所有的子节点
-		List<Element> listElement = node.elements();// 所有一级子节点的list
-		if (!listElement.isEmpty()) {
-			for (Element e : listElement) {// 遍历所有一级子节点
-				if (e.attributes().isEmpty() && e.elements().isEmpty()) // 判断一级节点是否有属性和子节点
-					result.put(e.getName(), e.getTextTrim());// 沒有则将当前节点作为上级节点的属性对待
-				else {
-					if (!result.containsKey(e.getName())) // 判断父节点是否存在该一级节点名称的属性
-						result.put(e.getName(), new JSONArray());// 没有则创建
-					((JSONArray) result.get(e.getName())).add(elementToJSONObject(e));// 将该一级节点放入该节点名称的属性对应的值中
-				}
-			}
-		}
-		return result;
-	}
+    /**
+     * 一个迭代方法
+     * 
+     * @param element
+     * @return java.util.Map 实例
+     */
+    @SuppressWarnings("unchecked")
+    private static Map  iterateElement(Element element) {
+        List jiedian = element.elements();
+        Element et = null;
+        Map obj = new HashMap();
+        Object temp;
+        List list = null;
+        for (int i = 0; i < jiedian.size(); i++) {
+            list = new LinkedList();
+            et = (Element) jiedian.get(i);
+            if (et.getTextTrim().equals("")) {
+                if (et.elements().size() == 0)
+                    continue;
+                if (obj.containsKey(et.getName())) {
+                    temp = obj.get(et.getName());
+                    if(temp instanceof List){
+                        list = (List)temp;
+                        list.add(iterateElement(et));
+                    }else if(temp instanceof Map){
+                        list.add((HashMap)temp);
+                        list.add(iterateElement(et));
+                    }else{
+                        list.add((String)temp);
+                        list.add(iterateElement(et));
+                    }
+                    obj.put(et.getName(), list);
+                }else{
+                    obj.put(et.getName(), iterateElement(et));
+                }
+            } else {
+                if (obj.containsKey(et.getName())) {
+                    temp = obj.get(et.getName());
+                    if(temp instanceof List){
+                        list = (List)temp;
+                        list.add(et.getTextTrim());
+                    }else if(temp instanceof Map){
+                        list.add((HashMap)temp);
+                        list.add(iterateElement(et));
+                    }else{
+                        list.add((String)temp);
+                        list.add(et.getTextTrim());
+                    }
+                    obj.put(et.getName(), list);
+                }else{
+                    obj.put(et.getName(), et.getTextTrim());
+                }
+                
+            }
+            
+        }
+        return obj;
+    }
 }

@@ -24,7 +24,7 @@ export default {
           success: function(response) {
             if (response.code == 200) {
               self.closeLoading();
-              let dataJson = JSON.parse(response.data);
+              let dataJson = JSON.parse(response.data).root;
               // self.$emit("afterDataLoad", dataJson);
               Object.keys(dataJson).forEach(function(key) {
                 if (key == "comments") {
@@ -33,7 +33,7 @@ export default {
                     self.$refs.comments.setMessages(dataJson.comments);
                   }, 200);
                 } else {
-                  let obj = dataJson[key][0];
+                  let obj = dataJson[key];
                   Object.keys(obj).forEach(function(subKey) {
                     if (self.$refs[key] && self.$refs[key].detail) {
                       try {
@@ -55,11 +55,7 @@ export default {
                   // debugger;
                   var theCompent = self.findRef(key);
                   if (theCompent && theCompent.$parent.afterDataLoad) {
-                    try {
                       theCompent.$parent.afterDataLoad(key, obj, dataJson);
-                    } catch (err) {
-                      console.log(err);
-                    }
                   }
                 }
               });
