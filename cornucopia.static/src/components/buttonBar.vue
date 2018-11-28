@@ -1,19 +1,21 @@
 <template>
-    <div  class="box" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
-        <center>
+  <div class="box" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
+    <center>
+      <el-button
+        type="primary"
+        v-show="!cfg.hideSave"
+        @click="btnPost({name:cfg.saveButtonTitle||'保存',url:cfg.save})"
+      >{{cfg.saveButtonTitle||'保存'}}</el-button>
+      <span v-for="item in this.cfg.buttons" :key="item.name" style="margin-right:5px;">
         <el-button
-        type="primary" v-show="!cfg.hideSave"
-          @click="btnPost({name:cfg.saveButtonTitle||'保存',url:cfg.save})">{{cfg.saveButtonTitle||'保存'}}</el-button>
-          <span v-for="item in this.cfg.buttons" :key="item.name" style="margin-right:5px;">
-            <el-button v-show="!(item.hidden||false)"
+          v-show="!(item.hidden||false)"
           :type="item.type||'primary'"
-          @click="btnPost(item)">{{item.name}}</el-button>
-          </span>
-        <el-button v-show="!cfg.hideCancel"
-          type="warning"
-          @click="btnCancel">取消</el-button>
-        </center>
-    </div>
+          @click="btnPost(item)"
+        >{{item.name}}</el-button>
+      </span>
+      <el-button v-show="!cfg.hideCancel" type="warning" @click="btnCancel">取消</el-button>
+    </center>
+  </div>
 </template>
 <script>
 // import {json2xml} from "../ref/json2xml"
@@ -39,7 +41,9 @@ export default {
     },
     btnPost: function(item) {
       var self = this;
-      if (item.onClick) {
+      if (item.onClick && item.hideTipMsg) {
+        item.onClick(item);
+      } else if (item.onClick) {
         self
           .$confirm("确定要" + item.name + "吗", "提示", {
             confirmButtonText: "确定",
@@ -151,7 +155,7 @@ export default {
       var self = this;
       self.openLoading(self.$parent, null, "正在提交...", 15000);
       if (self.cfg.dataType == "xml" && item && item.dataType != "json") {
-        data = { xmlStr: "",jsonStr: JSON.stringify(data)};
+        data = { xmlStr: "", jsonStr: JSON.stringify(data) };
       }
       self.post({
         url: item ? item.url : self.cfg.save,
@@ -226,48 +230,48 @@ export default {
           }
         }
       });
-    },
-    parse2xml: function(data) {
-      var xmldata = "";
-      for (var i in data) {
-        if (!Array.isArray(data[i])) {
-          xmldata += "<" + i + ">";
-        }
-        if (Array.isArray(data[i])) {
-          for (var j = 0; j < data[i].length; j++) {
-            xmldata += "<" + i + ">";
-            xmldata += this.parse2xml(data[i][j]);
-            xmldata += "</" + i + ">";
-          }
-        } else if (typeof data[i] == "object") {
-          xmldata += this.parse2xml(data[i]);
-        } else {
-          xmldata += data[i];
-        }
-        if (!Array.isArray(data[i])) {
-          xmldata += "</" + i + ">";
-        }
-      }
-      return xmldata.replace(/undefined/g, '');
-    },
-    parse2json: function(xmlStr) {
-      var root = document.createElement("XMLROOT");
-      root.innerHTML = xmlStr;
-      return this.parse(root);
-    },
-    parse: function(node) {
-      var result = {};
-      for (var i = 0; i < node.childNodes.length; ++i) {
-        if (node.childNodes[i].nodeType == 1) {
-          result[node.childNodes[i].nodeName.toLowerCase()] = this.parse(
-            node.childNodes[i]
-          );
-        } else if (node.childNodes[i].nodeType == 3) {
-          return node.childNodes[i].nodeValue;
-        }
-      }
-      return result;
     }
+    // parse2xml: function(data) {
+    //   var xmldata = "";
+    //   for (var i in data) {
+    //     if (!Array.isArray(data[i])) {
+    //       xmldata += "<" + i + ">";
+    //     }
+    //     if (Array.isArray(data[i])) {
+    //       for (var j = 0; j < data[i].length; j++) {
+    //         xmldata += "<" + i + ">";
+    //         xmldata += this.parse2xml(data[i][j]);
+    //         xmldata += "</" + i + ">";
+    //       }
+    //     } else if (typeof data[i] == "object") {
+    //       xmldata += this.parse2xml(data[i]);
+    //     } else {
+    //       xmldata += data[i];
+    //     }
+    //     if (!Array.isArray(data[i])) {
+    //       xmldata += "</" + i + ">";
+    //     }
+    //   }
+    //   return xmldata.replace(/undefined/g, '');
+    // },
+    // parse2json: function(xmlStr) {
+    //   var root = document.createElement("XMLROOT");
+    //   root.innerHTML = xmlStr;
+    //   return this.parse(root);
+    // },
+    // parse: function(node) {
+    //   var result = {};
+    //   for (var i = 0; i < node.childNodes.length; ++i) {
+    //     if (node.childNodes[i].nodeType == 1) {
+    //       result[node.childNodes[i].nodeName.toLowerCase()] = this.parse(
+    //         node.childNodes[i]
+    //       );
+    //     } else if (node.childNodes[i].nodeType == 3) {
+    //       return node.childNodes[i].nodeValue;
+    //     }
+    //   }
+    //   return result;
+    // }
   },
   data() {
     return {

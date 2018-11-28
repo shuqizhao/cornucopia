@@ -7,6 +7,9 @@
     <comment ref="comments" :cfg="cfgComment"></comment>
     <buttonBar v-show="!isApprove" ref="submit" :cfg="cfgSubmit"></buttonBar>
     <buttonBar v-show="isApprove" ref="agree" :cfg="cfgAgree"></buttonBar>
+    <el-dialog append-to-body :visible.sync="dialogVisible" :width="'65%'" >
+      <component  style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -138,6 +141,8 @@ export default {
     return {
       isApprove: false,
       cellar: "",
+      dialogVisible:false,
+      currentComponent:'',
       processInstAuth: {},
       cfgApprove: {
         title: "单据信息",
@@ -346,8 +351,11 @@ export default {
           {
             name: "转办",
             type: "success",
-            url: "/process/applyReturn",
             hidden: true,
+            hideTipMsg:true,
+            onClick:function(item){
+              self.dialogVisible = true;
+            },
             onSuccess: function() {
               self.$router.push({ path: "/mytask" });
             }
