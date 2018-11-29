@@ -117,15 +117,15 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div>
-   <div class="content-wrapper">
-    <section v-if="this.breadcrumbTitle" class="content-header">
+   <div class="content-wrapper" >
+    <!-- <section v-if="this.breadcrumbTitle" class="content-header">
         <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item><i class="fa fa-dashboard"></i> 首页</el-breadcrumb-item>
         <el-breadcrumb-item>{{this.breadcrumbParentTitle}}</el-breadcrumb-item>
         <el-breadcrumb-item>{{this.breadcrumbTitle}}</el-breadcrumb-item>
         </el-breadcrumb>
-      </section>
-      <section class="content">
+      </section> -->
+      <section class="content" style="width:1100px;margin:0 auto;">
         <router-view></router-view>
       </section>
    </div>

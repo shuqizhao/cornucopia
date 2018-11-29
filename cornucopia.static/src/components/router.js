@@ -245,6 +245,12 @@ Vue.prototype.getButtonIcon = function(functionName) {
 }
 
 Vue.prototype.setBreadcrumbTitle = function(self, parentTitle, title) {
+    if(title){
+        document.title='BPM流程管理系统';
+    }else{
+        document.title=title;
+    }
+    
     self.$root.$children[0].$children[0].$children[0].$children[0].breadcrumbTitle = title;
     self.$root.$children[0].$children[0].$children[0].$children[0].breadcrumbParentTitle = parentTitle;
 }
