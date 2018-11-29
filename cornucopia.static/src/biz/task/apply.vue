@@ -25,7 +25,7 @@
 export default {
   mounted: function() {
     var self = this;
-    self.setBreadcrumbTitle(this, "发起新流程", "发起新流程");
+    self.setBreadcrumbTitle(this, "流程", "发起新流程");
     self.get({
       url: "/process/category",
       success: function(response) {

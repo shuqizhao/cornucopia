@@ -40,7 +40,7 @@ export default {
     }
   },
   mounted: function() {
-    this.setBreadcrumbTitle(this, "发起新流程", "固定资产报废流程");
+    this.setDocumentTitle(this, "固定资产报废流程");
     self = this;
     // self.get({
     //   url: "/data/get?parentCode=x",

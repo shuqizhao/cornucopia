@@ -17,7 +17,7 @@ export default {
     self.$refs.apply.cellar = cellar;
   },
   destroyed: function() {
-    this.setBreadcrumbTitle(this, "", "");
+    // this.setBreadcrumbTitle(this, "", "");
   },
   data() {
     let self = this;

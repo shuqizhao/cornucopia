@@ -244,15 +244,31 @@ Vue.prototype.getButtonIcon = function(functionName) {
     return '';
 }
 
-Vue.prototype.setBreadcrumbTitle = function(self, parentTitle, title) {
-    if(title){
-        document.title='BPM流程管理系统';
-    }else{
-        document.title=title;
+Vue.prototype.setBreadcrumbTitle = function(self, parentTitle, title, width) {
+    var myWidth = width || '100%';
+    debugger;
+    if (title) {
+        document.title = '流程管理系统';
+        self.$root.$children[0].$children[0].$children[0].$children[0].showBreadcrumbTitle = true;
+        self.$root.$children[0].$children[0].$children[0].$children[0].contentWidth = myWidth;
+    } else {
+        document.title = title;
+        self.$root.$children[0].$children[0].$children[0].$children[0].showBreadcrumbTitle = false;
+        self.$root.$children[0].$children[0].$children[0].$children[0].contentWidth = myWidth;
     }
-    
+
     self.$root.$children[0].$children[0].$children[0].$children[0].breadcrumbTitle = title;
     self.$root.$children[0].$children[0].$children[0].$children[0].breadcrumbParentTitle = parentTitle;
+}
+
+Vue.prototype.setDocumentTitle = function(self, title, width) {
+    var myWidth = width || '80%';
+    document.title = title;
+    self.$root.$children[0].$children[0].$children[0].$children[0].showBreadcrumbTitle = false;
+    self.$root.$children[0].$children[0].$children[0].$children[0].contentWidth = myWidth;
+
+    self.$root.$children[0].$children[0].$children[0].$children[0].breadcrumbTitle = '';
+    self.$root.$children[0].$children[0].$children[0].$children[0].breadcrumbParentTitle = '';
 }
 
 function findRefStep(children, refName) {
