@@ -68,7 +68,8 @@
           </li>
           <!-- Control Sidebar Toggle Button -->
           <li>
-            <a v-show="this.$route.query.showDiagram" href="#" data-toggle="control-sidebar"><i class="fa fa-bars"></i></a>
+            <a v-show="this.$route.query.showDiagram" href="#" ><i class="fa fa-bars"></i></a>
+             <!-- <a v-show="this.$route.query.showDiagram" href="#" data-toggle="control-sidebar"><i class="fa fa-bars"></i></a> -->
           </li>
         </ul>
       </div>
@@ -133,7 +134,7 @@
   <!-- /.content-wrapper -->
 
   <!-- Main Footer -->
-  <footer class="main-footer">
+  <footer class="main-footer" style="height:50px;">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
       Anything you want
@@ -145,7 +146,7 @@
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <center>
-        <processInstDiagram ref="diagram"></processInstDiagram>
+        <!-- <processInstDiagram ref="diagram"></processInstDiagram> -->
     </center>
   </aside>
   <!-- /.control-sidebar -->

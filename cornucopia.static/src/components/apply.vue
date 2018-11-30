@@ -10,20 +10,19 @@
     <el-dialog append-to-body :visible.sync="dialogVisible" :width="'65%'">
       <component style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
     </el-dialog>
-    <fab
-      :position="position"
-      :bg-color="bgColor"
-      :actions="fabActions"
-      @cache="cache"
-      @alertMe="alert"
-    ></fab>
+    <el-popover placement="top" width="250" trigger="click">
+      <processInstDiagram ref="diagram"></processInstDiagram>
+      <fab :position="position" slot="reference" main-icon='pages' :bg-color="bgColor" main-tooltip='流程图'></fab>
+    </el-popover>
   </div>
 </template>
 <script>
 import fab from "vue-fab";
+import processInstDiagram from "../biz/task/processInstDiagram.vue";
 export default {
   components: {
-    fab
+    fab,
+    processInstDiagram
   },
   methods: {
     cache() {
@@ -435,6 +434,6 @@ export default {
 };
 </script>
 <style scoped>
-  @import '../ref/animate.min.css';
-  @import '../ref/icon.css';
+@import "../ref/animate.min.css";
+@import "../ref/icon.css";
 </style>

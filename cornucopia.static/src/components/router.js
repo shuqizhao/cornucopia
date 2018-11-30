@@ -246,7 +246,6 @@ Vue.prototype.getButtonIcon = function(functionName) {
 
 Vue.prototype.setBreadcrumbTitle = function(self, parentTitle, title, width) {
     var myWidth = width || '100%';
-    debugger;
     if (title) {
         document.title = '流程管理系统';
         self.$root.$children[0].$children[0].$children[0].$children[0].showBreadcrumbTitle = true;
