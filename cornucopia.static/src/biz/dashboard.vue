@@ -226,10 +226,10 @@ export default {
     VueChart
   },
   mounted: function() {
-    this.setBreadcrumbTitle(this, "", "", true);
+    this.setDocumentTitle(this, "流程管理系统", '100%');
   },
   destroyed: function() {
-    this.setBreadcrumbTitle(this, "", "");
+    // this.setBreadcrumbTitle(this, "", "");
   },
   data() {
     var self = this;

@@ -4,6 +4,7 @@
 <script>
 export default {
   mounted: function() {
+    this.setDocumentTitle(this, "流程管理系统", '100%');
     var self = this;
     self.get({
       url: "/process/alllist",
