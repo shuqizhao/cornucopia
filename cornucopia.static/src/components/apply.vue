@@ -12,7 +12,7 @@
     </el-dialog>
     <el-popover placement="top" width="250" trigger="click">
       <processInstDiagram ref="diagram"></processInstDiagram>
-      <fab :position="position" slot="reference" main-icon='pages' :bg-color="bgColor" main-tooltip='流程图'></fab>
+      <fab v-show="this.$route.query.showDiagram" :position="position" slot="reference" main-icon='pages' :bg-color="bgColor" main-tooltip='流程图'></fab>
     </el-popover>
   </div>
 </template>
