@@ -11,7 +11,7 @@
       <component style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
     </el-dialog>
     <fab
-      v-show="this.$route.query.showDiagram"
+      v-show="this.$route.query.showDiagram&&this.fabActions.length>0"
       :position="position"
       :toggle-when-away='true'
       :start-opened="false"
