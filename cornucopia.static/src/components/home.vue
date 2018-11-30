@@ -68,8 +68,7 @@
           </li>
           <!-- Control Sidebar Toggle Button -->
           <li>
-            <a v-show="this.$route.query.showDiagram" href="#" ><i class="fa fa-bars"></i></a>
-             <!-- <a v-show="this.$route.query.showDiagram" href="#" data-toggle="control-sidebar"><i class="fa fa-bars"></i></a> -->
+             <a v-show="this.$route.query.showDiagram" href="#" data-toggle="control-sidebar"><i class="fa fa-bars"></i></a>
           </li>
         </ul>
       </div>
@@ -146,7 +145,7 @@
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <center>
-        <!-- <processInstDiagram ref="diagram"></processInstDiagram> -->
+        <processInstDiagram ref="diagram"></processInstDiagram>
     </center>
   </aside>
   <!-- /.control-sidebar -->

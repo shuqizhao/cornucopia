@@ -10,21 +10,53 @@
     <el-dialog append-to-body :visible.sync="dialogVisible" :width="'65%'">
       <component style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
     </el-dialog>
-    <el-popover placement="top" width="250" trigger="click">
-      <processInstDiagram ref="diagram"></processInstDiagram>
-      <fab v-show="this.$route.query.showDiagram" :position="position" slot="reference" main-icon='pages' :bg-color="bgColor" main-tooltip='流程图'></fab>
-    </el-popover>
+    <fab
+      v-show="this.$route.query.showDiagram"
+      :position="position"
+      :toggle-when-away='false'
+      :actions="fabActions"
+      :bg-color="bgColor"
+      main-tooltip="更多..."
+    ></fab>
   </div>
 </template>
 <script>
 import fab from "vue-fab";
-import processInstDiagram from "../biz/task/processInstDiagram.vue";
 export default {
   components: {
-    fab,
-    processInstDiagram
+    fab
   },
   methods: {
+    buildFabButtons: function(processInstAuth) {
+      if (processInstAuth.preSign == 1) {
+        this.fabActions.push({
+          name: "preSign",
+          tooltip: "前加签",
+          icon: "undo"
+        });
+      }
+      if (processInstAuth.afterSign == 1) {
+        this.fabActions.push({
+          name: "afterSign",
+          tooltip: "后加签",
+          icon: "redo"
+        });
+      }
+      if (processInstAuth.transfer == 1) {
+        this.fabActions.push({
+          name: "transfer",
+          tooltip: "转办",
+          icon: "transfer_within_a_station"
+        });
+      }
+      if (processInstAuth.modify == 1) {
+        this.fabActions.push({
+          name: "modify",
+          tooltip: "申请人修订",
+          icon: "rowing"
+        });
+      }
+    },
     cache() {
       console.log("Cache Cleared");
     },
@@ -100,7 +132,7 @@ export default {
                 }, 200);
 
                 self.cfgComment.mode = "edit";
-
+                self.buildFabButtons(self.processInstAuth);
                 if (self.processInstAuth.doaName == "Retry") {
                   self.findCfgBtn(self.cfgAgree, "重发起").hidden = false;
                   //  self.findCfgBtn(cfgAgree, "作废").hidden = false;
@@ -119,18 +151,6 @@ export default {
                 } else {
                   self.findCfgBtn(self.cfgAgree, "同意").hidden = false;
                   self.findCfgBtn(self.cfgAgree, "退回").hidden = false;
-                  if (self.processInstAuth.preSign == 1) {
-                    self.findCfgBtn(self.cfgAgree, "前加签").hidden = false;
-                  }
-                  if (self.processInstAuth.afterSign == 1) {
-                    self.findCfgBtn(self.cfgAgree, "后加签").hidden = false;
-                  }
-                  if (self.processInstAuth.transfer == 1) {
-                    self.findCfgBtn(self.cfgAgree, "转办").hidden = false;
-                  }
-                  if (self.processInstAuth.modify == 1) {
-                    self.findCfgBtn(self.cfgAgree, "申请人修订").hidden = false;
-                  }
                 }
               } else {
                 // self.cfg1.mode = "detailEdit";
@@ -364,45 +384,45 @@ export default {
               self.$router.push({ path: "/mytask" });
             }
           },
-          {
-            name: "转办",
-            type: "success",
-            hidden: true,
-            hideTipMsg: true,
-            onClick: function(item) {
-              self.dialogVisible = true;
-            },
-            onSuccess: function() {
-              self.$router.push({ path: "/mytask" });
-            }
-          },
-          {
-            name: "前加签",
-            type: "success",
-            url: "/process/applyReturn",
-            hidden: true,
-            onSuccess: function() {
-              self.$router.push({ path: "/mytask" });
-            }
-          },
-          {
-            name: "后加签",
-            type: "success",
-            url: "/process/applyReturn",
-            hidden: true,
-            onSuccess: function() {
-              self.$router.push({ path: "/mytask" });
-            }
-          },
-          {
-            name: "申请人修订",
-            type: "success",
-            url: "/process/applyReturn",
-            hidden: true,
-            onSuccess: function() {
-              self.$router.push({ path: "/mytask" });
-            }
-          },
+          // {
+          //   name: "转办",
+          //   type: "success",
+          //   hidden: true,
+          //   hideTipMsg: true,
+          //   onClick: function(item) {
+          //     self.dialogVisible = true;
+          //   },
+          //   onSuccess: function() {
+          //     self.$router.push({ path: "/mytask" });
+          //   }
+          // },
+          // {
+          //   name: "前加签",
+          //   type: "success",
+          //   url: "/process/applyReturn",
+          //   hidden: true,
+          //   onSuccess: function() {
+          //     self.$router.push({ path: "/mytask" });
+          //   }
+          // },
+          // {
+          //   name: "后加签",
+          //   type: "success",
+          //   url: "/process/applyReturn",
+          //   hidden: true,
+          //   onSuccess: function() {
+          //     self.$router.push({ path: "/mytask" });
+          //   }
+          // },
+          // {
+          //   name: "申请人修订",
+          //   type: "success",
+          //   url: "/process/applyReturn",
+          //   hidden: true,
+          //   onSuccess: function() {
+          //     self.$router.push({ path: "/mytask" });
+          //   }
+          // },
           {
             name: "关闭",
             type: "warning",
@@ -419,16 +439,7 @@ export default {
       },
       bgColor: "#194D33",
       position: "bottom-right",
-      fabActions: [
-        {
-          name: "cache",
-          icon: "cached"
-        },
-        {
-          name: "alertMe",
-          icon: "add_alert"
-        }
-      ]
+      fabActions: []
     };
   }
 };
