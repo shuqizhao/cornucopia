@@ -143,7 +143,7 @@
   </footer>
 
   <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
+  <aside class="control-sidebar control-sidebar-dark" @mouseleave="onMouseLeave">
     <center>
         <processInstDiagram ref="diagram"></processInstDiagram>
     </center>
@@ -275,6 +275,9 @@ export default {
     },
     filterMenus: function() {
       this.menusLevel0 = this.getMenusLevel0();
+    },
+    onMouseLeave:function(){
+      $('[data-toggle="control-sidebar"]').click();
     }
   }
   ,components: {

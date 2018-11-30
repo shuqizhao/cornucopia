@@ -22,7 +22,7 @@
                 <!-- small box -->
                 <div :class="step.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'">
                     <el-popover
-                        placement="top-start"
+                        placement="left-start"
                         :title="step.userName"
                         trigger="hover"
                         :content="step.email+' '+step.personNumber">
