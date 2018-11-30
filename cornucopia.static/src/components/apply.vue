@@ -13,10 +13,12 @@
     <fab
       v-show="this.$route.query.showDiagram"
       :position="position"
-      :toggle-when-away='false'
+      :toggle-when-away='true'
+      :start-opened="false"
       :actions="fabActions"
       :bg-color="bgColor"
       main-tooltip="更多..."
+      @preSign="preSign"
     ></fab>
   </div>
 </template>
@@ -57,11 +59,17 @@ export default {
         });
       }
     },
-    cache() {
-      console.log("Cache Cleared");
+    preSign() {
+      this.dialogVisible = true;
     },
-    alert() {
-      alert("Clicked on alert icon");
+    afterSign() {
+      this.dialogVisible = true;
+    },
+    modify() {
+      this.dialogVisible = true;
+    },
+    transfer() {
+      this.dialogVisible = true;
     },
     getBizData: function(processId, dataId, processInstAuth) {
       let self = this;
