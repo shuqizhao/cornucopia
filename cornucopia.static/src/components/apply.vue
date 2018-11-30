@@ -7,14 +7,31 @@
     <comment ref="comments" :cfg="cfgComment"></comment>
     <buttonBar v-show="!isApprove" ref="submit" :cfg="cfgSubmit"></buttonBar>
     <buttonBar v-show="isApprove" ref="agree" :cfg="cfgAgree"></buttonBar>
-    <el-dialog append-to-body :visible.sync="dialogVisible" :width="'65%'" >
-      <component  style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
+    <el-dialog append-to-body :visible.sync="dialogVisible" :width="'65%'">
+      <component style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
     </el-dialog>
+    <fab
+      :position="position"
+      :bg-color="bgColor"
+      :actions="fabActions"
+      @cache="cache"
+      @alertMe="alert"
+    ></fab>
   </div>
 </template>
 <script>
+import fab from "vue-fab";
 export default {
+  components: {
+    fab
+  },
   methods: {
+    cache() {
+      console.log("Cache Cleared");
+    },
+    alert() {
+      alert("Clicked on alert icon");
+    },
     getBizData: function(processId, dataId, processInstAuth) {
       let self = this;
       self.openLoading();
@@ -86,33 +103,33 @@ export default {
                 self.cfgComment.mode = "edit";
 
                 if (self.processInstAuth.doaName == "Retry") {
-                   self.findCfgBtn(self.cfgAgree, "重发起").hidden = false;
+                  self.findCfgBtn(self.cfgAgree, "重发起").hidden = false;
                   //  self.findCfgBtn(cfgAgree, "作废").hidden = false;
-                }else if (self.processInstAuth.doaName == "PreSign") {
+                } else if (self.processInstAuth.doaName == "PreSign") {
                   self.findCfgBtn(self.cfgAgree, "同意").hidden = false;
                   self.findCfgBtn(self.cfgAgree, "退回").hidden = false;
-                }else if (self.processInstAuth.doaName == "AfterSign") {
+                } else if (self.processInstAuth.doaName == "AfterSign") {
                   self.findCfgBtn(self.cfgAgree, "同意").hidden = false;
                   self.findCfgBtn(self.cfgAgree, "退回").hidden = false;
-                }else if (self.processInstAuth.doaName == "Transfer") {
+                } else if (self.processInstAuth.doaName == "Transfer") {
                   self.findCfgBtn(self.cfgAgree, "同意").hidden = false;
                   self.findCfgBtn(self.cfgAgree, "退回").hidden = false;
-                }else if (self.processInstAuth.doaName == "Modify") {
+                } else if (self.processInstAuth.doaName == "Modify") {
                   self.findCfgBtn(self.cfgAgree, "同意").hidden = false;
                   self.findCfgBtn(self.cfgAgree, "退回").hidden = false;
                 } else {
                   self.findCfgBtn(self.cfgAgree, "同意").hidden = false;
                   self.findCfgBtn(self.cfgAgree, "退回").hidden = false;
-                  if(self.processInstAuth.preSign==1){
+                  if (self.processInstAuth.preSign == 1) {
                     self.findCfgBtn(self.cfgAgree, "前加签").hidden = false;
                   }
-                  if(self.processInstAuth.afterSign==1){
+                  if (self.processInstAuth.afterSign == 1) {
                     self.findCfgBtn(self.cfgAgree, "后加签").hidden = false;
                   }
-                  if(self.processInstAuth.transfer==1){
+                  if (self.processInstAuth.transfer == 1) {
                     self.findCfgBtn(self.cfgAgree, "转办").hidden = false;
                   }
-                  if(self.processInstAuth.modify==1){
+                  if (self.processInstAuth.modify == 1) {
                     self.findCfgBtn(self.cfgAgree, "申请人修订").hidden = false;
                   }
                 }
@@ -141,8 +158,8 @@ export default {
     return {
       isApprove: false,
       cellar: "",
-      dialogVisible:false,
-      currentComponent:'',
+      dialogVisible: false,
+      currentComponent: "",
       processInstAuth: {},
       cfgApprove: {
         title: "单据信息",
@@ -352,8 +369,8 @@ export default {
             name: "转办",
             type: "success",
             hidden: true,
-            hideTipMsg:true,
-            onClick:function(item){
+            hideTipMsg: true,
+            onClick: function(item) {
               self.dialogVisible = true;
             },
             onSuccess: function() {
@@ -400,10 +417,24 @@ export default {
         title: "审批历史记录",
         name: "comments",
         mode: "detail"
-      }
+      },
+      bgColor: "#194D33",
+      position: "bottom-right",
+      fabActions: [
+        {
+          name: "cache",
+          icon: "cached"
+        },
+        {
+          name: "alertMe",
+          icon: "add_alert"
+        }
+      ]
     };
   }
 };
 </script>
-<style>
+<style scoped>
+  @import '../ref/animate.min.css';
+  @import '../ref/icon.css';
 </style>
