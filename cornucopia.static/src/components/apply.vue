@@ -24,9 +24,11 @@
 </template>
 <script>
 import fab from "vue-fab";
+import selectUser from "./selectUser.vue"
 export default {
   components: {
-    fab
+    fab,
+    selectUser
   },
   methods: {
     buildFabButtons: function(processInstAuth) {
@@ -61,6 +63,7 @@ export default {
     },
     preSign() {
       this.dialogVisible = true;
+      this.currentComponent=selectUser;
     },
     afterSign() {
       this.dialogVisible = true;
