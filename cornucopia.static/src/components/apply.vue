@@ -7,8 +7,12 @@
     <comment ref="comments" :cfg="cfgComment"></comment>
     <buttonBar v-show="!isApprove" ref="submit" :cfg="cfgSubmit"></buttonBar>
     <buttonBar v-show="isApprove" ref="agree" :cfg="cfgAgree"></buttonBar>
-    <el-dialog append-to-body :visible.sync="dialogVisible" :width="'65%'">
+    <el-dialog append-to-body :visible.sync="dialogVisible" :width="'65%'" title="选择用户">
       <component style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
+       <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
     </el-dialog>
     <fab
       v-show="this.$route.query.showDiagram&&this.fabActions.length>0"

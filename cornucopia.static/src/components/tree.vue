@@ -49,9 +49,10 @@
         :props="defaultProps"
         :check-strictly="true"
         :indent="30"
-        default-expand-all
+        :default-expand-all="false"
         :show-checkbox="!this.cfg.hideCheckBox"
         :filter-node-method="filterNode"
+        :style="this.cfg.style||''"
         @node-click="onNodeClick"
         ref="tree2">
 

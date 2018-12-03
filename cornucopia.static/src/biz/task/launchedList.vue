@@ -1,10 +1,11 @@
 <template>
-  <list :cfg="cfg"></list>
+  <listV2 :cfg="cfg"></listV2>
+  <!-- <list :cfg="cfg"></list> -->
 </template>
 <script>
 export default {
   mounted: function() {
-    this.setDocumentTitle(this, "流程管理系统", '100%');
+    this.setDocumentTitle(this, "流程管理系统", "100%");
     var self = this;
     self.get({
       url: "/process/alllist",
@@ -26,11 +27,12 @@ export default {
         // isShowSearchArea:"true",
         scrollCollapse: true,
         title: "我发起的任务",
-        url:  "/process/launchedList",
+        url: "/process/launchedList",
         columns: [
           {
             title: "单号",
             name: "formCode",
+            fixed: true,
             isSearch: true
           },
           {
