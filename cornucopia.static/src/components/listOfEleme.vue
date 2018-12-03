@@ -16,16 +16,23 @@
           </button>
           <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
         </div>
-        <el-badge :value="12" class="item">
-          <el-button type="success" plain  size="small">固定资产报废流程</el-button>
-        </el-badge>
-        <el-badge :value="12" class="item">
-          <el-button type="success" plain  size="small">固定资产报废流程</el-button>
-        </el-badge>
-        <el-badge :value="12" class="item">
-          <el-button type="success" plain  size="small">固定资产报废流程</el-button>
-        </el-badge>
-        <hr v-if="tableData.length==0">
+         <hr/>
+        <slot>
+          <el-form :inline="true" :model="formInline" class="demo-form-inline">
+            <el-form-item label="审批人">
+              <el-input v-model="formInline.user" placeholder="审批人"></el-input>
+            </el-form-item>
+            <el-form-item label="活动区域">
+              <el-select v-model="formInline.region" placeholder="活动区域">
+                <el-option label="区域一" value="shanghai"></el-option>
+                <el-option label="区域二" value="beijing"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit">查询</el-button>
+            </el-form-item>
+          </el-form>
+        </slot>
       </div>
       <!-- </div> -->
       <el-table
@@ -90,6 +97,10 @@ export default {
   data() {
     var self = this;
     return {
+      formInline: {
+        user: "",
+        region: ""
+      },
       dialogVisible: false,
       currentComponent: "",
       tableData: [],
@@ -98,6 +109,9 @@ export default {
     };
   },
   methods: {
+    onSubmit() {
+      console.log("submit!");
+    },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },

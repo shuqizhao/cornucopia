@@ -1,5 +1,14 @@
 <template>
-  <listV2 :cfg="cfg"></listV2>
+  <listV2 :cfg="cfg">
+    <template>
+        <el-badge :value="12" class="item">
+          <el-button type="success" plain  size="small">固定资产报废流程</el-button>
+        </el-badge>
+        <el-badge :value="12" class="item">
+          <el-button type="success" plain  size="small">固定资产报废流程</el-button>
+        </el-badge>
+      </template>
+  </listV2>
   <!-- <list :cfg="cfg"></list> -->
 </template>
 <script>
