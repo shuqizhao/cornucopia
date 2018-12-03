@@ -1,5 +1,6 @@
 <template>
-  <list :cfg="cfg"></list>
+  <listV2 :cfg="cfg"></listV2>
+  <!-- <list :cfg="cfg"></list> -->
 </template>
 <script>
 export default {
@@ -15,7 +16,7 @@ export default {
         },
         title: "用户管理",
         parentTitle: "系统管理",
-        url:  "/user/list",
+        url: "/user/list",
         columns: [
           {
             title: "用户名",
@@ -40,35 +41,48 @@ export default {
                 id: "0",
                 value: "否"
               }
-            ]
+            ],
+            formatter: function(data) {
+              if (data.isEnabled) {
+                return '<i class="fa fa-fw fa-check-circle"></i>';
+              } else {
+                return '<i class="el-icon-close"></i>';
+              }
+            }
           },
           {
             title: "工号",
             name: "personNumber",
-            isSearch: true
-          },{
+            isSearch: true,
+            fixed:true
+          },
+          {
             title: "职位",
             name: "jobId"
-          },{
+          },
+          {
             title: "工作邮箱",
             name: "email"
-          },{
+          },
+          {
             title: "手机号码",
             name: "phone"
-          },{
+          },
+          {
             title: "所属上级",
             name: "managerId"
-          },{
+          },
+          {
             title: "所在部门",
             name: "orgId"
           },
-            {
+          {
             title: "创建时间",
             name: "createTime",
             isSearch: true,
             type: "timer"
           },
-           {
+          {
             title: "修改时间",
             name: "updateTime",
             isSearch: true,
@@ -91,13 +105,13 @@ export default {
           more: [
             {
               text: "停用",
-              url:  "/user/disable",
-              functionName:'userDisable'
+              url: "/user/disable",
+              functionName: "userDisable"
             },
             {
               text: "启用",
-              url:  "/user/enable",
-              functionName:'userEnable'
+              url: "/user/enable",
+              functionName: "userEnable"
             }
           ],
           common: [
@@ -105,7 +119,7 @@ export default {
               text: "添加用户",
               url: "/auth/userAdd",
               mode: "navigate",
-              functionName:'userAdd'
+              functionName: "userAdd"
             }
           ]
         },

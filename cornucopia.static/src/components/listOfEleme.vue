@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-top:-10px;margin-bottom:-30px;">
     <div class="box box-info" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
       <!-- <div v-if="this.cfg.title" class="box-header"> -->
       <div v-if="this.cfg.title" class="box-header">
@@ -16,9 +16,14 @@
           </button>
           <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
         </div>
-         <hr/>
+        <hr>
         <slot>
-          <el-form :inline="true" :model="formInline" class="demo-form-inline">
+          <el-form
+            :inline="true"
+            :size="this.cfg.size||'mini'"
+            :model="formInline"
+            class="demo-form-inline"
+          >
             <el-form-item label="审批人">
               <el-input v-model="formInline.user" placeholder="审批人"></el-input>
             </el-form-item>
@@ -37,12 +42,15 @@
       <!-- </div> -->
       <el-table
         :data="tableData"
+        :size="this.cfg.size||'mini'"
         style="width: 100%"
-        :height="this.cfg.height||'500'"
+        :height="this.cfg.height||'340'"
         :fixed="this.cfg.fixed||false"
         border
         stripe
+        :fit="this.cfg.fit||true"
       >
+        <el-table-column type="selection" width="55"></el-table-column>
         <template v-for="column in this.cfg.columns">
           <el-table-column
             :key="column.name"
