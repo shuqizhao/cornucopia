@@ -33,7 +33,20 @@ export default {
             title: "单号",
             name: "formCode",
             fixed: true,
-            isSearch: true
+            isSearch: true,
+            formatter: function(data) {
+              var f =
+                '<a target="_blank" href="#/' +
+                data.url +
+                "?processId=" +
+                data.processId +
+                "&id=" +
+                data.id +
+                '&showDiagram=1">' +
+                data.formCode +
+                "</a>";
+              return f;
+            }
           },
           {
             title: "流程类型",

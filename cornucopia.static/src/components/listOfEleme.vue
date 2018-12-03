@@ -1,24 +1,33 @@
 <template>
   <div>
     <div class="box box-info" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
+      <!-- <div v-if="this.cfg.title" class="box-header"> -->
       <div v-if="this.cfg.title" class="box-header">
-        <div v-if="this.cfg.title" class="box-header">
-          <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item v-if="this.cfg.parentTitle">
-              <i class="fa fa-dashboard"></i> 首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item v-if="this.cfg.parentTitle">{{this.cfg.parentTitle}}</el-breadcrumb-item>
-            <el-breadcrumb-item>{{this.cfg.title}}</el-breadcrumb-item>
-          </el-breadcrumb>
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-minus"></i>
-            </button>
-            <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
-          </div>
-          <hr v-if="tableData.length==0">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item v-if="this.cfg.parentTitle">
+            <i class="fa fa-dashboard"></i> 首页
+          </el-breadcrumb-item>
+          <el-breadcrumb-item v-if="this.cfg.parentTitle">{{this.cfg.parentTitle}}</el-breadcrumb-item>
+          <el-breadcrumb-item>{{this.cfg.title}}</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse">
+            <i class="fa fa-minus"></i>
+          </button>
+          <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
         </div>
+        <el-badge :value="12" class="item">
+          <el-button type="success" plain  size="small">固定资产报废流程</el-button>
+        </el-badge>
+        <el-badge :value="12" class="item">
+          <el-button type="success" plain  size="small">固定资产报废流程</el-button>
+        </el-badge>
+        <el-badge :value="12" class="item">
+          <el-button type="success" plain  size="small">固定资产报废流程</el-button>
+        </el-badge>
+        <hr v-if="tableData.length==0">
       </div>
+      <!-- </div> -->
       <el-table
         :data="tableData"
         style="width: 100%"
@@ -27,15 +36,31 @@
         border
         stripe
       >
-        <el-table-column
-          v-for="column in this.cfg.columns"
-          :key="column.name"
-          :prop="column.name"
-          :label="column.title"
-          :width="column.width||''"
-          :fixed="column.fixed||false"
-        ></el-table-column>
+        <template v-for="column in this.cfg.columns">
+          <el-table-column
+            :key="column.name"
+            :prop="column.name"
+            :label="column.title"
+            :width="column.width||''"
+            :fixed="column.fixed||false"
+          >
+            <span
+              slot-scope="scope"
+              v-html="column.formatter?column.formatter(scope.row):scope.row[column.name]"
+            ></span>
+          </el-table-column>
+        </template>
       </el-table>
+      <el-pagination
+        v-if="this.cfg.showPagination||true"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[10,20,50,100, 200, 300, 400]"
+        :page-size="10"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="totalCount"
+      ></el-pagination>
     </div>
     <el-dialog
       append-to-body
@@ -60,32 +85,41 @@ export default {
     }
   },
   mounted: function() {
-    var self = this;
-    if (self.cfg.url) {
-      var listUrl = self.cfg.url;
-      self.post({
-        url: listUrl,
-        data: {
-          iDisplayStart: 0,
-          iDisplayLength: 10
-        },
-        success: function(response) {
-          self.tableData = response.aaData;
-        }
-      });
-    }
+    this.fillData();
   },
   data() {
     var self = this;
     return {
       dialogVisible: false,
       currentComponent: "",
-      tableData: []
+      tableData: [],
+      currentPage: 1,
+      totalCount: 0
     };
   },
   methods: {
-    formatter(row, column) {
-      return row.address;
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
+    fillData() {
+      var self = this;
+      if (self.cfg.url) {
+        var listUrl = self.cfg.url;
+        self.post({
+          url: listUrl,
+          data: {
+            iDisplayStart: 0,
+            iDisplayLength: 10
+          },
+          success: function(response) {
+            self.tableData = response.aaData;
+            self.totalCount = response.iTotalDisplayRecords;
+          }
+        });
+      }
     }
   }
 };
