@@ -108,7 +108,23 @@
         stripe
         :fit="this.cfg.fit||true"
       >
-        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column
+          v-if="this.cfg.functions&&!this.cfg.hideCheckBox"
+          type="selection"
+          width="55"
+        ></el-table-column>
+        <el-table-column v-if="cfg.operations" label="操作" :fixed="true">
+          <template slot-scope="scope">
+            <el-button
+              v-for="o in cfg.operations"
+              v-if="showFunction(o.functionName)"
+              size="mini"
+              :type="o.type||''"
+              :key="o.text"
+              @click="handleOperation(o,scope.$index, scope.row)"
+            >{{o.text}}</el-button>
+          </template>
+        </el-table-column>
         <template v-for="column in this.cfg.columns">
           <el-table-column
             :key="column.name"
@@ -313,6 +329,10 @@ export default {
           });
       }
       console.log(e.currentTarget || e.$el);
+    },
+    handleOperation(op, index, row) {
+      var idName = (op.idName ? op.idName : this.cfg.idName) || "id";
+      this.$router.push({ path: op.url + "?" + idName + "=" + row[idName] });
     }
   }
 };
