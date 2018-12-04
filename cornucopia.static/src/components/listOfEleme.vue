@@ -45,6 +45,7 @@
                 :label="column.title+' :'"
               >
                 <el-date-picker
+                style="width:220px;"
                   v-model="formInline[column.name]"
                   type="daterange"
                   range-separator="至"
@@ -62,6 +63,33 @@
             </template>
             <el-form-item>
               <el-button type="primary" @click="onSubmit">查询</el-button>
+              <el-button type="primary" @click="onSubmit" native-type="reset">重置</el-button>
+            </el-form-item>
+            <el-form-item v-if="this.cfg.functions">
+              <el-button-group>
+                <template v-for="c in this.cfg.functions.common">
+                  <el-button
+                    v-if="showFunction(c.functionName)"
+                    :key="c.text"
+                    size="mini"
+                    type="primary"
+                    :icon="c.icon"
+                    @click="onButtonClick"
+                  >{{c.text}}</el-button>
+                </template>
+              </el-button-group>
+              <el-dropdown split-button type="primary">更多操作
+                <el-dropdown-menu slot="dropdown">
+                  <template v-for="m in this.cfg.functions.more">
+                    <el-dropdown-item
+                      v-if="showFunction(m.functionName)"
+                      :key="m.text"
+                      :command="m.text"
+                      @click="onButtonClick"
+                    >{{m.text}}</el-dropdown-item>
+                  </template>
+                </el-dropdown-menu>
+              </el-dropdown>
             </el-form-item>
           </el-form>
         </slot>
@@ -169,6 +197,9 @@ export default {
           }
         });
       }
+    },
+    onButtonClick(e) {
+      console.log(e);
     }
   }
 };
@@ -179,5 +210,8 @@ label {
   max-width: 100%;
   margin-bottom: 0px;
   font-weight: normal;
+}
+.el-date-editor .el-range-separator {
+  width: 20px;
 }
 </style>

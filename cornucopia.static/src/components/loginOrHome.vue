@@ -1,6 +1,6 @@
 <template>
-    <home ref="home" v-if="isLogin" :collapse="this.collapse+''"></home>
-    <login ref="login" v-else></login>
+  <home ref="home" v-if="isLogin" :collapse="this.collapse+''"></home>
+  <login ref="login" v-else></login>
 </template>
 
 <script>
@@ -57,7 +57,20 @@ export default {
           !self.getCookie(self.getGlobalData().LoginCookeName) &&
           self.isNeedWatch
         ) {
-          window.location.reload();
+          this.$confirm("登陆已过期, 是否继续?", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          })
+            .then(() => {
+              window.location.reload();
+            })
+            .catch(() => {
+              this.$message({
+                type: "info",
+                message: "已取消跳转"
+              });
+            });
         }
       }, 100);
     }
@@ -70,5 +83,4 @@ export default {
 </script>
 
 <style>
-
 </style>

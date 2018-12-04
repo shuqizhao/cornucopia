@@ -54,7 +54,7 @@ export default {
             title: "工号",
             name: "personNumber",
             isSearch: true,
-            fixed:true
+            // fixed:true
           },
           {
             title: "职位",
