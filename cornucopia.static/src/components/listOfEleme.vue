@@ -146,7 +146,7 @@
         @current-change="handleCurrentChange"
         :current-page="currentPage"
         :page-sizes="[10,20,50,100, 200, 300, 400]"
-        :page-size="10"
+        :page-size="currentSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="totalCount"
       ></el-pagination>
@@ -188,6 +188,7 @@ export default {
       tableData: [],
       multipleSelection: [],
       currentPage: 1,
+      currentSize: 10,
       totalCount: 0
     };
   },
@@ -196,27 +197,31 @@ export default {
       console.log("submit!");
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      this.currentSize = val;
+      this.fillData();
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.currentPage = val;
+      this.fillData();
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-    fillData() {
+    fillData(p) {
       var self = this;
       if (self.cfg.url) {
+        self.openLoading();
         var listUrl = self.cfg.url;
         self.post({
           url: listUrl,
           data: {
-            iDisplayStart: 0,
-            iDisplayLength: 10
+            iDisplayStart: (self.currentPage-1)*self.currentSize,
+            iDisplayLength: self.currentSize
           },
           success: function(response) {
             self.tableData = response.aaData;
             self.totalCount = response.iTotalDisplayRecords;
+            self.closeLoading();
           }
         });
       }
