@@ -24,15 +24,42 @@
             :model="formInline"
             class="demo-form-inline"
           >
-            <el-form-item label="审批人">
-              <el-input v-model="formInline.user" placeholder="审批人"></el-input>
-            </el-form-item>
-            <el-form-item label="活动区域">
-              <el-select v-model="formInline.region" placeholder="活动区域">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
-              </el-select>
-            </el-form-item>
+            <template v-for="column in this.cfg.columns">
+              <el-form-item
+                v-if="column.isSearch&&column.type=='combox'"
+                :key="column.name"
+                :label="column.title+' :'"
+              >
+                <el-select v-model="formInline[column.name]">
+                  <el-option
+                    v-for="item in column.data"
+                    :key="item.id"
+                    :label="item.value"
+                    :value="item.id"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item
+                v-else-if="column.isSearch&&column.type=='timer'"
+                :key="column.name"
+                :label="column.title+' :'"
+              >
+                <el-date-picker
+                  v-model="formInline[column.name]"
+                  type="daterange"
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                ></el-date-picker>
+              </el-form-item>
+              <el-form-item
+                v-else-if="column.isSearch"
+                :key="column.name"
+                :label="column.title+' :'"
+              >
+                <el-input v-model="formInline[column.name]"></el-input>
+              </el-form-item>
+            </template>
             <el-form-item>
               <el-button type="primary" @click="onSubmit">查询</el-button>
             </el-form-item>
@@ -147,4 +174,10 @@ export default {
 };
 </script>
 <style>
+label {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 0px;
+  font-weight: normal;
+}
 </style>
