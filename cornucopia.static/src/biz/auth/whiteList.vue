@@ -1,5 +1,5 @@
 <template>
- <list :cfg="cfg"></list>
+ <listV2 :cfg="cfg"></listV2>
 </template>
 <script>
 export default {
@@ -40,7 +40,14 @@ export default {
                 id: "0",
                 value: "否"
               }
-            ]
+            ],
+            formatter: function(data) {
+              if (data.isEnabled) {
+                return '<center><i class="fa fa-fw fa-check-circle"></i></center>';
+              } else {
+                return '<center><i class="el-icon-close"></i></center>';
+              }
+            }
           },
           {
             title: "Url",
@@ -48,7 +55,14 @@ export default {
           },
           {
             title: "类型",
-            name: "type"
+            name: "type",
+            formatter: function(data) {
+              if (data.type==1) {
+                return '<center><div class="label label-success">需要登陆</div></center>';
+              } else {
+                return '<center><div class="label label-warning">不需要登陆</div></center>';
+              }
+            }
           }
           ,
             {

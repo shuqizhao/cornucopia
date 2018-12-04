@@ -63,7 +63,7 @@
             </template>
             <el-form-item>
               <el-button type="primary" @click="onSubmit">查询</el-button>
-              <el-button type="primary" @click="onSubmit" native-type="reset">重置</el-button>
+              <el-button type="primary" native-type="reset">重置</el-button>
             </el-form-item>
             <el-form-item v-if="this.cfg.functions">
               <el-button-group>
@@ -179,10 +179,7 @@ export default {
   data() {
     var self = this;
     return {
-      formInline: {
-        user: "",
-        region: ""
-      },
+      formInline: {},
       dialogVisible: false,
       currentComponent: "",
       tableData: [],
@@ -194,7 +191,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log("submit!");
+      this.fillData();
     },
     handleSizeChange(val) {
       this.currentSize = val;
@@ -215,8 +212,9 @@ export default {
         self.post({
           url: listUrl,
           data: {
-            iDisplayStart: (self.currentPage-1)*self.currentSize,
-            iDisplayLength: self.currentSize
+            iDisplayStart: (self.currentPage - 1) * self.currentSize,
+            iDisplayLength: self.currentSize,
+            sSearch: JSON.stringify(self.formInline)
           },
           success: function(response) {
             self.tableData = response.aaData;
