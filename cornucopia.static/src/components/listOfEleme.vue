@@ -274,7 +274,7 @@ export default {
               }
               form.submit();
             } else {
-            debugger;
+              debugger;
 
               self.post({
                 url: c.url,
@@ -305,6 +305,10 @@ export default {
             }
           })
           .catch(e => {
+            self.$message({
+              message: e + "！",
+              type: "error"
+            });
             console.log(e);
           });
       }
