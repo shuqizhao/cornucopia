@@ -45,7 +45,7 @@
                 :label="column.title+' :'"
               >
                 <el-date-picker
-                style="width:220px;"
+                  style="width:220px;"
                   v-model="formInline[column.name]"
                   type="daterange"
                   range-separator="至"
@@ -73,19 +73,21 @@
                     :key="c.text"
                     size="mini"
                     type="primary"
-                    :icon="c.icon"
-                    @click="onButtonClick"
+                    :icon="c.icon||getButtonIcon(c.functionName)"
+                    :url="c.url"
+                    :mode="c.mode"
+                    @click="onButtonClick(c,$event)"
                   >{{c.text}}</el-button>
                 </template>
               </el-button-group>
-              <el-dropdown split-button type="primary">更多操作
+              <el-dropdown @command="onButtonClick" split-button trigger="click" type="primary">更多操作
                 <el-dropdown-menu slot="dropdown">
                   <template v-for="m in this.cfg.functions.more">
                     <el-dropdown-item
                       v-if="showFunction(m.functionName)"
                       :key="m.text"
-                      :command="m.text"
-                      @click="onButtonClick"
+                      :icon="m.icon||getButtonIcon(m.functionName)"
+                      :command="m"
                     >{{m.text}}</el-dropdown-item>
                   </template>
                 </el-dropdown-menu>
@@ -97,6 +99,7 @@
       <!-- </div> -->
       <el-table
         :data="tableData"
+        @selection-change="handleSelectionChange"
         :size="this.cfg.size||'mini'"
         style="width: 100%"
         :height="this.cfg.height||'340'"
@@ -167,6 +170,7 @@ export default {
       dialogVisible: false,
       currentComponent: "",
       tableData: [],
+      multipleSelection: [],
       currentPage: 1,
       totalCount: 0
     };
@@ -180,6 +184,9 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
     },
     fillData() {
       var self = this;
@@ -198,8 +205,110 @@ export default {
         });
       }
     },
-    onButtonClick(e) {
-      console.log(e);
+    onButtonClick(c, e) {
+      var self = this;
+      if (c.mode == "navigate") {
+        self.$router.push({ path: c.url });
+        return;
+      } else if (c.mode == "modal") {
+        self.currentComponent = c.url;
+        self.dialogVisible = true;
+        return;
+      }
+      var tipMsg = $(e.currentTarget || e.$el).text();
+      var checks = self.multipleSelection;
+      if (c.mode != "skipcheck" && checks.length == 0) {
+        self.$message({
+          message: "请选择一条记录",
+          type: "warning"
+        });
+      } else {
+        var newTipMsg = "是否继续" + tipMsg + "?";
+        var tips = c.tips;
+        if (!tips) {
+          tips = newTipMsg;
+        }
+        self
+          .$confirm(tips, "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "info"
+          })
+          .then(() => {
+            var formData = [];
+            for (var i = 0; i < checks.length; i++) {
+              formData.push(checks[i][self.cfg.idName || "id"]);
+            }
+            // checks.each(function() {
+            //   var idValue = $(this).val();
+            //   debugger;
+            //   if (idValue != "on") {
+            //     formData.push($(this).val());
+            //   }
+            // });
+            // if(self.currentId){
+            //   formData.push(self.currentId)
+            // }
+            if (c.mode == "download") {
+              if (c.limitSelected) {
+                if (c.limitSelected < formData.length) {
+                  $.fn.message({
+                    msg: "只能下载" + c.limitSelected + "个对象！",
+                    type: "warning"
+                  });
+                  return;
+                }
+              }
+              var form = $("<form>");
+              form.attr("style", "display:none");
+              form.attr("target", "");
+              form.attr("method", "post");
+              form.attr("action", c.url);
+              for (var i = 0; i < formData.length; i++) {
+                var input1 = $("<input>");
+                input1.attr("type", "hidden");
+                input1.attr("name", "ids");
+                input1.attr("value", formData[i]);
+                $("body").append(form);
+                form.append(input1);
+              }
+              form.submit();
+            } else {
+            debugger;
+
+              self.post({
+                url: c.url,
+                traditional: true,
+                // dataType:'json',
+                data: { Ids: formData },
+                success: function(response) {
+                  if (c.onSuccess) {
+                    c.onSuccess(response);
+                  }
+                  if (response.code == 200) {
+                    // self.reloadSimpleData();
+                    // self.dataTable.draw(false);
+                    self.fillData();
+                    self.$message({
+                      message: "操作成功!",
+                      type: "success"
+                    });
+                    // self.currentId = "";
+                  } else {
+                    self.$message({
+                      message: response.message + "！",
+                      type: "error"
+                    });
+                  }
+                }
+              });
+            }
+          })
+          .catch(e => {
+            console.log(e);
+          });
+      }
+      console.log(e.currentTarget || e.$el);
     }
   }
 };

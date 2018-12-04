@@ -39,8 +39,8 @@ public class WhiteListController {
 	}
 
 	@RequestMapping(value = { "/disable" }, method = RequestMethod.POST)
-	public JsonResult<Integer> disable(@RequestParam(value = "Ids") int id) {
-		int result = WhiteListService.getInstance().disable(id);
+	public JsonResult<Integer> disable(@RequestParam(value = "Ids[]")int[] ids) {
+		int result = WhiteListService.getInstance().disable(ids[0]);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(result);
@@ -48,8 +48,8 @@ public class WhiteListController {
 	}
 
 	@RequestMapping(value = { "/enable" }, method = RequestMethod.POST)
-	public JsonResult<Integer> enable(@RequestParam(value = "Ids") int id) {
-		int result = WhiteListService.getInstance().enable(id);
+	public JsonResult<Integer> enable(@RequestParam(value = "Ids[]")int[] ids) {
+		int result = WhiteListService.getInstance().enable(ids[0]);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(result);

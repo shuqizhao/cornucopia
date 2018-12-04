@@ -57,7 +57,7 @@ export default {
           !self.getCookie(self.getGlobalData().LoginCookeName) &&
           self.isNeedWatch
         ) {
-          this.$confirm("登陆已过期, 是否继续?", "提示", {
+          self.$confirm("登陆已过期, 是否继续?", "提示", {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
             type: "warning"
@@ -66,7 +66,7 @@ export default {
               window.location.reload();
             })
             .catch(() => {
-              this.$message({
+              self.$message({
                 type: "info",
                 message: "已取消跳转"
               });
