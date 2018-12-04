@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-col :span="10"><tree  ref="tree" :cfg="cfg"></tree></el-col>
-    <el-col :span="14"><list ref="user" :cfg="cfgUser"></list></el-col>
+    <el-col :span="14"><listV2 ref="user" :cfg="cfgUser"></listV2></el-col>
   </el-row>
 </template>
 <script>
