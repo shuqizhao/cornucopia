@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top:-10px;margin-bottom:-30px;">
+  <div>
     <div class="box box-info" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
       <!-- <div v-if="this.cfg.title" class="box-header"> -->
       <div v-if="this.cfg.title" class="box-header">

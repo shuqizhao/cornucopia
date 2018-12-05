@@ -1,7 +1,7 @@
 <template>
   <el-row>
-    <el-col :span="10"><tree  ref="tree" :cfg="cfg"></tree></el-col>
-    <el-col :span="14"><listV2 ref="user" :cfg="cfgUser"></listV2></el-col>
+    <el-col :span="8"><tree  ref="tree" :cfg="cfg"></tree></el-col>
+    <el-col :span="16"><listV2 ref="user" :cfg="cfgUser"></listV2></el-col>
   </el-row>
 </template>
 <script>
@@ -67,13 +67,6 @@ export default {
             name: "orgId"
           }
         ],
-        fnRowCallback: function(row, data) {
-          if (data.isEnabled) {
-            $("td:eq(3)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
-          } else {
-            $("td:eq(3)", row).html('<i class="el-icon-close"></i>');
-          }
-        },
         idName: "id",
       },
       id: 0,
