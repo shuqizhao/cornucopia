@@ -1,7 +1,11 @@
 <template>
   <el-row>
-    <el-col :span="8"><tree  ref="tree" :cfg="cfg"></tree></el-col>
-    <el-col :span="16"><listV2 ref="user" :cfg="cfgUser"></listV2></el-col>
+    <el-col :span="8">
+      <tree ref="tree" :cfg="cfg"></tree>
+    </el-col>
+    <el-col :span="16">
+      <listV2 ref="user" :cfg="cfgUser"></listV2>
+    </el-col>
   </el-row>
 </template>
 <script>
@@ -32,18 +36,14 @@ export default {
       cfg: {
         // title: "组织机构",
         // parentTitle: "权限管理",
-        url:  "/auth/allOrg",
+        url: "/auth/allOrg",
+        hideCheckBox: true
       },
       cfgUser: {
-        // isShowSearchArea:"true",
-        scrollX: true,
-        scrollCollapse: true,
-        fixedColumns: {
-          leftColumns: 4
-        },
         // title: "用户管理",
         // parentTitle: "系统管理",
-        url:  "/user/list",
+        autoLoad:false,
+        url: "/user/list",
         columns: [
           {
             title: "用户名",
@@ -52,22 +52,26 @@ export default {
           },
           {
             title: "工号",
-            name: "personNumber",
-          },{
+            name: "personNumber"
+          },
+          {
             title: "职位",
             name: "jobId"
-          },{
+          },
+          {
             title: "工作邮箱",
             name: "email"
-          },{
+          },
+          {
             title: "所属上级",
             name: "managerId"
-          },{
+          },
+          {
             title: "所在部门",
             name: "orgId"
           }
         ],
-        idName: "id",
+        idName: "id"
       },
       id: 0,
       parainst: {}
@@ -76,13 +80,14 @@ export default {
   updated: function() {
     var self = this;
   },
-  methods: {
-    
-  }
+  methods: {}
 };
 </script>
 <style>
-/* .dataTables_filter {
-  margin-bottom: -40px;
-} */
+.el-dialog--center .el-dialog__body {
+    padding: 30px 20px;
+    color: #606266;
+    line-height: 24px;
+    font-size: 14px;
+}
 </style>

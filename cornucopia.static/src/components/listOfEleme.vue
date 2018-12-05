@@ -174,7 +174,15 @@ export default {
     }
   },
   mounted: function() {
-    this.fillData();
+    var isAutoLoad = true;
+    if (typeof this.cfg.autoLoad == "undefined") {
+      isAutoLoad = true;
+    } else {
+      isAutoLoad = this.cfg.autoLoad;
+    }
+    if (isAutoLoad) {
+      this.fillData();
+    }
   },
   data() {
     var self = this;

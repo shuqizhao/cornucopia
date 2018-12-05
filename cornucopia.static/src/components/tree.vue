@@ -1,48 +1,61 @@
 <template>
-<div class="box" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
-<div class="box-header">
-  <div v-if="this.cfg.title">
+  <div class="box box-info" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
+    <div class="box-header">
+      <div v-if="this.cfg.title">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item v-if="this.cfg.parentTitle"><i class="fa fa-dashboard"></i> 首页</el-breadcrumb-item>
-        <el-breadcrumb-item v-if="this.cfg.parentTitle">{{this.cfg.parentTitle}}</el-breadcrumb-item>
-        <el-breadcrumb-item>{{this.cfg.title}}</el-breadcrumb-item>
+          <el-breadcrumb-item v-if="this.cfg.parentTitle">
+            <i class="fa fa-dashboard"></i> 首页
+          </el-breadcrumb-item>
+          <el-breadcrumb-item v-if="this.cfg.parentTitle">{{this.cfg.parentTitle}}</el-breadcrumb-item>
+          <el-breadcrumb-item>{{this.cfg.title}}</el-breadcrumb-item>
         </el-breadcrumb>
-        <hr/>
-  <div>
-    <button v-for="item in cfg.functions" :key="item.text" @click="item.onClick" :class="'btn '+item.type+' btn-buttons '+item.icon" style="margin-right:10px;">{{item.text}}</button>
-  </div>
-  </div>
+        <hr>
+        <div>
+          <button
+            v-for="item in cfg.functions"
+            :key="item.text"
+            @click="item.onClick"
+            :class="'btn '+item.type+' btn-buttons '+item.icon"
+            style="margin-right:10px;"
+          >{{item.text}}</button>
+        </div>
+      </div>
 
-  <div class="box-tools pull-right">
-    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-    </button>
-    <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
-  </div>
-</div>
-  <div class="box-body">
-    <el-row v-if="this.cfg.filterType=='combox'">
-    <el-col :span="12"> <el-select v-if="this.cfg.option1Url" v-model="value1" @change="option1Change" filterable placeholder="请选择" >
-      <el-option
-        v-for="item in options1"
-        :key="item.id"
-        :label="item.name"
-        :value="item.id"
-        >
-      </el-option>
-    </el-select></el-col>
-    <el-col :span="12"> <el-select v-if="this.cfg.option2Url" v-model="value2" @change="option2Change" filterable placeholder="请选择">
-      <el-option
-        v-for="item in options2"
-        :key="item.id"
-        :label="item.name"
-        :value="item.id">
-      </el-option>
-    </el-select></el-col>
-  </el-row>
-  <el-input v-else placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
-  <el-tree
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+        </button>
+        <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+      </div>
+    </div>
+    <div class="box-body">
+      <el-row v-if="this.cfg.filterType=='combox'">
+        <el-col :span="12">
+          <el-select
+            v-if="this.cfg.option1Url"
+            v-model="value1"
+            @change="option1Change"
+            filterable
+            placeholder="请选择"
+          >
+            <el-option v-for="item in options1" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="12">
+          <el-select
+            v-if="this.cfg.option2Url"
+            v-model="value2"
+            @change="option2Change"
+            filterable
+            placeholder="请选择"
+          >
+            <el-option v-for="item in options2" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          </el-select>
+        </el-col>
+      </el-row>
+      <el-input v-else placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
+      <el-tree
         class="filter-tree"
-         node-key="id"
+        node-key="id"
         :data="data2"
         :highlight-current="true"
         :check-on-click-node="true"
@@ -54,20 +67,25 @@
         :filter-node-method="filterNode"
         :style="this.cfg.style||''"
         @node-click="onNodeClick"
-        ref="tree2">
+        ref="tree2"
+      >
+        <span class="custom-tree-node" slot-scope="{ node, data }">
+          <span>
+            <i :class="'fa '+data.icon"></i>
+            {{ node.label }}
+          </span>
+        </span>
+      </el-tree>
+    </div>
 
-          <span class="custom-tree-node" slot-scope="{ node, data }">
-          
-          <span><i :class="'fa '+data.icon"></i> {{ node.label }}</span>
-      </span>
-
-        </el-tree>
+    <el-dialog :visible.sync="dialogVisible" :width="this.cfg.dialogWidth">
+      <component
+        :isDialog="true"
+        style="margin-top:-40px;margin-bottom:-40px;"
+        v-bind:is="currentComponent"
+      ></component>
+    </el-dialog>
   </div>
-
-  <el-dialog :visible.sync="dialogVisible" :width="this.cfg.dialogWidth" >
-    <component :isDialog="true" style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
-  </el-dialog>
-</div>
 </template>
 <script>
 export default {
@@ -88,7 +106,7 @@ export default {
         return;
       }
       var url = self.cfg.url;
-      if (id||id==0) {
+      if (id || id == 0) {
         url += id;
         self.currentId = id;
       }
@@ -187,15 +205,15 @@ export default {
     option1Change: function(s1) {
       this.loadOption2Url(s1);
 
-      if(this.cfg.option1Change){
-        this.cfg.option1Change(s1)
+      if (this.cfg.option1Change) {
+        this.cfg.option1Change(s1);
       }
     },
     option2Change: function(s1) {
       this.loadUrl(1, s1);
 
-      if(this.cfg.option2Change){
-        this.cfg.option2Change(s1)
+      if (this.cfg.option2Change) {
+        this.cfg.option2Change(s1);
       }
     },
     setCheckedKeys: function(checkList) {
@@ -228,14 +246,14 @@ export default {
         this.cfg.onNodeClick(data);
       }
     },
-    clearOption1:function(){
+    clearOption1: function() {
       this.options1 = [];
     },
-    clearOption2:function(){
+    clearOption2: function() {
       this.options2 = [];
     },
-    clearData:function(){
-      this.data2 = []
+    clearData: function() {
+      this.data2 = [];
     }
   },
 
