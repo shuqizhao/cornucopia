@@ -44,7 +44,7 @@
           </el-select>
         </el-col>
       </el-row>
-      <el-input v-else placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
+      <el-input v-else placeholder="输入关键字进行过滤" size="mini" v-model="filterText"></el-input>
       <div class="box-tools pull-right">
         <!-- <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
         </button>-->
