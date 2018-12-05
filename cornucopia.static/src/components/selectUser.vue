@@ -6,6 +6,7 @@
     <el-col :span="16">
       <listV2 ref="user" :cfg="cfgUser"></listV2>
     </el-col>
+    
   </el-row>
 </template>
 <script>

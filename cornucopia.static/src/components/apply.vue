@@ -10,6 +10,7 @@
     <el-dialog append-to-body :visible.sync="dialogVisible" :center="true" :width="'65%'" title="选择用户">
       <component style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
        <span slot="footer" class="dialog-footer">
+        <hr/>
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>

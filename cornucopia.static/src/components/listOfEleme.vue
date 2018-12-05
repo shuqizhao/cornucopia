@@ -2,21 +2,21 @@
   <div>
     <div class="box box-info" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
       <!-- <div v-if="this.cfg.title" class="box-header"> -->
-      <div v-if="this.cfg.title" class="box-header">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
+      <div class="box-header" v-if="this.searchColumns.length!=0||this.cfg.title">
+        <el-breadcrumb v-if="this.cfg.title" separator-class="el-icon-arrow-right">
           <el-breadcrumb-item v-if="this.cfg.parentTitle">
             <i class="fa fa-dashboard"></i> 首页
           </el-breadcrumb-item>
           <el-breadcrumb-item v-if="this.cfg.parentTitle">{{this.cfg.parentTitle}}</el-breadcrumb-item>
           <el-breadcrumb-item>{{this.cfg.title}}</el-breadcrumb-item>
         </el-breadcrumb>
-        <div class="box-tools pull-right">
+        <div v-if="this.cfg.title" class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse">
             <i class="fa fa-minus"></i>
           </button>
           <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
         </div>
-        <hr>
+        <hr v-if="this.cfg.title">
         <slot>
           <el-form
             :inline="true"
@@ -24,7 +24,7 @@
             :model="formInline"
             class="demo-form-inline"
           >
-            <template v-for="column in this.cfg.columns">
+            <template v-for="column in this.searchColumns">
               <el-form-item
                 v-if="column.isSearch&&column.type=='combox'"
                 :key="column.name"
@@ -61,7 +61,7 @@
                 <el-input v-model="formInline[column.name]"></el-input>
               </el-form-item>
             </template>
-            <el-form-item>
+            <el-form-item v-if="this.searchColumns.length!=0">
               <el-button type="primary" @click="onSubmit">查询</el-button>
               <el-button type="primary" native-type="reset">重置</el-button>
             </el-form-item>
@@ -101,11 +101,11 @@
         :data="tableData"
         @selection-change="handleSelectionChange"
         :size="this.cfg.size||'mini'"
-        style="width: 100%"
+        :style="this.cfg.style||'width: 100%'"
         :height="this.cfg.height||'340'"
         :fixed="this.cfg.fixed||false"
-        border
-        stripe
+        :border="this.cfg.border||true"
+        :stripe="this.cfg.stripe||true"
         :fit="this.cfg.fit||true"
       >
         <el-table-column
@@ -174,6 +174,11 @@ export default {
     }
   },
   mounted: function() {
+    for (var i = 0; i < this.cfg.columns.length; i++) {
+      if (this.cfg.columns[i].isSearch) {
+        this.searchColumns.push(this.cfg.columns[i]);
+      }
+    }
     var isAutoLoad = true;
     if (typeof this.cfg.autoLoad == "undefined") {
       isAutoLoad = true;
@@ -187,6 +192,7 @@ export default {
   data() {
     var self = this;
     return {
+      searchColumns: [],
       formInline: {},
       dialogVisible: false,
       currentComponent: "",

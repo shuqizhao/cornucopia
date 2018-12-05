@@ -20,14 +20,6 @@
           >{{item.text}}</button>
         </div>
       </div>
-
-      <div class="box-tools pull-right">
-        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-        </button>
-        <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
-      </div>
-    </div>
-    <div class="box-body">
       <el-row v-if="this.cfg.filterType=='combox'">
         <el-col :span="12">
           <el-select
@@ -53,6 +45,13 @@
         </el-col>
       </el-row>
       <el-input v-else placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
+      <div class="box-tools pull-right">
+        <!-- <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+        </button>-->
+        <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+      </div>
+    </div>
+    <div class="box-body">
       <el-tree
         class="filter-tree"
         node-key="id"
