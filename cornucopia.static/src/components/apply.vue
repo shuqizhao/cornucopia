@@ -16,7 +16,6 @@
     >
       <component style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
       <span slot="footer" class="dialog-footer">
-        <hr>
         <el-button @click="onDialogBtnCancel">取 消</el-button>
         <el-button type="primary" @click="onDialogBtnOk">确 定</el-button>
       </span>

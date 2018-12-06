@@ -107,9 +107,10 @@
         :border="this.cfg.border||true"
         :stripe="this.cfg.stripe||true"
         :fit="this.cfg.fit||true"
+        ref="myListOfEleme"
       >
         <el-table-column
-          v-if="this.cfg.functions&&!this.cfg.hideCheckBox"
+          v-if="this.cfg.functions|| this.cfg.showCheckBox"
           type="selection"
           width="55"
         ></el-table-column>
@@ -141,6 +142,7 @@
         </template>
       </el-table>
       <el-pagination
+        size="mini"
         v-if="this.cfg.showPagination||true"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -217,6 +219,9 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
+      if(this.cfg.onRowSelected){
+        this.cfg.onRowSelected(val);
+      }
     },
     fillData(p) {
       var self = this;
@@ -350,6 +355,9 @@ export default {
     handleOperation(op, index, row) {
       var idName = (op.idName ? op.idName : this.cfg.idName) || "id";
       this.$router.push({ path: op.url + "?" + idName + "=" + row[idName] });
+    },
+    toggleRowSelection(r){
+      this.$refs.myListOfEleme.toggleRowSelection(r);
     }
   }
 };
