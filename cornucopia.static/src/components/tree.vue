@@ -63,6 +63,7 @@
         :indent="30"
         :default-expand-all="false"
         :show-checkbox="!this.cfg.hideCheckBox"
+        :expand-on-click-node="false"
         :filter-node-method="filterNode"
         :style="this.cfg.style||''"
         @node-click="onNodeClick"

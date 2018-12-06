@@ -7,18 +7,24 @@
     <comment ref="comments" :cfg="cfgComment"></comment>
     <buttonBar v-show="!isApprove" ref="submit" :cfg="cfgSubmit"></buttonBar>
     <buttonBar v-show="isApprove" ref="agree" :cfg="cfgAgree"></buttonBar>
-    <el-dialog append-to-body :visible.sync="dialogVisible" :center="true" :width="'65%'" title="选择用户">
+    <el-dialog
+      append-to-body
+      :visible.sync="dialogVisible"
+      :center="true"
+      :width="'65%'"
+      title="选择用户"
+    >
       <component style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
-       <span slot="footer" class="dialog-footer">
-        <hr/>
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      <span slot="footer" class="dialog-footer">
+        <hr>
+        <el-button @click="onDialogBtnCancel">取 消</el-button>
+        <el-button type="primary" @click="onDialogBtnOk">确 定</el-button>
       </span>
     </el-dialog>
     <fab
       v-show="this.$route.query.showDiagram&&this.fabActions.length>0"
       :position="position"
-      :toggle-when-away='true'
+      :toggle-when-away="true"
       :start-opened="false"
       :actions="fabActions"
       :bg-color="bgColor"
@@ -29,13 +35,21 @@
 </template>
 <script>
 import fab from "vue-fab";
-import selectUser from "./selectUser.vue"
+import selectUser from "./selectUser.vue";
 export default {
   components: {
     fab,
     selectUser
   },
   methods: {
+    onDialogBtnCancel: function() {
+      this.dialogVisible = false;
+      this.currentComponent = "";
+    },
+    onDialogBtnOk: function() {
+      this.dialogVisible = false;
+      this.currentComponent = "";
+    },
     buildFabButtons: function(processInstAuth) {
       if (processInstAuth.preSign == 1) {
         this.fabActions.push({
@@ -68,7 +82,7 @@ export default {
     },
     preSign() {
       this.dialogVisible = true;
-      this.currentComponent=selectUser;
+      this.currentComponent = selectUser;
     },
     afterSign() {
       this.dialogVisible = true;

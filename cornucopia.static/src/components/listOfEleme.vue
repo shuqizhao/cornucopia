@@ -228,7 +228,7 @@ export default {
           data: {
             iDisplayStart: (self.currentPage - 1) * self.currentSize,
             iDisplayLength: self.currentSize,
-            sSearch: JSON.stringify(self.formInline)
+            sSearch: JSON.stringify($.extend(self.formInline, p))
           },
           success: function(response) {
             self.tableData = response.aaData;
