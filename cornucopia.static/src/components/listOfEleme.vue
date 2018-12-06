@@ -114,6 +114,15 @@
           type="selection"
           width="55"
         ></el-table-column>
+        <el-table-column v-if="this.cfg.showRadio" label="#" width="35">
+          <template slot-scope="scope">
+            <el-radio
+              v-model="radio"
+              :label="scope.row.id"
+              @change.native="handleRadioSelectionChange(scope.row)"
+            ></el-radio>
+          </template>
+        </el-table-column>
         <el-table-column v-if="cfg.operations" label="操作" :fixed="true">
           <template slot-scope="scope">
             <el-button
@@ -151,6 +160,7 @@
         :page-size="currentSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="totalCount"
+        :pager-count="this.cfg.pagerCount||5"
       ></el-pagination>
     </div>
     <el-dialog
@@ -194,6 +204,7 @@ export default {
   data() {
     var self = this;
     return {
+      radio: "",
       searchColumns: [],
       formInline: {},
       dialogVisible: false,
@@ -219,8 +230,15 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      if(this.cfg.onRowSelected){
+      if (this.cfg.onRowSelected) {
         this.cfg.onRowSelected(val);
+      }
+    },
+    handleRadioSelectionChange(val) {
+      this.multipleSelection = [];
+      this.multipleSelection.push(val);
+      if (this.cfg.onRowSelected) {
+        this.cfg.onRowSelected(this.multipleSelection);
       }
     },
     fillData(p) {
@@ -356,7 +374,7 @@ export default {
       var idName = (op.idName ? op.idName : this.cfg.idName) || "id";
       this.$router.push({ path: op.url + "?" + idName + "=" + row[idName] });
     },
-    toggleRowSelection(r){
+    toggleRowSelection(r) {
       this.$refs.myListOfEleme.toggleRowSelection(r);
     }
   }

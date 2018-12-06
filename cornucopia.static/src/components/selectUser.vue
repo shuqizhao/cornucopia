@@ -44,6 +44,7 @@ export default {
     var self = this;
     return {
       selectedTableData: [],
+      single: true,
       cfg: {
         url: "/auth/allOrg",
         hideCheckBox: true,
@@ -55,7 +56,8 @@ export default {
       },
       cfgUser: {
         autoLoad: false,
-        showCheckBox: true,
+        showRadio: true,
+        showCheckBox: false,
         height: "270px",
         url: "/user/list",
         columns: [
@@ -101,7 +103,11 @@ export default {
     selectedHandleDelete: function(i, r) {
       var index = this.getIndexWithArr(this.selectedTableData, r);
       this.selectedTableData.splice(index, 1);
-      this.$refs.user.toggleRowSelection(r);
+      if (this.single) {
+        this.$refs.user.radio = "";
+      } else {
+        this.$refs.user.toggleRowSelection(r);
+      }
     },
     getIndexWithArr: function(_arr, _obj) {
       var len = _arr.length;

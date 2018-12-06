@@ -14,7 +14,7 @@
       :width="'65%'"
       title="选择员工"
     >
-      <component style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
+      <component ref="myApplyCompent" style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
       <span slot="footer" class="dialog-footer">
         <el-button @click="onDialogBtnCancel">取 消</el-button>
         <el-button type="primary" @click="onDialogBtnOk">确 定</el-button>
@@ -46,8 +46,16 @@ export default {
       this.currentComponent = "";
     },
     onDialogBtnOk: function() {
-      this.dialogVisible = false;
-      this.currentComponent = "";
+      var selectedTableData = this.$refs.myApplyCompent.selectedTableData;
+      if (selectedTableData.length == 0) {
+         this.$message({
+          message: "未选择员工",
+          type: "warning"
+        });
+      } else {
+        this.dialogVisible = false;
+        this.currentComponent = "";
+      }
     },
     buildFabButtons: function(processInstAuth) {
       if (processInstAuth.preSign == 1) {
