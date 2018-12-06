@@ -12,7 +12,7 @@
       :visible.sync="dialogVisible"
       :center="true"
       :width="'65%'"
-      title="选择用户"
+      title="选择员工"
     >
       <component style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
       <span slot="footer" class="dialog-footer">
