@@ -11,6 +11,7 @@ import cornucopia.model.ApplicantViewModel;
 import cornucopia.model.IdNameModel;
 import cornucopia.model.TransferViewModel;
 import cornucopia.model.UserModPwdViewModel;
+import cornucopia.model.UserSearchViewModel;
 import cornucopia.util.MyBatisHelper;
 import cornucopia.util.PagingParameters;
 
@@ -36,8 +37,8 @@ public class UserService {
 		return userEntity;
 	}
 
-	public List<UserEntity> getUsersByPage(PagingParameters pp) {
-		return userdao.getUsersByPage(pp);
+	public List<UserEntity> getUsersByPage(PagingParameters pp,UserSearchViewModel urvm) {
+		return userdao.getUsersByPage(pp,urvm);
 	}
 
 	public UserEntity getUser(int id) {

@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.alibaba.fastjson.JSON;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +15,7 @@ import cornucopia.entity.JsonResult;
 import cornucopia.entity.UserEntity;
 import cornucopia.model.ApplicantViewModel;
 import cornucopia.model.TransferViewModel;
+import cornucopia.model.UserSearchViewModel;
 import cornucopia.service.UserService;
 import cornucopia.util.DataTableParameter;
 import cornucopia.util.DataTableResult;
@@ -28,7 +31,8 @@ public class UserController {
 		pp.setStart(dtp.getiDisplayStart());
 		pp.setLength(dtp.getiDisplayLength());
 		pp.setTotalRows(0);
-		List<UserEntity> users = UserService.getInstance().getUsersByPage(pp);
+		UserSearchViewModel usvm = JSON.parseObject(dtp.getsSearch(), UserSearchViewModel.class);
+		List<UserEntity> users = UserService.getInstance().getUsersByPage(pp,usvm);
 		int count = pp.getTotalRows();
 		DataTableResult<UserEntity> dtr = new DataTableResult<UserEntity>(dtp.getsEcho() + 1, count, count, users);
 		return dtr;

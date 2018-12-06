@@ -13,15 +13,16 @@ import org.apache.ibatis.mapping.StatementType;
 import cornucopia.entity.UserEntity;
 import cornucopia.model.ApplicantViewModel;
 import cornucopia.model.UserModPwdViewModel;
+import cornucopia.model.UserSearchViewModel;
 import cornucopia.util.PagingParameters;
 
 public interface UserDao {
 	@Select("call sp_user_login(#{un},#{pwd})")
 	public UserEntity getUserEntity(@Param("un") String un, @Param("pwd") String pwd);
 
-	@Select("call sp_user_get_by_page(#{pp.start},#{pp.length},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
+	@Select("call sp_user_get_by_page(#{pp.start},#{pp.length},#{usvm.orgId},#{usvm.name},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
 	@Options(statementType = StatementType.CALLABLE)
-	public List<UserEntity> getUsersByPage(@Param("pp") PagingParameters pp);
+	public List<UserEntity> getUsersByPage(@Param("pp") PagingParameters pp,@Param("usvm")UserSearchViewModel usvm);
 
 	@Select("call sp_user_get(#{userId})")
 	public UserEntity getUser(@Param("userId") int id);
