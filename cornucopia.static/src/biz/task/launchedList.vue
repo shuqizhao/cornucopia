@@ -1,12 +1,12 @@
 <template>
   <listV2 :cfg="cfg">
     <template slot="header">
-      <b>{{cfg.title}}</b>
+      <b>{{cfg.title+'(16)'}}</b>
       <el-badge :value="12" class="item">
-        <el-tag style="margin-left:10px;" plain size="mini">财务类</el-tag>
+        <el-tag style="margin-left:10px;" plain size="mini">财务类(5)</el-tag>
       </el-badge>
       <el-badge :value="12" class="item">
-        <el-tag style="margin-left:10px;" plain size="mini">人事类</el-tag>
+        <el-tag style="margin-left:10px;" plain size="mini">人事类(11)</el-tag>
       </el-badge>
       <hr>
       <el-badge :value="12" class="item">
@@ -74,7 +74,7 @@ export default {
             name: "status"
           },
           {
-            title: "单号",
+            title: "申请单号",
             name: "formCode",
             isSearch: true,
             formatter: function(data) {
@@ -92,37 +92,32 @@ export default {
             }
           },
           {
-            title: "流程类型",
-            name: "processName",
-            isSearch: true,
-            type: "combox",
-            data: []
+            title: "发起日期",
+            name: "createTime"
+          },
+           {
+            title: "完成日期",
+            name: "createTime"
+          },
+           {
+            title: "召回状态",
+            name: "status"
           },
           {
             title: "流程状态",
             name: "status"
           },
-          // {
-          //   title: "发起人",
-          //   name: "createName"
-          // },
-          // {
-          //   title: "发起时间",
-          //   name: "createTime"
-          // },
           {
-            title: "最新审批步骤",
+            title: "当前审批信息",
+            name: "createName"
+          },
+          {
+            title: "流程ID",
+            name: "createTime"
+          },
+          {
+            title: "流程图",
             name: "stepName"
-          },
-          {
-            title: "最新审批人",
-            name: "updateName"
-          },
-          {
-            title: "最新操作时间",
-            name: "updateTime",
-            isSearch: true,
-            type: "timer"
           }
         ],
         idName: "id"
