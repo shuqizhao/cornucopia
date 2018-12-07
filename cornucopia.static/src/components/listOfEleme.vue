@@ -3,19 +3,21 @@
     <div class="box box-info" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
       <!-- <div v-if="this.cfg.title" class="box-header"> -->
       <div class="box-header" v-if="this.searchColumns.length!=0||this.cfg.title">
-        <el-breadcrumb v-if="this.cfg.title" separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item v-if="this.cfg.parentTitle">
-            <i class="fa fa-dashboard"></i> 首页
-          </el-breadcrumb-item>
-          <el-breadcrumb-item v-if="this.cfg.parentTitle">{{this.cfg.parentTitle}}</el-breadcrumb-item>
-          <el-breadcrumb-item>{{this.cfg.title}}</el-breadcrumb-item>
-        </el-breadcrumb>
-        <div v-if="this.cfg.title" class="box-tools pull-right">
-          <button type="button" class="btn btn-box-tool" data-widget="collapse">
-            <i class="fa fa-minus"></i>
-          </button>
-          <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
-        </div>
+        <slot name="header">
+          <el-breadcrumb v-if="this.cfg.title" separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item v-if="this.cfg.parentTitle">
+              <i class="fa fa-dashboard"></i> 首页
+            </el-breadcrumb-item>
+            <el-breadcrumb-item v-if="this.cfg.parentTitle">{{this.cfg.parentTitle}}</el-breadcrumb-item>
+            <el-breadcrumb-item>{{this.cfg.title}}</el-breadcrumb-item>
+          </el-breadcrumb>
+          <div v-if="this.cfg.title" class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+              <i class="fa fa-minus"></i>
+            </button>
+            <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+          </div>
+        </slot>
         <hr v-if="this.cfg.title">
         <slot>
           <el-form
@@ -389,5 +391,8 @@ label {
 }
 .el-date-editor .el-range-separator {
   width: 20px;
+}
+hr {
+  margin: 10px;
 }
 </style>

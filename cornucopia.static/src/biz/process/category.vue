@@ -1,5 +1,5 @@
 <template>
-  <list :cfg="cfg"></list>
+  <listV2 :cfg="cfg"></listV2>
 </template>
 <script>
 export default {
@@ -35,7 +35,14 @@ export default {
                 id: "0",
                 value: "否"
               }
-            ]
+            ],
+            formatter:function(data){
+               if (data.isEnabled) {
+                return '<i class="fa fa-fw fa-check-circle"></i>';
+              } else {
+                return '<i class="el-icon-close"></i>';
+              }
+            }
           },
            {
             title: "图标",

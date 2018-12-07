@@ -1,15 +1,43 @@
 <template>
   <listV2 :cfg="cfg">
+    <template slot="header">
+      <b>{{cfg.title}}</b>
+      <el-badge :value="12" class="item">
+        <el-tag style="margin-left:10px;" plain size="mini">财务类</el-tag>
+      </el-badge>
+      <el-badge :value="12" class="item">
+        <el-tag style="margin-left:10px;" plain size="mini">人事类</el-tag>
+      </el-badge>
+      <hr>
+      <el-badge :value="12" class="item">
+        <el-tag style="margin-left:10px;" plain size="mini">财务类</el-tag>
+      </el-badge>
+      <el-badge :value="12" class="item">
+        <el-tag style="margin-left:10px;" plain size="mini">人事类</el-tag>
+      </el-badge>
+    </template>
     <template>
-        <el-badge :value="12" class="item">
-          <el-button type="success" plain  size="small">固定资产报废流程</el-button>
-        </el-badge>
-        <el-badge :value="12" class="item">
-          <el-button type="success" plain  size="small">固定资产报废流程</el-button>
-        </el-badge>
-      </template>
+      <el-input
+        style="width:35%"
+        size="mini"
+        placeholder="查询条件"
+        v-model="inputSearch"
+        class="input-with-select"
+      >
+        <el-select v-model="selectSearch" size="mini" slot="prepend" placeholder="查询列">
+          <el-option label="申请单号" value="1"></el-option>
+          <el-option label="状态" value="2"></el-option>
+          <el-option label="发起日期" value="3"></el-option>
+          <el-option label="完成日期" value="4"></el-option>
+          <el-option label="流程状态" value="5"></el-option>
+          <el-option label="召回状态" value="6"></el-option>
+          <el-option label="当前审批信息" value="7"></el-option>
+          <el-option label="流程ID" value="8"></el-option>
+        </el-select>
+        <el-button slot="append" size="mini" icon="el-icon-search"></el-button>
+      </el-input>
+    </template>
   </listV2>
-  <!-- <list :cfg="cfg"></list> -->
 </template>
 <script>
 export default {
@@ -32,6 +60,9 @@ export default {
   data() {
     var self = this;
     return {
+      inputSearch: "",
+      selectSearch: "",
+      processCategory: [],
       cfg: {
         // isShowSearchArea:"true",
         scrollCollapse: true,
@@ -39,9 +70,12 @@ export default {
         url: "/process/launchedList",
         columns: [
           {
+            title: "状态",
+            name: "status"
+          },
+          {
             title: "单号",
             name: "formCode",
-            fixed: true,
             isSearch: true,
             formatter: function(data) {
               var f =
@@ -91,50 +125,18 @@ export default {
             type: "timer"
           }
         ],
-        fnRowCallback: function(row, data) {
-          $("td:eq(0)", row).html(
-            '<a target="_blank" href="#/' +
-              data.url +
-              "?processId=" +
-              data.processId +
-              "&id=" +
-              data.id +
-              '&showDiagram=1">' +
-              data.formCode +
-              "</a>"
-          );
-        },
         idName: "id"
-        // functions: {
-        //   more: [
-        //     {
-        //       text: "停用",
-        //       url:  "/user/disable",
-        //       functionName:'userDisable'
-        //     },
-        //     {
-        //       text: "启用",
-        //       url:  "/user/enable",
-        //       functionName:'userEnable'
-        //     }
-        //   ],
-        // common: [
-        //   {
-        //     text: "添加用户",
-        //     url: "/auth/userAdd",
-        //     mode: "navigate",
-        //     functionName:'userAdd'
-        //   }
-        // ]
-        // },
-        // operations: [
-        //   {
-        //     text: "查看",
-        //     url: "/auth/userView"
-        //   }
-        // ]
       }
     };
   }
 };
 </script>
+<style>
+.el-select .el-input {
+  width: 130px;
+}
+.input-with-select .el-input-group__prepend {
+  background-color: #fff;
+}
+
+</style>
