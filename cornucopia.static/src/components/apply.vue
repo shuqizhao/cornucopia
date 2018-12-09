@@ -50,12 +50,16 @@ export default {
   },
   methods: {
     doAction: function(action, userId, processDataId) {
-      this.post({
+      var self = this;
+      self.post({
         url: "/process/doAction",
         data: { action: action, userId: userId, processDataId: processDataId },
         success: function(response) {
           if (response.code == 200) {
-            this.$message("成功.");
+            self.$message({
+              type: "success",
+              message: "成功!"
+            });
           }
         }
       });
@@ -95,10 +99,6 @@ export default {
               selectedTableData[0].id,
               this.$route.query.id
             );
-            this.$message({
-              type: "success",
-              message: "删除成功!"
-            });
           })
           .catch(e => {
             console.log(e);

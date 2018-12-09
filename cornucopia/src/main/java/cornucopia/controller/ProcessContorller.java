@@ -22,6 +22,7 @@ import cornucopia.entity.ProcessDataEntity;
 import cornucopia.entity.ProcessEntity;
 import cornucopia.entity.ProcessInstDiagramEntity;
 import cornucopia.entity.UserEntity;
+import cornucopia.model.DoActionViewModel;
 import cornucopia.model.ProcessDataViewModel;
 import cornucopia.model.ProcessInstAuthViewModel;
 import cornucopia.service.OrderService;
@@ -336,6 +337,22 @@ public class ProcessContorller {
 		JsonResult<List<ProcessInstAuthViewModel>> jr = new JsonResult<List<ProcessInstAuthViewModel>>();
 		jr.setCode(200);
 		jr.setData(auths);
+		return jr;
+	}
+
+	@Transactional(rollbackFor = Exception.class)
+	@RequestMapping(value = { "/doAction" }, method = RequestMethod.POST)
+	public JsonResult<Integer> doAction(HttpServletRequest request,DoActionViewModel davm)
+			throws DocumentException, UnsupportedEncodingException {
+		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		if (1==1) {
+			jr.setCode(200);
+			jr.setData(1);
+		} else {
+			jr.setCode(500);
+			jr.setMessage("没有权限");
+		}
 		return jr;
 	}
 }
