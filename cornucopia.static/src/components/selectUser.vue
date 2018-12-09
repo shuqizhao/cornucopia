@@ -3,10 +3,10 @@
     <el-col :span="5">
       <tree ref="tree" :cfg="cfg"></tree>
     </el-col>
-    <el-col :span="13">
+    <el-col :span="14">
       <listV2 ref="user" :cfg="cfgUser"></listV2>
     </el-col>
-    <el-col :span="6">
+    <el-col :span="5">
       <div class="box box-info" :style="this.cfg.boxStyle?this.cfg.boxStyle:''">
         <div class="box-header">已选择列表</div>
         <el-table :data="selectedTableData" style="width: 100%;" height="290px">

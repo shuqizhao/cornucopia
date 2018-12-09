@@ -8,13 +8,18 @@
     <buttonBar v-show="!isApprove" ref="submit" :cfg="cfgSubmit"></buttonBar>
     <buttonBar v-show="isApprove" ref="agree" :cfg="cfgAgree"></buttonBar>
     <el-dialog
+      ref="applyDialog"
       append-to-body
       :visible.sync="dialogVisible"
       :center="true"
       :width="'65%'"
-      title="选择员工"
+      :title="applyDialogTitle"
     >
-      <component ref="myApplyCompent" style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
+      <component
+        ref="myApplyCompent"
+        style="margin-top:-40px;margin-bottom:-40px;"
+        v-bind:is="currentComponent"
+      ></component>
       <span slot="footer" class="dialog-footer">
         <el-button @click="onDialogBtnCancel">取 消</el-button>
         <el-button type="primary" @click="onDialogBtnOk">确 定</el-button>
@@ -28,7 +33,10 @@
       :actions="fabActions"
       :bg-color="bgColor"
       main-tooltip="更多..."
-      @preSign="preSign"
+      @preSign="onPreSign"
+      @afterSign="onAfterSign"
+      @transfer="onTransfer"
+      @modify="onModify"
     ></fab>
   </div>
 </template>
@@ -41,6 +49,17 @@ export default {
     selectUser
   },
   methods: {
+    doAction: function(action, userId, processDataId) {
+      this.post({
+        url: "/process/doAction",
+        data: { action: action, userId: userId, processDataId: processDataId },
+        success: function(response) {
+          if (response.code == 200) {
+            this.$message("成功.");
+          }
+        }
+      });
+    },
     onDialogBtnCancel: function() {
       this.dialogVisible = false;
       this.currentComponent = "";
@@ -48,13 +67,42 @@ export default {
     onDialogBtnOk: function() {
       var selectedTableData = this.$refs.myApplyCompent.selectedTableData;
       if (selectedTableData.length == 0) {
-         this.$message({
+        this.$message({
           message: "未选择员工",
           type: "warning"
         });
       } else {
         this.dialogVisible = false;
         this.currentComponent = "";
+        var messsage = "";
+        if (this.currentAction == "preSign") {
+          messsage = "前加签";
+        } else if (this.currentAction == "afterSign") {
+          messsage = "后加签";
+        } else if (this.currentAction == "transfer") {
+          messsage = "转办";
+        } else if (this.currentAction == "modify") {
+          messsage = "申请人修订";
+        }
+        this.$confirm("确认要『" + messsage + "』吗, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            this.doAction(
+              this.currentAction,
+              selectedTableData[0].id,
+              this.$route.query.id
+            );
+            this.$message({
+              type: "success",
+              message: "删除成功!"
+            });
+          })
+          .catch(e => {
+            console.log(e);
+          });
       }
     },
     buildFabButtons: function(processInstAuth) {
@@ -87,18 +135,29 @@ export default {
         });
       }
     },
-    preSign() {
+    onPreSign() {
       this.dialogVisible = true;
       this.currentComponent = selectUser;
+      this.currentAction = "preSign";
+      this.applyDialogTitle = "选择员工进行『前加签』操作";
     },
-    afterSign() {
+    onAfterSign() {
       this.dialogVisible = true;
+      this.currentComponent = selectUser;
+      this.currentAction = "afterSign";
+      this.applyDialogTitle = "选择员工进行『后加签』操作";
     },
-    modify() {
+    onModify() {
       this.dialogVisible = true;
+      this.currentComponent = selectUser;
+      this.currentAction = "modify";
+      this.applyDialogTitle = "选择员工进行『申请人修订』操作";
     },
-    transfer() {
+    onTransfer() {
       this.dialogVisible = true;
+      this.currentComponent = selectUser;
+      this.currentAction = "transfer";
+      this.applyDialogTitle = "选择员工进行『转办』操作";
     },
     getBizData: function(processId, dataId, processInstAuth) {
       let self = this;
@@ -217,6 +276,7 @@ export default {
       dialogVisible: false,
       currentComponent: "",
       processInstAuth: {},
+      currentAction: "",
       cfgApprove: {
         title: "单据信息",
         detailTitle: "单据信息",
@@ -476,7 +536,8 @@ export default {
       },
       bgColor: "#194D33",
       position: "bottom-right",
-      fabActions: []
+      fabActions: [],
+      applyDialogTitle: "选择员工"
     };
   }
 };
