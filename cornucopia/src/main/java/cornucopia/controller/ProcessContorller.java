@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
+import cornucopia.entity.ProcessApproveEntity;
 import cornucopia.entity.ProcessCategoryEntity;
 import cornucopia.entity.ProcessDataEntity;
 import cornucopia.entity.ProcessEntity;
@@ -26,6 +27,7 @@ import cornucopia.model.DoActionViewModel;
 import cornucopia.model.ProcessDataViewModel;
 import cornucopia.model.ProcessInstAuthViewModel;
 import cornucopia.service.OrderService;
+import cornucopia.service.ProcessApproveService;
 import cornucopia.service.ProcessCategoryService;
 import cornucopia.service.ProcessDataHistoryService;
 import cornucopia.service.ProcessDataService;
@@ -58,8 +60,8 @@ public class ProcessContorller {
 	}
 
 	@RequestMapping(value = { "/exists" }, method = RequestMethod.POST)
-	public JsonResult<Integer> exists(int id,String name,String pre) {
-		int isExists = ProcessService.getInstance().exists(id,name,pre);
+	public JsonResult<Integer> exists(int id, String name, String pre) {
+		int isExists = ProcessService.getInstance().exists(id, name, pre);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(isExists);
@@ -82,7 +84,7 @@ public class ProcessContorller {
 	}
 
 	@RequestMapping(value = { "/update" }, method = RequestMethod.POST)
-	public JsonResult<Integer> update(HttpServletRequest request,ProcessEntity processEntity) {
+	public JsonResult<Integer> update(HttpServletRequest request, ProcessEntity processEntity) {
 		UserEntity userEntity = (UserEntity) request.getSession().getAttribute("user");
 		int userId = 0;
 		if (userEntity != null) {
@@ -142,7 +144,7 @@ public class ProcessContorller {
 
 	@Transactional(rollbackFor = Exception.class)
 	@RequestMapping(value = { "/applySave" }, method = RequestMethod.POST)
-	public JsonResult<Integer> applySave(HttpServletRequest request,@RequestBody  ProcessDataViewModel pdvm)
+	public JsonResult<Integer> applySave(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {
 		ProcessDataEntity processDataEntity = new ProcessDataEntity();
 		processDataEntity.setJsonData(pdvm.getJsonStr());
@@ -168,6 +170,14 @@ public class ProcessContorller {
 		ProcessService.getInstance().StartProcess(processDataEntity);
 		processDataEntity.setStepName("发起申请");
 		int result = ProcessDataService.getInstance().insert(processDataEntity);
+		ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
+		processApproveEntity.setCreateBy(user.getId());
+		processApproveEntity.setProcessId(processDataEntity.getProcessId());
+		processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
+		processApproveEntity.setProcessDataId(processDataEntity.getId());
+		processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
+		processApproveEntity.setStepName(processDataEntity.getStepName());
+		ProcessApproveService.getInstance().insert(processApproveEntity);
 		ProcessDataHistoryService.getInstance().insert(processDataEntity);
 		ProcessService.getInstance().buildProcessInstDiagram(processDataEntity);
 		// XmlUtil.createElementForPd(processDataEntity, "//approve", "pdId",
@@ -181,7 +191,7 @@ public class ProcessContorller {
 
 	@Transactional(rollbackFor = Exception.class)
 	@RequestMapping(value = { "/applyAgree" }, method = RequestMethod.POST)
-	public JsonResult<Integer> applyAgree(HttpServletRequest request,@RequestBody  ProcessDataViewModel pdvm)
+	public JsonResult<Integer> applyAgree(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {
 		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//fromCode");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
@@ -196,7 +206,17 @@ public class ProcessContorller {
 		if (auths != null && auths.size() > 0) {
 			ProcessService.getInstance().Complete(processDataEntity);
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
-			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(), processDataEntity.getLevelCount());
+			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
+					processDataEntity.getLevelCount());
+			ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
+			processApproveEntity.setCreateBy(user.getId());
+			processApproveEntity.setProcessId(processDataEntity.getProcessId());
+			processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
+			processApproveEntity.setProcessDataId(processDataEntity.getId());
+			processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
+			processApproveEntity.setStepName(processDataEntity.getStepName());
+			ProcessApproveService.getInstance().insert(processApproveEntity);
+			ProcessDataHistoryService.getInstance().insert(processDataEntity);
 			int result = ProcessDataService.getInstance().update(processDataEntity);
 			jr.setCode(200);
 			jr.setData(result);
@@ -209,7 +229,7 @@ public class ProcessContorller {
 
 	@Transactional(rollbackFor = Exception.class)
 	@RequestMapping(value = { "/applyRetry" }, method = RequestMethod.POST)
-	public JsonResult<Integer> applyRetry(HttpServletRequest request,@RequestBody  ProcessDataViewModel pdvm)
+	public JsonResult<Integer> applyRetry(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {
 		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//fromCode");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
@@ -228,6 +248,15 @@ public class ProcessContorller {
 			processDataEntity.setStepName("重发起");
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(), 0);
+			ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
+			processApproveEntity.setCreateBy(user.getId());
+			processApproveEntity.setProcessId(processDataEntity.getProcessId());
+			processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
+			processApproveEntity.setProcessDataId(processDataEntity.getId());
+			processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
+			processApproveEntity.setStepName(processDataEntity.getStepName());
+			ProcessApproveService.getInstance().insert(processApproveEntity);
+			ProcessDataHistoryService.getInstance().insert(processDataEntity);
 			int result = ProcessDataService.getInstance().update(processDataEntity);
 			jr.setCode(200);
 			jr.setData(result);
@@ -240,7 +269,7 @@ public class ProcessContorller {
 
 	@Transactional(rollbackFor = Exception.class)
 	@RequestMapping(value = { "/applyReturn" }, method = RequestMethod.POST)
-	public JsonResult<Integer> applyReturn(HttpServletRequest request,@RequestBody  ProcessDataViewModel pdvm)
+	public JsonResult<Integer> applyReturn(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {
 		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//fromCode");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
@@ -342,11 +371,22 @@ public class ProcessContorller {
 
 	@Transactional(rollbackFor = Exception.class)
 	@RequestMapping(value = { "/doAction" }, method = RequestMethod.POST)
-	public JsonResult<Integer> doAction(HttpServletRequest request,DoActionViewModel davm)
+	public JsonResult<Integer> doAction(HttpServletRequest request, DoActionViewModel davm)
 			throws DocumentException, UnsupportedEncodingException {
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(davm.getProcessDataId());
+		ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
+		processApproveEntity.setCreateBy(user.getId());
+		processApproveEntity.setUserId(davm.getUserId());
+		processApproveEntity.setProcessId(processDataEntity.getProcessId());
+		processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
+		processApproveEntity.setProcessDataId(processDataEntity.getId());
+		processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
+		processApproveEntity.setStepName(davm.getAction());
+		int result = ProcessApproveService.getInstance().insert(processApproveEntity);
+		ProcessService.getInstance().DoAction(processApproveEntity, processDataEntity);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
-		if (1==1) {
+		if (result > 0) {
 			jr.setCode(200);
 			jr.setData(1);
 		} else {

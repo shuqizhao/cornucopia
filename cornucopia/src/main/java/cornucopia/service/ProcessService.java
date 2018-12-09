@@ -10,6 +10,7 @@ import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 
 import cornucopia.dao.ProcessDao;
+import cornucopia.entity.ProcessApproveEntity;
 import cornucopia.entity.ProcessDataEntity;
 import cornucopia.entity.ProcessDiagramEntity;
 import cornucopia.entity.ProcessEntity;
@@ -39,8 +40,8 @@ public class ProcessService {
 		return processDao.getAllEnableProcess();
 	}
 
-	public int exists(int id,String processName,String pre) {
-		return processDao.exists(id,processName,pre);
+	public int exists(int id, String processName, String pre) {
+		return processDao.exists(id, processName, pre);
 	}
 
 	public int insert(ProcessEntity processEntity) {
@@ -137,6 +138,34 @@ public class ProcessService {
 		}
 		variables.put("assigneeList", nextUserIds);
 		variables.put("condition", pde.getCondition());
+		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
+		Log4jHelper.LOGGER.info(String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "引擎任务完成", task.getId()));
+	}
+
+	public void DoAction(ProcessApproveEntity pae, ProcessDataEntity pde) {
+		if(pae.getStepName().equals("afterSign")){
+			return;
+		}
+		Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s", pde.getFormCode(), "准备开始动作",
+				pae.getUpdateBy(), pae.getProcinstId()));
+		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
+		// query.taskAssignee(pde.getUpdateBy() + "");
+		query.processInstanceId(pde.getProcinstId());
+		Task task = query.singleResult();
+		Log4jHelper.LOGGER.info(String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "查找到引擎任务", task.getId()));
+		Map<String, Object> variables = new HashMap<String, Object>();
+		if (pae.getStepName().equals("preSign")) {
+			variables.put("to", 3);
+			variables.put("dealUser", pae.getUserId());
+		} else if (pae.getStepName().equals("modify")) {
+			variables.put("to", 5);
+			variables.put("dealUser", pae.getCreateBy());
+		} else if (pae.getStepName().equals("transfer")) {
+			variables.put("to", 6);
+			variables.put("dealUser", pae.getUserId());
+		} else {
+			return;
+		}
 		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "引擎任务完成", task.getId()));
 	}

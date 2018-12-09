@@ -60,6 +60,7 @@ export default {
               type: "success",
               message: "成功!"
             });
+            window.reload();
           }
         }
       });
