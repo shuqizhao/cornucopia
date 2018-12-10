@@ -156,13 +156,14 @@ public class ProcessService {
 		Map<String, Object> variables = new HashMap<String, Object>();
 		if (pae.getStepName().equals("preSign")) {
 			variables.put("to", 3);
-			variables.put("dealUser", pae.getUserId());
+			// variables.put("dealUser", pae.getUserId());
+			variables.put("inputUser", pae.getUserId());
 		} else if (pae.getStepName().equals("modify")) {
 			variables.put("to", 5);
-			variables.put("dealUser", pae.getCreateBy());
+			variables.put("inputUser", pae.getCreateBy());
 		} else if (pae.getStepName().equals("transfer")) {
 			variables.put("to", 6);
-			variables.put("dealUser", pae.getUserId());
+			variables.put("inputUser", pae.getUserId());
 		} else {
 			return;
 		}

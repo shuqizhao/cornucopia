@@ -16,30 +16,30 @@
     <sequenceFlow id="jiesu" sourceRef="exclusivegateway1" targetRef="End">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${to==0}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="Init" name="Init" activiti:assignee="${dealUser}"></userTask>
+    <userTask id="Init" name="Init" activiti:assignee="#{dealUser}"></userTask>
     <sequenceFlow id="flow11" sourceRef="Start" targetRef="Init"></sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="Init" targetRef="DOA"></sequenceFlow>
-    <userTask id="Retry" name="Retry" activiti:assignee="${dealUser}"></userTask>
+    <userTask id="Retry" name="Retry" activiti:assignee="#{inputUser}"></userTask>
     <sequenceFlow id="flow13" sourceRef="Retry" targetRef="DOA"></sequenceFlow>
     <sequenceFlow id="tuihui" sourceRef="exclusivegateway1" targetRef="Retry">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${to==2}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="PreSign" name="PreSign" activiti:assignee="${dealUser}"></userTask>
+    <userTask id="PreSign" name="PreSign" activiti:assignee="#{inputUser}"></userTask>
     <sequenceFlow id="flow14" sourceRef="PreSign" targetRef="DOA"></sequenceFlow>
     <sequenceFlow id="qianjiaqian" sourceRef="exclusivegateway1" targetRef="PreSign">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${to==3}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="AfterSign" name="AfterSign" activiti:assignee="${dealUser}"></userTask>
+    <userTask id="AfterSign" name="AfterSign" activiti:assignee="#{inputUser}"></userTask>
     <sequenceFlow id="houjiaqian" sourceRef="exclusivegateway1" targetRef="AfterSign">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${to==4}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="AfterSign" targetRef="DOA"></sequenceFlow>
-    <userTask id="Modify" name="Modify" activiti:assignee="${dealUser}"></userTask>
+    <userTask id="Modify" name="Modify" activiti:assignee="#{inputUser}"></userTask>
     <sequenceFlow id="shenqingrenxiuding" sourceRef="exclusivegateway1" targetRef="Modify">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${to==5}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="Modify" targetRef="DOA"></sequenceFlow>
-    <userTask id="Transfer" name="Transfer" activiti:assignee="${dealUser}"></userTask>
+    <userTask id="Transfer" name="Transfer" activiti:assignee="#{inputUser}"></userTask>
     <sequenceFlow id="flow18" sourceRef="exclusivegateway1" targetRef="Transfer">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${to==6}]]></conditionExpression>
     </sequenceFlow>
