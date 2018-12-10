@@ -15,6 +15,34 @@ public class ProcessInstAuthViewModel {
 		return userId;
 	}
 
+	/**
+	 * @return the positionName
+	 */
+	public String getPositionName() {
+		return positionName;
+	}
+
+	/**
+	 * @param positionName the positionName to set
+	 */
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
+	}
+
+	/**
+	 * @return the vitualTitle
+	 */
+	public String getVitualTitle() {
+		return vitualTitle;
+	}
+
+	/**
+	 * @param vitualTitle the vitualTitle to set
+	 */
+	public void setVitualTitle(String vitualTitle) {
+		this.vitualTitle = vitualTitle;
+	}
+
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
