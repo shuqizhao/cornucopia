@@ -175,8 +175,9 @@ public class ProcessContorller {
 		processApproveEntity.setProcessId(processDataEntity.getProcessId());
 		processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
 		processApproveEntity.setProcessDataId(processDataEntity.getId());
-		processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
+		processApproveEntity.setLevelCount(-1);
 		processApproveEntity.setStepName(processDataEntity.getStepName());
+		processApproveEntity.setUserId(user.getId());
 		ProcessApproveService.getInstance().insert(processApproveEntity);
 		ProcessDataHistoryService.getInstance().insert(processDataEntity);
 		ProcessService.getInstance().buildProcessInstDiagram(processDataEntity);
@@ -215,6 +216,7 @@ public class ProcessContorller {
 			processApproveEntity.setProcessDataId(processDataEntity.getId());
 			processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
 			processApproveEntity.setStepName(processDataEntity.getStepName());
+			processApproveEntity.setUserId(user.getId());
 			ProcessApproveService.getInstance().insert(processApproveEntity);
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
 			int result = ProcessDataService.getInstance().update(processDataEntity);
@@ -255,6 +257,7 @@ public class ProcessContorller {
 			processApproveEntity.setProcessDataId(processDataEntity.getId());
 			processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
 			processApproveEntity.setStepName(processDataEntity.getStepName());
+			processApproveEntity.setUserId(user.getId());
 			ProcessApproveService.getInstance().insert(processApproveEntity);
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
 			int result = ProcessDataService.getInstance().update(processDataEntity);
