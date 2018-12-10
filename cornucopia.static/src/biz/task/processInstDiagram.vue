@@ -19,7 +19,7 @@
           </h3>
 
           <div class="timeline-body" v-show="step.userName">
-            <template v-for="childStep in getChilrenSetps(step.id)">
+            <template v-for="childStep in getPreSignChilrenSteps(step.id)">
               <div
                 :key="childStep.id"
                 :class="childStep.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'"
@@ -59,6 +59,29 @@
 
               <a class="small-box-footer">{{step.createTime}}</a>
             </div>
+            <template v-for="childStep in getAfterSignChilrenSteps(step.id)">
+              <div
+                :key="childStep.id"
+                :class="childStep.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'"
+              >
+                <el-popover
+                  placement="left-start"
+                  :title="childStep.userName"
+                  trigger="hover"
+                  :content="childStep.email+' '+childStep.personNumber"
+                >
+                  <el-button
+                    icon="el-icon-arrow-left"
+                    :type="childStep.isCurrent==1?'success':'info'"
+                    style="width:100%"
+                    slot="reference"
+                    size="mini"
+                  >{{childStep.userName}}</el-button>
+                </el-popover>
+
+                <a class="small-box-footer">{{childStep.createTime}}</a>
+              </div>
+            </template>
           </div>
         </div>
       </li>
@@ -112,17 +135,32 @@ export default {
         });
       }
     },
-    getChilrenSetps: function(id) {
+    getPreSignChilrenSteps: function(id) {
       var childSteps = [];
       for (var i = 0; i < this.steps.length; i++) {
-        if (this.steps[i].parentId == id) {
+        if (
+          this.steps[i].parentId == id &&
+          this.steps[i].name == "preSign"
+        ) {
+          childSteps.push(this.steps[i]);
+        }
+      }
+      return childSteps;
+    },
+    getAfterSignChilrenSteps: function(id) {
+      var childSteps = [];
+      for (var i = 0; i < this.steps.length; i++) {
+        if (
+          this.steps[i].parentId == id &&
+          this.steps[i].name == "afterSign"
+        ) {
           childSteps.push(this.steps[i]);
         }
       }
       return childSteps;
     },
     isStepCurrent: function(step) {
-      var children = this.getChilrenSetps(step.id);
+      var children = this.getPreSignChilrenSteps(step.id);
       for (var i = 0; i < children.length; i++) {
         if (children[i].isCurrent == 1) {
           return false && step.isCurrent == 1;
