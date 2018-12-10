@@ -9,9 +9,24 @@ public class ProcessInstDiagramEntity extends BaseEntity {
 	private int isCurrent;
 	private String email;
 	private String personNumber;
+	private int parentId;
 
 	public int getProcessId() {
 		return processId;
+	}
+
+	/**
+	 * @return the parentId
+	 */
+	public int getParentId() {
+		return parentId;
+	}
+
+	/**
+	 * @param parentId the parentId to set
+	 */
+	public void setParentId(int parentId) {
+		this.parentId = parentId;
 	}
 
 	public void setProcessId(int processId) {
