@@ -19,4 +19,7 @@ public class ProcessApproveService {
     public int insert(ProcessApproveEntity processApproveEntity) {
 		return processApproveDao.insert(processApproveEntity);
 	}
+	public int updateCurrent(int id,int status) {
+		return processApproveDao.updateCurrent(id,status);
+	}
 }

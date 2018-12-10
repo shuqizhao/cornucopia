@@ -1,6 +1,7 @@
 package cornucopia.model;
 
 public class ProcessInstAuthViewModel {
+	private int id;
 	private int userId;
 	private String doaName;
 	private String currentStep;
@@ -13,6 +14,20 @@ public class ProcessInstAuthViewModel {
 
 	public int getUserId() {
 		return userId;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	/**
