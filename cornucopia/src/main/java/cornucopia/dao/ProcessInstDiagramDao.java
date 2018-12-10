@@ -28,4 +28,7 @@ public interface ProcessInstDiagramDao {
 
 	@Update("call sp_process_inst_update_current(#{pdId},#{levelCount})")
 	public int updateCurrent(@Param("pdId")int processDataId,@Param("levelCount") int levelCount);
+
+	@Select("call sp_process_inst_get_id(#{processDataId},#{userId})")
+	public int getProcessInstDiagramId(@Param("processDataId")int processDataId,@Param("userId")int userId);
 }

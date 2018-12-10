@@ -8,9 +8,24 @@ public class ProcessApproveEntity extends BaseEntity{
 	private String stepName;
 	private int processDataId;
 	private int userId;
+	private int processInstDiagramId;
 
 	public int getProcessId() {
 		return processId;
+	}
+
+	/**
+	 * @return the processInstDiagramId
+	 */
+	public int getProcessInstDiagramId() {
+		return processInstDiagramId;
+	}
+
+	/**
+	 * @param processInstDiagramId the processInstDiagramId to set
+	 */
+	public void setProcessInstDiagramId(int processInstDiagramId) {
+		this.processInstDiagramId = processInstDiagramId;
 	}
 
 	/**

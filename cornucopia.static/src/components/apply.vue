@@ -60,7 +60,7 @@ export default {
               type: "success",
               message: "成功!"
             });
-            window.reload();
+            window.location.reload();
           }
         }
       });
@@ -223,9 +223,17 @@ export default {
                 self.processInstAuth = response.data[0];
                 setTimeout(function() {
                   self.$refs.comments.isHideReply = false;
-                  self.$refs.comments.setCurrentStep(
-                    self.processInstAuth.currentStep
-                  );
+                  var currentStep = self.processInstAuth.currentStep;
+                  if (self.processInstAuth.currentStep == "preSign") {
+                    currentStep = self.processInstAuth.vitualTitle + "-前加签";
+                  } else if (self.processInstAuth.currentStep == "afterSign") {
+                    currentStep = self.processInstAuth.vitualTitle + "-后加签";
+                  } else if (self.processInstAuth.currentStep == "transfer") {
+                    currentStep = self.processInstAuth.vitualTitle + "-转办";
+                  } else if (self.processInstAuth.currentStep == "modify") {
+                    currentStep = self.processInstAuth.vitualTitle + "-申请人修订";
+                  }
+                  self.$refs.comments.setCurrentStep(currentStep);
                 }, 200);
 
                 self.cfgComment.mode = "edit";

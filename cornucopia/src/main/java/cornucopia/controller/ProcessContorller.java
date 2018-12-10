@@ -386,6 +386,8 @@ public class ProcessContorller {
 		processApproveEntity.setProcessDataId(processDataEntity.getId());
 		processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
 		processApproveEntity.setStepName(davm.getAction());
+		int processInstDiagramId =ProcessInstDiagramService.getInstance().getProcessInstDiagramId(processDataEntity.getId(),user.getId());
+		processApproveEntity.setProcessInstDiagramId(processInstDiagramId);
 		int result = ProcessApproveService.getInstance().insert(processApproveEntity);
 		ProcessService.getInstance().DoAction(processApproveEntity, processDataEntity);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
