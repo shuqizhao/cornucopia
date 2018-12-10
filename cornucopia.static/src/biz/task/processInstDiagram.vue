@@ -31,9 +31,11 @@
                   :content="childStep.email+' '+childStep.personNumber"
                 >
                   <el-button
+                    icon="el-icon-arrow-left"
                     :type="childStep.isCurrent==1?'success':'info'"
                     style="width:100%"
                     slot="reference"
+                    size="mini"
                   >{{childStep.userName}}</el-button>
                 </el-popover>
 

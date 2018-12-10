@@ -8,6 +8,8 @@ public class ProcessInstAuthViewModel {
 	private String afterSign;
 	private String modify;
 	private String transfer;
+	private String vitualTitle;
+	private String positionName;
 
 	public int getUserId() {
 		return userId;
