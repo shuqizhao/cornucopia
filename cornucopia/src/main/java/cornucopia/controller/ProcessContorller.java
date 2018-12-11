@@ -236,7 +236,7 @@ public class ProcessContorller {
 				processApproveEntity.setUserId(user.getId());
 				String processInstDiagramGuId = ProcessInstDiagramService.getInstance()
 						.getProcessInstDiagramGuId(processDataEntity.getId(), user.getId());
-				processApproveEntity.setParentGuid(processInstDiagramGuId);
+				processApproveEntity.setGuid(processInstDiagramGuId);
 				ProcessApproveService.getInstance().insert(processApproveEntity);
 			}
 			if (existsAfterSign == null || existsAfterSign.getId() == 0) {
