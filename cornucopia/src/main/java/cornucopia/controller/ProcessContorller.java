@@ -231,7 +231,7 @@ public class ProcessContorller {
 				processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
 				processApproveEntity.setProcessDataId(processDataEntity.getId());
 				processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
-				processApproveEntity.setStepName(processDataEntity.getStepName());
+				processApproveEntity.setStepName(piavm.getVitualTitle());
 				processApproveEntity.setUserId(user.getId());
 				ProcessApproveService.getInstance().insert(processApproveEntity);
 			}
