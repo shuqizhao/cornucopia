@@ -143,9 +143,6 @@ public class ProcessService {
 	}
 
 	public void DoAction(ProcessApproveEntity pae, ProcessDataEntity pde) {
-		if(pae.getStepName().equals("afterSign")){
-			return;
-		}
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s", pde.getFormCode(), "准备开始动作",
 				pae.getUpdateBy(), pae.getProcinstId()));
 		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
@@ -157,6 +154,9 @@ public class ProcessService {
 		if (pae.getStepName().equals("preSign")) {
 			variables.put("to", 3);
 			// variables.put("dealUser", pae.getUserId());
+			variables.put("inputUser", pae.getUserId());
+		}else if (pae.getStepName().equals("afterSign")) {
+			variables.put("to", 4);
 			variables.put("inputUser", pae.getUserId());
 		} else if (pae.getStepName().equals("modify")) {
 			variables.put("to", 5);

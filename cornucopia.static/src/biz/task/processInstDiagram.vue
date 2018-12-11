@@ -71,7 +71,7 @@
                   :content="childStep.email+' '+childStep.personNumber"
                 >
                   <el-button
-                    icon="el-icon-arrow-left"
+                    icon="el-icon-arrow-right"
                     :type="childStep.isCurrent==1?'success':'info'"
                     style="width:100%"
                     slot="reference"

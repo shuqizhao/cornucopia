@@ -205,15 +205,25 @@ public class ProcessContorller {
 		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
 				.getProcessInstAuth(processDataEntity.getId(), user.getId());
 		if (auths != null && auths.size() > 0) {
+			ProcessApproveEntity existsAfterSign = null;
 			ProcessInstAuthViewModel piavm = auths.get(0);
 			if (piavm.getCurrentStep().equals("preSign") || piavm.getCurrentStep().equals("transfer")
 					|| piavm.getCurrentStep().equals("modify")) {
 				processDataEntity.setLevelCount(processDataEntity.getLevelCount());
-
-				ProcessApproveService.getInstance().updateCurrent(piavm.getId(),0);
-
-			} else {
+				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
+			} else if (piavm.getCurrentStep().equals("afterSign")) {
 				processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
+				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
+			} else {
+
+				existsAfterSign = ProcessApproveService.getInstance().getAfterSign(processDataEntity.getId(),
+						user.getId());
+
+				if (existsAfterSign == null || existsAfterSign.getId() == 0) {
+					processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
+				} else {
+					processDataEntity.setLevelCount(processDataEntity.getLevelCount());
+				}
 
 				ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
 				processApproveEntity.setCreateBy(user.getId());
@@ -225,8 +235,12 @@ public class ProcessContorller {
 				processApproveEntity.setUserId(user.getId());
 				ProcessApproveService.getInstance().insert(processApproveEntity);
 			}
-
-			ProcessService.getInstance().Complete(processDataEntity);
+			if (existsAfterSign == null || existsAfterSign.getId() == 0) {
+				ProcessService.getInstance().Complete(processDataEntity);
+			} else {
+				ProcessService.getInstance().DoAction(existsAfterSign, processDataEntity);
+				ProcessApproveService.getInstance().updateCurrent(existsAfterSign.getId(), 1);
+			}
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
 					processDataEntity.getLevelCount());
