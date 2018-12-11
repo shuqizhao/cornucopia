@@ -1,6 +1,7 @@
 package cornucopia.entity;
 
 public class ProcessApproveEntity extends BaseEntity{
+	private String guid;
     private int processId;
 	private String processName;
 	private String procinstId;
@@ -8,24 +9,38 @@ public class ProcessApproveEntity extends BaseEntity{
 	private String stepName;
 	private int processDataId;
 	private int userId;
-	private int processInstDiagramId;
+	private String parentGuid;
 
 	public int getProcessId() {
 		return processId;
 	}
 
 	/**
-	 * @return the processInstDiagramId
+	 * @return the parentGuid
 	 */
-	public int getProcessInstDiagramId() {
-		return processInstDiagramId;
+	public String getParentGuid() {
+		return parentGuid;
 	}
 
 	/**
-	 * @param processInstDiagramId the processInstDiagramId to set
+	 * @param parentGuid the parentGuid to set
 	 */
-	public void setProcessInstDiagramId(int processInstDiagramId) {
-		this.processInstDiagramId = processInstDiagramId;
+	public void setParentGuid(String parentGuid) {
+		this.parentGuid = parentGuid;
+	}
+
+	/**
+	 * @return the guid
+	 */
+	public String getGuid() {
+		return guid;
+	}
+
+	/**
+	 * @param guid the guid to set
+	 */
+	public void setGuid(String guid) {
+		this.guid = guid;
 	}
 
 	/**

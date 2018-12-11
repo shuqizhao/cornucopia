@@ -13,7 +13,7 @@ import cornucopia.entity.ProcessInstDiagramEntity;
 import cornucopia.model.ProcessInstAuthViewModel;
 
 public interface ProcessInstDiagramDao {
-	@Insert("call sp_process_inst_diagram_insert(#{pi.name},#{pi.processId},#{pi.processDataId},#{pi.userId},#{pi.userName},#{pi.isCurrent},#{pi.levelCount})")
+	@Insert("call sp_process_inst_diagram_insert(#{pi.name},#{pi.processId},#{pi.processDataId},#{pi.userId},#{pi.userName},#{pi.isCurrent},#{pi.levelCount},#{pi.guid})")
 	@SelectKey(statement="Select LAST_INSERT_ID()", keyProperty="pi.id", before=false, resultType=int.class)
 	public int insert(@Param("pi") ProcessInstDiagramEntity processInstDiagramEntity);
 	
@@ -29,6 +29,6 @@ public interface ProcessInstDiagramDao {
 	@Update("call sp_process_inst_update_current(#{pdId},#{levelCount},#{status})")
 	public int updateCurrent(@Param("pdId")int processDataId,@Param("levelCount") int levelCount,@Param("status") int status);
 
-	@Select("call sp_process_inst_get_id(#{processDataId},#{userId})")
-	public int getProcessInstDiagramId(@Param("processDataId")int processDataId,@Param("userId")int userId);
+	@Select("call sp_process_inst_get_guid(#{processDataId},#{userId})")
+	public String getProcessInstDiagramGuId(@Param("processDataId")int processDataId,@Param("userId")int userId);
 }

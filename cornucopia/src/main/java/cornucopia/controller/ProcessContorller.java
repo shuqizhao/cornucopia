@@ -233,6 +233,9 @@ public class ProcessContorller {
 				processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
 				processApproveEntity.setStepName(piavm.getVitualTitle());
 				processApproveEntity.setUserId(user.getId());
+				String processInstDiagramGuId = ProcessInstDiagramService.getInstance()
+						.getProcessInstDiagramGuId(processDataEntity.getId(), user.getId());
+				processApproveEntity.setParentGuid(processInstDiagramGuId);
 				ProcessApproveService.getInstance().insert(processApproveEntity);
 			}
 			if (existsAfterSign == null || existsAfterSign.getId() == 0) {
@@ -275,15 +278,15 @@ public class ProcessContorller {
 			processDataEntity.setStepName("重发起");
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(), 0, 1);
-			ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
-			processApproveEntity.setCreateBy(user.getId());
-			processApproveEntity.setProcessId(processDataEntity.getProcessId());
-			processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
-			processApproveEntity.setProcessDataId(processDataEntity.getId());
-			processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
-			processApproveEntity.setStepName(processDataEntity.getStepName());
-			processApproveEntity.setUserId(user.getId());
-			ProcessApproveService.getInstance().insert(processApproveEntity);
+			// ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
+			// processApproveEntity.setCreateBy(user.getId());
+			// processApproveEntity.setProcessId(processDataEntity.getProcessId());
+			// processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
+			// processApproveEntity.setProcessDataId(processDataEntity.getId());
+			// processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
+			// processApproveEntity.setStepName(processDataEntity.getStepName());
+			// processApproveEntity.setUserId(user.getId());
+			// ProcessApproveService.getInstance().insert(processApproveEntity);
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
 			int result = ProcessDataService.getInstance().update(processDataEntity);
 			jr.setCode(200);
@@ -404,6 +407,7 @@ public class ProcessContorller {
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(davm.getProcessDataId());
 		ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
+		processApproveEntity.setGuid(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
 		processApproveEntity.setCreateBy(user.getId());
 		processApproveEntity.setUserId(davm.getUserId());
 		processApproveEntity.setProcessId(processDataEntity.getProcessId());
@@ -411,9 +415,9 @@ public class ProcessContorller {
 		processApproveEntity.setProcessDataId(processDataEntity.getId());
 		processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
 		processApproveEntity.setStepName(davm.getAction());
-		int processInstDiagramId = ProcessInstDiagramService.getInstance()
-				.getProcessInstDiagramId(processDataEntity.getId(), user.getId());
-		processApproveEntity.setProcessInstDiagramId(processInstDiagramId);
+		String processInstDiagramGuId = ProcessInstDiagramService.getInstance()
+				.getProcessInstDiagramGuId(processDataEntity.getId(), user.getId());
+		processApproveEntity.setParentGuid(processInstDiagramGuId);
 		int result = ProcessApproveService.getInstance().insert(processApproveEntity);
 		if (!davm.getAction().equals("afterSign")) {
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),

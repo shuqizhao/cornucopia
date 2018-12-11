@@ -39,7 +39,7 @@ public class ProcessInstDiagramService {
 		return processInstDiagramDao.updateCurrent(processDataId,levelCount,status);
 	}
 
-	public int getProcessInstDiagramId(int processDataId,int levelCount) {
-		return processInstDiagramDao.getProcessInstDiagramId(processDataId,levelCount);
+	public String getProcessInstDiagramGuId(int processDataId,int levelCount) {
+		return processInstDiagramDao.getProcessInstDiagramGuId(processDataId,levelCount);
 	}
 }

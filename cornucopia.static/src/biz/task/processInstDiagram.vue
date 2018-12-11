@@ -7,10 +7,10 @@
       </li>
       <!-- /.timeline-label -->
       <!-- timeline item -->
-      <li v-for="(step,index) in parentSteps" :key="step.id">
+      <li v-for="(step,indexParent) in parentSteps" :key="indexParent">
         <!-- timeline icon -->
         <!-- <span class="pull-left badge bg-blue">{{index+1}}</span> -->
-        <i class="fa fa-share bg-blue">{{index+1}}</i>
+        <i class="fa fa-share bg-blue">{{indexParent+1}}</i>
         <div class="timeline-item">
           <h3 class="timeline-header">
             <a>
@@ -19,9 +19,9 @@
           </h3>
 
           <div class="timeline-body" v-show="step.userName">
-            <template v-for="childStep in getPreSignChilrenSteps(step.id)">
+            <template v-for="(childStep,index) in getPreSignChilrenSteps(step.id)">
               <div
-                :key="childStep.id"
+                :key="index"
                 :class="childStep.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'"
               >
                 <el-popover
@@ -59,9 +59,9 @@
 
               <a class="small-box-footer">{{step.isCurrent==1?(step.createTime||'处理中...'):step.createTime}}</a>
             </div>
-            <template v-for="childStep in getAfterSignChilrenSteps(step.id)">
+            <template v-for="(childStep,index) in getAfterSignChilrenSteps(step.id)">
               <div
-                :key="childStep.id"
+                :key="index"
                 :class="childStep.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'"
               >
                 <el-popover

@@ -1,6 +1,7 @@
 package cornucopia.entity;
 
 public class ProcessInstDiagramEntity extends BaseEntity {
+	private String guid;
 	private int processId;
 	private int processDataId;
 	private int userId;
@@ -13,6 +14,20 @@ public class ProcessInstDiagramEntity extends BaseEntity {
 
 	public int getProcessId() {
 		return processId;
+	}
+
+	/**
+	 * @return the guid
+	 */
+	public String getGuid() {
+		return guid;
+	}
+
+	/**
+	 * @param guid the guid to set
+	 */
+	public void setGuid(String guid) {
+		this.guid = guid;
 	}
 
 	/**

@@ -185,6 +185,7 @@ public class ProcessService {
 	public void build(ProcessDataEntity pde, List<Integer> userIds, String currentUserId, int levelCount) {
 		for (int userId : userIds) {
 			ProcessInstDiagramEntity pide = new ProcessInstDiagramEntity();
+			pide.setGuid(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
 			pide.setProcessDataId(pde.getId());
 			pide.setProcessId(pde.getProcessId());
 			pide.setName(pde.getStepName());
