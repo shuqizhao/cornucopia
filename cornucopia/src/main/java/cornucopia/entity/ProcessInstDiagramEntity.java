@@ -11,9 +11,24 @@ public class ProcessInstDiagramEntity extends BaseEntity {
 	private String email;
 	private String personNumber;
 	private int parentId;
+	private String parentGuid;
 
 	public int getProcessId() {
 		return processId;
+	}
+
+	/**
+	 * @return the parentGuid
+	 */
+	public String getParentGuid() {
+		return parentGuid;
+	}
+
+	/**
+	 * @param parentGuid the parentGuid to set
+	 */
+	public void setParentGuid(String parentGuid) {
+		this.parentGuid = parentGuid;
 	}
 
 	/**

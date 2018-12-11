@@ -19,7 +19,7 @@
           </h3>
 
           <div class="timeline-body" v-show="step.userName">
-            <template v-for="(childStep,index) in getPreSignChilrenSteps(step.id)">
+            <template v-for="(childStep,index) in getPreSignChilrenSteps(step.guid)">
               <div
                 :key="index"
                 :class="childStep.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'"
@@ -59,7 +59,7 @@
 
               <a class="small-box-footer">{{step.isCurrent==1?(step.createTime||'处理中...'):step.createTime}}</a>
             </div>
-            <template v-for="(childStep,index) in getAfterSignChilrenSteps(step.id)">
+            <template v-for="(childStep,index) in getAfterSignChilrenSteps(step.guid)">
               <div
                 :key="index"
                 :class="childStep.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'"
@@ -115,7 +115,8 @@ export default {
             if (r.code == 200) {
               self.steps = r.data;
               for (var i = 0; i < r.data.length; i++) {
-                if (r.data[i].parentId == 0) {
+                debugger;
+                if (r.data[i].parentGuid == '0') {
                   self.parentSteps.push(r.data[i]);
                 } else {
                   self.childrenSteps.push(r.data[i]);
@@ -139,7 +140,7 @@ export default {
       var childSteps = [];
       for (var i = 0; i < this.steps.length; i++) {
         if (
-          this.steps[i].parentId == id &&
+          this.steps[i].parentGuid == id &&
           this.steps[i].name == "preSign"
         ) {
           childSteps.push(this.steps[i]);
@@ -151,7 +152,7 @@ export default {
       var childSteps = [];
       for (var i = 0; i < this.steps.length; i++) {
         if (
-          this.steps[i].parentId == id &&
+          this.steps[i].parentGuid == id &&
           this.steps[i].name == "afterSign"
         ) {
           childSteps.push(this.steps[i]);

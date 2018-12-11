@@ -171,6 +171,7 @@ public class ProcessContorller {
 		processDataEntity.setStepName("发起申请");
 		int result = ProcessDataService.getInstance().insert(processDataEntity);
 		ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
+		processApproveEntity.setGuid(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
 		processApproveEntity.setCreateBy(user.getId());
 		processApproveEntity.setProcessId(processDataEntity.getProcessId());
 		processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
