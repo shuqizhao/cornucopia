@@ -26,8 +26,8 @@ public interface ProcessInstDiagramDao {
 	@Select("call sp_process_inst_auth(#{processDataId},#{userId})")
 	public List<ProcessInstAuthViewModel> getProcessInstAuth(@Param("processDataId")int processDataId,@Param("userId")int userId);
 
-	@Update("call sp_process_inst_update_current(#{pdId},#{levelCount})")
-	public int updateCurrent(@Param("pdId")int processDataId,@Param("levelCount") int levelCount);
+	@Update("call sp_process_inst_update_current(#{pdId},#{levelCount},#{status})")
+	public int updateCurrent(@Param("pdId")int processDataId,@Param("levelCount") int levelCount,@Param("status") int status);
 
 	@Select("call sp_process_inst_get_id(#{processDataId},#{userId})")
 	public int getProcessInstDiagramId(@Param("processDataId")int processDataId,@Param("userId")int userId);

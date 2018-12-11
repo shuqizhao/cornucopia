@@ -243,7 +243,7 @@ public class ProcessContorller {
 			}
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
-					processDataEntity.getLevelCount());
+					processDataEntity.getLevelCount(), 1);
 			int result = ProcessDataService.getInstance().update(processDataEntity);
 			jr.setCode(200);
 			jr.setData(result);
@@ -274,7 +274,7 @@ public class ProcessContorller {
 			ProcessService.getInstance().Complete(processDataEntity);
 			processDataEntity.setStepName("重发起");
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
-			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(), 0);
+			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(), 0, 1);
 			ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
 			processApproveEntity.setCreateBy(user.getId());
 			processApproveEntity.setProcessId(processDataEntity.getProcessId());
@@ -315,7 +315,7 @@ public class ProcessContorller {
 			ProcessService.getInstance().Return(processDataEntity);
 			processDataEntity.setStepName("被退回");
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
-			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(), -1);
+			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(), -1, 1);
 			int result = ProcessDataService.getInstance().update(processDataEntity);
 			jr.setCode(200);
 			jr.setData(result);
@@ -415,7 +415,11 @@ public class ProcessContorller {
 				.getProcessInstDiagramId(processDataEntity.getId(), user.getId());
 		processApproveEntity.setProcessInstDiagramId(processInstDiagramId);
 		int result = ProcessApproveService.getInstance().insert(processApproveEntity);
-		ProcessService.getInstance().DoAction(processApproveEntity, processDataEntity);
+		if (!davm.getAction().equals("afterSign")) {
+			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
+					processDataEntity.getLevelCount(), 0);
+			ProcessService.getInstance().DoAction(processApproveEntity, processDataEntity);
+		}
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		if (result > 0) {
 			jr.setCode(200);

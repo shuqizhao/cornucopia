@@ -51,13 +51,13 @@
                 :content="step.email+' '+step.personNumber"
               >
                 <el-button
-                  :type="isStepCurrent(step)?'success':'info'"
+                  :type="step.isCurrent==1?'success':'info'"
                   style="width:100%"
                   slot="reference"
                 >{{step.userName}}</el-button>
               </el-popover>
 
-              <a class="small-box-footer">{{step.createTime}}</a>
+              <a class="small-box-footer">{{step.isCurrent==1?(step.createTime||'处理中...'):step.createTime}}</a>
             </div>
             <template v-for="childStep in getAfterSignChilrenSteps(step.id)">
               <div
@@ -158,16 +158,17 @@ export default {
         }
       }
       return childSteps;
-    },
-    isStepCurrent: function(step) {
-      var children = this.getPreSignChilrenSteps(step.id);
-      for (var i = 0; i < children.length; i++) {
-        if (children[i].isCurrent == 1) {
-          return false && step.isCurrent == 1;
-        }
-      }
-      return true && step.isCurrent == 1;
     }
+    // ,
+    // isStepCurrent: function(step) {
+    //   var children = this.getPreSignChilrenSteps(step.id);
+    //   for (var i = 0; i < children.length; i++) {
+    //     if (children[i].isCurrent == 1) {
+    //       return false && step.isCurrent == 1;
+    //     }
+    //   }
+    //   return true && step.isCurrent == 1;
+    // }
   }
 };
 </script>
