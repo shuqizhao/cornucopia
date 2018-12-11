@@ -115,7 +115,6 @@ export default {
             if (r.code == 200) {
               self.steps = r.data;
               for (var i = 0; i < r.data.length; i++) {
-                debugger;
                 if (r.data[i].parentGuid == '0') {
                   self.parentSteps.push(r.data[i]);
                 } else {
