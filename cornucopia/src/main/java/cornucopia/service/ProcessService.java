@@ -98,9 +98,12 @@ public class ProcessService {
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s", pde.getFormCode(), "退回任务",
 				pde.getUpdateBy(), pde.getProcinstId()));
 		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
-		query.taskAssignee(pde.getUpdateBy() + "");
+		// query.taskAssignee(pde.getUpdateBy() + "");
 		query.processInstanceId(pde.getProcinstId());
 		Task task = query.singleResult();
+		if(!task.getName().contains("DOA")){
+			ActivitiHelper.GetEngine().getTaskService().complete(task.getId());
+		}
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("to", "2");
 		variables.put("inputUser", pde.getCreateBy());
