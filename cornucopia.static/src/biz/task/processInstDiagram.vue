@@ -19,32 +19,31 @@
           </h3>
 
           <div class="timeline-body" v-show="step.userName">
-            <template v-for="(childStep,index) in getPreSignChilrenSteps(step.guid)">
-              <div
-                :key="childStep.id+index"
-                :class="childStep.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'"
+            <div
+              v-for="childStep in getPreSignChilrenSteps(step.guid)"
+              :key="childStep.id"
+              :class="childStep.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'"
+            >
+              <el-popover
+                placement="left-start"
+                :title="childStep.userName"
+                trigger="hover"
+                :content="childStep.email+' '+childStep.personNumber"
               >
-                <el-popover
-                  placement="left-start"
-                  :title="childStep.userName"
-                  trigger="hover"
-                  :content="childStep.email+' '+childStep.personNumber"
-                >
-                  <el-button
-                    icon="el-icon-arrow-left"
-                    :type="childStep.isCurrent==1?'success':'info'"
-                    style="width:100%"
-                    slot="reference"
-                    size="mini"
-                  >{{childStep.userName}}</el-button>
-                </el-popover>
+                <el-button
+                  icon="el-icon-arrow-left"
+                  :type="childStep.isCurrent==1?'success':'info'"
+                  style="width:100%"
+                  slot="reference"
+                  size="mini"
+                >{{childStep.userName}}</el-button>
+              </el-popover>
 
-                <a class="small-box-footer">{{childStep.isCurrent==1?'处理中...':childStep.updateTime}}</a>
-              </div>
-            </template>
-            <template v-for="(childStep,index) in getTransferChilrenSteps(step.guid)">
+              <a class="small-box-footer">{{childStep.isCurrent==1?'处理中...':childStep.updateTime}}</a>
+            </div>
+            <template v-for="(childStep) in getTransferChilrenSteps(step.guid)">
               <div
-                :key="childStep.id+index"
+                :key="childStep.id"
                 :class="childStep.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'"
               >
                 <el-popover
@@ -86,9 +85,9 @@
 
               <a class="small-box-footer">{{step.isCurrent==1?'处理中...':step.createTime}}</a>
             </div>
-            <template v-for="(childStep,index) in getAfterSignChilrenSteps(step.guid)">
+            <template v-for="(childStep) in getAfterSignChilrenSteps(step.guid)">
               <div
-                :key="childStep.id+index"
+                :key="childStep.id"
                 :class="childStep.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'"
               >
                 <el-popover
