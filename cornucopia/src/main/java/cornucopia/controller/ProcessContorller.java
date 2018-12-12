@@ -222,7 +222,7 @@ public class ProcessContorller {
 				processApproveEntity.setProcessId(processDataEntity.getProcessId());
 				processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
 				processApproveEntity.setProcessDataId(processDataEntity.getId());
-				processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
+				processApproveEntity.setLevelCount(processDataEntity.getLevelCount()-1);
 				processApproveEntity.setStepName(pide.getName());
 				processApproveEntity.setUserId(pide.getUserId());
 				processApproveEntity.setGuid(piavm.getGuid());
@@ -231,6 +231,8 @@ public class ProcessContorller {
 			} else if (piavm.getCurrentStep().equals("afterSign")) {
 				processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
+				existsAfterSign = ProcessApproveService.getInstance().getAfterSign(processDataEntity.getId(),
+						user.getId());
 			} else {
 
 				existsAfterSign = ProcessApproveService.getInstance().getAfterSign(processDataEntity.getId(),
@@ -258,6 +260,7 @@ public class ProcessContorller {
 			}
 			if (existsAfterSign == null || existsAfterSign.getId() == 0) {
 				ProcessService.getInstance().Complete(processDataEntity);
+				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
 			} else {
 				ProcessService.getInstance().DoAction(existsAfterSign, processDataEntity);
 				ProcessApproveService.getInstance().updateCurrent(existsAfterSign.getId(), 1);
@@ -428,6 +431,7 @@ public class ProcessContorller {
 		processApproveEntity.setGuid(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
 		processApproveEntity.setCreateBy(user.getId());
 		processApproveEntity.setUserId(davm.getUserId());
+		processApproveEntity.setApprovePositionId(davm.getApprovePositionId());
 		processApproveEntity.setProcessId(processDataEntity.getProcessId());
 		processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
 		processApproveEntity.setProcessDataId(processDataEntity.getId());

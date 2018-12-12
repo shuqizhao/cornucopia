@@ -21,7 +21,7 @@
           <div class="timeline-body" v-show="step.userName">
             <template v-for="(childStep,index) in getPreSignChilrenSteps(step.guid)">
               <div
-                :key="index"
+                :key="childStep.id+index"
                 :class="childStep.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'"
               >
                 <el-popover
@@ -39,12 +39,12 @@
                   >{{childStep.userName}}</el-button>
                 </el-popover>
 
-                <a class="small-box-footer">{{childStep.isCurrent==1?'处理中...':childStep.createTime}}</a>
+                <a class="small-box-footer">{{childStep.isCurrent==1?'处理中...':childStep.updateTime}}</a>
               </div>
             </template>
             <template v-for="(childStep,index) in getTransferChilrenSteps(step.guid)">
               <div
-                :key="index"
+                :key="childStep.id+index"
                 :class="childStep.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'"
               >
                 <el-popover
@@ -62,7 +62,7 @@
                   >{{step.userName+'->'+childStep.userName}}</el-button>
                 </el-popover>
 
-                <a class="small-box-footer">{{childStep.isCurrent==1?'处理中...':childStep.createTime}}</a>
+                <a class="small-box-footer">{{childStep.isCurrent==1?'处理中...':childStep.updateTime}}</a>
               </div>
             </template>
             <!-- small box -->
@@ -80,6 +80,7 @@
                   :type="step.isCurrent==1?'success':'info'"
                   style="width:100%"
                   slot="reference"
+                  size="mini"
                 >{{step.userName}}</el-button>
               </el-popover>
 
@@ -87,7 +88,7 @@
             </div>
             <template v-for="(childStep,index) in getAfterSignChilrenSteps(step.guid)">
               <div
-                :key="index"
+                :key="childStep.id+index"
                 :class="childStep.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'"
               >
                 <el-popover
@@ -105,7 +106,7 @@
                   >{{childStep.userName}}</el-button>
                 </el-popover>
 
-                <a class="small-box-footer">{{childStep.isCurrent==1?'处理中...':childStep.createTime}}</a>
+                <a class="small-box-footer">{{childStep.isCurrent==1?'处理中...':childStep.updateTime}}</a>
               </div>
             </template>
           </div>
@@ -147,7 +148,7 @@ export default {
                   self.childrenSteps.push(r.data[i]);
                 }
               }
-              self.steps.push({
+              self.parentSteps.push({
                 id: 99999,
                 name: "结束"
               });

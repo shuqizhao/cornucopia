@@ -49,11 +49,11 @@ export default {
     selectUser
   },
   methods: {
-    doAction: function(action, userId, processDataId) {
+    doAction: function(action, userId, processDataId,approvePositionId) {
       var self = this;
       self.post({
         url: "/process/doAction",
-        data: { action: action, userId: userId, processDataId: processDataId },
+        data: { action: action, userId: userId, processDataId: processDataId,approvePositionId:approvePositionId },
         success: function(response) {
           if (response.code == 200) {
             self.$message({
@@ -70,6 +70,7 @@ export default {
       this.currentComponent = "";
     },
     onDialogBtnOk: function() {
+      var self = this;
       var selectedTableData = this.$refs.myApplyCompent.selectedTableData;
       if (selectedTableData.length == 0) {
         this.$message({
@@ -98,7 +99,8 @@ export default {
             this.doAction(
               this.currentAction,
               selectedTableData[0].id,
-              this.$route.query.id
+              this.$route.query.id,
+              self.processInstAuth.approvePositionId
             );
           })
           .catch(e => {

@@ -4,12 +4,27 @@ public class DoActionViewModel{
     private int userId;
     private String action;
     private int processDataId;
+    private int approvePositionId;
 
     /**
      * @return the userId
      */
     public int getUserId() {
         return userId;
+    }
+
+    /**
+     * @return the approvePositionId
+     */
+    public int getApprovePositionId() {
+        return approvePositionId;
+    }
+
+    /**
+     * @param approvePositionId the approvePositionId to set
+     */
+    public void setApprovePositionId(int approvePositionId) {
+        this.approvePositionId = approvePositionId;
     }
 
     /**
