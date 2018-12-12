@@ -57,20 +57,21 @@ export default {
           !self.getCookie(self.getGlobalData().LoginCookeName) &&
           self.isNeedWatch
         ) {
-          self.$confirm("登陆已过期, 是否继续?", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          })
-            .then(() => {
-              window.location.reload();
-            })
-            .catch(() => {
-              self.$message({
-                type: "info",
-                message: "已取消跳转"
-              });
-            });
+          window.location.reload();
+          // self.$confirm("登陆已过期, 是否继续?", "提示", {
+          //   confirmButtonText: "确定",
+          //   cancelButtonText: "取消",
+          //   type: "warning"
+          // })
+          //   .then(() => {
+          //     window.location.reload();
+          //   })
+          //   .catch(() => {
+          //     self.$message({
+          //       type: "info",
+          //       message: "已取消跳转"
+          //     });
+          //   });
         }
       }, 100);
     }
