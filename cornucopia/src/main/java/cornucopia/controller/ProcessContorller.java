@@ -214,8 +214,18 @@ public class ProcessContorller {
 				//先调到DOA节点
 				ProcessService.getInstance().JumpToDoa(processDataEntity);
 			} else if (piavm.getCurrentStep().equals("transfer")) {
-				processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
+				// processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
+				// ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
+				existsAfterSign = ProcessApproveService.getInstance().getAfterSign(processDataEntity.getId(),
+						user.getId());
+				if (existsAfterSign == null || existsAfterSign.getId() == 0) {
+					processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
+				} else {
+					processDataEntity.setLevelCount(processDataEntity.getLevelCount());
+				}
+				//先调到DOA节点
+				ProcessService.getInstance().JumpToDoa(processDataEntity);
 				// 转办时要给操作人记录
 				ProcessInstDiagramEntity pide = ProcessInstDiagramService.getInstance().getProcessInst(piavm.getGuid());
 				ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
@@ -229,8 +239,6 @@ public class ProcessContorller {
 				processApproveEntity.setUserId(pide.getUserId());
 				processApproveEntity.setGuid(piavm.getGuid());
 				ProcessApproveService.getInstance().insert(processApproveEntity);
-				//先调到DOA节点
-				ProcessService.getInstance().JumpToDoa(processDataEntity);
 			} else if (piavm.getCurrentStep().equals("afterSign")) {
 				// processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
