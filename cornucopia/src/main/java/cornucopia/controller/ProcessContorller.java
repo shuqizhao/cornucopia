@@ -211,6 +211,8 @@ public class ProcessContorller {
 			if (piavm.getCurrentStep().equals("preSign") || piavm.getCurrentStep().equals("modify")) {
 				processDataEntity.setLevelCount(processDataEntity.getLevelCount());
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
+				//先调到DOA节点
+				ProcessService.getInstance().JumpToDoa(processDataEntity);
 			} else if (piavm.getCurrentStep().equals("transfer")) {
 				processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
@@ -227,7 +229,8 @@ public class ProcessContorller {
 				processApproveEntity.setUserId(pide.getUserId());
 				processApproveEntity.setGuid(piavm.getGuid());
 				ProcessApproveService.getInstance().insert(processApproveEntity);
-
+				//先调到DOA节点
+				ProcessService.getInstance().JumpToDoa(processDataEntity);
 			} else if (piavm.getCurrentStep().equals("afterSign")) {
 				// processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
@@ -235,13 +238,11 @@ public class ProcessContorller {
 						user.getId());
 				if (existsAfterSign == null || existsAfterSign.getId() == 0) {
 					processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
-					//先调到DOA节点
-					ProcessService.getInstance().Complete(processDataEntity);
 				} else {
 					processDataEntity.setLevelCount(processDataEntity.getLevelCount());
-					//先调到DOA节点
-					ProcessService.getInstance().DoAction(existsAfterSign, processDataEntity);
 				}
+				//先调到DOA节点
+				ProcessService.getInstance().JumpToDoa(processDataEntity);
 			} else {
 
 				existsAfterSign = ProcessApproveService.getInstance().getAfterSign(processDataEntity.getId(),

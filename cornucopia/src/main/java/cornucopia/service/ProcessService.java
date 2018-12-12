@@ -142,6 +142,19 @@ public class ProcessService {
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "引擎任务完成", task.getId()));
 	}
 
+	public void JumpToDoa(ProcessDataEntity pde) {
+		Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s", pde.getFormCode(), "JumpToDoa准备完成任务",
+				pde.getUpdateBy(), pde.getProcinstId()));
+		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
+		query.processInstanceId(pde.getProcinstId());
+		Task task = query.singleResult();
+		Log4jHelper.LOGGER.info(String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "查找到引擎任务", task.getId()));
+		
+		ActivitiHelper.GetEngine().getTaskService().complete(task.getId());
+		Log4jHelper.LOGGER.info(String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "引擎任务完成", task.getId()));
+	}
+
+
 	public void DoAction(ProcessApproveEntity pae, ProcessDataEntity pde) {
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s", pde.getFormCode(), "准备开始动作",
 				pae.getUpdateBy(), pae.getProcinstId()));
