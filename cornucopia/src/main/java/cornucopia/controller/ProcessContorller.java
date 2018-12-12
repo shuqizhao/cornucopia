@@ -214,6 +214,19 @@ public class ProcessContorller {
 			} else if (piavm.getCurrentStep().equals("transfer")) {
 				processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
+				//转办时要给操作人记录
+				ProcessInstDiagramEntity pide=ProcessInstDiagramService.getInstance().getProcessInst(piavm.getGuid());
+				ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
+				processApproveEntity.setCreateBy(pide.getUserId());
+				processApproveEntity.setProcessId(processDataEntity.getProcessId());
+				processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
+				processApproveEntity.setProcessDataId(processDataEntity.getId());
+				processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
+				processApproveEntity.setStepName(pide.getName());
+				processApproveEntity.setUserId(pide.getUserId());
+				processApproveEntity.setGuid(piavm.getGuid());
+				ProcessApproveService.getInstance().insert(processApproveEntity);
+
 			} else if (piavm.getCurrentStep().equals("afterSign")) {
 				processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);

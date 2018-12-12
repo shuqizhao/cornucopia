@@ -31,4 +31,7 @@ public interface ProcessInstDiagramDao {
 
 	@Select("call sp_process_inst_get_guid(#{processDataId},#{userId})")
 	public String getProcessInstDiagramGuId(@Param("processDataId")int processDataId,@Param("userId")int userId);
+
+	@Select("call sp_process_inst_get_by_guid(#{guid})")
+	public ProcessInstDiagramEntity getProcessInst(@Param("guid")String guid);
 }

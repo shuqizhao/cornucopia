@@ -11,9 +11,39 @@ public class ProcessInstAuthViewModel {
 	private String transfer;
 	private String vitualTitle;
 	private String positionName;
+	private String guid;
+	private String parentGuid;
 
 	public int getUserId() {
 		return userId;
+	}
+
+	/**
+	 * @return the parentGuid
+	 */
+	public String getParentGuid() {
+		return parentGuid;
+	}
+
+	/**
+	 * @param parentGuid the parentGuid to set
+	 */
+	public void setParentGuid(String parentGuid) {
+		this.parentGuid = parentGuid;
+	}
+
+	/**
+	 * @return the guid
+	 */
+	public String getGuid() {
+		return guid;
+	}
+
+	/**
+	 * @param guid the guid to set
+	 */
+	public void setGuid(String guid) {
+		this.guid = guid;
 	}
 
 	/**

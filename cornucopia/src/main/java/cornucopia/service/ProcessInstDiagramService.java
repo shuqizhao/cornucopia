@@ -42,4 +42,8 @@ public class ProcessInstDiagramService {
 	public String getProcessInstDiagramGuId(int processDataId,int levelCount) {
 		return processInstDiagramDao.getProcessInstDiagramGuId(processDataId,levelCount);
 	}
+
+	public ProcessInstDiagramEntity getProcessInst(String guid) {
+		return processInstDiagramDao.getProcessInst(guid);
+	}
 }
