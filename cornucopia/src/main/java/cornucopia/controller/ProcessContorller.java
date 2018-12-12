@@ -214,25 +214,32 @@ public class ProcessContorller {
 			} else if (piavm.getCurrentStep().equals("transfer")) {
 				processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
-				//转办时要给操作人记录
-				ProcessInstDiagramEntity pide=ProcessInstDiagramService.getInstance().getProcessInst(piavm.getGuid());
+				// 转办时要给操作人记录
+				ProcessInstDiagramEntity pide = ProcessInstDiagramService.getInstance().getProcessInst(piavm.getGuid());
 				ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
 				processApproveEntity.setCreateBy(pide.getUserId());
 				processApproveEntity.setApprovePositionId(pide.getApprovePositionId());
 				processApproveEntity.setProcessId(processDataEntity.getProcessId());
 				processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
 				processApproveEntity.setProcessDataId(processDataEntity.getId());
-				processApproveEntity.setLevelCount(processDataEntity.getLevelCount()-1);
+				processApproveEntity.setLevelCount(processDataEntity.getLevelCount() - 1);
 				processApproveEntity.setStepName(pide.getName());
 				processApproveEntity.setUserId(pide.getUserId());
 				processApproveEntity.setGuid(piavm.getGuid());
 				ProcessApproveService.getInstance().insert(processApproveEntity);
 
 			} else if (piavm.getCurrentStep().equals("afterSign")) {
-				processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
+				// processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
 				existsAfterSign = ProcessApproveService.getInstance().getAfterSign(processDataEntity.getId(),
 						user.getId());
+				if (existsAfterSign == null || existsAfterSign.getId() == 0) {
+					processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
+				} else {
+					processDataEntity.setLevelCount(processDataEntity.getLevelCount());
+					//提前做一次，不然会回到DOA节点
+					ProcessService.getInstance().DoAction(existsAfterSign, processDataEntity);
+				}
 			} else {
 
 				existsAfterSign = ProcessApproveService.getInstance().getAfterSign(processDataEntity.getId(),
