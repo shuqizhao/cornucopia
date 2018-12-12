@@ -355,9 +355,21 @@ public class ProcessContorller {
 				.getProcessInstAuth(processDataEntity.getId(), user.getId());
 		if (auths != null && auths.size() > 0) {
 			ProcessService.getInstance().Return(processDataEntity);
-			processDataEntity.setStepName("被退回");
+			processDataEntity.setStepName("重发起");
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(), -1, 1);
+			ProcessApproveEntity paeFirstLevel = ProcessApproveService.getInstance().getFirstLevel(processDataEntity.getId());
+			ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
+			processApproveEntity.setGuid(paeFirstLevel.getGuid());
+			processApproveEntity.setCreateBy(user.getId());
+			processApproveEntity.setProcessId(processDataEntity.getProcessId());
+			processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
+			processApproveEntity.setProcessDataId(processDataEntity.getId());
+			processApproveEntity.setLevelCount(-1);
+			processApproveEntity.setStepName("reTry");
+			processApproveEntity.setUserId(processDataEntity.getCreateBy());
+			int paeId = ProcessApproveService.getInstance().insert(processApproveEntity);
+			ProcessApproveService.getInstance().updateCurrent(paeId, 1);
 			int result = ProcessDataService.getInstance().update(processDataEntity);
 			jr.setCode(200);
 			jr.setData(result);

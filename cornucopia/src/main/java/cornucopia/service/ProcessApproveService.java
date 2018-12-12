@@ -27,4 +27,8 @@ public class ProcessApproveService {
 	public ProcessApproveEntity getAfterSign(int pdId, int userId) {
 		return processApproveDao.getAfterSign(pdId, userId);
 	}
+
+	public ProcessApproveEntity getFirstLevel(int pdId) {
+		return processApproveDao.getFirstLevel(pdId);
+	}
 }

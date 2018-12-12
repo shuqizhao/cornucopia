@@ -18,4 +18,7 @@ public interface ProcessApproveDao {
 
 	@Select("call sp_process_approve_get_after_sgin(#{pdId},#{userId})")
 	public ProcessApproveEntity getAfterSign(@Param("pdId")int pdId,@Param("userId") int userId);
+
+	@Select("call sp_process_approve_get_first(#{pdId})")
+	public ProcessApproveEntity getFirstLevel(@Param("pdId")int pdId);
 }
