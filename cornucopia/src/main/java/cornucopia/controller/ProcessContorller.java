@@ -460,9 +460,11 @@ public class ProcessContorller {
 		processApproveEntity.setParentGuid(processInstDiagramGuId);
 		int result = ProcessApproveService.getInstance().insert(processApproveEntity);
 		if (!davm.getAction().equals("afterSign")) {
+			ProcessService.getInstance().DoAction(processApproveEntity, processDataEntity);
+		}
+		if(davm.getAction().equals("modify")){
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
 					processDataEntity.getLevelCount(), 0);
-			ProcessService.getInstance().DoAction(processApproveEntity, processDataEntity);
 		}
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		if (result > 0) {
