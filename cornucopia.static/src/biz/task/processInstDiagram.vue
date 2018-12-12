@@ -39,11 +39,37 @@
                   >{{childStep.userName}}</el-button>
                 </el-popover>
 
-                <a class="small-box-footer">{{childStep.createTime}}</a>
+                <a class="small-box-footer">{{childStep.isCurrent==1?'处理中...':childStep.createTime}}</a>
+              </div>
+            </template>
+            <template v-for="(childStep,index) in getTransferChilrenSteps(step.guid)">
+              <div
+                :key="index"
+                :class="childStep.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'"
+              >
+                <el-popover
+                  placement="left-start"
+                  :title="childStep.userName"
+                  trigger="hover"
+                  :content="childStep.email+' '+childStep.personNumber"
+                >
+                  <el-button
+                    icon="el-icon-refresh"
+                    :type="childStep.isCurrent==1?'success':'info'"
+                    style="width:100%"
+                    slot="reference"
+                    size="mini"
+                  >{{step.userName+'->'+childStep.userName}}</el-button>
+                </el-popover>
+
+                <a class="small-box-footer">{{childStep.isCurrent==1?'处理中...':childStep.createTime}}</a>
               </div>
             </template>
             <!-- small box -->
-            <div :class="step.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'">
+            <div
+              v-if="getTransferChilrenSteps(step.guid).length==0"
+              :class="step.isCurrent==1?'small-box bg-aqua':'small-box bg-aqua1'"
+            >
               <el-popover
                 placement="left-start"
                 :title="step.userName"
@@ -57,7 +83,7 @@
                 >{{step.userName}}</el-button>
               </el-popover>
 
-              <a class="small-box-footer">{{step.isCurrent==1?(step.createTime||'处理中...'):step.createTime}}</a>
+              <a class="small-box-footer">{{step.isCurrent==1?'处理中...':step.createTime}}</a>
             </div>
             <template v-for="(childStep,index) in getAfterSignChilrenSteps(step.guid)">
               <div
@@ -79,7 +105,7 @@
                   >{{childStep.userName}}</el-button>
                 </el-popover>
 
-                <a class="small-box-footer">{{childStep.createTime}}</a>
+                <a class="small-box-footer">{{childStep.isCurrent==1?'处理中...':childStep.createTime}}</a>
               </div>
             </template>
           </div>
@@ -115,7 +141,7 @@ export default {
             if (r.code == 200) {
               self.steps = r.data;
               for (var i = 0; i < r.data.length; i++) {
-                if (r.data[i].parentGuid == '0') {
+                if (r.data[i].parentGuid == "0") {
                   self.parentSteps.push(r.data[i]);
                 } else {
                   self.childrenSteps.push(r.data[i]);
@@ -135,13 +161,22 @@ export default {
         });
       }
     },
-    getPreSignChilrenSteps: function(id) {
+    getTransferChilrenSteps: function(id) {
       var childSteps = [];
       for (var i = 0; i < this.steps.length; i++) {
         if (
           this.steps[i].parentGuid == id &&
-          this.steps[i].name == "preSign"
+          this.steps[i].name == "transfer"
         ) {
+          childSteps.push(this.steps[i]);
+        }
+      }
+      return childSteps;
+    },
+    getPreSignChilrenSteps: function(id) {
+      var childSteps = [];
+      for (var i = 0; i < this.steps.length; i++) {
+        if (this.steps[i].parentGuid == id && this.steps[i].name == "preSign") {
           childSteps.push(this.steps[i]);
         }
       }

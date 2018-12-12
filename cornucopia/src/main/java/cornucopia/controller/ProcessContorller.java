@@ -208,9 +208,11 @@ public class ProcessContorller {
 		if (auths != null && auths.size() > 0) {
 			ProcessApproveEntity existsAfterSign = null;
 			ProcessInstAuthViewModel piavm = auths.get(0);
-			if (piavm.getCurrentStep().equals("preSign") || piavm.getCurrentStep().equals("transfer")
-					|| piavm.getCurrentStep().equals("modify")) {
+			if (piavm.getCurrentStep().equals("preSign") || piavm.getCurrentStep().equals("modify")) {
 				processDataEntity.setLevelCount(processDataEntity.getLevelCount());
+				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
+			} else if (piavm.getCurrentStep().equals("transfer")) {
+				processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
 			} else if (piavm.getCurrentStep().equals("afterSign")) {
 				processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
