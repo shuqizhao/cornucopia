@@ -103,7 +103,7 @@ public class ProcessService {
 		Task task = query.singleResult();
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("to", "2");
-		variables.put("dealUser", pde.getCreateBy());
+		variables.put("inputUser", pde.getCreateBy());
 		variables.put("condition", 0);
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "查找到引擎任务", task.getId()));
 		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
