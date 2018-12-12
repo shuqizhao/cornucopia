@@ -97,7 +97,7 @@ public class ConditionUtil {
 								ape.getVitualTitle(), ape.getApproveType()));
 						List<Integer> userIds = getUserIdsByPosition(ape, pde);
 						if (processService != null) {
-							processService.build(pde, userIds, currentUserId, i);
+							processService.build(pde, userIds, currentUserId, i,positionId);
 						}else {
 							return userIds;
 						}

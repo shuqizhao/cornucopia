@@ -13,9 +13,24 @@ public class ProcessInstAuthViewModel {
 	private String positionName;
 	private String guid;
 	private String parentGuid;
+	private int approvePositionId;
 
 	public int getUserId() {
 		return userId;
+	}
+
+	/**
+	 * @return the approvePositionId
+	 */
+	public int getApprovePositionId() {
+		return approvePositionId;
+	}
+
+	/**
+	 * @param approvePositionId the approvePositionId to set
+	 */
+	public void setApprovePositionId(int approvePositionId) {
+		this.approvePositionId = approvePositionId;
 	}
 
 	/**

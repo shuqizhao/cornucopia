@@ -218,6 +218,7 @@ public class ProcessContorller {
 				ProcessInstDiagramEntity pide=ProcessInstDiagramService.getInstance().getProcessInst(piavm.getGuid());
 				ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
 				processApproveEntity.setCreateBy(pide.getUserId());
+				processApproveEntity.setApprovePositionId(pide.getApprovePositionId());
 				processApproveEntity.setProcessId(processDataEntity.getProcessId());
 				processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
 				processApproveEntity.setProcessDataId(processDataEntity.getId());
@@ -243,6 +244,7 @@ public class ProcessContorller {
 
 				ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
 				processApproveEntity.setCreateBy(user.getId());
+				processApproveEntity.setApprovePositionId(piavm.getApprovePositionId());
 				processApproveEntity.setProcessId(processDataEntity.getProcessId());
 				processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
 				processApproveEntity.setProcessDataId(processDataEntity.getId());

@@ -13,7 +13,7 @@ import cornucopia.entity.ProcessInstDiagramEntity;
 import cornucopia.model.ProcessInstAuthViewModel;
 
 public interface ProcessInstDiagramDao {
-	@Insert("call sp_process_inst_diagram_insert(#{pi.name},#{pi.processId},#{pi.processDataId},#{pi.userId},#{pi.userName},#{pi.isCurrent},#{pi.levelCount},#{pi.guid})")
+	@Insert("call sp_process_inst_diagram_insert(#{pi.name},#{pi.processId},#{pi.processDataId},#{pi.userId},#{pi.userName},#{pi.isCurrent},#{pi.levelCount},#{pi.guid},#{pi.approvePositionId})")
 	@SelectKey(statement="Select LAST_INSERT_ID()", keyProperty="pi.id", before=false, resultType=int.class)
 	public int insert(@Param("pi") ProcessInstDiagramEntity processInstDiagramEntity);
 	

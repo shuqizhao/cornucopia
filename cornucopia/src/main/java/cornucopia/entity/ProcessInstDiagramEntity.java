@@ -12,9 +12,24 @@ public class ProcessInstDiagramEntity extends BaseEntity {
 	private String personNumber;
 	private int parentId;
 	private String parentGuid;
+	private int approvePositionId;
 
 	public int getProcessId() {
 		return processId;
+	}
+
+	/**
+	 * @return the approvePositionId
+	 */
+	public int getApprovePositionId() {
+		return approvePositionId;
+	}
+
+	/**
+	 * @param approvePositionId the approvePositionId to set
+	 */
+	public void setApprovePositionId(int approvePositionId) {
+		this.approvePositionId = approvePositionId;
 	}
 
 	/**

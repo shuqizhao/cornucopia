@@ -10,9 +10,24 @@ public class ProcessApproveEntity extends BaseEntity{
 	private int processDataId;
 	private int userId;
 	private String parentGuid;
+	private int approvePositionId;
 
 	public int getProcessId() {
 		return processId;
+	}
+
+	/**
+	 * @return the approvePositionId
+	 */
+	public int getApprovePositionId() {
+		return approvePositionId;
+	}
+
+	/**
+	 * @param approvePositionId the approvePositionId to set
+	 */
+	public void setApprovePositionId(int approvePositionId) {
+		this.approvePositionId = approvePositionId;
 	}
 
 	/**

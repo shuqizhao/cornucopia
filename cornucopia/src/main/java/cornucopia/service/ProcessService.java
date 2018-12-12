@@ -182,7 +182,7 @@ public class ProcessService {
 		ProcessInstDiagramService.getInstance().insert(pide);
 	}
 
-	public void build(ProcessDataEntity pde, List<Integer> userIds, String currentUserId, int levelCount) {
+	public void build(ProcessDataEntity pde, List<Integer> userIds, String currentUserId, int levelCount,int positionId) {
 		for (int userId : userIds) {
 			ProcessInstDiagramEntity pide = new ProcessInstDiagramEntity();
 			pide.setGuid(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
@@ -191,6 +191,7 @@ public class ProcessService {
 			pide.setName(pde.getStepName());
 			pide.setUserId(userId);
 			pide.setLevelCount(levelCount);
+			pide.setApprovePositionId(positionId);
 			if (currentUserId.equals(userId + "")) {
 				pide.setIsCurrent(1);
 			}

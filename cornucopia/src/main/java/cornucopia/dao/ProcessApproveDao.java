@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Update;
 import cornucopia.entity.ProcessApproveEntity;
 
 public interface ProcessApproveDao {
-    @Insert("call sp_process_approve_insert(#{pd.processId},#{pd.processDataId},#{pd.createBy},#{pd.procinstId},#{pd.levelCount},#{pd.stepName},#{pd.userId},#{pd.guid},#{pd.parentGuid})")
+    @Insert("call sp_process_approve_insert(#{pd.processId},#{pd.processDataId},#{pd.createBy},#{pd.procinstId},#{pd.levelCount},#{pd.stepName},#{pd.userId},#{pd.guid},#{pd.parentGuid},#{pd.approvePositionId})")
 	@SelectKey(statement = "Select LAST_INSERT_ID()", keyProperty = "pd.id", before = false, resultType = int.class)
 	public int insert(@Param("pd") ProcessApproveEntity processApproveEntity);
 
