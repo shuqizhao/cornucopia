@@ -235,9 +235,11 @@ public class ProcessContorller {
 						user.getId());
 				if (existsAfterSign == null || existsAfterSign.getId() == 0) {
 					processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
+					//先调到DOA节点
+					ProcessService.getInstance().Complete(processDataEntity);
 				} else {
 					processDataEntity.setLevelCount(processDataEntity.getLevelCount());
-					//提前做一次，不然会回到DOA节点
+					//先调到DOA节点
 					ProcessService.getInstance().DoAction(existsAfterSign, processDataEntity);
 				}
 			} else {
