@@ -121,7 +121,7 @@ public class ProcessService {
 		}
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->人员数=%d", pde.getFormCode(), "查找到审核人员", nextUserIds.size()));
 		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
-		query.taskAssignee(pde.getUpdateBy() + "");
+		// query.taskAssignee(pde.getUpdateBy() + "");
 		query.processInstanceId(pde.getProcinstId());
 		Task task = query.singleResult();
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "查找到引擎任务", task.getId()));
