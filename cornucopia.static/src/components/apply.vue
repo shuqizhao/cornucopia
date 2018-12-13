@@ -250,12 +250,11 @@ export default {
                   } else if (self.processInstAuth.currentStep == "transfer") {
                     currentStep = self.processInstAuth.vitualTitle + "-转办";
                   } else if (self.processInstAuth.currentStep == "modify") {
-                    currentStep =
-                      self.processInstAuth.vitualTitle + "-申请人修订";
+                    currentStep = self.processInstAuth.vitualTitle;
                   }
                   self.$refs.comments.setCurrentStep(currentStep);
                 }, 200);
-                
+
                 self.cfgComment.mode = "edit";
                 self.buildFabButtons(self.processInstAuth);
                 if (self.processInstAuth.doaName == "Retry") {
@@ -272,7 +271,7 @@ export default {
                   self.findCfgBtn(self.cfgAgree, "退回").hidden = false;
                 } else if (self.processInstAuth.doaName == "Modify") {
                   self.findCfgBtn(self.cfgAgree, "同意").hidden = false;
-                  self.findCfgBtn(self.cfgAgree, "退回").hidden = false;
+                  // self.findCfgBtn(self.cfgAgree, "退回").hidden = false;
                 } else {
                   self.findCfgBtn(self.cfgAgree, "同意").hidden = false;
                   self.findCfgBtn(self.cfgAgree, "退回").hidden = false;
