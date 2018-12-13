@@ -1,62 +1,85 @@
 <template>
-     <!-- DIRECT CHAT -->
-    <div class="box box-info direct-chat direct-chat-info">
-        <div class="box-header with-border">
-            <i class="fa fa-comments"></i><h3 class="box-title">{{cfg.title||'留言'}}</h3>
+  <!-- DIRECT CHAT -->
+  <div class="box box-info direct-chat direct-chat-info">
+    <div class="box-header with-border">
+      <i class="fa fa-comments"></i>
+      <h3 class="box-title">{{cfg.title||'留言'}}</h3>
 
-            <div class="box-tools pull-right">
-            <!-- <span data-toggle="tooltip" title="3 New Messages" class="badge bg-yellow">3</span> -->
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-            </button>
-            </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body">
-            <!-- Conversations are loaded here -->
-            <div class="direct-chat-messages" style="height:100%">
-                <template v-for="(item,index) in detail.messages">
-                    <!-- Message. Default to the left -->
-                    <div v-show="!item.isReply" class="direct-chat-msg" :key="index+'i'">
-                        <div class="direct-chat-info clearfix">
-                        <span class="direct-chat-name pull-left">{{item.name}} <i style="color:red;font-size:14px;">[{{item.action}}]</i></span>
-                        <!-- <span class="direct-chat-timestamp pull-right"><i style="color:red;font-size:14px;">[{{item.action}}]</i> {{item.time}}</span> -->
-                        </div>
-                        <!-- /.direct-chat-info -->
-                        <img class="direct-chat-img" src="/src/assets/avatar.jpg" alt="message user image">
-                        <!-- /.direct-chat-img -->
-                        <div class="direct-chat-text" v-html="item.msg">
-                        </div>
-                        <div><a :id='"btnReply"+item.name+index' :hidden='isHideReply' @click="replyClick(item,$event,index)">回复</a></div>
-                        <div><a :id='"btnSave"+item.name+index' :hidden='true' @click="saveClick(item,$event,index)">保存</a></div>
-                        <!-- /.direct-chat-text -->
-                    </div>
-                    <!-- /.direct-chat-msg -->
-
-                    <!-- Message to the right -->
-                    <div v-show="item.isReply" class="direct-chat-msg right" :key="index+'j'">
-                        <div class="direct-chat-info clearfix">
-                        <span class="direct-chat-name pull-right">{{item.name}} <i style="color:red;font-size:14px;">[{{item.action}}]</i></span>
-                        <!-- <span class="direct-chat-timestamp pull-left"><i style="color:red;font-size:14px;">[{{item.action}}]</i> {{item.time}}</span> -->
-                        </div>
-                        <!-- /.direct-chat-info -->
-                        <img class="direct-chat-img" src="/src/assets/avatar.jpg" alt="message user image">
-                        <!-- /.direct-chat-img -->
-                        <div class="direct-chat-text" v-html="item.msg">
-                        </div>
-                        <!-- /.direct-chat-text -->
-                    </div>
-                    <!-- /.direct-chat-msg -->
-                </template>
-            </div>
-            <!--/.direct-chat-messages-->
-        </div>
-        <!-- /.box-body -->
-        <div v-show="cfg.mode!='detail'" class="box-footer">
-            <textarea name="message" autocomplete="off" class="form-control message" placeholder="留言..." style="width:100%"/>
-        </div>
-        <!-- /.box-footer-->
+      <div class="box-tools pull-right">
+        <!-- <span data-toggle="tooltip" title="3 New Messages" class="badge bg-yellow">3</span> -->
+        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+          <i class="fa fa-minus"></i>
+        </button>
+      </div>
     </div>
-    <!--/.direct-chat -->
+    <!-- /.box-header -->
+    <div class="box-body">
+      <!-- Conversations are loaded here -->
+      <div class="direct-chat-messages" style="height:100%">
+        <template v-for="(item,index) in detail.messages">
+          <!-- Message. Default to the left -->
+          <div v-show="!item.isReply" class="direct-chat-msg" :key="index+'i'">
+            <div class="direct-chat-info clearfix">
+              <span class="direct-chat-name pull-left">
+                {{item.name}}
+                <i style="color:red;font-size:14px;">[{{item.action}}]</i>
+              </span>
+              <!-- <span class="direct-chat-timestamp pull-right"><i style="color:red;font-size:14px;">[{{item.action}}]</i> {{item.time}}</span> -->
+            </div>
+            <!-- /.direct-chat-info -->
+            <img class="direct-chat-img" src="/src/assets/avatar.jpg" alt="message user image">
+            <!-- /.direct-chat-img -->
+            <div class="direct-chat-text" v-html="item.msg"></div>
+            <div>
+              <a
+                :id="'btnReply'+item.name+index"
+                :hidden="isHideReply"
+                @click="replyClick(item,$event,index)"
+              >回复</a>
+            </div>
+            <div>
+              <a
+                :id="'btnSave'+item.name+index"
+                :hidden="true"
+                @click="saveClick(item,$event,index)"
+              >保存</a>
+            </div>
+            <!-- /.direct-chat-text -->
+          </div>
+          <!-- /.direct-chat-msg -->
+          <!-- Message to the right -->
+          <div v-show="item.isReply" class="direct-chat-msg right" :key="index+'j'">
+            <div class="direct-chat-info clearfix">
+              <span class="direct-chat-name pull-right">
+                {{item.name}}
+                <i style="color:red;font-size:14px;">[{{item.action}}]</i>
+              </span>
+              <!-- <span class="direct-chat-timestamp pull-left"><i style="color:red;font-size:14px;">[{{item.action}}]</i> {{item.time}}</span> -->
+            </div>
+            <!-- /.direct-chat-info -->
+            <img class="direct-chat-img" src="/src/assets/avatar.jpg" alt="message user image">
+            <!-- /.direct-chat-img -->
+            <div class="direct-chat-text" v-html="item.msg"></div>
+            <!-- /.direct-chat-text -->
+          </div>
+          <!-- /.direct-chat-msg -->
+        </template>
+      </div>
+      <!--/.direct-chat-messages-->
+    </div>
+    <!-- /.box-body -->
+    <div v-show="cfg.mode!='detail'" class="box-footer">
+      <textarea
+        name="message"
+        autocomplete="off"
+        class="form-control message"
+        placeholder="留言..."
+        style="width:100%"
+      />
+    </div>
+    <!-- /.box-footer-->
+  </div>
+  <!--/.direct-chat -->
 </template>
 <script>
 export default {
@@ -79,11 +102,14 @@ export default {
       var message = $(this.$el)
         .find(".message")
         .val();
-      var actionStr ='';
-      if(this.currentStep){
-          actionStr = this.currentStep + "-" + action;
-      }else{
-          actionStr = action;
+      var actionStr = "";
+      if (this.currentStep) {
+        if (currentStep == "retry") {
+          currentStep = "重发起";
+        }
+        actionStr = this.currentStep + "-" + action;
+      } else {
+        actionStr = action;
       }
       msgs.push({
         msg: message + "<br/>" + this.getNowFormatDate(),
@@ -162,31 +188,39 @@ export default {
         date.getSeconds();
       return currentdate;
     },
-    replyClick:function(item,event,index){
-      if(event.currentTarget.innerText=='回复'){
-        event.currentTarget.innerText='取消'
-        $(event.currentTarget).after('<textarea id="'+item.name+index+'" style="width:100%">'+this.currentName+'回复'+item.name+':</textarea>');
-        $('#btnSave'+item.name+index).show();
-      }else{
-        event.currentTarget.innerText='回复'
-        $('#'+item.name+index).remove();
-        $('#btnSave'+item.name+index).hide();
+    replyClick: function(item, event, index) {
+      if (event.currentTarget.innerText == "回复") {
+        event.currentTarget.innerText = "取消";
+        $(event.currentTarget).after(
+          '<textarea id="' +
+            item.name +
+            index +
+            '" style="width:100%">' +
+            this.currentName +
+            "回复" +
+            item.name +
+            ":</textarea>"
+        );
+        $("#btnSave" + item.name + index).show();
+      } else {
+        event.currentTarget.innerText = "回复";
+        $("#" + item.name + index).remove();
+        $("#btnSave" + item.name + index).hide();
       }
-      
     },
-    saveClick:function(item,event,index){
-      var message = $('#'+item.name+index).val();
-      var actionStr =this.currentName+'@'+item.name
-      this.detail.messages.splice(index+1,0,{
-        isReply:true,
+    saveClick: function(item, event, index) {
+      var message = $("#" + item.name + index).val();
+      var actionStr = this.currentName + "@" + item.name;
+      this.detail.messages.splice(index + 1, 0, {
+        isReply: true,
         msg: message + "<br/>" + this.getNowFormatDate(),
         action: actionStr,
         time: this.getNowFormatDate(),
-        name: ''
+        name: ""
       });
-      $('#'+item.name+index).remove();
-      $('#btnSave'+item.name+index).hide();
-      $('#btnReply'+item.name+index).text('回复');
+      $("#" + item.name + index).remove();
+      $("#btnSave" + item.name + index).hide();
+      $("#btnReply" + item.name + index).text("回复");
     }
   },
   data() {
@@ -194,7 +228,7 @@ export default {
       detail: { messages: [] },
       currentName: "无名",
       currentStep: "",
-      isHideReply:true
+      isHideReply: true
     };
   }
 };
