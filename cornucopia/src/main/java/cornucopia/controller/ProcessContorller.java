@@ -492,10 +492,12 @@ public class ProcessContorller {
 			processApproveEntity.setStepName(davm.getAction());
 
 			ProcessApproveService.getInstance().insert(processApproveEntity);
+			//后加签不执行任务
 			if (!davm.getAction().equals("afterSign")) {
 				ProcessService.getInstance().DoAction(processApproveEntity, processDataEntity);
 			}
-			if (davm.getAction().equals("modify")) {
+			
+			if (davm.getAction().equals("modify")||davm.getAction().equals("preSign")) {
 				ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
 						processDataEntity.getLevelCount(), 0);
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
