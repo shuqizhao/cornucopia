@@ -193,7 +193,7 @@ public class ProcessService {
 			variables.put("inputUser", pae.getUserId());
 		} else if (pae.getStepName().equals("modify")) {
 			variables.put("to", 5);
-			variables.put("inputUser", pae.getCreateBy());
+			variables.put("inputUser", pae.getUserId());
 		} else if (pae.getStepName().equals("transfer")) {
 			variables.put("to", 6);
 			variables.put("inputUser", pae.getUserId());

@@ -49,11 +49,16 @@ export default {
     selectUser
   },
   methods: {
-    doAction: function(action, userId, processDataId,approvePositionId) {
+    doAction: function(action, userId, processDataId, approvePositionId) {
       var self = this;
       self.post({
         url: "/process/doAction",
-        data: { action: action, userId: userId, processDataId: processDataId,approvePositionId:approvePositionId },
+        data: {
+          action: action,
+          userId: userId,
+          processDataId: processDataId,
+          approvePositionId: approvePositionId
+        },
         success: function(response) {
           if (response.code == 200) {
             self.$message({
@@ -100,7 +105,7 @@ export default {
               this.currentAction,
               selectedTableData[0].id,
               this.$route.query.id,
-              self.processInstAuth.approvePositionId
+              this.processInstAuth.approvePositionId
             );
           })
           .catch(e => {
@@ -151,10 +156,22 @@ export default {
       this.applyDialogTitle = "选择员工进行『后加签』操作";
     },
     onModify() {
-      this.dialogVisible = true;
-      this.currentComponent = selectUser;
-      this.currentAction = "modify";
-      this.applyDialogTitle = "选择员工进行『申请人修订』操作";
+      this.$confirm("确认要『申请人修订』吗, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.doAction(
+            "modify",
+            0,
+            this.$route.query.id,
+            this.processInstAuth.approvePositionId
+          );
+        })
+        .catch(e => {
+          console.log(e);
+        });
     },
     onTransfer() {
       this.dialogVisible = true;
@@ -233,11 +250,12 @@ export default {
                   } else if (self.processInstAuth.currentStep == "transfer") {
                     currentStep = self.processInstAuth.vitualTitle + "-转办";
                   } else if (self.processInstAuth.currentStep == "modify") {
-                    currentStep = self.processInstAuth.vitualTitle + "-申请人修订";
+                    currentStep =
+                      self.processInstAuth.vitualTitle + "-申请人修订";
                   }
                   self.$refs.comments.setCurrentStep(currentStep);
                 }, 200);
-                debugger;
+                
                 self.cfgComment.mode = "edit";
                 self.buildFabButtons(self.processInstAuth);
                 if (self.processInstAuth.doaName == "Retry") {
@@ -483,7 +501,8 @@ export default {
               self.$router.push({ path: "/mytask" });
             },
             hidden: true
-          },{
+          },
+          {
             name: "作废",
             type: "success",
             url: "/process/applyDicard",

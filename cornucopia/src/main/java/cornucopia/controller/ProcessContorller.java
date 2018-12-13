@@ -461,6 +461,7 @@ public class ProcessContorller {
 					.getFirstLevel(processDataEntity.getId());
 			processApproveEntity.setGuid(paeFirstLevel.getGuid());
 			processApproveEntity.setUserId(processDataEntity.getCreateBy());
+			processApproveEntity.setLevelCount(-1);
 		} else {
 			processApproveEntity.setGuid(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
 			processApproveEntity.setUserId(davm.getUserId());
@@ -468,13 +469,14 @@ public class ProcessContorller {
 			String processInstDiagramGuId = ProcessInstDiagramService.getInstance()
 					.getProcessInstDiagramGuId(processDataEntity.getId(), user.getId());
 			processApproveEntity.setParentGuid(processInstDiagramGuId);
+			processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
 		}
 
 		processApproveEntity.setCreateBy(user.getId());
 		processApproveEntity.setProcessId(processDataEntity.getProcessId());
 		processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
 		processApproveEntity.setProcessDataId(processDataEntity.getId());
-		processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
+		
 		processApproveEntity.setStepName(davm.getAction());
 
 		int result = ProcessApproveService.getInstance().insert(processApproveEntity);
