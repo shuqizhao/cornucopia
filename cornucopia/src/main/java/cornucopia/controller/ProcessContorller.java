@@ -207,6 +207,7 @@ public class ProcessContorller {
 				.getProcessInstAuth(processDataEntity.getId(), user.getId());
 		if (auths != null && auths.size() > 0) {
 			ProcessApproveEntity existsAfterSign = null;
+			int approveLevelCount = processDataEntity.getLevelCount();
 			ProcessInstAuthViewModel piavm = auths.get(0);
 			if (piavm.getCurrentStep().equals("preSign") || piavm.getCurrentStep().equals("modify")) {
 				processDataEntity.setLevelCount(processDataEntity.getLevelCount());
@@ -234,7 +235,7 @@ public class ProcessContorller {
 				processApproveEntity.setProcessId(processDataEntity.getProcessId());
 				processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
 				processApproveEntity.setProcessDataId(processDataEntity.getId());
-				processApproveEntity.setLevelCount(processDataEntity.getLevelCount() - 1);
+				processApproveEntity.setLevelCount(approveLevelCount);
 				processApproveEntity.setStepName(pide.getName());
 				processApproveEntity.setUserId(pide.getUserId());
 				processApproveEntity.setGuid(piavm.getGuid());
@@ -268,7 +269,7 @@ public class ProcessContorller {
 				processApproveEntity.setProcessId(processDataEntity.getProcessId());
 				processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
 				processApproveEntity.setProcessDataId(processDataEntity.getId());
-				processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
+				processApproveEntity.setLevelCount(approveLevelCount);
 				processApproveEntity.setStepName(piavm.getVitualTitle());
 				processApproveEntity.setUserId(user.getId());
 				String processInstDiagramGuId = ProcessInstDiagramService.getInstance()
