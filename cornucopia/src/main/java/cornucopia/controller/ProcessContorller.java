@@ -210,7 +210,7 @@ public class ProcessContorller {
 			int approveLevelCount = processDataEntity.getLevelCount();
 			ProcessInstAuthViewModel piavm = auths.get(0);
 			if (piavm.getCurrentStep().equals("preSign") || piavm.getCurrentStep().equals("modify")) {
-				processDataEntity.setLevelCount(processDataEntity.getLevelCount());
+				// processDataEntity.setLevelCount(processDataEntity.getLevelCount());
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
 				// 先调到DOA节点
 				// ProcessService.getInstance().JumpToDoa(processDataEntity);
@@ -223,7 +223,7 @@ public class ProcessContorller {
 				if (existsAfterSign == null || existsAfterSign.getId() == 0) {
 					processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
 				} else {
-					processDataEntity.setLevelCount(processDataEntity.getLevelCount());
+					// processDataEntity.setLevelCount(processDataEntity.getLevelCount());
 				}
 				// 先调到DOA节点
 				// ProcessService.getInstance().JumpToDoa(processDataEntity);
@@ -260,7 +260,7 @@ public class ProcessContorller {
 				if (existsAfterSign == null || existsAfterSign.getId() == 0) {
 					processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
 				} else {
-					processDataEntity.setLevelCount(processDataEntity.getLevelCount());
+					// processDataEntity.setLevelCount(processDataEntity.getLevelCount());
 				}
 
 				ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
@@ -280,6 +280,7 @@ public class ProcessContorller {
 			if (existsAfterSign == null || existsAfterSign.getId() == 0) {
 				ProcessService.getInstance().Complete(processDataEntity);
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
+				ProcessApproveService.getInstance().updateCurrent(processDataEntity.getId(), approveLevelCount, 1);
 			} else {
 				ProcessService.getInstance().DoAction(existsAfterSign, processDataEntity);
 				ProcessApproveService.getInstance().updateCurrent(existsAfterSign.getId(), 1);
