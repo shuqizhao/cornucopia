@@ -365,9 +365,9 @@ public class ProcessContorller {
 			processApproveEntity.setStepName("retry");
 			processApproveEntity.setUserId(processDataEntity.getCreateBy());
 
-			int paeId = ProcessApproveService.getInstance().insert(processApproveEntity);
+			ProcessApproveService.getInstance().insert(processApproveEntity);
 			ProcessApproveService.getInstance().updateCurrent(processDataEntity.getId(), -1, 0);
-			ProcessApproveService.getInstance().updateCurrent(paeId, 1);
+			ProcessApproveService.getInstance().updateCurrent(processApproveEntity.getId(), 1);
 			int result = ProcessDataService.getInstance().update(processDataEntity);
 			jr.setCode(200);
 			jr.setData(result);
