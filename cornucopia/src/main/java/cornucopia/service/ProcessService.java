@@ -168,6 +168,9 @@ public class ProcessService {
 		// query.taskAssignee(pde.getUpdateBy() + "");
 		query.processInstanceId(pde.getProcinstId());
 		Task task = query.singleResult();
+		if(!task.getName().contains("DOA")){
+			ActivitiHelper.GetEngine().getTaskService().complete(task.getId());
+		}
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "查找到引擎任务", task.getId()));
 		Map<String, Object> variables = new HashMap<String, Object>();
 		if (pae.getStepName().equals("preSign")) {
