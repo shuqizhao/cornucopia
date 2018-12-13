@@ -308,7 +308,7 @@ public class ProcessContorller {
 
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		processDataEntity.setUpdateBy(user.getId());
-		processDataEntity.setLevelCount(-1);
+		processDataEntity.setLevelCount(0);
 		processDataEntity.setStepName("重发起");
 
 		JsonResult<Integer> jr = new JsonResult<Integer>();
