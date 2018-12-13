@@ -104,6 +104,10 @@ public class ProcessService {
 		if(!task.getName().contains("DOA")){
 			ActivitiHelper.GetEngine().getTaskService().complete(task.getId());
 		}
+		TaskQuery query2 = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
+		// query.taskAssignee(pde.getUpdateBy() + "");
+		query2.processInstanceId(pde.getProcinstId());
+		task = query2.singleResult();
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("to", "2");
 		variables.put("inputUser", pde.getCreateBy());
@@ -130,6 +134,10 @@ public class ProcessService {
 		if(!task.getName().contains("DOA")){
 			ActivitiHelper.GetEngine().getTaskService().complete(task.getId());
 		}
+		TaskQuery query2 = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
+		// query.taskAssignee(pde.getUpdateBy() + "");
+		query2.processInstanceId(pde.getProcinstId());
+		task = query2.singleResult();
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "查找到引擎任务", task.getId()));
 		Map<String, Object> variables = new HashMap<String, Object>();
 		for (int nextUserId : nextUserIds) {
@@ -171,6 +179,10 @@ public class ProcessService {
 		if(!task.getName().contains("DOA")){
 			ActivitiHelper.GetEngine().getTaskService().complete(task.getId());
 		}
+		TaskQuery query2 = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
+		// query.taskAssignee(pde.getUpdateBy() + "");
+		query2.processInstanceId(pde.getProcinstId());
+		task = query2.singleResult();
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "查找到引擎任务", task.getId()));
 		Map<String, Object> variables = new HashMap<String, Object>();
 		if (pae.getStepName().equals("preSign")) {
