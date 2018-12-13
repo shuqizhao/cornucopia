@@ -242,6 +242,7 @@ public class ProcessContorller {
 				ProcessApproveService.getInstance().insert(processApproveEntity);
 			} else if (piavm.getCurrentStep().equals("afterSign")) {
 				// processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
+				//熄灭当前
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
 				existsAfterSign = ProcessApproveService.getInstance().getAfterSign(processDataEntity.getId(),
 						user.getId());
@@ -279,13 +280,18 @@ public class ProcessContorller {
 			}
 			if (existsAfterSign == null || existsAfterSign.getId() == 0) {
 				ProcessService.getInstance().Complete(processDataEntity);
+				//熄灭当前
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
-				ProcessApproveService.getInstance().updateCurrent(processDataEntity.getId(), approveLevelCount, 1);
+				//点亮下一步
+				ProcessApproveService.getInstance().updateCurrent(processDataEntity.getId(),
+						processDataEntity.getLevelCount(), 1);
 			} else {
 				ProcessService.getInstance().DoAction(existsAfterSign, processDataEntity);
+				//点亮下一步
 				ProcessApproveService.getInstance().updateCurrent(existsAfterSign.getId(), 1);
 			}
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
+			//点亮下一步
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
 					processDataEntity.getLevelCount(), 1);
 			int result = ProcessDataService.getInstance().update(processDataEntity);
