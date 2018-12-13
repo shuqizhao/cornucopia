@@ -101,7 +101,7 @@ public class ProcessService {
 		// query.taskAssignee(pde.getUpdateBy() + "");
 		query.processInstanceId(pde.getProcinstId());
 		Task task = query.singleResult();
-		if(!task.getName().contains("DOA")){
+		if(!task.getName().contains("DOA")&&!task.getName().equals("Init")){
 			ActivitiHelper.GetEngine().getTaskService().complete(task.getId());
 		}
 		TaskQuery query2 = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();

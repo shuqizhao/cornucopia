@@ -350,7 +350,7 @@ public class ProcessContorller {
 				.getProcessInstAuth(processDataEntity.getId(), user.getId());
 		if (auths != null && auths.size() > 0) {
 			ProcessService.getInstance().Return(processDataEntity);
-			
+
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(), -1, 1);
 			ProcessApproveEntity paeFirstLevel = ProcessApproveService.getInstance()
@@ -456,18 +456,27 @@ public class ProcessContorller {
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(davm.getProcessDataId());
 		ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
-		processApproveEntity.setGuid(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
+		if (davm.getAction().equals("modify")) {
+			ProcessApproveEntity paeFirstLevel = ProcessApproveService.getInstance()
+					.getFirstLevel(processDataEntity.getId());
+			processApproveEntity.setGuid(paeFirstLevel.getGuid());
+			processApproveEntity.setUserId(processDataEntity.getCreateBy());
+		} else {
+			processApproveEntity.setGuid(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
+			processApproveEntity.setUserId(davm.getUserId());
+			processApproveEntity.setApprovePositionId(davm.getApprovePositionId());
+			String processInstDiagramGuId = ProcessInstDiagramService.getInstance()
+					.getProcessInstDiagramGuId(processDataEntity.getId(), user.getId());
+			processApproveEntity.setParentGuid(processInstDiagramGuId);
+		}
+
 		processApproveEntity.setCreateBy(user.getId());
-		processApproveEntity.setUserId(davm.getUserId());
-		processApproveEntity.setApprovePositionId(davm.getApprovePositionId());
 		processApproveEntity.setProcessId(processDataEntity.getProcessId());
 		processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
 		processApproveEntity.setProcessDataId(processDataEntity.getId());
 		processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
 		processApproveEntity.setStepName(davm.getAction());
-		String processInstDiagramGuId = ProcessInstDiagramService.getInstance()
-				.getProcessInstDiagramGuId(processDataEntity.getId(), user.getId());
-		processApproveEntity.setParentGuid(processInstDiagramGuId);
+
 		int result = ProcessApproveService.getInstance().insert(processApproveEntity);
 		if (!davm.getAction().equals("afterSign")) {
 			ProcessService.getInstance().DoAction(processApproveEntity, processDataEntity);
