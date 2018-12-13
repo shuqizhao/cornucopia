@@ -1,6 +1,6 @@
 package cornucopia.model;
 
-public class DoActionViewModel{
+public class DoActionViewModel extends ProcessDataViewModel{
     private int userId;
     private String action;
     private int processDataId;

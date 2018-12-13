@@ -53,12 +53,14 @@ export default {
           .then(() => {
             item.onClick(item);
           })
-          .catch(() => {});
+          .catch((e) => {
+            console.log(e);
+          });
       } else {
         self.btnSave(item);
       }
     },
-    btnSave: function(item) {
+    getLocalBizData(item){
       var self = this;
       self.currentAction = item.name;
       var dataWillCommit = {};
@@ -131,6 +133,19 @@ export default {
       if (self.cfg.beforeCommit) {
         self.cfg.beforeCommit(dataWillCommit);
       }
+      if (self.cfg.getExtraDataSkipValidate) {
+        dataWillCommit = $.extend(
+          true,
+          dataWillCommit,
+          self.cfg.getExtraDataSkipValidate()
+        );
+      }
+      return dataWillCommit;
+    },
+    btnSave: function(item) {
+      var self = this;
+      // self.currentAction = item.name;
+      var dataWillCommit = this.getLocalBizData(item);
       self
         .$confirm("确定要" + item.name + "吗", "提示", {
           confirmButtonText: "确定",
@@ -138,13 +153,6 @@ export default {
           type: "warning"
         })
         .then(() => {
-          if (self.cfg.getExtraDataSkipValidate) {
-            dataWillCommit = $.extend(
-              true,
-              dataWillCommit,
-              self.cfg.getExtraDataSkipValidate()
-            );
-          }
           self.postUrl(dataWillCommit, null, item);
         })
         .catch(err => {

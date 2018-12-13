@@ -49,18 +49,22 @@ export default {
     selectUser
   },
   methods: {
-    doAction: function(action, userId, processDataId, approvePositionId) {
+    doAction: function(action, userId, processDataId, approvePositionId, data) {
       var self = this;
+      self.openLoading(self, null, "正在提交...", 15000);
       self.post({
         url: "/process/doAction",
         data: {
           action: action,
           userId: userId,
           processDataId: processDataId,
-          approvePositionId: approvePositionId
+          approvePositionId: approvePositionId,
+          xmlStr: "",
+          jsonStr: JSON.stringify(data)
         },
         success: function(response) {
           if (response.code == 200) {
+            self.closeLoading(self);
             self.$message({
               type: "success",
               message: "成功!"
@@ -101,11 +105,16 @@ export default {
           type: "warning"
         })
           .then(() => {
+            $(this.$el)
+              .find(".message")
+              .val("");
+            // self.$refs.agree.currentAction = messsage;
             this.doAction(
               this.currentAction,
               selectedTableData[0].id,
               this.$route.query.id,
-              this.processInstAuth.approvePositionId
+              this.processInstAuth.approvePositionId,
+              this.getLocalBizData(messsage)
             );
           })
           .catch(e => {
@@ -156,17 +165,32 @@ export default {
       this.applyDialogTitle = "选择员工进行『后加签』操作";
     },
     onModify() {
-      this.$confirm("确认要『申请人修订』吗, 是否继续?", "提示", {
+      this.$prompt("确认要『申请人修订』吗, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
+        inputPattern: /.+/,
+        inputErrorMessage: "请输入修订原因",
+        inputPlaceholder: "修订原因",
+        inputType: "textarea",
         type: "warning"
       })
-        .then(() => {
+        .then(({ value }) => {
+          $(this.$el)
+            .find(".message")
+            .val(value);
+          // self.$refs.agree.currentAction = "申请人修订";
+          // this.$refs.comments.addMessage({
+          //   msg: value + "<br/>" + this.$refs.comments.getNowFormatDate(),
+          //   action: this.$refs.comments.currentStep + "-申请人修订",
+          //   time: this.$refs.comments.getNowFormatDate(),
+          //   name: this.$refs.comments.currentName
+          // });
           this.doAction(
             "modify",
             0,
             this.$route.query.id,
-            this.processInstAuth.approvePositionId
+            this.processInstAuth.approvePositionId,
+            this.getLocalBizData("申请人修订")
           );
         })
         .catch(e => {
@@ -179,7 +203,7 @@ export default {
       this.currentAction = "transfer";
       this.applyDialogTitle = "选择员工进行『转办』操作";
     },
-    getBizData: function(processId, dataId, processInstAuth) {
+    getRemoteBizData: function(processId, dataId, processInstAuth) {
       let self = this;
       self.openLoading();
       self.get({
@@ -225,6 +249,9 @@ export default {
           }
         }
       });
+    },
+    getLocalBizData: function(name) {
+      return this.$refs.agree.getLocalBizData({ name: name, url: "" });
     }
   },
   mounted: function() {
@@ -281,7 +308,7 @@ export default {
                 self.cfgAttachment.mode = "detailEdit";
               }
             }
-            self.getBizData(processId, dataId, self.processInstAuth);
+            self.getRemoteBizData(processId, dataId, self.processInstAuth);
           }
         });
       } else {
@@ -582,4 +609,9 @@ export default {
 <style scoped>
 @import "../ref/animate.min.css";
 @import "../ref/icon.css";
+</style>
+<style>
+.el-message-box__status {
+  top: 17%;
+}
 </style>

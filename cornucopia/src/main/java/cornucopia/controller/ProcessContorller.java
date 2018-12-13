@@ -462,7 +462,10 @@ public class ProcessContorller {
 			throws DocumentException, UnsupportedEncodingException {
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(davm.getProcessDataId());
-
+		processDataEntity.setJsonData(davm.getJsonStr());
+		processDataEntity.setBizData(davm.getXmlStr());
+		processDataEntity.setUpdateBy(user.getId());
+		ProcessDataService.getInstance().update(processDataEntity);
 		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
 				.getProcessInstAuth(processDataEntity.getId(), user.getId());
 		if (auths != null && auths.size() > 0) {
