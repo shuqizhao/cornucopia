@@ -307,7 +307,7 @@ public class ProcessContorller {
 
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		processDataEntity.setUpdateBy(user.getId());
-		processDataEntity.setLevelCount(processDataEntity.getLevelCount());
+		processDataEntity.setLevelCount(0);
 
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
@@ -319,15 +319,6 @@ public class ProcessContorller {
 			processDataEntity.setStepName("重发起");
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(), 0, 1);
-			// ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
-			// processApproveEntity.setCreateBy(user.getId());
-			// processApproveEntity.setProcessId(processDataEntity.getProcessId());
-			// processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
-			// processApproveEntity.setProcessDataId(processDataEntity.getId());
-			// processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
-			// processApproveEntity.setStepName(processDataEntity.getStepName());
-			// processApproveEntity.setUserId(user.getId());
-			// ProcessApproveService.getInstance().insert(processApproveEntity);
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
 			int result = ProcessDataService.getInstance().update(processDataEntity);
 			jr.setCode(200);
