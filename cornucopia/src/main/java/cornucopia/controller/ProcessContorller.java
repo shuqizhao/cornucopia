@@ -342,7 +342,7 @@ public class ProcessContorller {
 
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		processDataEntity.setUpdateBy(user.getId());
-		processDataEntity.setLevelCount(0);
+		processDataEntity.setLevelCount(-1);
 
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
