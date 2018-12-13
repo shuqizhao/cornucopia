@@ -101,7 +101,7 @@ public class ProcessService {
 		// query.taskAssignee(pde.getUpdateBy() + "");
 		query.processInstanceId(pde.getProcinstId());
 		Task task = query.singleResult();
-		if(!task.getName().contains("DOA")&&!task.getName().equals("Init")){
+		if (!task.getName().contains("DOA")) {
 			ActivitiHelper.GetEngine().getTaskService().complete(task.getId());
 		}
 		TaskQuery query2 = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
@@ -131,7 +131,7 @@ public class ProcessService {
 		// query.taskAssignee(pde.getUpdateBy() + "");
 		query.processInstanceId(pde.getProcinstId());
 		Task task = query.singleResult();
-		if(!task.getName().contains("DOA")){
+		if (!task.getName().contains("DOA") && !task.getName().equals("Init")) {
 			ActivitiHelper.GetEngine().getTaskService().complete(task.getId());
 		}
 		TaskQuery query2 = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
@@ -163,11 +163,10 @@ public class ProcessService {
 		query.processInstanceId(pde.getProcinstId());
 		Task task = query.singleResult();
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "查找到引擎任务", task.getId()));
-		
+
 		ActivitiHelper.GetEngine().getTaskService().complete(task.getId());
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "引擎任务完成", task.getId()));
 	}
-
 
 	public void DoAction(ProcessApproveEntity pae, ProcessDataEntity pde) {
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s", pde.getFormCode(), "准备开始动作",
@@ -176,7 +175,7 @@ public class ProcessService {
 		// query.taskAssignee(pde.getUpdateBy() + "");
 		query.processInstanceId(pde.getProcinstId());
 		Task task = query.singleResult();
-		if(!task.getName().contains("DOA")){
+		if (!task.getName().contains("DOA")) {
 			ActivitiHelper.GetEngine().getTaskService().complete(task.getId());
 		}
 		TaskQuery query2 = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
@@ -189,7 +188,7 @@ public class ProcessService {
 			variables.put("to", 3);
 			// variables.put("dealUser", pae.getUserId());
 			variables.put("inputUser", pae.getUserId());
-		}else if (pae.getStepName().equals("afterSign")) {
+		} else if (pae.getStepName().equals("afterSign")) {
 			variables.put("to", 4);
 			variables.put("inputUser", pae.getUserId());
 		} else if (pae.getStepName().equals("modify")) {
@@ -216,7 +215,8 @@ public class ProcessService {
 		ProcessInstDiagramService.getInstance().insert(pide);
 	}
 
-	public void build(ProcessDataEntity pde, List<Integer> userIds, String currentUserId, int levelCount,int positionId) {
+	public void build(ProcessDataEntity pde, List<Integer> userIds, String currentUserId, int levelCount,
+			int positionId) {
 		for (int userId : userIds) {
 			ProcessInstDiagramEntity pide = new ProcessInstDiagramEntity();
 			pide.setGuid(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
