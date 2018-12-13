@@ -20,6 +20,20 @@ public class ProcessInstAuthViewModel {
 	}
 
 	/**
+	 * @return the doaName
+	 */
+	public String getDoaName() {
+		return doaName;
+	}
+
+	/**
+	 * @param doaName the doaName to set
+	 */
+	public void setDoaName(String doaName) {
+		this.doaName = doaName;
+	}
+
+	/**
 	 * @return the approvePositionId
 	 */
 	public int getApprovePositionId() {
@@ -105,14 +119,6 @@ public class ProcessInstAuthViewModel {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
-	}
-
-	public String getButtonType() {
-		return doaName;
-	}
-
-	public void setButtonType(String doaName) {
-		this.doaName = doaName;
 	}
 
 	public String getCurrentStep() {

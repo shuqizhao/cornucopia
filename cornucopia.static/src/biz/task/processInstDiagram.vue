@@ -14,7 +14,7 @@
         <div class="timeline-item">
           <h3 class="timeline-header">
             <a>
-              <b>{{step.name}}</b>
+              <b>{{formaterTitle(step)}}</b>
             </a>
           </h3>
 
@@ -31,12 +31,11 @@
                 :content="childStep.email+' '+childStep.personNumber"
               >
                 <el-button
-                  icon="el-icon-arrow-left"
                   :type="childStep.isCurrent==1?'success':'info'"
                   style="width:100%"
                   slot="reference"
                   size="mini"
-                >{{childStep.userName}}</el-button>
+                >{{childStep.userName+'-前加签'}}</el-button>
               </el-popover>
 
               <a class="small-box-footer">{{childStep.isCurrent==1?'处理中...':childStep.updateTime}}</a>
@@ -97,12 +96,11 @@
                   :content="childStep.email+' '+childStep.personNumber"
                 >
                   <el-button
-                    icon="el-icon-arrow-right"
                     :type="childStep.isCurrent==1?'success':'info'"
                     style="width:100%"
                     slot="reference"
                     size="mini"
-                  >{{childStep.userName}}</el-button>
+                  >{{childStep.userName+'-后加签'}}</el-button>
                 </el-popover>
 
                 <a class="small-box-footer">{{childStep.isCurrent==1?'处理中...':childStep.updateTime}}</a>
@@ -193,6 +191,14 @@ export default {
         }
       }
       return childSteps;
+    },
+    formaterTitle: function(step) {
+      if (step.name == "retry") {
+        return "重发起";
+      } else if (step.name == "modify") {
+        return "申请人修订";
+      }
+      return step.name;
     }
     // ,
     // isStepCurrent: function(step) {

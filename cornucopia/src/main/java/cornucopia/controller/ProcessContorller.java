@@ -313,6 +313,8 @@ public class ProcessContorller {
 		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
 				.getProcessInstAuth(processDataEntity.getId(), user.getId());
 		if (auths != null && auths.size() > 0) {
+			ProcessInstAuthViewModel piavm = auths.get(0);
+			ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
 			ProcessService.getInstance().Complete(processDataEntity);
 			processDataEntity.setStepName("重发起");
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
@@ -366,7 +368,7 @@ public class ProcessContorller {
 			processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
 			processApproveEntity.setProcessDataId(processDataEntity.getId());
 			processApproveEntity.setLevelCount(-1);
-			processApproveEntity.setStepName("reTry");
+			processApproveEntity.setStepName("retry");
 			processApproveEntity.setUserId(processDataEntity.getCreateBy());
 			int paeId = ProcessApproveService.getInstance().insert(processApproveEntity);
 			ProcessApproveService.getInstance().updateCurrent(paeId, 1);

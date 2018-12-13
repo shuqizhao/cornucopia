@@ -237,12 +237,12 @@ export default {
                   }
                   self.$refs.comments.setCurrentStep(currentStep);
                 }, 200);
-
+                debugger;
                 self.cfgComment.mode = "edit";
                 self.buildFabButtons(self.processInstAuth);
                 if (self.processInstAuth.doaName == "Retry") {
                   self.findCfgBtn(self.cfgAgree, "重发起").hidden = false;
-                  //  self.findCfgBtn(cfgAgree, "作废").hidden = false;
+                  self.findCfgBtn(self.cfgAgree, "作废").hidden = false;
                 } else if (self.processInstAuth.doaName == "PreSign") {
                   self.findCfgBtn(self.cfgAgree, "同意").hidden = false;
                   self.findCfgBtn(self.cfgAgree, "退回").hidden = false;
@@ -479,6 +479,14 @@ export default {
             name: "重发起",
             type: "success",
             url: "/process/applyRetry",
+            onSuccess: function() {
+              self.$router.push({ path: "/mytask" });
+            },
+            hidden: true
+          },{
+            name: "作废",
+            type: "success",
+            url: "/process/applyDicard",
             onSuccess: function() {
               self.$router.push({ path: "/mytask" });
             },
