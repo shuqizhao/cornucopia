@@ -104,8 +104,8 @@ export default {
         .val();
       var actionStr = "";
       if (this.currentStep) {
-        if (currentStep == "retry") {
-          currentStep = "重发起";
+        if (this.currentStep == "retry") {
+          this.currentStep = "重发起";
         }
         actionStr = this.currentStep + "-" + action;
       } else {

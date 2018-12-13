@@ -455,40 +455,48 @@ public class ProcessContorller {
 			throws DocumentException, UnsupportedEncodingException {
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(davm.getProcessDataId());
-		ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
-		if (davm.getAction().equals("modify")) {
-			ProcessApproveEntity paeFirstLevel = ProcessApproveService.getInstance()
-					.getFirstLevel(processDataEntity.getId());
-			processApproveEntity.setGuid(paeFirstLevel.getGuid());
-			processApproveEntity.setUserId(processDataEntity.getCreateBy());
-			processApproveEntity.setLevelCount(-1);
-		} else {
-			processApproveEntity.setGuid(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
-			processApproveEntity.setUserId(davm.getUserId());
-			processApproveEntity.setApprovePositionId(davm.getApprovePositionId());
-			String processInstDiagramGuId = ProcessInstDiagramService.getInstance()
-					.getProcessInstDiagramGuId(processDataEntity.getId(), user.getId());
-			processApproveEntity.setParentGuid(processInstDiagramGuId);
-			processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
+
+		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
+				.getProcessInstAuth(processDataEntity.getId(), user.getId());
+		if (auths != null && auths.size() > 0) {
+			ProcessInstAuthViewModel piavm = auths.get(0);
+			ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
+			if (davm.getAction().equals("modify")) {
+				ProcessApproveEntity paeFirstLevel = ProcessApproveService.getInstance()
+						.getFirstLevel(processDataEntity.getId());
+				processApproveEntity.setGuid(paeFirstLevel.getGuid());
+				processApproveEntity.setUserId(processDataEntity.getCreateBy());
+				processApproveEntity.setLevelCount(-1);
+			} else {
+				processApproveEntity.setGuid(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
+				processApproveEntity.setUserId(davm.getUserId());
+				processApproveEntity.setApprovePositionId(davm.getApprovePositionId());
+				String processInstDiagramGuId = ProcessInstDiagramService.getInstance()
+						.getProcessInstDiagramGuId(processDataEntity.getId(), user.getId());
+				processApproveEntity.setParentGuid(processInstDiagramGuId);
+				processApproveEntity.setLevelCount(processDataEntity.getLevelCount());
+			}
+
+			processApproveEntity.setCreateBy(user.getId());
+			processApproveEntity.setProcessId(processDataEntity.getProcessId());
+			processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
+			processApproveEntity.setProcessDataId(processDataEntity.getId());
+
+			processApproveEntity.setStepName(davm.getAction());
+
+			ProcessApproveService.getInstance().insert(processApproveEntity);
+			if (!davm.getAction().equals("afterSign")) {
+				ProcessService.getInstance().DoAction(processApproveEntity, processDataEntity);
+			}
+			if (davm.getAction().equals("modify")) {
+				ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
+						processDataEntity.getLevelCount(), 0);
+				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
+			}
 		}
 
-		processApproveEntity.setCreateBy(user.getId());
-		processApproveEntity.setProcessId(processDataEntity.getProcessId());
-		processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
-		processApproveEntity.setProcessDataId(processDataEntity.getId());
-		
-		processApproveEntity.setStepName(davm.getAction());
-
-		int result = ProcessApproveService.getInstance().insert(processApproveEntity);
-		if (!davm.getAction().equals("afterSign")) {
-			ProcessService.getInstance().DoAction(processApproveEntity, processDataEntity);
-		}
-		if (davm.getAction().equals("modify")) {
-			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
-					processDataEntity.getLevelCount(), 0);
-		}
 		JsonResult<Integer> jr = new JsonResult<Integer>();
-		if (result > 0) {
+		if (auths.size() > 0) {
 			jr.setCode(200);
 			jr.setData(1);
 		} else {
