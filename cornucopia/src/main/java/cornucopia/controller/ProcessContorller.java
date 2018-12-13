@@ -212,7 +212,7 @@ public class ProcessContorller {
 			if (piavm.getCurrentStep().equals("preSign") || piavm.getCurrentStep().equals("modify")) {
 				processDataEntity.setLevelCount(processDataEntity.getLevelCount());
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
-				//先调到DOA节点
+				// 先调到DOA节点
 				// ProcessService.getInstance().JumpToDoa(processDataEntity);
 			} else if (piavm.getCurrentStep().equals("transfer")) {
 				// processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
@@ -225,7 +225,7 @@ public class ProcessContorller {
 				} else {
 					processDataEntity.setLevelCount(processDataEntity.getLevelCount());
 				}
-				//先调到DOA节点
+				// 先调到DOA节点
 				// ProcessService.getInstance().JumpToDoa(processDataEntity);
 				// 转办时要给操作人记录
 				ProcessInstDiagramEntity pide = ProcessInstDiagramService.getInstance().getProcessInst(piavm.getGuid());
@@ -250,7 +250,7 @@ public class ProcessContorller {
 				} else {
 					processDataEntity.setLevelCount(processDataEntity.getLevelCount());
 				}
-				//先调到DOA节点
+				// 先调到DOA节点
 				// ProcessService.getInstance().JumpToDoa(processDataEntity);
 			} else {
 
@@ -315,8 +315,8 @@ public class ProcessContorller {
 		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
 				.getProcessInstAuth(processDataEntity.getId(), user.getId());
 		if (auths != null && auths.size() > 0) {
-			ProcessInstAuthViewModel piavm = auths.get(0);
-			ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
+			// ProcessInstAuthViewModel piavm = auths.get(0);
+			ProcessApproveService.getInstance().updateCurrent(processDataEntity.getId(), 0, 1);
 			ProcessService.getInstance().Complete(processDataEntity);
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(), 0, 1);
@@ -343,16 +343,18 @@ public class ProcessContorller {
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		processDataEntity.setUpdateBy(user.getId());
 		processDataEntity.setLevelCount(-1);
+		processDataEntity.setStepName("重发起");
 
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
 				.getProcessInstAuth(processDataEntity.getId(), user.getId());
 		if (auths != null && auths.size() > 0) {
 			ProcessService.getInstance().Return(processDataEntity);
-			processDataEntity.setStepName("重发起");
+			
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(), -1, 1);
-			ProcessApproveEntity paeFirstLevel = ProcessApproveService.getInstance().getFirstLevel(processDataEntity.getId());
+			ProcessApproveEntity paeFirstLevel = ProcessApproveService.getInstance()
+					.getFirstLevel(processDataEntity.getId());
 			ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
 			processApproveEntity.setGuid(paeFirstLevel.getGuid());
 			processApproveEntity.setCreateBy(user.getId());
@@ -362,7 +364,9 @@ public class ProcessContorller {
 			processApproveEntity.setLevelCount(-1);
 			processApproveEntity.setStepName("retry");
 			processApproveEntity.setUserId(processDataEntity.getCreateBy());
+
 			int paeId = ProcessApproveService.getInstance().insert(processApproveEntity);
+			ProcessApproveService.getInstance().updateCurrent(processDataEntity.getId(), -1, 0);
 			ProcessApproveService.getInstance().updateCurrent(paeId, 1);
 			int result = ProcessDataService.getInstance().update(processDataEntity);
 			jr.setCode(200);
@@ -468,7 +472,7 @@ public class ProcessContorller {
 		if (!davm.getAction().equals("afterSign")) {
 			ProcessService.getInstance().DoAction(processApproveEntity, processDataEntity);
 		}
-		if(davm.getAction().equals("modify")){
+		if (davm.getAction().equals("modify")) {
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
 					processDataEntity.getLevelCount(), 0);
 		}

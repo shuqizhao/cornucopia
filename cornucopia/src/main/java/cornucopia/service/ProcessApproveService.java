@@ -24,6 +24,10 @@ public class ProcessApproveService {
 		return processApproveDao.updateCurrent(id, status);
 	}
 
+	public int updateCurrent(int processDataId,int levelCount,int status) {
+		return processApproveDao.updateCurrentByLevel(processDataId,levelCount,status);
+	}
+
 	public ProcessApproveEntity getAfterSign(int pdId, int userId) {
 		return processApproveDao.getAfterSign(pdId, userId);
 	}
