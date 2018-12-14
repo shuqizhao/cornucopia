@@ -49,7 +49,6 @@
                     ></el-option>
                   </el-select>
                   <el-date-picker v-else-if="column.type=='timer'" v-show="formInline['colunmName']==column.name" :key="column.name" v-model="formInline[column.name]"
-                    style="width:220px;"
                     type="daterange"
                     range-separator="至"
                     start-placeholder="开始日期"
@@ -57,8 +56,7 @@
                   ></el-date-picker>
                   <el-input v-else v-show="formInline['colunmName']==column.name" :key="column.name" v-model="formInline[column.name]"
                     size="mini"
-                    placeholder="查询条件"
-                    style="width:220px;">
+                    placeholder="查询条件">
                   </el-input>
                 </template>
               </el-form-item>
