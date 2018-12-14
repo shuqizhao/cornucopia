@@ -26,7 +26,7 @@
             :model="formInline"
             class="demo-form-inline"
           >
-            <template v-if="this.cfg.searchMode=='vertical'" >
+            <template v-if="this.cfg.searchMode=='vertical'">
               <el-form-item>
                 <el-select v-model="formInline['columnName']" @change="onVerticalSelectChange">
                   <el-option
@@ -40,7 +40,12 @@
 
               <el-form-item>
                 <template v-for="column in this.searchColumns">
-                  <el-select v-if="column.type=='combox'" v-show="formInline['columnName']==column.name" :key="column.name" v-model="formInline[column.name]">
+                  <el-select
+                    v-if="column.type=='combox'"
+                    v-show="formInline['columnName']==column.name"
+                    :key="column.name"
+                    v-model="formInline[column.name]"
+                  >
                     <el-option
                       v-for="item in column.data"
                       :key="item.id"
@@ -48,21 +53,29 @@
                       :value="item.id"
                     ></el-option>
                   </el-select>
-                  <el-date-picker v-else-if="column.type=='timer'" v-show="formInline['columnName']==column.name" :key="column.name" v-model="formInline[column.name]"
+                  <el-date-picker
+                    v-else-if="column.type=='timer'"
+                    v-show="formInline['columnName']==column.name"
+                    :key="column.name"
+                    v-model="formInline[column.name]"
                     type="daterange"
                     range-separator="至"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
                   ></el-date-picker>
-                  <el-input v-else v-show="formInline['columnName']==column.name" :key="column.name" v-model="formInline[column.name]"
+                  <el-input
+                    v-else
+                    v-show="formInline['columnName']==column.name"
+                    :key="column.name"
+                    v-model="formInline[column.name]"
                     size="mini"
-                    placeholder="查询条件">
-                  </el-input>
+                    placeholder="查询条件"
+                  ></el-input>
                 </template>
               </el-form-item>
             </template>
 
-             <template v-else v-for="column in this.searchColumns">
+            <template v-else v-for="column in this.searchColumns">
               <el-form-item
                 v-if="column.isSearch&&column.type=='combox'"
                 :key="column.name"
@@ -415,9 +428,9 @@ export default {
     toggleRowSelection(r) {
       this.$refs.myListOfEleme.toggleRowSelection(r);
     },
-    onVerticalSelectChange(v){
-      this.formInline={};
-       this.formInline["columnName"]=v;
+    onVerticalSelectChange(v) {
+      this.formInline = {};
+      this.formInline["columnName"] = v;
     }
   }
 };
