@@ -26,7 +26,45 @@
             :model="formInline"
             class="demo-form-inline"
           >
-            <template v-for="column in this.searchColumns">
+            <template v-if="this.cfg.searchMode=='vertical'" >
+              <el-form-item>
+                <el-select v-model="formInline['colunmName']" @change="onVerticalSelectChange">
+                  <el-option
+                    v-for="column in this.searchColumns"
+                    :key="column.name"
+                    :label="column.title"
+                    :value="column.name"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+
+              <el-form-item>
+                <template v-for="column in this.searchColumns">
+                  <el-select v-if="column.type=='combox'" v-show="formInline['colunmName']==column.name" :key="column.name" v-model="formInline[column.name]">
+                    <el-option
+                      v-for="item in column.data"
+                      :key="item.id"
+                      :label="item.value"
+                      :value="item.id"
+                    ></el-option>
+                  </el-select>
+                  <el-date-picker v-else-if="column.type=='timer'" v-show="formInline['colunmName']==column.name" :key="column.name" v-model="formInline[column.name]"
+                    style="width:220px;"
+                    type="daterange"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                  ></el-date-picker>
+                  <el-input v-else v-show="formInline['colunmName']==column.name" :key="column.name" v-model="formInline[column.name]"
+                    size="mini"
+                    placeholder="查询条件"
+                    style="width:220px;">
+                  </el-input>
+                </template>
+              </el-form-item>
+            </template>
+
+             <template v-else v-for="column in this.searchColumns">
               <el-form-item
                 v-if="column.isSearch&&column.type=='combox'"
                 :key="column.name"
@@ -378,6 +416,9 @@ export default {
     },
     toggleRowSelection(r) {
       this.$refs.myListOfEleme.toggleRowSelection(r);
+    },
+    onVerticalSelectChange(v){
+      // this.formInline["colunmValue"]='';
     }
   }
 };

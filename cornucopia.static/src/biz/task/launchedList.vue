@@ -16,7 +16,7 @@
         <el-tag style="margin-left:10px;" plain size="mini">人事类</el-tag>
       </el-badge>
     </template>
-    <template>
+    <!-- <template>
       <el-input
         style="width:35%"
         size="mini"
@@ -36,7 +36,7 @@
         </el-select>
         <el-button slot="append" size="mini" icon="el-icon-search"></el-button>
       </el-input>
-    </template>
+    </template> -->
   </listV2>
 </template>
 <script>
@@ -61,17 +61,28 @@ export default {
     var self = this;
     return {
       inputSearch: "",
-      selectSearch: "",
+      selectSearch: "vertical",
       processCategory: [],
       cfg: {
-        // isShowSearchArea:"true",
-        scrollCollapse: true,
+        searchMode:"vertical",
         title: "我发起的任务",
         url: "/process/launchedList",
         columns: [
           {
             title: "状态",
-            name: "status"
+            name: "status",
+            isSearch: true,
+            type:"combox",
+            data:[{
+              id:1,
+              value:"全部"
+            },{
+              id:2,
+              value:"正常"
+            },{
+              id:3,
+              value:"催办"
+            }]
           },
           {
             title: "申请单号",
@@ -93,27 +104,35 @@ export default {
           },
           {
             title: "发起日期",
-            name: "createTime"
+            name: "createTime",
+            isSearch: true,
+            type:"timer"
           },
            {
             title: "完成日期",
-            name: "createTime"
+            name: "updateTime",
+            isSearch: true,
+             type:"timer"
           },
            {
             title: "召回状态",
-            name: "status"
+            name: "zhaohuistatus",
+            isSearch: true,
           },
           {
             title: "流程状态",
-            name: "status"
+            name: "processstatus",
+            isSearch: true,
           },
           {
             title: "当前审批信息",
-            name: "createName"
+            name: "createName",
+            isSearch: true,
           },
           {
             title: "流程ID",
-            name: "createTime"
+            name: "Id",
+            isSearch: true,
           },
           {
             title: "流程图",
