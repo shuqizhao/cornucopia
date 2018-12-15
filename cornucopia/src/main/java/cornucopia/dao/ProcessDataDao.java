@@ -22,6 +22,14 @@ public interface ProcessDataDao {
 	@Options(statementType = StatementType.CALLABLE)
 	public List<ProcessDataEntity> launchedList(@Param("pp") PagingParameters pp, @Param("userId") int userId);
 
+	@Select("call sp_process_data_get_by_category_group(#{userId})")
+	@Options(statementType = StatementType.CALLABLE)
+	public List<ProcessDataEntity> catetoryGroup(@Param("userId") int userId);
+
+	@Select("call sp_process_data_get_by_launched_group(#{userId},#{catetoryId})")
+	@Options(statementType = StatementType.CALLABLE)
+	public List<ProcessDataEntity> launchedGroup(@Param("userId") int userId,@Param("catetoryId")int catetoryId);
+
 	@Select("call sp_process_data_get_by_task_list(#{pp.start},#{pp.length},#{userId},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
 	@Options(statementType = StatementType.CALLABLE)
 	public List<ProcessDataEntity> taskList(@Param("pp") PagingParameters pp, @Param("userId") int userId);

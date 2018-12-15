@@ -398,6 +398,26 @@ public class ProcessContorller {
 		return dtr;
 	}
 
+	@RequestMapping(value = { "/catetoryGroup" }, method = RequestMethod.POST)
+	public JsonResult<List<ProcessDataEntity>> catetoryGroup(HttpServletRequest request) {
+		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().catetoryGroup(user.getId());
+		JsonResult<List<ProcessDataEntity>> dtr = new JsonResult<List<ProcessDataEntity>>();
+		dtr.setCode(200);
+		dtr.setData(processDatas);
+		return dtr;
+	}
+
+	@RequestMapping(value = { "/launchedGroup" }, method = RequestMethod.POST)
+	public JsonResult<List<ProcessDataEntity>> launchedGroup(HttpServletRequest request,int categoryId) {
+		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().launchedGroup(user.getId(),categoryId);
+		JsonResult<List<ProcessDataEntity>> dtr = new JsonResult<List<ProcessDataEntity>>();
+		dtr.setCode(200);
+		dtr.setData(processDatas);
+		return dtr;
+	}
+
 	@RequestMapping(value = { "/taskList" }, method = RequestMethod.POST)
 	public DataTableResult<ProcessDataEntity> taskList(HttpServletRequest request, DataTableParameter dtp) {
 		PagingParameters pp = new PagingParameters();

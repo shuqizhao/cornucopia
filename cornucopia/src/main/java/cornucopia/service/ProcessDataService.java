@@ -28,6 +28,14 @@ public class ProcessDataService {
 		return processDataDao.launchedList(pp, userId);
 	}
 
+	public List<ProcessDataEntity> catetoryGroup(int userId) {
+		return processDataDao.catetoryGroup(userId);
+	}
+
+	public List<ProcessDataEntity> launchedGroup(int userId,int catetoryId) {
+		return processDataDao.launchedGroup(userId,catetoryId);
+	}
+
 	public List<ProcessDataEntity> taskList(PagingParameters pp, int userId) {
 		return processDataDao.taskList(pp, userId);
 	}
