@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.alibaba.fastjson.JSON;
+
 import org.dom4j.DocumentException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +28,7 @@ import cornucopia.entity.UserEntity;
 import cornucopia.model.DoActionViewModel;
 import cornucopia.model.ProcessDataViewModel;
 import cornucopia.model.ProcessInstAuthViewModel;
+import cornucopia.model.ProcessSearchViewModel;
 import cornucopia.service.OrderService;
 import cornucopia.service.ProcessApproveService;
 import cornucopia.service.ProcessCategoryService;
@@ -242,7 +245,7 @@ public class ProcessContorller {
 				ProcessApproveService.getInstance().insert(processApproveEntity);
 			} else if (piavm.getCurrentStep().equals("afterSign")) {
 				// processDataEntity.setLevelCount(processDataEntity.getLevelCount() + 1);
-				//熄灭当前
+				// 熄灭当前
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
 				existsAfterSign = ProcessApproveService.getInstance().getAfterSign(processDataEntity.getId(),
 						user.getId());
@@ -280,18 +283,18 @@ public class ProcessContorller {
 			}
 			if (existsAfterSign == null || existsAfterSign.getId() == 0) {
 				ProcessService.getInstance().Complete(processDataEntity);
-				//熄灭当前
+				// 熄灭当前
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);
-				//点亮下一步
+				// 点亮下一步
 				ProcessApproveService.getInstance().updateCurrent(processDataEntity.getId(),
 						processDataEntity.getLevelCount(), 1);
 			} else {
 				ProcessService.getInstance().DoAction(existsAfterSign, processDataEntity);
-				//点亮下一步
+				// 点亮下一步
 				ProcessApproveService.getInstance().updateCurrent(existsAfterSign.getId(), 1);
 			}
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
-			//点亮下一步
+			// 点亮下一步
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
 					processDataEntity.getLevelCount(), 1);
 			int result = ProcessDataService.getInstance().update(processDataEntity);
@@ -391,7 +394,8 @@ public class ProcessContorller {
 		pp.setStart(dtp.getiDisplayStart());
 		pp.setLength(dtp.getiDisplayLength());
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
-		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().launchedList(pp, user.getId());
+		ProcessSearchViewModel psvm = JSON.parseObject(dtp.getsSearch(), ProcessSearchViewModel.class);
+		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().launchedList(pp, user.getId(), psvm);
 		int count = pp.getTotalRows();
 		DataTableResult<ProcessDataEntity> dtr = new DataTableResult<ProcessDataEntity>(dtp.getsEcho() + 1, count,
 				count, processDatas);
@@ -409,9 +413,9 @@ public class ProcessContorller {
 	}
 
 	@RequestMapping(value = { "/launchedGroup" }, method = RequestMethod.POST)
-	public JsonResult<List<ProcessDataEntity>> launchedGroup(HttpServletRequest request,int categoryId) {
+	public JsonResult<List<ProcessDataEntity>> launchedGroup(HttpServletRequest request, int categoryId) {
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
-		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().launchedGroup(user.getId(),categoryId);
+		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().launchedGroup(user.getId(), categoryId);
 		JsonResult<List<ProcessDataEntity>> dtr = new JsonResult<List<ProcessDataEntity>>();
 		dtr.setCode(200);
 		dtr.setData(processDatas);
@@ -515,12 +519,12 @@ public class ProcessContorller {
 			processApproveEntity.setStepName(davm.getAction());
 
 			ProcessApproveService.getInstance().insert(processApproveEntity);
-			//后加签不执行任务
+			// 后加签不执行任务
 			if (!davm.getAction().equals("afterSign")) {
 				ProcessService.getInstance().DoAction(processApproveEntity, processDataEntity);
 			}
-			
-			if (davm.getAction().equals("modify")||davm.getAction().equals("preSign")) {
+
+			if (davm.getAction().equals("modify") || davm.getAction().equals("preSign")) {
 				ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
 						processDataEntity.getLevelCount(), 0);
 				ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 0);

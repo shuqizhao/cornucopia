@@ -1,23 +1,37 @@
 <template>
-  <listV2 :cfg="cfg">
+  <listV2 ref="list" :cfg="cfg">
     <template slot="header">
-      <b>{{cfg.title+'('+totalCount+')'}}</b>
+      <el-badge :value="totalCount"><b>{{cfg.title}}</b></el-badge>
       <el-badge
-        v-for="category in processCategories"
+        v-for="(category) in processCategories"
         :key="category.id"
         :value="category.totalCount"
         class="item"
       >
-        <el-tag style="margin-left:25px;" plain size="mini">{{category.name}}</el-tag>
+        <el-tag
+          :type="category.id==currentCategoryId?'danger':''"
+          style="margin-left:25px;"
+          plain
+          size="mini"
+        >
+          <a @click="onCagegoryClick(category)">{{category.name}}</a>
+        </el-tag>
       </el-badge>
       <hr v-if="processes.length>0">
       <el-badge
-        v-for="process in processes"
+        v-for="(process) in processes"
         :key="process.id"
         :value="process.totalCount"
         class="item"
       >
-        <el-tag style="margin-left:25px;" plain size="mini">{{process.name}}</el-tag>
+        <el-tag
+          :type="process.id==currentProcessId?'danger':''"
+          style="margin-left:25px;"
+          plain
+          size="mini"
+        >
+          <a @click="onProcessClick(process)">{{process.name}}</a>
+        </el-tag>
       </el-badge>
     </template>
   </listV2>
@@ -25,8 +39,19 @@
 <script>
 export default {
   methods: {
-    getProcessCategories: function() {
+    onCagegoryClick: function(category) {
+      this.getProcessCategories(category.id);
+    },
+    onProcessClick: function(process) {
+      this.currentProcessId = process.id;
+      this.$refs.list.fillData({
+        processId: process.id
+      });
+    },
+    getProcessCategories: function(categoryId) {
       var self = this;
+      self.processCategories = [];
+      self.processes = [];
       self.post({
         url: "/process/catetoryGroup",
         success: function(r) {
@@ -37,7 +62,12 @@ export default {
               self.totalCount += self.processCategories[i].totalCount;
             }
             if (self.processCategories.length > 0) {
-              self.getProcesses(self.processCategories[0].id);
+              if (categoryId) {
+                self.currentCategoryId = categoryId;
+              } else {
+                self.currentCategoryId = self.processCategories[0].id;
+              }
+              self.getProcesses(self.currentCategoryId);
             }
           }
         }
@@ -50,6 +80,12 @@ export default {
         success: function(r) {
           if (r.code == 200) {
             self.processes = r.data;
+            if (self.processes.length > 0) {
+              self.currentProcessId = self.processes[0].id;
+              self.$refs.list.fillData({
+                processId: self.currentProcessId
+              });
+            }
           }
         }
       });
@@ -62,11 +98,14 @@ export default {
   data() {
     var self = this;
     return {
+      currentCategoryId: 0,
+      currentProcessId: 0,
       totalCount: 0,
       processCategories: [],
       processes: [],
       cfg: {
         searchMode: "vertical",
+        autoLoad:false,
         title: "我发起的任务",
         url: "/process/launchedList",
         columns: [
@@ -153,3 +192,10 @@ export default {
 </script>
 <style>
 </style>
+
+<style scoped>
+.el-tag:hover {
+  background-color: rgba(245, 108, 108, 0.1);
+}
+</style>
+

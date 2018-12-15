@@ -4,6 +4,7 @@ import java.util.List;
 
 import cornucopia.dao.ProcessDataDao;
 import cornucopia.entity.ProcessDataEntity;
+import cornucopia.model.ProcessSearchViewModel;
 import cornucopia.util.MyBatisHelper;
 import cornucopia.util.PagingParameters;
 import cornucopia.util.XmlExercise;
@@ -24,16 +25,16 @@ public class ProcessDataService {
 		return processDataDao.insert(processDataEntity);
 	}
 
-	public List<ProcessDataEntity> launchedList(PagingParameters pp, int userId) {
-		return processDataDao.launchedList(pp, userId);
+	public List<ProcessDataEntity> launchedList(PagingParameters pp, int userId, ProcessSearchViewModel psvm) {
+		return processDataDao.launchedList(pp, userId, psvm);
 	}
 
 	public List<ProcessDataEntity> catetoryGroup(int userId) {
 		return processDataDao.catetoryGroup(userId);
 	}
 
-	public List<ProcessDataEntity> launchedGroup(int userId,int catetoryId) {
-		return processDataDao.launchedGroup(userId,catetoryId);
+	public List<ProcessDataEntity> launchedGroup(int userId, int catetoryId) {
+		return processDataDao.launchedGroup(userId, catetoryId);
 	}
 
 	public List<ProcessDataEntity> taskList(PagingParameters pp, int userId) {
