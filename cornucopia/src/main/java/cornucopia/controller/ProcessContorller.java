@@ -152,6 +152,12 @@ public class ProcessContorller {
 		ProcessDataEntity processDataEntity = new ProcessDataEntity();
 		processDataEntity.setJsonData(pdvm.getJsonStr());
 		processDataEntity.setBizData(pdvm.getXmlStr());
+		// 1 正常,2 催办
+		processDataEntity.setStatus(1);
+		// 1 可召回,2 不可召回
+		processDataEntity.setCallbackStatus(1);
+		// 1 进行中,2 完成,3 终止
+		processDataEntity.setProcessStatus(1);
 
 		String processId = XmlUtil.selectSingleText(processDataEntity.getBizData(), "//processId");
 		processDataEntity.setProcessId(Integer.parseInt(processId));
@@ -297,6 +303,19 @@ public class ProcessContorller {
 			// 点亮下一步
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
 					processDataEntity.getLevelCount(), 1);
+			if (processDataEntity.getLevelCount() == 0 || processDataEntity.getLevelCount() == -1) {
+				// 1 可召回,2 不可召回
+				processDataEntity.setCallbackStatus(1);
+			} else {
+				// 1 可召回,2 不可召回
+				processDataEntity.setCallbackStatus(2);
+			}
+			// 1 进行中,2 完成,3 终止
+			if (processDataEntity.getStepName().equals("结束")) {
+				processDataEntity.setProcessStatus(2);
+			} else {
+				processDataEntity.setProcessStatus(1);
+			}
 			int result = ProcessDataService.getInstance().update(processDataEntity);
 			jr.setCode(200);
 			jr.setData(result);
@@ -331,6 +350,19 @@ public class ProcessContorller {
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(), 0, 1);
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
+			if (processDataEntity.getLevelCount() == 0 || processDataEntity.getLevelCount() == -1) {
+				// 1 可召回,2 不可召回
+				processDataEntity.setCallbackStatus(1);
+			} else {
+				// 1 可召回,2 不可召回
+				processDataEntity.setCallbackStatus(2);
+			}
+			// 1 进行中,2 完成,3 终止
+			if (processDataEntity.getStepName().equals("结束")) {
+				processDataEntity.setProcessStatus(2);
+			} else {
+				processDataEntity.setProcessStatus(1);
+			}
 			int result = ProcessDataService.getInstance().update(processDataEntity);
 			jr.setCode(200);
 			jr.setData(result);
@@ -378,6 +410,19 @@ public class ProcessContorller {
 			ProcessApproveService.getInstance().insert(processApproveEntity);
 			ProcessApproveService.getInstance().updateCurrent(processDataEntity.getId(), -1, 0);
 			ProcessApproveService.getInstance().updateCurrent(processApproveEntity.getId(), 1);
+			if (processDataEntity.getLevelCount() == 0 || processDataEntity.getLevelCount() == -1) {
+				// 1 可召回,2 不可召回
+				processDataEntity.setCallbackStatus(1);
+			} else {
+				// 1 可召回,2 不可召回
+				processDataEntity.setCallbackStatus(2);
+			}
+			// 1 进行中,2 完成,3 终止
+			if (processDataEntity.getStepName().equals("结束")) {
+				processDataEntity.setProcessStatus(2);
+			} else {
+				processDataEntity.setProcessStatus(1);
+			}
 			int result = ProcessDataService.getInstance().update(processDataEntity);
 			jr.setCode(200);
 			jr.setData(result);

@@ -13,9 +13,54 @@ public class ProcessDataEntity extends BaseEntity {
 	private String updateName;
 	private String url;
 	private int condition;
+	private int status;
+	private int callbackStatus;
+	private int processStatus;
 
 	public int getProcessId() {
 		return processId;
+	}
+
+	/**
+	 * @return the processStatus
+	 */
+	public int getProcessStatus() {
+		return processStatus;
+	}
+
+	/**
+	 * @param processStatus the processStatus to set
+	 */
+	public void setProcessStatus(int processStatus) {
+		this.processStatus = processStatus;
+	}
+
+	/**
+	 * @return the callbackStatus
+	 */
+	public int getCallbackStatus() {
+		return callbackStatus;
+	}
+
+	/**
+	 * @param callbackStatus the callbackStatus to set
+	 */
+	public void setCallbackStatus(int callbackStatus) {
+		this.callbackStatus = callbackStatus;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public int getStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	public void setProcessId(int processId) {

@@ -136,15 +136,15 @@ export default {
             type: "combox",
             data: [
               {
-                id: 1,
+                id: 0,
                 value: "全部"
               },
               {
-                id: 2,
+                id: 1,
                 value: "正常"
               },
               {
-                id: 3,
+                id: 2,
                 value: "催办"
               }
             ],
@@ -198,10 +198,10 @@ export default {
           },
           {
             title: "召回状态",
-            name: "zhaohuistatus",
+            name: "callbackStatus",
             isSearch: true,
             formatter: function(data) {
-              if (data.status == 1) {
+              if (data.callbackStatus == 1) {
                 return "可召回";
               } else {
                 return "不可召回";
@@ -210,12 +210,12 @@ export default {
           },
           {
             title: "流程状态",
-            name: "processstatus",
+            name: "processStatus",
             isSearch: true,
             formatter: function(data) {
-              if (data.stepName == "结束") {
+              if (data.processStatus == 2) {
                 return "完成";
-              } else if (data.status == 2) {
+              } else if (data.processStatus == 3) {
                 return "终止";
               } else {
                 return "进行中";
@@ -232,13 +232,6 @@ export default {
             name: "id",
             isSearch: true
           }
-          // {
-          //   title: "流程图",
-          //   name: "flowBtn",
-          //   formatter: function(data) {
-          //     return "<a>查看流程图</a>";
-          //   }
-          // }
         ],
         idName: "id"
       }
