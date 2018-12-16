@@ -15,7 +15,7 @@ import cornucopia.model.ProcessSearchViewModel;
 import cornucopia.util.PagingParameters;
 
 public interface ProcessDataDao {
-	@Insert("call sp_process_data_insert(#{pd.processId},#{pd.bizData},#{pd.jsonData},#{pd.formCode},#{pd.createBy},#{pd.procinstId},#{pd.levelCount},#{pd.status},#{pd.callbackStatus},#{processStatus})")
+	@Insert("call sp_process_data_insert(#{pd.processId},#{pd.bizData},#{pd.jsonData},#{pd.formCode},#{pd.createBy},#{pd.procinstId},#{pd.levelCount},#{pd.status},#{pd.callbackStatus},#{pd.processStatus})")
 	@SelectKey(statement = "Select LAST_INSERT_ID()", keyProperty = "pd.id", before = false, resultType = int.class)
 	public int insert(@Param("pd") ProcessDataEntity processDataEntity);
 
@@ -42,7 +42,7 @@ public interface ProcessDataDao {
 	@Select("call sp_process_data_get_by_id(#{id})")
 	public ProcessDataEntity get(@Param("id") int id);
 
-	@Update("call sp_process_data_update(#{pd.id},#{pd.bizData},#{pd.jsonData},#{pd.updateBy},#{pd.levelCount},#{pd.status},#{pd.callbackStatus},#{processStatus})")
+	@Update("call sp_process_data_update(#{pd.id},#{pd.bizData},#{pd.jsonData},#{pd.updateBy},#{pd.levelCount},#{pd.status},#{pd.callbackStatus},#{pd.processStatus})")
 	public int update(@Param("pd") ProcessDataEntity processDataEntity);
 
 	@Select("call sp_process_data_get_form_code(#{formCode})")
