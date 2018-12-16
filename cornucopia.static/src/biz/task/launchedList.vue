@@ -150,9 +150,9 @@ export default {
             ],
             formatter: function(data) {
               if (data.status == 2) {
-                return "催办";
+                return '<center><div class="label label-warning">催办</div></center>';
               } else {
-                return "正常";
+                return '<center><div class="label label-success">正常</div></center>';
               }
             }
           },
@@ -201,10 +201,10 @@ export default {
             name: "callbackStatus",
             isSearch: true,
             formatter: function(data) {
-              if (data.callbackStatus == 1) {
-                return "可召回";
+              if (data.callbackStatus == 2) {
+                return '<center><div class="label label-default">不可召回</div></center>';
               } else {
-                return "不可召回";
+                return '<center><div class="label label-success">可召回</div></center>';
               }
             }
           },
@@ -214,11 +214,11 @@ export default {
             isSearch: true,
             formatter: function(data) {
               if (data.processStatus == 2) {
-                return "完成";
-              } else if (data.processStatus == 3) {
-                return "终止";
+                return '<center><div class="label label-success">完成</div></center>';
+              } else if (data.processStatus == 1) {
+                return '<center><div class="label label-primary">进行中</div></center>';
               } else {
-                return "进行中";
+                return '<center><div class="label label-danger">终止</div></center>';
               }
             }
           },
@@ -233,7 +233,21 @@ export default {
             isSearch: true
           }
         ],
-        idName: "id"
+        idName: "id",
+        functions: {
+          common: [
+            {
+              text: "催办",
+              url: "/auth/userAdd",
+              functionName: "userAdd"
+            },
+            {
+              text: "召回",
+              url: "/auth/userAdd",
+              functionName: "userAdd"
+            }
+          ]
+        }
       }
     };
   }

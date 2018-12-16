@@ -124,6 +124,7 @@
                     :key="c.text"
                     size="mini"
                     type="primary"
+                    style="margin-right:10px;"
                     :icon="c.icon||getButtonIcon(c.functionName)"
                     :url="c.url"
                     :mode="c.mode"
@@ -131,7 +132,7 @@
                   >{{c.text}}</el-button>
                 </template>
               </el-button-group>
-              <el-dropdown @command="onButtonClick" split-button trigger="click" type="primary">更多操作
+              <el-dropdown v-if="this.cfg.functions&&this.cfg.functions.more" @command="onButtonClick" split-button trigger="click" type="primary">更多操作
                 <el-dropdown-menu slot="dropdown">
                   <template v-for="m in this.cfg.functions.more">
                     <el-dropdown-item
@@ -413,10 +414,10 @@ export default {
             }
           })
           .catch(e => {
-            self.$message({
-              message: e + "！",
-              type: "error"
-            });
+            // self.$message({
+            //   message: e + "！",
+            //   type: "error"
+            // });
             console.log(e);
           });
       }
