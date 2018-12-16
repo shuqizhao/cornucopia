@@ -214,9 +214,9 @@ export default {
             isSearch: true,
             formatter: function(data) {
               if (data.processStatus == 2) {
-                return '<center><div class="label label-success">完成</div></center>';
+                return '<center><div class="label label-primary">完成</div></center>';
               } else if (data.processStatus == 1) {
-                return '<center><div class="label label-primary">进行中</div></center>';
+                return '<center><div class="label label-success">进行中</div></center>';
               } else {
                 return '<center><div class="label label-danger">终止</div></center>';
               }
