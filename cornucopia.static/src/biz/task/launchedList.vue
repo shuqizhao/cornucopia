@@ -187,7 +187,14 @@ export default {
             name: "updateTime",
             isSearch: true,
             type: "timer",
-            width: "150"
+            width: "150",
+            formatter: function(data) {
+              if (data.stepName == "结束") {
+                return data.updateTime;
+              } else {
+                return "";
+              }
+            }
           },
           {
             title: "召回状态",
