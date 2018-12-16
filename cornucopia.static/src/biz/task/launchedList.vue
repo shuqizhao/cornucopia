@@ -1,7 +1,9 @@
 <template>
   <listV2 ref="list" :cfg="cfg">
     <template slot="header">
-      <el-badge :value="totalCount"><b>{{cfg.title}}</b></el-badge>
+      <el-badge :value="totalCount">
+        <b>{{cfg.title}}</b>
+      </el-badge>
       <el-badge
         v-for="(category) in processCategories"
         :key="category.id"
@@ -34,11 +36,29 @@
         </el-tag>
       </el-badge>
     </template>
+    <template slot="column">
+      <el-table-column label="流程图">
+        <template slot-scope="scope">
+          <el-popover placement="right" trigger="click">
+            <diagram :processDataId="scope.row.id" style="height:550px;overflow:auto;"></diagram>
+            <el-button icon="el-icon-search" slot="reference"></el-button>
+          </el-popover>
+        </template>
+      </el-table-column>
+    </template>
   </listV2>
 </template>
 <script>
+import diagram from "../task/processInstDiagram.vue";
+
 export default {
+  components: {
+    diagram
+  },
   methods: {
+    abc: function(a) {
+      debugger;
+    },
     onCagegoryClick: function(category) {
       this.getProcessCategories(category.id);
     },
@@ -105,7 +125,7 @@ export default {
       processes: [],
       cfg: {
         searchMode: "vertical",
-        autoLoad:false,
+        autoLoad: false,
         title: "我发起的任务",
         url: "/process/launchedList",
         columns: [
@@ -127,12 +147,20 @@ export default {
                 id: 3,
                 value: "催办"
               }
-            ]
+            ],
+            formatter: function(data) {
+              if (data.status == 2) {
+                return "催办";
+              } else {
+                return "正常";
+              }
+            }
           },
           {
             title: "申请单号",
             name: "formCode",
             isSearch: true,
+            width: "150",
             formatter: function(data) {
               var f =
                 '<a target="_blank" href="#/' +
@@ -151,38 +179,59 @@ export default {
             title: "发起日期",
             name: "createTime",
             isSearch: true,
-            type: "timer"
+            type: "timer",
+            width: "150"
           },
           {
             title: "完成日期",
             name: "updateTime",
             isSearch: true,
-            type: "timer"
+            type: "timer",
+            width: "150"
           },
           {
             title: "召回状态",
             name: "zhaohuistatus",
-            isSearch: true
+            isSearch: true,
+            formatter: function(data) {
+              if (data.status == 1) {
+                return "可召回";
+              } else {
+                return "不可召回";
+              }
+            }
           },
           {
             title: "流程状态",
             name: "processstatus",
-            isSearch: true
+            isSearch: true,
+            formatter: function(data) {
+              if (data.stepName == "结束") {
+                return "完成";
+              } else if (data.status == 2) {
+                return "终止";
+              } else {
+                return "进行中";
+              }
+            }
           },
           {
             title: "当前审批信息",
-            name: "createName",
+            name: "stepName",
             isSearch: true
           },
           {
             title: "流程ID",
-            name: "Id",
+            name: "id",
             isSearch: true
-          },
-          {
-            title: "流程图",
-            name: "stepName"
           }
+          // {
+          //   title: "流程图",
+          //   name: "flowBtn",
+          //   formatter: function(data) {
+          //     return "<a>查看流程图</a>";
+          //   }
+          // }
         ],
         idName: "id"
       }

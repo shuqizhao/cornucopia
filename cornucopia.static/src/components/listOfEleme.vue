@@ -200,6 +200,7 @@
             ></span>
           </el-table-column>
         </template>
+        <slot name="column"></slot>
       </el-table>
       <el-pagination
         size="mini"

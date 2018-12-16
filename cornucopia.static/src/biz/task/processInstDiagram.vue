@@ -115,8 +115,9 @@
 </template>
 <script>
 export default {
+  props: ["processDataId"],
   mounted: function() {
-    //   this.loadDiagram();
+    this.loadDiagram(true);
   },
   data() {
     return {
@@ -127,10 +128,17 @@ export default {
     };
   },
   methods: {
-    loadDiagram: function() {
+    loadDiagram: function(autoLoad) {
       var self = this;
+      if (autoLoad && !self.processDataId) {
+        return;
+      }
       var processDataId = self.$route.query.id;
       var showDiagram = self.$route.query.showDiagram;
+      if (self.processDataId) {
+        processDataId = self.processDataId;
+        showDiagram = true;
+      }
       if (processDataId && showDiagram) {
         self.get({
           url: "/process/getProcessInstDiagram",
