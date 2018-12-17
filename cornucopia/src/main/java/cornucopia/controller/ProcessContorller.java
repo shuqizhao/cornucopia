@@ -682,7 +682,7 @@ public class ProcessContorller {
 		processDataEntity.setJsonData(pdvm.getJsonStr());
 		processDataEntity.setBizData(pdvm.getXmlStr());
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
-		
+
 		if (processDataEntity.getProcessStatus() != 1) {
 			jr.setCode(500);
 			jr.setMessage("流程已结束");
@@ -692,6 +692,9 @@ public class ProcessContorller {
 			processDataEntity.setProcessStatus(3);
 			processDataEntity.setCallbackStatus(2);
 			ProcessDataService.getInstance().update(processDataEntity);
+			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
+					processDataEntity.getLevelCount(), 0);
+			ProcessApproveService.getInstance().updateCurrent(processDataEntity.getId(), -1, 0);
 			ProcessService.getInstance().Stop(processDataEntity);
 			jr.setCode(200);
 			jr.setData(1);
