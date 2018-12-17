@@ -3,7 +3,7 @@
     <ul class="timeline">
       <!-- timeline time label -->
       <li class="time-label">
-        <span class="bg-red" style="width:100%;margin-left:5px;">流程图{{processDataId}}</span>
+        <span class="bg-red" style="width:100%;margin-left:5px;text-align:center;">流程图</span>
       </li>
       <!-- /.timeline-label -->
       <!-- timeline item -->
@@ -117,10 +117,16 @@
 export default {
   props: ["processDataId"],
   mounted: function() {
+    // debugger;
     this.loadDiagram(true);
   },
   updated:function(){
     // this.loadDiagram(true);
+  },
+  watch: {
+    processDataId(newName, oldName) {
+      this.loadDiagram(true);
+    }
   },
   data() {
     return {
