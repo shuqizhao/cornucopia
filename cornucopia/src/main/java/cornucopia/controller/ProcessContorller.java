@@ -603,8 +603,9 @@ public class ProcessContorller {
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(processDataId);
 		if (processDataEntity.getCreateBy() == user.getId() && processDataEntity.getCallbackStatus() == 1) {
-			// processDataEntity.setUpdateBy(user.getId());
-			// ProcessDataService.getInstance().update(processDataEntity);
+			processDataEntity.setUpdateBy(user.getId());
+			processDataEntity.setCallbackStatus(2);
+			ProcessDataService.getInstance().update(processDataEntity);
 
 			ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
 
@@ -621,7 +622,7 @@ public class ProcessContorller {
 			processApproveEntity.setStepName("modify");
 
 			ProcessApproveService.getInstance().insert(processApproveEntity);
-
+			ProcessService.getInstance().DoAction(processApproveEntity, processDataEntity);
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
 					processDataEntity.getLevelCount(), 0);
 			ProcessApproveService.getInstance().updateCurrent(processDataEntity.getId(), -1, 1);
