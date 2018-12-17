@@ -313,6 +313,7 @@ public class ProcessContorller {
 			// 1 进行中,2 完成,3 终止
 			if (processDataEntity.getStepName().equals("结束")) {
 				processDataEntity.setProcessStatus(2);
+				processDataEntity.setStatus(1);
 			} else {
 				processDataEntity.setProcessStatus(1);
 			}
