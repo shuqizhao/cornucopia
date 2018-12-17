@@ -1,5 +1,6 @@
 package cornucopia.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -154,6 +155,40 @@ public class ProcessService {
 		variables.put("condition", pde.getCondition());
 		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
 		Log4jHelper.LOGGER.info(String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "引擎任务完成", task.getId()));
+	}
+
+	public void Stop(ProcessDataEntity pde) {
+		Log4jHelper.LOGGER.info(String.format("[%s]->%s->updateBy=%d->instId=%s", pde.getFormCode(), "准备停止任务",
+				pde.getUpdateBy(), pde.getProcinstId()));
+		List<Integer> nextUserIds = new ArrayList<Integer>();
+		nextUserIds.add(666666);
+		TaskQuery query = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
+		// query.taskAssignee(pde.getUpdateBy() + "");
+		query.processInstanceId(pde.getProcinstId());
+		Task task = query.singleResult();
+		if (!task.getName().contains("DOA") && !task.getName().equals("Init")) {
+			ActivitiHelper.GetEngine().getTaskService().complete(task.getId());
+		}
+		TaskQuery query2 = ActivitiHelper.GetEngine().getTaskService().createTaskQuery();
+		// query.taskAssignee(pde.getUpdateBy() + "");
+		query2.processInstanceId(pde.getProcinstId());
+		task = query2.singleResult();
+		Log4jHelper.LOGGER.info(String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "查找到引擎任务", task.getId()));
+		Map<String, Object> variables = new HashMap<String, Object>();
+		for (int nextUserId : nextUserIds) {
+			if (nextUserId == 666666) {
+				variables.put("to", "0");
+				pde.setStepName("结束");
+				Log4jHelper.LOGGER.info(
+						String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "查找到审核人员666666,准备完成DOA", task.getId()));
+			} else {
+				variables.put("to", "1");
+			}
+		}
+		variables.put("assigneeList", nextUserIds);
+		variables.put("condition", pde.getCondition());
+		ActivitiHelper.GetEngine().getTaskService().complete(task.getId(), variables);
+		Log4jHelper.LOGGER.info(String.format("[%s]->%s->taskId=%s", pde.getFormCode(), "停止任务完成", task.getId()));
 	}
 
 	public void JumpToDoa(ProcessDataEntity pde) {

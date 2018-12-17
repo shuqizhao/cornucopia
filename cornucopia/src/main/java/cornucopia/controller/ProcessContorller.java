@@ -303,7 +303,7 @@ public class ProcessContorller {
 			// 点亮下一步
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
 					processDataEntity.getLevelCount(), 1);
-			if (processDataEntity.getLevelCount() == 0 || processDataEntity.getLevelCount() == -1) {
+			if (approveLevelCount == 0 || approveLevelCount == -1) {
 				// 1 可召回,2 不可召回
 				processDataEntity.setCallbackStatus(1);
 			} else {
