@@ -323,7 +323,7 @@ export default {
               $.extend(
                 self.formInline,
                 p,
-                self.cfg.beforeFillData(self.formInline)
+                self.cfg.beforeFillData?self.cfg.beforeFillData(self.formInline):[]
               )
             )
           },
