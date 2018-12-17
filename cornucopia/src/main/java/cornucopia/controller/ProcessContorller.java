@@ -610,7 +610,7 @@ public class ProcessContorller {
 			processDataEntity.setUpdateBy(user.getId());
 			processDataEntity.setCallbackStatus(2);
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String bizData = XmlUtil.insertComment(processDataEntity.getBizData(), "召回", df.format(new Date()), "申请人", df.format(new Date()));
+			String bizData = XmlUtil.insertComment(processDataEntity.getBizData(), "召回", df.format(new Date()), user.getName(), df.format(new Date()));
 			processDataEntity.setBizData(bizData);
 			ProcessDataService.getInstance().update(processDataEntity);
 		
