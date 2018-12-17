@@ -638,4 +638,30 @@ public class ProcessContorller {
 		}
 		return jr;
 	}
+
+	@Transactional(rollbackFor = Exception.class)
+	@RequestMapping(value = { "/urge" }, method = RequestMethod.POST)
+	public JsonResult<Integer> urge(HttpServletRequest request, @RequestParam(value = "Ids[]") int[] ids)
+			throws DocumentException, UnsupportedEncodingException {
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		if (ids.length > 1) {
+			jr.setCode(500);
+			jr.setMessage("只能选择一行");
+			return jr;
+		}
+		int processDataId = ids[0];
+		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(processDataId);
+		if (processDataEntity.getCreateBy() == user.getId()) {
+			// processDataEntity.setUpdateBy(user.getId());
+			processDataEntity.setStatus(2);
+			ProcessDataService.getInstance().update(processDataEntity);
+			jr.setCode(200);
+			jr.setData(1);
+		} else if (processDataEntity.getCreateBy() != user.getId()) {
+			jr.setCode(500);
+			jr.setMessage("没有权限");
+		}
+		return jr;
+	}
 }
