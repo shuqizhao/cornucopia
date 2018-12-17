@@ -660,9 +660,40 @@ public class ProcessContorller {
 			jr.setCode(500);
 			jr.setMessage("流程已结束");
 		} else if (processDataEntity.getCreateBy() == user.getId()) {
-			// processDataEntity.setUpdateBy(user.getId());
+			processDataEntity.setUpdateBy(user.getId());
 			processDataEntity.setStatus(2);
 			ProcessDataService.getInstance().update(processDataEntity);
+			jr.setCode(200);
+			jr.setData(1);
+		} else if (processDataEntity.getCreateBy() != user.getId()) {
+			jr.setCode(500);
+			jr.setMessage("没有权限");
+		}
+		return jr;
+	}
+	@Transactional(rollbackFor = Exception.class)
+	@RequestMapping(value = { "/discard" }, method = RequestMethod.POST)
+	public JsonResult<Integer> discard(HttpServletRequest request, @RequestParam(value = "Ids[]") int[] ids)
+			throws DocumentException, UnsupportedEncodingException {
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		if (ids.length > 1) {
+			jr.setCode(500);
+			jr.setMessage("只能选择一行");
+			return jr;
+		}
+		int processDataId = ids[0];
+		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(processDataId);
+		if (processDataEntity.getProcessStatus() != 1) {
+			jr.setCode(500);
+			jr.setMessage("流程已结束");
+		} else if (processDataEntity.getCreateBy() == user.getId()) {
+			processDataEntity.setUpdateBy(user.getId());
+			processDataEntity.setStatus(1);
+			processDataEntity.setProcessStatus(3);
+			processDataEntity.setCallbackStatus(2);
+			ProcessDataService.getInstance().update(processDataEntity);
+			ProcessService.getInstance().Stop(processDataEntity);
 			jr.setCode(200);
 			jr.setData(1);
 		} else if (processDataEntity.getCreateBy() != user.getId()) {
