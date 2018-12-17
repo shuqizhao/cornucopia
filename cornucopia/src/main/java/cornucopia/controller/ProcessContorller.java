@@ -672,18 +672,17 @@ public class ProcessContorller {
 		return jr;
 	}
 	@Transactional(rollbackFor = Exception.class)
-	@RequestMapping(value = { "/discard" }, method = RequestMethod.POST)
-	public JsonResult<Integer> discard(HttpServletRequest request, @RequestParam(value = "Ids[]") int[] ids)
+	@RequestMapping(value = { "/applyDicard" }, method = RequestMethod.POST)
+	public JsonResult<Integer> applyDicard(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {
 		JsonResult<Integer> jr = new JsonResult<Integer>();
-		if (ids.length > 1) {
-			jr.setCode(500);
-			jr.setMessage("只能选择一行");
-			return jr;
-		}
-		int processDataId = ids[0];
+		
+		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//fromCode");
+		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
+		processDataEntity.setJsonData(pdvm.getJsonStr());
+		processDataEntity.setBizData(pdvm.getXmlStr());
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
-		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(processDataId);
+		
 		if (processDataEntity.getProcessStatus() != 1) {
 			jr.setCode(500);
 			jr.setMessage("流程已结束");
