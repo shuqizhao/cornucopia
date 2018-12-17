@@ -531,13 +531,15 @@ public class ProcessContorller {
 			throws DocumentException, UnsupportedEncodingException {
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(davm.getProcessDataId());
-		processDataEntity.setJsonData(davm.getJsonStr());
-		processDataEntity.setBizData(davm.getXmlStr());
-		processDataEntity.setUpdateBy(user.getId());
-		ProcessDataService.getInstance().update(processDataEntity);
+
 		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
 				.getProcessInstAuth(processDataEntity.getId(), user.getId());
 		if (auths != null && auths.size() > 0) {
+			processDataEntity.setJsonData(davm.getJsonStr());
+			processDataEntity.setBizData(davm.getXmlStr());
+			processDataEntity.setUpdateBy(user.getId());
+			ProcessDataService.getInstance().update(processDataEntity);
+
 			ProcessInstAuthViewModel piavm = auths.get(0);
 			ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
 			if (davm.getAction().equals("modify")) {
@@ -583,6 +585,49 @@ public class ProcessContorller {
 		} else {
 			jr.setCode(500);
 			jr.setMessage("没有权限");
+		}
+		return jr;
+	}
+
+	@Transactional(rollbackFor = Exception.class)
+	@RequestMapping(value = { "/callback" }, method = RequestMethod.POST)
+	public JsonResult<Integer> callback(HttpServletRequest request, int processDataId)
+			throws DocumentException, UnsupportedEncodingException {
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(processDataId);
+		if (processDataEntity.getCreateBy() == user.getId() && processDataEntity.getCallbackStatus() == 1) {
+			// processDataEntity.setUpdateBy(user.getId());
+			// ProcessDataService.getInstance().update(processDataEntity);
+
+			ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
+
+			ProcessApproveEntity paeFirstLevel = ProcessApproveService.getInstance()
+					.getFirstLevel(processDataEntity.getId());
+			processApproveEntity.setGuid(paeFirstLevel.getGuid());
+			processApproveEntity.setUserId(processDataEntity.getCreateBy());
+			processApproveEntity.setLevelCount(-1);
+			processApproveEntity.setCreateBy(user.getId());
+			processApproveEntity.setProcessId(processDataEntity.getProcessId());
+			processApproveEntity.setProcinstId(processDataEntity.getProcinstId());
+			processApproveEntity.setProcessDataId(processDataEntity.getId());
+
+			processApproveEntity.setStepName("modify");
+
+			ProcessApproveService.getInstance().insert(processApproveEntity);
+
+			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
+					processDataEntity.getLevelCount(), 0);
+			ProcessApproveService.getInstance().updateCurrent(processDataEntity.getId(), -1, 1);
+
+			jr.setCode(200);
+			jr.setData(1);
+		} else if (processDataEntity.getCreateBy() != user.getId()) {
+			jr.setCode(500);
+			jr.setMessage("没有权限");
+		} else if (processDataEntity.getCallbackStatus() != 1) {
+			jr.setCode(500);
+			jr.setMessage("不可召回");
 		}
 		return jr;
 	}

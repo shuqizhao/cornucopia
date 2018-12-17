@@ -238,13 +238,11 @@ export default {
           common: [
             {
               text: "催办",
-              url: "/auth/userAdd",
-              functionName: "userAdd"
+              url: "/process/urge"
             },
             {
               text: "召回",
-              url: "/auth/userAdd",
-              functionName: "userAdd"
+              url: "/process/callback"
             }
           ]
         }
