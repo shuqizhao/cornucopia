@@ -591,9 +591,15 @@ public class ProcessContorller {
 
 	@Transactional(rollbackFor = Exception.class)
 	@RequestMapping(value = { "/callback" }, method = RequestMethod.POST)
-	public JsonResult<Integer> callback(HttpServletRequest request, int processDataId)
+	public JsonResult<Integer> callback(HttpServletRequest request, @RequestParam(value = "Ids[]") int[] ids)
 			throws DocumentException, UnsupportedEncodingException {
 		JsonResult<Integer> jr = new JsonResult<Integer>();
+		if (ids.length > 1) {
+			jr.setCode(500);
+			jr.setMessage("只能选择一行");
+			return jr;
+		}
+		int processDataId = ids[0];
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(processDataId);
 		if (processDataEntity.getCreateBy() == user.getId() && processDataEntity.getCallbackStatus() == 1) {
