@@ -609,8 +609,11 @@ public class ProcessContorller {
 		} else if (processDataEntity.getCreateBy() == user.getId() && processDataEntity.getCallbackStatus() == 1) {
 			processDataEntity.setUpdateBy(user.getId());
 			processDataEntity.setCallbackStatus(2);
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String bizData = XmlUtil.insertComment(processDataEntity.getBizData(), "召回", "", "申请人", df.format(new Date()));
+			processDataEntity.setBizData(bizData);
 			ProcessDataService.getInstance().update(processDataEntity);
-
+		
 			ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
 
 			ProcessApproveEntity paeFirstLevel = ProcessApproveService.getInstance()

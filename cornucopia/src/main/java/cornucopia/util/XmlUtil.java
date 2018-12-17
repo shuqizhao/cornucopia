@@ -2,6 +2,7 @@ package cornucopia.util;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
 import java.io.ByteArrayInputStream;
@@ -30,6 +31,30 @@ public class XmlUtil {
 		} else {
 			return "";
 		}
+	}
+
+	public static String insertComment(String xml, String actionT, String msgT, String nameT, String timeT)
+			throws DocumentException, UnsupportedEncodingException {
+		SAXReader saxReader = new SAXReader();
+		Document document = saxReader.read(new ByteArrayInputStream(xml.getBytes("UTF-8")));
+		Element root = document.getRootElement();
+		Element compents = root.element("comments");
+		Element e = DocumentHelper.createElement("e");
+		compents.add(e);
+
+		Element action = DocumentHelper.createElement("action");
+		action.setText(actionT);
+		e.add(action);
+		Element msg = DocumentHelper.createElement("msg");
+		msg.setText(msgT);
+		e.add(msg);
+		Element name = DocumentHelper.createElement("name");
+		name.setText(nameT);
+		e.add(name);
+		Element time = DocumentHelper.createElement("time");
+		time.setText(timeT);
+		e.add(time);
+		return document.asXML();
 	}
 
 	public static String createOrUpdateElement(String xml, String xpath, String tag, String value)
