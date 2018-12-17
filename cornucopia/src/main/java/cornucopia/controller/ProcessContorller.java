@@ -348,7 +348,7 @@ public class ProcessContorller {
 			// ProcessInstAuthViewModel piavm = auths.get(0);
 			ProcessApproveService.getInstance().updateCurrent(processDataEntity.getId(), 0, 1);
 			ProcessService.getInstance().Complete(processDataEntity);
-			ProcessDataHistoryService.getInstance().insert(processDataEntity);
+			// ProcessDataHistoryService.getInstance().insert(processDataEntity);
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(), 0, 1);
 			ProcessDataHistoryService.getInstance().insert(processDataEntity);
 			if (processDataEntity.getLevelCount() == 0 || processDataEntity.getLevelCount() == -1) {
@@ -616,7 +616,9 @@ public class ProcessContorller {
 			String bizData = XmlUtil.insertComment(processDataEntity.getBizData(), "召回", df.format(new Date()),
 					user.getName(), df.format(new Date()));
 			processDataEntity.setBizData(bizData);
+			processDataEntity.setStepName("申请人修订");
 			ProcessDataService.getInstance().update(processDataEntity);
+			ProcessDataHistoryService.getInstance().insert(processDataEntity);
 
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
 					processDataEntity.getLevelCount(), 0);
