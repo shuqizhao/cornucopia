@@ -24,6 +24,7 @@
             :inline="true"
             :size="this.cfg.size||'mini'"
             :model="formInline"
+            ref="myForm"
             class="demo-form-inline"
           >
             <template v-if="this.cfg.searchMode=='vertical'">
@@ -114,7 +115,7 @@
             </template>
             <el-form-item v-if="this.searchColumns.length!=0">
               <el-button type="primary" @click="onSearch">查询</el-button>
-              <el-button type="primary" native-type="reset">重置</el-button>
+              <el-button type="primary" @click="onReset">重置</el-button>
             </el-form-item>
             <el-form-item v-if="this.cfg.functions">
               <el-button-group>
@@ -276,6 +277,10 @@ export default {
     };
   },
   methods: {
+    onReset(){
+      this.formInline={};
+      this.$refs.myForm.resetFields();
+    },
     onSearch() {
       this.fillData();
     },

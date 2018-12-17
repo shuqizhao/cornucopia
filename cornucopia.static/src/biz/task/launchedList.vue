@@ -56,9 +56,6 @@ export default {
     diagram
   },
   methods: {
-    abc: function(a) {
-      debugger;
-    },
     onCagegoryClick: function(category) {
       this.getProcessCategories(category.id);
     },
@@ -102,9 +99,11 @@ export default {
             self.processes = r.data;
             if (self.processes.length > 0) {
               self.currentProcessId = self.processes[0].id;
-              self.$refs.list.fillData({
-                processId: self.currentProcessId
-              });
+              setTimeout(() => {
+                self.$refs.list.fillData({
+                  processId: self.currentProcessId
+                });
+              }, 100);
             }
           }
         }
