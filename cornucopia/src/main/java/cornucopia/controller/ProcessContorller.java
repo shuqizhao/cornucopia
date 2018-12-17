@@ -603,17 +603,13 @@ public class ProcessContorller {
 		int processDataId = ids[0];
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(processDataId);
-		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
-				.getProcessInstAuth(processDataEntity.getId(), user.getId());
-		if (auths.size() == 0 || processDataEntity.getCreateBy() != user.getId()) {
+		if (processDataEntity.getCreateBy() != user.getId()) {
 			jr.setCode(500);
 			jr.setMessage("没有权限");
 		} else if (processDataEntity.getProcessStatus() != 1) {
 			jr.setCode(500);
 			jr.setMessage("流程已结束");
 		} else if (processDataEntity.getCreateBy() == user.getId() && processDataEntity.getCallbackStatus() == 1) {
-			ProcessInstAuthViewModel piavm = auths.get(0);
-
 			processDataEntity.setUpdateBy(user.getId());
 			processDataEntity.setCallbackStatus(2);
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -621,6 +617,10 @@ public class ProcessContorller {
 					user.getName(), df.format(new Date()));
 			processDataEntity.setBizData(bizData);
 			ProcessDataService.getInstance().update(processDataEntity);
+
+			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
+					processDataEntity.getLevelCount(), 0);
+			ProcessApproveService.getInstance().updateCurrent(processDataEntity.getId(), -1, 0);
 
 			ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
 
@@ -638,11 +638,6 @@ public class ProcessContorller {
 
 			ProcessApproveService.getInstance().insert(processApproveEntity);
 			ProcessService.getInstance().DoAction(processApproveEntity, processDataEntity);
-			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
-					processDataEntity.getLevelCount(), 0);
-			ProcessApproveService.getInstance().updateCurrent(processDataEntity.getId(), -1, 0);
-			ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 1);
-
 			jr.setCode(200);
 			jr.setData(1);
 		} else if (processDataEntity.getCallbackStatus() != 1) {
