@@ -40,7 +40,7 @@
       <el-table-column label="流程图">
         <template slot-scope="scope">
           <el-popover placement="right" trigger="click">
-            <diagram :processDataId="scope.row.id" style="height:550px;overflow:auto;"></diagram>
+            <diagram :processDataId="scope.row.id" :callbackStatus="scope.row.callbackStatus" style="height:550px;overflow:auto;"></diagram>
             <el-button icon="el-icon-search" slot="reference"></el-button>
           </el-popover>
         </template>

@@ -419,7 +419,6 @@ export default {
                     // self.reloadSimpleData();
                     // self.dataTable.draw(false);
                     self.fillData();
-                    self.$refs.myListOfEleme.doLayout();
                     self.$message({
                       message: "操作成功!",
                       type: "success"

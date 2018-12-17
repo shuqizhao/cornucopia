@@ -115,16 +115,15 @@
 </template>
 <script>
 export default {
-  props: ["processDataId"],
+  props: ["processDataId","callbackStatus"],
   mounted: function() {
-    // debugger;
     this.loadDiagram(true);
-  },
-  updated:function(){
-    // this.loadDiagram(true);
   },
   watch: {
     processDataId(newName, oldName) {
+      this.loadDiagram(true);
+    },
+    callbackStatus(newName, oldName){
       this.loadDiagram(true);
     }
   },
