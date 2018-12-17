@@ -603,17 +603,25 @@ public class ProcessContorller {
 		int processDataId = ids[0];
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(processDataId);
-		if (processDataEntity.getProcessStatus() != 1) {
+		List<ProcessInstAuthViewModel> auths = ProcessInstDiagramService.getInstance()
+				.getProcessInstAuth(processDataEntity.getId(), user.getId());
+		if (auths.size() == 0 || processDataEntity.getCreateBy() != user.getId()) {
+			jr.setCode(500);
+			jr.setMessage("没有权限");
+		} else if (processDataEntity.getProcessStatus() != 1) {
 			jr.setCode(500);
 			jr.setMessage("流程已结束");
 		} else if (processDataEntity.getCreateBy() == user.getId() && processDataEntity.getCallbackStatus() == 1) {
+			ProcessInstAuthViewModel piavm = auths.get(0);
+
 			processDataEntity.setUpdateBy(user.getId());
 			processDataEntity.setCallbackStatus(2);
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String bizData = XmlUtil.insertComment(processDataEntity.getBizData(), "召回", df.format(new Date()), user.getName(), df.format(new Date()));
+			String bizData = XmlUtil.insertComment(processDataEntity.getBizData(), "召回", df.format(new Date()),
+					user.getName(), df.format(new Date()));
 			processDataEntity.setBizData(bizData);
 			ProcessDataService.getInstance().update(processDataEntity);
-		
+
 			ProcessApproveEntity processApproveEntity = new ProcessApproveEntity();
 
 			ProcessApproveEntity paeFirstLevel = ProcessApproveService.getInstance()
@@ -632,13 +640,11 @@ public class ProcessContorller {
 			ProcessService.getInstance().DoAction(processApproveEntity, processDataEntity);
 			ProcessInstDiagramService.getInstance().updateCurrent(processDataEntity.getId(),
 					processDataEntity.getLevelCount(), 0);
-			ProcessApproveService.getInstance().updateCurrent(processDataEntity.getId(), -1, 1);
+			ProcessApproveService.getInstance().updateCurrent(processDataEntity.getId(), -1, 0);
+			ProcessApproveService.getInstance().updateCurrent(piavm.getId(), 1);
 
 			jr.setCode(200);
 			jr.setData(1);
-		} else if (processDataEntity.getCreateBy() != user.getId()) {
-			jr.setCode(500);
-			jr.setMessage("没有权限");
 		} else if (processDataEntity.getCallbackStatus() != 1) {
 			jr.setCode(500);
 			jr.setMessage("不可召回");
@@ -674,12 +680,13 @@ public class ProcessContorller {
 		}
 		return jr;
 	}
+
 	@Transactional(rollbackFor = Exception.class)
 	@RequestMapping(value = { "/applyDicard" }, method = RequestMethod.POST)
 	public JsonResult<Integer> applyDicard(HttpServletRequest request, @RequestBody ProcessDataViewModel pdvm)
 			throws DocumentException, UnsupportedEncodingException {
 		JsonResult<Integer> jr = new JsonResult<Integer>();
-		
+
 		String formCode = XmlUtil.selectSingleText(pdvm.getXmlStr(), "//fromCode");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().getByFormCode(formCode);
 		processDataEntity.setJsonData(pdvm.getJsonStr());
