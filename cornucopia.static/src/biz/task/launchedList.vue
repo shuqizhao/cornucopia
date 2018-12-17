@@ -189,7 +189,7 @@ export default {
             type: "timer",
             width: "150",
             formatter: function(data) {
-              if (data.stepName == "结束") {
+              if (data.processStatus != 1) {
                 return data.updateTime;
               } else {
                 return "";

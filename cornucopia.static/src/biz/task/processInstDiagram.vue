@@ -3,7 +3,7 @@
     <ul class="timeline">
       <!-- timeline time label -->
       <li class="time-label">
-        <span class="bg-red" style="width:100%;margin-left:5px;">流程图</span>
+        <span class="bg-red" style="width:100%;margin-left:5px;">流程图{{processDataId}}</span>
       </li>
       <!-- /.timeline-label -->
       <!-- timeline item -->
@@ -119,6 +119,9 @@ export default {
   mounted: function() {
     this.loadDiagram(true);
   },
+  updated:function(){
+    // this.loadDiagram(true);
+  },
   data() {
     return {
       steps: [],
@@ -133,6 +136,7 @@ export default {
       if (autoLoad && !self.processDataId) {
         return;
       }
+      self.parentSteps = [];
       var processDataId = self.$route.query.id;
       var showDiagram = self.$route.query.showDiagram;
       if (self.processDataId) {
