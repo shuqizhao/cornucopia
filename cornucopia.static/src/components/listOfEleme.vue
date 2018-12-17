@@ -113,7 +113,7 @@
               </el-form-item>
             </template>
             <el-form-item v-if="this.searchColumns.length!=0">
-              <el-button type="primary" @click="onSubmit">查询</el-button>
+              <el-button type="primary" @click="onSearch">查询</el-button>
               <el-button type="primary" native-type="reset">重置</el-button>
             </el-form-item>
             <el-form-item v-if="this.cfg.functions">
@@ -132,7 +132,13 @@
                   >{{c.text}}</el-button>
                 </template>
               </el-button-group>
-              <el-dropdown v-if="this.cfg.functions&&this.cfg.functions.more" @command="onButtonClick" split-button trigger="click" type="primary">更多操作
+              <el-dropdown
+                v-if="this.cfg.functions&&this.cfg.functions.more"
+                @command="onButtonClick"
+                split-button
+                trigger="click"
+                type="primary"
+              >更多操作
                 <el-dropdown-menu slot="dropdown">
                   <template v-for="m in this.cfg.functions.more">
                     <el-dropdown-item
@@ -270,7 +276,7 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
+    onSearch() {
       this.fillData();
     },
     handleSizeChange(val) {
@@ -299,12 +305,22 @@ export default {
       if (self.cfg.url) {
         self.openLoading();
         var listUrl = self.cfg.url;
+        if (self.cfg.searchMode == "vertical") {
+          self.formInline["columnValue"] =
+            self.formInline[self.formInline["columnName"]];
+        }
         self.post({
           url: listUrl,
           data: {
             iDisplayStart: (self.currentPage - 1) * self.currentSize,
             iDisplayLength: self.currentSize,
-            sSearch: JSON.stringify($.extend(self.formInline, p))
+            sSearch: JSON.stringify(
+              $.extend(
+                self.formInline,
+                p,
+                self.cfg.beforeFillData(self.formInline)
+              )
+            )
           },
           success: function(response) {
             self.tableData = response.aaData;
@@ -398,6 +414,7 @@ export default {
                     // self.reloadSimpleData();
                     // self.dataTable.draw(false);
                     self.fillData();
+                    self.$refs.myListOfEleme.doLayout();
                     self.$message({
                       message: "操作成功!",
                       type: "success"

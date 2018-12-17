@@ -19,7 +19,7 @@ public interface ProcessDataDao {
 	@SelectKey(statement = "Select LAST_INSERT_ID()", keyProperty = "pd.id", before = false, resultType = int.class)
 	public int insert(@Param("pd") ProcessDataEntity processDataEntity);
 
-	@Select("call sp_process_data_get_by_launched_list(#{pp.start},#{pp.length},#{userId},#{psvm.processId},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
+	@Select("call sp_process_data_get_by_launched_list(#{pp.start},#{pp.length},#{userId},#{psvm.columnName},#{psvm.columnValue},#{psvm.processId},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
 	@Options(statementType = StatementType.CALLABLE)
 	public List<ProcessDataEntity> launchedList(@Param("pp") PagingParameters pp, @Param("userId") int userId,
 			@Param("psvm") ProcessSearchViewModel psvm);

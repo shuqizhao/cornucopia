@@ -200,6 +200,21 @@ export default {
             title: "召回状态",
             name: "callbackStatus",
             isSearch: true,
+            type: "combox",
+            data: [
+              {
+                id: 0,
+                value: "全部"
+              },
+              {
+                id: 1,
+                value: "可召回"
+              },
+              {
+                id: 2,
+                value: "不可召回"
+              }
+            ],
             formatter: function(data) {
               if (data.callbackStatus == 2) {
                 return '<center><div class="label label-default">不可召回</div></center>';
@@ -212,6 +227,25 @@ export default {
             title: "流程状态",
             name: "processStatus",
             isSearch: true,
+            type: "combox",
+            data: [
+              {
+                id: 0,
+                value: "全部"
+              },
+              {
+                id: 1,
+                value: "进行中"
+              },
+              {
+                id: 2,
+                value: "完成"
+              },
+              {
+                id: 3,
+                value: "终止"
+              }
+            ],
             formatter: function(data) {
               if (data.processStatus == 2) {
                 return '<center><div class="label label-primary">完成</div></center>';
@@ -234,6 +268,10 @@ export default {
           }
         ],
         idName: "id",
+        beforeFillData: function(formInline) {
+          formInline["processId"] = self.currentProcessId;
+          return formInline;
+        },
         functions: {
           common: [
             {
