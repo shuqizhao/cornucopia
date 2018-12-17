@@ -602,7 +602,7 @@ public class ProcessContorller {
 		int processDataId = ids[0];
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(processDataId);
-		if (processDataEntity.getProcessStatus() == 1) {
+		if (processDataEntity.getProcessStatus() != 1) {
 			jr.setCode(500);
 			jr.setMessage("流程已结束");
 		} else if (processDataEntity.getCreateBy() == user.getId() && processDataEntity.getCallbackStatus() == 1) {
@@ -655,7 +655,7 @@ public class ProcessContorller {
 		int processDataId = ids[0];
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(processDataId);
-		if (processDataEntity.getProcessStatus() == 1) {
+		if (processDataEntity.getProcessStatus() != 1) {
 			jr.setCode(500);
 			jr.setMessage("流程已结束");
 		} else if (processDataEntity.getCreateBy() == user.getId()) {
