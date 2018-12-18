@@ -24,13 +24,29 @@ public interface ProcessDataDao {
 	public List<ProcessDataEntity> launchedList(@Param("pp") PagingParameters pp, @Param("userId") int userId,
 			@Param("psvm") ProcessSearchViewModel psvm);
 
-	@Select("call sp_process_data_get_by_category_group(#{userId})")
+	@Select("call sp_process_data_get_by_mylaunched_category_group(#{userId})")
 	@Options(statementType = StatementType.CALLABLE)
-	public List<ProcessDataEntity> catetoryGroup(@Param("userId") int userId);
+	public List<ProcessDataEntity> mylaunchedCatetoryGroup(@Param("userId") int userId);
 
-	@Select("call sp_process_data_get_by_launched_group(#{userId},#{catetoryId})")
+	@Select("call sp_process_data_get_by_mytask_category_group(#{userId})")
+	@Options(statementType = StatementType.CALLABLE)
+	public List<ProcessDataEntity> myTaskCatetoryGroup(@Param("userId") int userId);
+
+	@Select("call sp_process_data_get_by_mydeal_category_group(#{userId})")
+	@Options(statementType = StatementType.CALLABLE)
+	public List<ProcessDataEntity> myDealCatetoryGroup(@Param("userId") int userId);
+
+	@Select("call sp_process_data_get_by_mylaunched_group(#{userId},#{catetoryId})")
 	@Options(statementType = StatementType.CALLABLE)
 	public List<ProcessDataEntity> launchedGroup(@Param("userId") int userId, @Param("catetoryId") int catetoryId);
+
+	@Select("call sp_process_data_get_by_mytask_group(#{userId},#{catetoryId})")
+	@Options(statementType = StatementType.CALLABLE)
+	public List<ProcessDataEntity> taskGroup(@Param("userId") int userId, @Param("catetoryId") int catetoryId);
+
+	@Select("call sp_process_data_get_by_mydealed_group(#{userId},#{catetoryId})")
+	@Options(statementType = StatementType.CALLABLE)
+	public List<ProcessDataEntity> dealedGroup(@Param("userId") int userId, @Param("catetoryId") int catetoryId);
 
 	@Select("call sp_process_data_get_by_task_list(#{pp.start},#{pp.length},#{userId},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
 	@Options(statementType = StatementType.CALLABLE)

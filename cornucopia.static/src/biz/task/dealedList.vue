@@ -70,7 +70,7 @@ export default {
       self.processCategories = [];
       self.processes = [];
       self.post({
-        url: "/process/catetoryGroup",
+        url: "/process/myDealCatetoryGroup",
         success: function(r) {
           if (r.code == 200) {
             self.totalCount = 0;
@@ -93,7 +93,7 @@ export default {
     getProcesses: function(categoryId) {
       self = this;
       self.post({
-        url: "/process/launchedGroup?categoryId=" + categoryId,
+        url: "/process/dealedGroup?categoryId=" + categoryId,
         success: function(r) {
           if (r.code == 200) {
             self.processes = r.data;

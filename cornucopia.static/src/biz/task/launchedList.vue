@@ -70,7 +70,7 @@ export default {
       self.processCategories = [];
       self.processes = [];
       self.post({
-        url: "/process/catetoryGroup",
+        url: "/process/mylaunchedCatetoryGroup",
         success: function(r) {
           if (r.code == 200) {
             self.totalCount = 0;

@@ -29,12 +29,28 @@ public class ProcessDataService {
 		return processDataDao.launchedList(pp, userId, psvm);
 	}
 
-	public List<ProcessDataEntity> catetoryGroup(int userId) {
-		return processDataDao.catetoryGroup(userId);
+	public List<ProcessDataEntity> mylaunchedCatetoryGroup(int userId) {
+		return processDataDao.mylaunchedCatetoryGroup(userId);
+	}
+
+	public List<ProcessDataEntity> myTaskCatetoryGroup(int userId) {
+		return processDataDao.myTaskCatetoryGroup(userId);
+	}
+
+	public List<ProcessDataEntity> myDealCatetoryGroup(int userId) {
+		return processDataDao.myDealCatetoryGroup(userId);
 	}
 
 	public List<ProcessDataEntity> launchedGroup(int userId, int catetoryId) {
 		return processDataDao.launchedGroup(userId, catetoryId);
+	}
+
+	public List<ProcessDataEntity> taskGroup(int userId, int catetoryId) {
+		return processDataDao.taskGroup(userId, catetoryId);
+	}
+
+	public List<ProcessDataEntity> dealedGroup(int userId, int catetoryId) {
+		return processDataDao.dealedGroup(userId, catetoryId);
 	}
 
 	public List<ProcessDataEntity> taskList(PagingParameters pp, int userId) {

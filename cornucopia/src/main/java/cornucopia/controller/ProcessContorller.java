@@ -448,10 +448,30 @@ public class ProcessContorller {
 		return dtr;
 	}
 
-	@RequestMapping(value = { "/catetoryGroup" }, method = RequestMethod.POST)
-	public JsonResult<List<ProcessDataEntity>> catetoryGroup(HttpServletRequest request) {
+	@RequestMapping(value = { "/mylaunchedCatetoryGroup" }, method = RequestMethod.POST)
+	public JsonResult<List<ProcessDataEntity>> mylaunchedCatetoryGroup(HttpServletRequest request) {
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
-		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().catetoryGroup(user.getId());
+		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().mylaunchedCatetoryGroup(user.getId());
+		JsonResult<List<ProcessDataEntity>> dtr = new JsonResult<List<ProcessDataEntity>>();
+		dtr.setCode(200);
+		dtr.setData(processDatas);
+		return dtr;
+	}
+
+	@RequestMapping(value = { "/myDealCatetoryGroup" }, method = RequestMethod.POST)
+	public JsonResult<List<ProcessDataEntity>> myDealCatetoryGroup(HttpServletRequest request) {
+		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().myDealCatetoryGroup(user.getId());
+		JsonResult<List<ProcessDataEntity>> dtr = new JsonResult<List<ProcessDataEntity>>();
+		dtr.setCode(200);
+		dtr.setData(processDatas);
+		return dtr;
+	}
+
+	@RequestMapping(value = { "/myTaskCatetoryGroup" }, method = RequestMethod.POST)
+	public JsonResult<List<ProcessDataEntity>> myTaskCatetoryGroup(HttpServletRequest request) {
+		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().myTaskCatetoryGroup(user.getId());
 		JsonResult<List<ProcessDataEntity>> dtr = new JsonResult<List<ProcessDataEntity>>();
 		dtr.setCode(200);
 		dtr.setData(processDatas);
@@ -462,6 +482,26 @@ public class ProcessContorller {
 	public JsonResult<List<ProcessDataEntity>> launchedGroup(HttpServletRequest request, int categoryId) {
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().launchedGroup(user.getId(), categoryId);
+		JsonResult<List<ProcessDataEntity>> dtr = new JsonResult<List<ProcessDataEntity>>();
+		dtr.setCode(200);
+		dtr.setData(processDatas);
+		return dtr;
+	}
+
+	@RequestMapping(value = { "/taskGroup" }, method = RequestMethod.POST)
+	public JsonResult<List<ProcessDataEntity>> taskGroup(HttpServletRequest request, int categoryId) {
+		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().taskGroup(user.getId(), categoryId);
+		JsonResult<List<ProcessDataEntity>> dtr = new JsonResult<List<ProcessDataEntity>>();
+		dtr.setCode(200);
+		dtr.setData(processDatas);
+		return dtr;
+	}
+
+	@RequestMapping(value = { "/dealedGroup" }, method = RequestMethod.POST)
+	public JsonResult<List<ProcessDataEntity>> dealedGroup(HttpServletRequest request, int categoryId) {
+		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().dealedGroup(user.getId(), categoryId);
 		JsonResult<List<ProcessDataEntity>> dtr = new JsonResult<List<ProcessDataEntity>>();
 		dtr.setCode(200);
 		dtr.setData(processDatas);
