@@ -1,7 +1,8 @@
 <template>
   <el-row>
-    <el-col :span="12"><listV2 :cfg="cfg"></listV2></el-col>
-    <el-col :span="12"><tree  ref="tree" :cfg="treeCfg"></tree></el-col>
+    <el-col :span="8"><listV2 :cfg="cfgRole"></listV2></el-col>
+    <el-col :span="8"><listV2 :cfg="cfgUser"></listV2></el-col>
+    <el-col :span="8"><tree  ref="tree" :cfg="treeCfg"></tree></el-col>
   </el-row>
 </template>
 <script>
@@ -9,7 +10,7 @@ export default {
   data() {
     var self = this;
     return {
-      cfg: {
+      cfgRole: {
         title: "角色管理",
         parentTitle: "权限管理",
         url:  "/role/list",
@@ -67,6 +68,85 @@ export default {
               text: "启用",
               url:  "/role/enable"
             },
+            {
+              text: "删除",
+              url:  "/role/delete"
+            }
+          ]
+        },
+        onRowSelected: function(datas) {
+          var data = datas[0];
+          self.$refs.tree.cfg.title = data.name;
+          self.openLoading(self.$refs.tree);
+          self.get({
+            url:
+              "/auth/getCheckedList?roleId=" +
+              data.id,
+            success: function(response) {
+              if (response.code == "200") {
+                self.$refs.tree.setCheckedKeys(response.data);
+                self.closeLoading(self.$refs.tree);
+                self.currentRoleId = data.id;
+              } else if (response.message) {
+                self.$message({
+                  type: "warning",
+                  message: response.message
+                });
+              }
+            }
+          });
+        }
+      }, 
+      cfgUser: {
+        title: "角色人员",
+        parentTitle: "权限管理",
+        url:  "/role/list",
+        showRadio:true,
+        // showCheckBox:false,
+        columns: [
+          // {
+          //   title: "id",
+          //   name: "id",
+          //   isHide: true
+          // },
+          {
+            title: "角色名",
+            name: "name",
+            isSearch:true,
+          },
+          {
+            title: "是否启用",
+            name: "isEnabled",
+            formatter: function(data) {
+              if (data.isEnabled) {
+                return '<center><i class="fa fa-fw fa-check-circle"></i></center>';
+              } else {
+                return '<center><i class="el-icon-close"></i></center>';
+              }
+            }
+          },
+          {
+            title: "创建时间",
+            name: "createTime"
+          }
+        ],
+        idName: "id",
+        // fnRowCallback: function(row, data) {
+        //   if (data.isEnabled) {
+        //     $("td:eq(1)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
+        //   } else {
+        //     $("td:eq(1)", row).html('<i class="el-icon-close"></i>');
+        //   }
+        // },
+        functions: {
+          common: [
+            {
+              text: "添加人员",
+              url: "roleAdd",
+              mode: "modal"
+            }
+          ],
+          more: [
             {
               text: "删除",
               url:  "/role/delete"
