@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-col :span="12"><list :cfg="cfg"></list></el-col>
+    <el-col :span="12"><listV2 :cfg="cfg"></listV2></el-col>
     <el-col :span="12"><tree  ref="tree" :cfg="treeCfg"></tree></el-col>
   </el-row>
 </template>
@@ -12,25 +12,30 @@ export default {
       cfg: {
         title: "角色管理",
         parentTitle: "权限管理",
-        simpleUrl:  "/role/alllist",
-        lengthMenu: [[-1], ["ALL"]],
-        sDom: 'f<"dataTables_function"/>',
-        bServerSide: false,
-        hideCheckBox: true,
-        showSelectedRowColor: true,
+        url:  "/role/list",
+        showRadio:true,
+        // showCheckBox:false,
         columns: [
-          {
-            title: "id",
-            name: "id",
-            isHide: true
-          },
+          // {
+          //   title: "id",
+          //   name: "id",
+          //   isHide: true
+          // },
           {
             title: "角色名",
-            name: "name"
+            name: "name",
+            isSearch:true,
           },
           {
             title: "是否启用",
-            name: "isEnabled"
+            name: "isEnabled",
+            formatter: function(data) {
+              if (data.isEnabled) {
+                return '<center><i class="fa fa-fw fa-check-circle"></i></center>';
+              } else {
+                return '<center><i class="el-icon-close"></i></center>';
+              }
+            }
           },
           {
             title: "创建时间",
@@ -38,13 +43,13 @@ export default {
           }
         ],
         idName: "id",
-        fnRowCallback: function(row, data) {
-          if (data.isEnabled) {
-            $("td:eq(1)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
-          } else {
-            $("td:eq(1)", row).html('<i class="el-icon-close"></i>');
-          }
-        },
+        // fnRowCallback: function(row, data) {
+        //   if (data.isEnabled) {
+        //     $("td:eq(1)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
+        //   } else {
+        //     $("td:eq(1)", row).html('<i class="el-icon-close"></i>');
+        //   }
+        // },
         functions: {
           common: [
             {
@@ -68,7 +73,8 @@ export default {
             }
           ]
         },
-        onClickRow: function(data, target) {
+        onRowSelected: function(datas) {
+          var data = datas[0];
           self.$refs.tree.cfg.title = data.name;
           self.openLoading(self.$refs.tree);
           self.get({

@@ -158,6 +158,8 @@
       <!-- </div> -->
       <el-table
         :data="tableData"
+        :highlight-current-row="this.cfg.showRadio"
+        @current-change="onTableRowSelected"
         @selection-change="handleSelectionChange"
         :size="this.cfg.size||'mini'"
         :style="this.cfg.style||'width: 100%'"
@@ -169,17 +171,13 @@
         ref="myListOfEleme"
       >
         <el-table-column
-          v-if="this.cfg.functions|| this.cfg.showCheckBox"
+          v-if="(this.cfg.functions || this.cfg.showCheckBox)&&!this.cfg.showRadio"
           type="selection"
           width="55"
         ></el-table-column>
         <el-table-column v-if="this.cfg.showRadio" label="#" width="35">
           <template slot-scope="scope">
-            <el-radio
-              v-model="radio"
-              :label="scope.row.id"
-              @change.native="handleRadioSelectionChange(scope.row)"
-            ></el-radio>
+            <el-radio v-model="radio" :label="scope.row.id"></el-radio>
           </template>
         </el-table-column>
         <el-table-column v-if="cfg.operations" label="操作" :fixed="true">
@@ -277,8 +275,8 @@ export default {
     };
   },
   methods: {
-    onReset(){
-      this.formInline={};
+    onReset() {
+      this.formInline = {};
       this.$refs.myForm.resetFields();
     },
     onSearch() {
@@ -305,6 +303,27 @@ export default {
         this.cfg.onRowSelected(this.multipleSelection);
       }
     },
+    onTableRowSelected(val) {
+      if (this.cfg.showRadio) {
+        this.radio = val.id;
+        this.$refs.myListOfEleme.clearSelection();
+      }
+      this.toggleRowSelection(val);
+      // this.multipleSelection = [];
+      // this.multipleSelection.push(val);
+      // if (this.cfg.onRowSelected) {
+      //   this.cfg.onRowSelected(this.multipleSelection);
+      // }
+    },
+    toggleSelection(rows) {
+      if (rows) {
+        rows.forEach(row => {
+          this.$refs.myListOfEleme.toggleRowSelection(row);
+        });
+      } else {
+        this.$refs.myListOfEleme.clearSelection();
+      }
+    },
     fillData(p) {
       var self = this;
       if (self.cfg.url) {
@@ -323,7 +342,9 @@ export default {
               $.extend(
                 self.formInline,
                 p,
-                self.cfg.beforeFillData?self.cfg.beforeFillData(self.formInline):[]
+                self.cfg.beforeFillData
+                  ? self.cfg.beforeFillData(self.formInline)
+                  : []
               )
             )
           },
