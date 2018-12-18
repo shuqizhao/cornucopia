@@ -53,8 +53,8 @@ public class ProcessDataService {
 		return processDataDao.dealedGroup(userId, catetoryId);
 	}
 
-	public List<ProcessDataEntity> taskList(PagingParameters pp, int userId) {
-		return processDataDao.taskList(pp, userId);
+	public List<ProcessDataEntity> taskList(PagingParameters pp, int userId, ProcessSearchViewModel psvm) {
+		return processDataDao.taskList(pp, userId, psvm);
 	}
 
 	public ProcessDataEntity getByInstId(String instId) {
@@ -80,7 +80,7 @@ public class ProcessDataService {
 		return processDataDao.getByFormCode(formCode);
 	}
 
-	public List<ProcessDataEntity> dealedList(PagingParameters pp, int userId) {
-		return processDataDao.dealedList(pp, userId);
+	public List<ProcessDataEntity> dealedList(PagingParameters pp, int userId, ProcessSearchViewModel psvm) {
+		return processDataDao.dealedList(pp, userId, psvm);
 	}
 }

@@ -48,9 +48,9 @@ public interface ProcessDataDao {
 	@Options(statementType = StatementType.CALLABLE)
 	public List<ProcessDataEntity> dealedGroup(@Param("userId") int userId, @Param("catetoryId") int catetoryId);
 
-	@Select("call sp_process_data_get_by_task_list(#{pp.start},#{pp.length},#{userId},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
+	@Select("call sp_process_data_get_by_task_list(#{pp.start},#{pp.length},#{userId},#{psvm.columnName},#{psvm.columnValue},#{psvm.processId},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
 	@Options(statementType = StatementType.CALLABLE)
-	public List<ProcessDataEntity> taskList(@Param("pp") PagingParameters pp, @Param("userId") int userId);
+	public List<ProcessDataEntity> taskList(@Param("pp") PagingParameters pp, @Param("userId") int userId,@Param("psvm") ProcessSearchViewModel psvm);
 
 	@Select("call sp_process_data_get_by_inst_id(#{instId})")
 	public ProcessDataEntity getByInstId(@Param("instId") String instId);
@@ -64,7 +64,7 @@ public interface ProcessDataDao {
 	@Select("call sp_process_data_get_form_code(#{formCode})")
 	public ProcessDataEntity getByFormCode(@Param("formCode") String formCode);
 
-	@Select("call sp_process_data_get_by_dealed_list(#{pp.start},#{pp.length},#{userId},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
+	@Select("call sp_process_data_get_by_dealed_list(#{pp.start},#{pp.length},#{userId},#{psvm.columnName},#{psvm.columnValue},#{psvm.processId},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
 	@Options(statementType = StatementType.CALLABLE)
-	public List<ProcessDataEntity> dealedList(@Param("pp") PagingParameters pp, @Param("userId") int userId);
+	public List<ProcessDataEntity> dealedList(@Param("pp") PagingParameters pp, @Param("userId") int userId,@Param("psvm") ProcessSearchViewModel psvm);
 }

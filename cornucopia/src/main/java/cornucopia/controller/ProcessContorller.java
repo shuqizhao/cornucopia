@@ -514,7 +514,8 @@ public class ProcessContorller {
 		pp.setStart(dtp.getiDisplayStart());
 		pp.setLength(dtp.getiDisplayLength());
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
-		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().taskList(pp, user.getId());
+		ProcessSearchViewModel psvm = JSON.parseObject(dtp.getsSearch(), ProcessSearchViewModel.class);
+		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().taskList(pp, user.getId(), psvm);
 		int count = pp.getTotalRows();
 		DataTableResult<ProcessDataEntity> dtr = new DataTableResult<ProcessDataEntity>(dtp.getsEcho() + 1, count,
 				count, processDatas);
@@ -527,7 +528,8 @@ public class ProcessContorller {
 		pp.setStart(dtp.getiDisplayStart());
 		pp.setLength(dtp.getiDisplayLength());
 		UserEntity user = (UserEntity) request.getSession().getAttribute("user");
-		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().dealedList(pp, user.getId());
+		ProcessSearchViewModel psvm = JSON.parseObject(dtp.getsSearch(), ProcessSearchViewModel.class);
+		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().dealedList(pp, user.getId(), psvm);
 		int count = pp.getTotalRows();
 		DataTableResult<ProcessDataEntity> dtr = new DataTableResult<ProcessDataEntity>(dtp.getsEcho() + 1, count,
 				count, processDatas);
