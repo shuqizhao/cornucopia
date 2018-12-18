@@ -358,6 +358,10 @@ export default {
     },
     onButtonClick(c, e) {
       var self = this;
+      if(c.onClick){
+        c.onClick(c,e);
+        return;
+      }
       if (c.mode == "navigate") {
         self.$router.push({ path: c.url });
         return;

@@ -6,7 +6,11 @@
   </el-row>
 </template>
 <script>
+import selectUser from "../../components/selectUser.vue";
 export default {
+  components: {
+    selectUser
+  },
   data() {
     var self = this;
     return {
@@ -56,7 +60,8 @@ export default {
             {
               text: "添加角色",
               url: "roleAdd",
-              mode: "modal"
+              mode: "modal",
+              
             }
           ],
           more: [
@@ -101,7 +106,8 @@ export default {
         title: "角色人员",
         parentTitle: "权限管理",
         url:  "/role/list",
-        showRadio:true,
+        // showRadio:true,
+        autoLoad:false,
         // showCheckBox:false,
         columns: [
           // {
@@ -110,40 +116,28 @@ export default {
           //   isHide: true
           // },
           {
-            title: "角色名",
+            title: "编号",
+            name: "no"
+          },{
+            title: "姓名",
             name: "name",
             isSearch:true,
           },
           {
-            title: "是否启用",
-            name: "isEnabled",
-            formatter: function(data) {
-              if (data.isEnabled) {
-                return '<center><i class="fa fa-fw fa-check-circle"></i></center>';
-              } else {
-                return '<center><i class="el-icon-close"></i></center>';
-              }
-            }
-          },
-          {
-            title: "创建时间",
+            title: "邮箱",
             name: "createTime"
           }
         ],
         idName: "id",
-        // fnRowCallback: function(row, data) {
-        //   if (data.isEnabled) {
-        //     $("td:eq(1)", row).html('<i class="fa fa-fw fa-check-circle"></i>');
-        //   } else {
-        //     $("td:eq(1)", row).html('<i class="el-icon-close"></i>');
-        //   }
-        // },
         functions: {
           common: [
             {
               text: "添加人员",
-              url: "roleAdd",
-              mode: "modal"
+              url: selectUser,
+              mode: "modal",
+              onClick:function(){
+                alert(1)
+              }
             }
           ],
           more: [
@@ -154,26 +148,26 @@ export default {
           ]
         },
         onRowSelected: function(datas) {
-          var data = datas[0];
-          self.$refs.tree.cfg.title = data.name;
-          self.openLoading(self.$refs.tree);
-          self.get({
-            url:
-              "/auth/getCheckedList?roleId=" +
-              data.id,
-            success: function(response) {
-              if (response.code == "200") {
-                self.$refs.tree.setCheckedKeys(response.data);
-                self.closeLoading(self.$refs.tree);
-                self.currentRoleId = data.id;
-              } else if (response.message) {
-                self.$message({
-                  type: "warning",
-                  message: response.message
-                });
-              }
-            }
-          });
+          // var data = datas[0];
+          // self.$refs.tree.cfg.title = data.name;
+          // self.openLoading(self.$refs.tree);
+          // self.get({
+          //   url:
+          //     "/auth/getCheckedList?roleId=" +
+          //     data.id,
+          //   success: function(response) {
+          //     if (response.code == "200") {
+          //       self.$refs.tree.setCheckedKeys(response.data);
+          //       self.closeLoading(self.$refs.tree);
+          //       self.currentRoleId = data.id;
+          //     } else if (response.message) {
+          //       self.$message({
+          //         type: "warning",
+          //         message: response.message
+          //       });
+          //     }
+          //   }
+          // });
         }
       },
       treeCfg: {
