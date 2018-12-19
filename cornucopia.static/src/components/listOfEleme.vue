@@ -448,6 +448,7 @@ export default {
                   if (response.code == 200) {
                     // self.reloadSimpleData();
                     // self.dataTable.draw(false);
+                    self.radio = "";
                     self.fillData();
                     self.$message({
                       message: "操作成功!",

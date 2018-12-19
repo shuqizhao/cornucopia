@@ -96,15 +96,18 @@ export default {
           more: [
             {
               text: "停用",
-              url: "/role/disable"
+              url: "/role/disable",
+              functionName:'RoleDisable'
             },
             {
               text: "启用",
-              url: "/role/enable"
+              url: "/role/enable",
+              functionName:'RoleEnable'
             },
             {
               text: "删除",
-              url: "/role/delete"
+              url: "/role/delete",
+              functionName:'RoleDelete'
             }
           ]
         },
@@ -178,7 +181,8 @@ export default {
             {
               text: "添加人员",
               url: selectUser,
-              mode: "modal",
+              // mode: "modal",
+              functionName:'RoleUsersAdd',
               onClick: function() {
                 if (!self.currentRoleId) {
                   self.$message({
@@ -195,7 +199,8 @@ export default {
           more: [
             {
               text: "删除",
-              url: "/role/deleteUsers"
+              url: "/role/deleteUsers",
+              functionName:'RoleUsersDelete'
             }
           ]
         }
