@@ -1,34 +1,34 @@
 package cornucopia.model;
 
 public class RoleAddUserViewModel{
-    private int userId;
-    private int[] roleIds;
+    private int roleId;
+    private int[] userIds;
 
     /**
-     * @return the userId
+     * @return the roleId
      */
-    public int getUserId() {
-        return userId;
+    public int getRoleId() {
+        return roleId;
     }
 
     /**
-     * @return the roleIds
+     * @return the userIds
      */
-    public int[] getRoleIds() {
-        return roleIds;
+    public int[] getUserIds() {
+        return userIds;
     }
 
     /**
-     * @param roleIds the roleIds to set
+     * @param userIds the userIds to set
      */
-    public void setRoleIds(int[] roleIds) {
-        this.roleIds = roleIds;
+    public void setUserIds(int[] userIds) {
+        this.userIds = userIds;
     }
 
     /**
-     * @param userId the userId to set
+     * @param roleId the roleId to set
      */
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 }

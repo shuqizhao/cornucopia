@@ -109,6 +109,9 @@ export default {
           ]
         },
         onRowSelected: function(datas) {
+          if(datas.length==0){
+            return;
+          }
           var data = datas[0];
           self.currentRoleId = data.id;
           self.$refs.tree.cfg.title = data.name;
@@ -147,7 +150,7 @@ export default {
           // },
           {
             title: "编号",
-            name: "no"
+            name: "personNumber"
           },
           {
             title: "姓名",
@@ -156,7 +159,7 @@ export default {
           },
           {
             title: "邮箱",
-            name: "createTime"
+            name: "email"
           }
         ],
         idName: "id",
@@ -331,10 +334,11 @@ export default {
           .then(() => {
             //do
             self.post({
-              url: "/role/AddUser",
+              dataType:'json',
+              url: "/role/addUser",
               data: {
                 roleId: self.currentRoleId,
-                userIs: userIds
+                userIds: userIds
               },
               success: function(r) {
                 if (r.code == 200) {

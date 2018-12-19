@@ -37,8 +37,8 @@ public class RoleService {
 	}
 
 	public int insertUser(RoleAddUserViewModel rauvm) {
-		for (int roleId : rauvm.getRoleIds()) {
-			roledao.insertUser(rauvm.getUserId(), roleId);
+		for (int userId : rauvm.getUserIds()) {
+			roledao.insertUser(userId, rauvm.getRoleId());
 		}
 		return 1;
 	}
