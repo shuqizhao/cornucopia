@@ -1,9 +1,35 @@
 <template>
-  <el-row>
-    <el-col :span="8"><listV2 :cfg="cfgRole"></listV2></el-col>
-    <el-col :span="8"><listV2 :cfg="cfgUser"></listV2></el-col>
-    <el-col :span="8"><tree  ref="tree" :cfg="treeCfg"></tree></el-col>
-  </el-row>
+  <div>
+    <el-row>
+      <el-col :span="8">
+        <listV2 :cfg="cfgRole"></listV2>
+      </el-col>
+      <el-col :span="8">
+        <listV2 :cfg="cfgUser"></listV2>
+      </el-col>
+      <el-col :span="8">
+        <tree ref="tree" :cfg="treeCfg"></tree>
+      </el-col>
+    </el-row>
+    <el-dialog
+      ref="applyDialog"
+      append-to-body
+      :visible.sync="dialogVisible"
+      :center="true"
+      :width="'65%'"
+      :title="applyDialogTitle"
+    >
+      <selectUser
+        ref="myApplyCompent"
+        :multiple="true"
+        style="margin-top:-40px;margin-bottom:-40px;"
+      ></selectUser>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="onDialogBtnCancel">取 消</el-button>
+        <el-button type="primary" @click="onDialogBtnOk">确 定</el-button>
+      </span>
+    </el-dialog>
+  </div>
 </template>
 <script>
 import selectUser from "../../components/selectUser.vue";
@@ -14,11 +40,14 @@ export default {
   data() {
     var self = this;
     return {
+      applyDialogTitle: "",
+      dialogVisible: false,
+      currentComponent: "",
       cfgRole: {
         title: "角色管理",
         parentTitle: "权限管理",
-        url:  "/role/list",
-        showRadio:true,
+        url: "/role/list",
+        showRadio: true,
         // showCheckBox:false,
         columns: [
           // {
@@ -29,7 +58,7 @@ export default {
           {
             title: "角色名",
             name: "name",
-            isSearch:true,
+            isSearch: true
           },
           {
             title: "是否启用",
@@ -60,22 +89,21 @@ export default {
             {
               text: "添加角色",
               url: "roleAdd",
-              mode: "modal",
-              
+              mode: "modal"
             }
           ],
           more: [
             {
               text: "停用",
-              url:  "/role/disable"
+              url: "/role/disable"
             },
             {
               text: "启用",
-              url:  "/role/enable"
+              url: "/role/enable"
             },
             {
               text: "删除",
-              url:  "/role/delete"
+              url: "/role/delete"
             }
           ]
         },
@@ -84,9 +112,7 @@ export default {
           self.$refs.tree.cfg.title = data.name;
           self.openLoading(self.$refs.tree);
           self.get({
-            url:
-              "/auth/getCheckedList?roleId=" +
-              data.id,
+            url: "/auth/getCheckedList?roleId=" + data.id,
             success: function(response) {
               if (response.code == "200") {
                 self.$refs.tree.setCheckedKeys(response.data);
@@ -101,13 +127,13 @@ export default {
             }
           });
         }
-      }, 
+      },
       cfgUser: {
         title: "角色人员",
         parentTitle: "权限管理",
-        url:  "/role/list",
+        url: "/role/list",
         // showRadio:true,
-        autoLoad:false,
+        autoLoad: false,
         // showCheckBox:false,
         columns: [
           // {
@@ -118,10 +144,11 @@ export default {
           {
             title: "编号",
             name: "no"
-          },{
+          },
+          {
             title: "姓名",
             name: "name",
-            isSearch:true,
+            isSearch: true
           },
           {
             title: "邮箱",
@@ -135,45 +162,25 @@ export default {
               text: "添加人员",
               url: selectUser,
               mode: "modal",
-              onClick:function(){
-                alert(1)
+              onClick: function() {
+                self.dialogVisible = true;
+                // self.currentComponent = selectUser;
+                self.applyDialogTitle = "选择员工";
               }
             }
           ],
           more: [
             {
               text: "删除",
-              url:  "/role/delete"
+              url: "/role/delete"
             }
           ]
-        },
-        onRowSelected: function(datas) {
-          // var data = datas[0];
-          // self.$refs.tree.cfg.title = data.name;
-          // self.openLoading(self.$refs.tree);
-          // self.get({
-          //   url:
-          //     "/auth/getCheckedList?roleId=" +
-          //     data.id,
-          //   success: function(response) {
-          //     if (response.code == "200") {
-          //       self.$refs.tree.setCheckedKeys(response.data);
-          //       self.closeLoading(self.$refs.tree);
-          //       self.currentRoleId = data.id;
-          //     } else if (response.message) {
-          //       self.$message({
-          //         type: "warning",
-          //         message: response.message
-          //       });
-          //     }
-          //   }
-          // });
         }
       },
       treeCfg: {
         title: "资源管理",
         parentTitle: "权限管理",
-        url:  "/auth/allResource",
+        url: "/auth/allResource",
         functions: [
           {
             text: "保存",
@@ -199,7 +206,7 @@ export default {
                       roleId: self.currentRoleId,
                       checkedList: self.$refs.tree.getCheckedKeys()
                     },
-                    url:"/auth/saveCheckedList",
+                    url: "/auth/saveCheckedList",
                     success: function(response) {
                       if (response.code == "200") {
                         self.$message({
@@ -220,8 +227,8 @@ export default {
           {
             text: "新增",
             type: "btn-success",
-            icon:'el-icon-circle-plus-outline',
-            onClick:function(){
+            icon: "el-icon-circle-plus-outline",
+            onClick: function() {
               self.$refs.tree.dialogVisible = true;
               self.$refs.tree.currentComponent = "resourceAdd";
             }
@@ -229,26 +236,29 @@ export default {
           {
             text: "修改",
             type: "btn-success",
-            icon:'el-icon-edit-outline',
-            onClick:function(){
+            icon: "el-icon-edit-outline",
+            onClick: function() {
               var checkedKeys = self.$refs.tree.getCheckedKeys();
-              if(checkedKeys.length==0||(checkedKeys.length==1&&checkedKeys[0]==0)){
+              if (
+                checkedKeys.length == 0 ||
+                (checkedKeys.length == 1 && checkedKeys[0] == 0)
+              ) {
                 self.$message({
                   type: "warning",
-                  message: '请选择资源!'
+                  message: "请选择资源!"
                 });
-              }else if(checkedKeys.length>1){
+              } else if (checkedKeys.length > 1) {
                 self.$message({
                   type: "warning",
-                  message: '只能选择一个资源!'
+                  message: "只能选择一个资源!"
                 });
-              }else{
+              } else {
                 $("body").attr("menuId", checkedKeys[0]);
                 self.$refs.tree.dialogVisible = true;
                 self.$refs.tree.currentComponent = "resourceUpdate";
               }
             }
-          },
+          }
           // {
           //   text: "清空",
           //   type: "btn-success",
@@ -265,6 +275,38 @@ export default {
     var self = this;
     self.$parent.title = self.cfg.title;
     self.$parent.parentTitle = self.cfg.parentTitle;
+  },
+  methods: {
+    onDialogBtnCancel: function() {
+      this.dialogVisible = false;
+      this.currentComponent = "";
+    },
+    onDialogBtnOk: function() {
+      var self = this;
+      var selectedTableData = this.$refs.myApplyCompent.selectedTableData;
+      if (selectedTableData.length == 0) {
+        this.$message({
+          message: "未选择员工",
+          type: "warning"
+        });
+      } else {
+        this.dialogVisible = false;
+        this.currentComponent = "";
+        var messsage = "";
+
+        this.$confirm("确认要『" + messsage + "』吗, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            //do
+          })
+          .catch(e => {
+            console.log(e);
+          });
+      }
+    }
   }
 };
 </script>

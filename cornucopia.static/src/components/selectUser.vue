@@ -37,6 +37,7 @@
 </template>
 <script>
 export default {
+  props:["multiple"],
   mounted: function() {
     var self = this;
   },
@@ -44,7 +45,7 @@ export default {
     var self = this;
     return {
       selectedTableData: [],
-      single: true,
+      // single: true,
       cfg: {
         url: "/auth/allOrg",
         hideCheckBox: true,
@@ -56,8 +57,8 @@ export default {
       },
       cfgUser: {
         autoLoad: false,
-        showRadio: true,
-        showCheckBox: false,
+        showRadio: !this.multiple,
+        showCheckBox: this.multiple,
         height: "270px",
         url: "/user/list",
         columns: [
@@ -103,7 +104,7 @@ export default {
     selectedHandleDelete: function(i, r) {
       var index = this.getIndexWithArr(this.selectedTableData, r);
       this.selectedTableData.splice(index, 1);
-      if (this.single) {
+      if (this.cfgUser.showRadio) {
         this.$refs.user.radio = "";
       } else {
         this.$refs.user.toggleRowSelection(r);
