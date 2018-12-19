@@ -358,7 +358,7 @@ Vue.prototype.get = function(p) {
         xhrFields: {
             withCredentials: true
         },
-        async: p.async || true,
+        async: typeof(p.async) == "undefined"? true : p.async,
         url: jsonData.ApiBaseUrl + p.url,
         data: p.data || '',
         success: function(result) {

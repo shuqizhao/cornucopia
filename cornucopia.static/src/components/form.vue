@@ -19,7 +19,7 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form class="form-inline form" onsubmit='return false;' role="form" style="text-align:center">
+        <form class="form-inline form" onsubmit='return false;' role="form" style="">
             <div class="box-body">
                 <template v-for="item in cfg.items" >
                     <input v-if="item.type=='hidden'" :id="item.name" type="hidden" :key="item.name" class="form-control" :value="detail[item.name]" :controltype='item.type' />
@@ -1015,6 +1015,7 @@ export default {
       self.value1[id] = [];
       self.get({
         async: false,
+        url:url,
         success: function(data) {
           if (data.left) {
             for (var i in data.left) {
