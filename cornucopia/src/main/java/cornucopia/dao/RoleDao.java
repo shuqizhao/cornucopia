@@ -2,6 +2,7 @@ package cornucopia.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
@@ -40,6 +41,9 @@ public interface RoleDao {
 	
 	@Update("call sp_role_delete(#{id})")
 	public int delete(@Param("id")int id);
+
+	@Delete("call sp_role_delete_user(#{userId},#{roleId})")
+	public int deleteUser(@Param("userId") int userId,@Param("roleId") int roleId);
 
 	@Select("call sp_role_get(#{id})")
 	public RoleEntity get(@Param("id")int id);

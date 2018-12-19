@@ -55,6 +55,13 @@ public class RoleService {
 		return roledao.delete(id);
 	}
 
+	public int deleteUsers(RoleAddUserViewModel rauvm) {
+		for (int userId : rauvm.getUserIds()) {
+			roledao.deleteUser(userId, rauvm.getRoleId());
+		}
+		return 1;
+	}
+
 	public RoleEntity get(int id) {
 		return roledao.get(id);
 	}

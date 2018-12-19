@@ -109,7 +109,7 @@ export default {
           ]
         },
         onRowSelected: function(datas) {
-          if(datas.length==0){
+          if (datas.length == 0) {
             return;
           }
           var data = datas[0];
@@ -190,7 +190,7 @@ export default {
           more: [
             {
               text: "删除",
-              url: "/role/delete"
+              url: "/role/deleteUsers"
             }
           ]
         }
@@ -334,7 +334,7 @@ export default {
           .then(() => {
             //do
             self.post({
-              dataType:'json',
+              dataType: "json",
               url: "/role/addUser",
               data: {
                 roleId: self.currentRoleId,
@@ -342,6 +342,10 @@ export default {
               },
               success: function(r) {
                 if (r.code == 200) {
+                  self.$message({
+                    message: "添加成功!",
+                    type: "success"
+                  });
                   self.$refs.user.fillData();
                 }
               }

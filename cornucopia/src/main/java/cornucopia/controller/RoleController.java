@@ -85,8 +85,17 @@ public class RoleController {
 		return jr;
 	}
 
-	@RequestMapping(value = { "/addUser" }, method = RequestMethod.POST)
-	public JsonResult<Integer> addUser(@RequestBody RoleAddUserViewModel rauvm) {
+	@RequestMapping(value = { "/deleteUsers" }, method = RequestMethod.POST)
+	public JsonResult<Integer> deleteUsers(@RequestBody RoleAddUserViewModel rauvm) {
+		int result = RoleService.getInstance().deleteUsers(rauvm);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(result);
+		return jr;
+	}
+
+	@RequestMapping(value = { "/addUsers" }, method = RequestMethod.POST)
+	public JsonResult<Integer> addUsers(@RequestBody RoleAddUserViewModel rauvm) {
 	    int result =	RoleService.getInstance().insertUser(rauvm);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
