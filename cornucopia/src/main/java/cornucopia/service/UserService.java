@@ -41,6 +41,10 @@ public class UserService {
 		return userdao.getUsersByPage(pp,urvm);
 	}
 
+	public List<UserEntity> getUsersByRoleId(PagingParameters pp,int roleId,String userName) {
+		return userdao.getUsersByRoleId(pp,roleId,userName);
+	}
+
 	public UserEntity getUser(int id) {
 		return userdao.getUser(id);
 	}

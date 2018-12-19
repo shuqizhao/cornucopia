@@ -5,7 +5,7 @@
         <listV2 :cfg="cfgRole"></listV2>
       </el-col>
       <el-col :span="8">
-        <listV2 :cfg="cfgUser"></listV2>
+        <listV2 ref="user" :cfg="cfgUser"></listV2>
       </el-col>
       <el-col :span="8">
         <tree ref="tree" :cfg="treeCfg"></tree>
@@ -14,6 +14,7 @@
     <el-dialog
       ref="applyDialog"
       append-to-body
+      v-if="dialogVisible"
       :visible.sync="dialogVisible"
       :center="true"
       :width="'65%'"
@@ -109,6 +110,7 @@ export default {
         },
         onRowSelected: function(datas) {
           var data = datas[0];
+          self.currentRoleId = data.id;
           self.$refs.tree.cfg.title = data.name;
           self.openLoading(self.$refs.tree);
           self.get({
@@ -117,7 +119,6 @@ export default {
               if (response.code == "200") {
                 self.$refs.tree.setCheckedKeys(response.data);
                 self.closeLoading(self.$refs.tree);
-                self.currentRoleId = data.id;
               } else if (response.message) {
                 self.$message({
                   type: "warning",
@@ -126,12 +127,15 @@ export default {
               }
             }
           });
+          self.$refs.user.fillData({
+            roleId: self.currentRoleId
+          });
         }
       },
       cfgUser: {
         title: "角色人员",
         parentTitle: "权限管理",
-        url: "/role/list",
+        url: "/user/getByRoleId",
         // showRadio:true,
         autoLoad: false,
         // showCheckBox:false,
@@ -156,6 +160,11 @@ export default {
           }
         ],
         idName: "id",
+        beforeFillData: function() {
+          return {
+            roleId: self.currentRoleId
+          };
+        },
         functions: {
           common: [
             {
@@ -163,8 +172,14 @@ export default {
               url: selectUser,
               mode: "modal",
               onClick: function() {
+                if (!self.currentRoleId) {
+                  self.$message({
+                    message: "请先选择角色!",
+                    type: "warning"
+                  });
+                  return;
+                }
                 self.dialogVisible = true;
-                // self.currentComponent = selectUser;
                 self.applyDialogTitle = "选择员工";
               }
             }
@@ -273,8 +288,8 @@ export default {
   },
   updated: function() {
     var self = this;
-    self.$parent.title = self.cfg.title;
-    self.$parent.parentTitle = self.cfg.parentTitle;
+    // self.$parent.title = self.cfg.title;
+    // self.$parent.parentTitle = self.cfg.parentTitle;
   },
   methods: {
     onDialogBtnCancel: function() {
@@ -283,6 +298,15 @@ export default {
     },
     onDialogBtnOk: function() {
       var self = this;
+
+      if (!self.currentRoleId) {
+        self.$message({
+          message: "请先选择角色!",
+          type: "warning"
+        });
+        return;
+      }
+
       var selectedTableData = this.$refs.myApplyCompent.selectedTableData;
       if (selectedTableData.length == 0) {
         this.$message({
@@ -290,9 +314,14 @@ export default {
           type: "warning"
         });
       } else {
+        var userIds = [];
+        for (var i = 0; i < selectedTableData.length; i++) {
+          userIds.push(selectedTableData[i].id);
+        }
+
         this.dialogVisible = false;
         this.currentComponent = "";
-        var messsage = "";
+        var messsage = "添加";
 
         this.$confirm("确认要『" + messsage + "』吗, 是否继续?", "提示", {
           confirmButtonText: "确定",
@@ -301,6 +330,18 @@ export default {
         })
           .then(() => {
             //do
+            self.post({
+              url: "/role/AddUser",
+              data: {
+                roleId: self.currentRoleId,
+                userIs: userIds
+              },
+              success: function(r) {
+                if (r.code == 200) {
+                  self.$refs.user.fillData();
+                }
+              }
+            });
           })
           .catch(e => {
             console.log(e);

@@ -72,4 +72,17 @@ public class UserController {
 		jr.setData(av);
 		return jr;
 	}
+
+	@RequestMapping(value = { "/getByRoleId" }, method = RequestMethod.POST)
+	public DataTableResult<UserEntity> getByRoleId(DataTableParameter dtp) {
+		PagingParameters pp = new PagingParameters();
+		pp.setStart(dtp.getiDisplayStart());
+		pp.setLength(dtp.getiDisplayLength());
+		pp.setTotalRows(0);
+		UserSearchViewModel usvm = JSON.parseObject(dtp.getsSearch(), UserSearchViewModel.class);
+		List<UserEntity> users = UserService.getInstance().getUsersByRoleId(pp,usvm.getRoleId(),usvm.getName());
+		int count = pp.getTotalRows();
+		DataTableResult<UserEntity> dtr = new DataTableResult<UserEntity>(dtp.getsEcho() + 1, count, count, users);
+		return dtr;
+	}
 }

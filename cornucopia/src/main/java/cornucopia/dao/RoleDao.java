@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.mapping.StatementType;
 
 import cornucopia.entity.RoleEntity;
+import cornucopia.model.RoleAddUserViewModel;
 import cornucopia.util.PagingParameters;
 
 public interface RoleDao {
@@ -28,6 +29,9 @@ public interface RoleDao {
 //	@Options(useGeneratedKeys = true, keyProperty = "role.id",statementType = StatementType.CALLABLE)
 	@SelectKey(statement="Select LAST_INSERT_ID()", keyProperty="role.id", before=false, resultType=int.class)
 	public int insert(@Param("role") RoleEntity roleEntity);
+
+	@Insert("call sp_role_insert_user(#{userId},#{roleId})")
+	public int insertUser(@Param("userId") int userId,@Param("roleId") int roleId);
 
 	@Update("call sp_role_disable(#{id})")
 	public int disable(@Param("id")int id);

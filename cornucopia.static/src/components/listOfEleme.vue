@@ -344,7 +344,7 @@ export default {
                 p,
                 self.cfg.beforeFillData
                   ? self.cfg.beforeFillData(self.formInline)
-                  : []
+                  : {}
               )
             )
           },

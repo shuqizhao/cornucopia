@@ -24,6 +24,10 @@ public interface UserDao {
 	@Options(statementType = StatementType.CALLABLE)
 	public List<UserEntity> getUsersByPage(@Param("pp") PagingParameters pp,@Param("usvm")UserSearchViewModel usvm);
 
+	@Select("call sp_user_get_by_role_id(#{pp.start},#{pp.length},#{roleId},#{userName},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
+	@Options(statementType = StatementType.CALLABLE)
+	public List<UserEntity> getUsersByRoleId(@Param("pp") PagingParameters pp,@Param("roleId")int roleId,@Param("userName")String userName);
+
 	@Select("call sp_user_get(#{userId})")
 	public UserEntity getUser(@Param("userId") int id);
 

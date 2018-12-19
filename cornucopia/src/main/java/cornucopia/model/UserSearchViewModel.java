@@ -1,6 +1,7 @@
 package cornucopia.model;
 
 public class UserSearchViewModel{
+    private int roleId;
     private int orgId;
     private String name;
     private int isEnable;
@@ -10,6 +11,20 @@ public class UserSearchViewModel{
      */
     public int getOrgId() {
         return orgId;
+    }
+
+    /**
+     * @return the roleId
+     */
+    public int getRoleId() {
+        return roleId;
+    }
+
+    /**
+     * @param roleId the roleId to set
+     */
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 
     /**

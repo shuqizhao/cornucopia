@@ -4,6 +4,7 @@ import java.util.List;
 
 import cornucopia.dao.RoleDao;
 import cornucopia.entity.RoleEntity;
+import cornucopia.model.RoleAddUserViewModel;
 import cornucopia.util.MyBatisHelper;
 import cornucopia.util.PagingParameters;
 
@@ -22,7 +23,7 @@ public class RoleService {
 	public List<RoleEntity> getRolesByPage(PagingParameters pp) {
 		return roledao.getRolesByPage(pp);
 	}
-	
+
 	public List<RoleEntity> getAllRoles() {
 		return roledao.getAllRoles();
 	}
@@ -32,25 +33,33 @@ public class RoleService {
 	}
 
 	public int insert(RoleEntity roleEntity) {
-		 return roledao.insert(roleEntity);
+		return roledao.insert(roleEntity);
+	}
+
+	public int insertUser(RoleAddUserViewModel rauvm) {
+		for (int roleId : rauvm.getRoleIds()) {
+			roledao.insertUser(rauvm.getUserId(), roleId);
+		}
+		return 1;
 	}
 
 	public int disable(int id) {
 		return roledao.disable(id);
 	}
-	
+
 	public int enable(int id) {
 		return roledao.enable(id);
 	}
-	
+
 	public int delete(int id) {
 		return roledao.delete(id);
 	}
-	
+
 	public RoleEntity get(int id) {
 		return roledao.get(id);
 	}
-	public List<Integer> getUserIdsByRoleId(String id){
+
+	public List<Integer> getUserIdsByRoleId(String id) {
 		return roledao.getUserIdsByRoleId(id);
 	}
 }

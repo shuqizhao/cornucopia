@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cornucopia.entity.JsonResult;
 import cornucopia.entity.RoleEntity;
+import cornucopia.model.RoleAddUserViewModel;
 import cornucopia.service.RoleService;
 import cornucopia.util.DataTableParameter;
 import cornucopia.util.DataTableResult;
@@ -77,6 +78,15 @@ public class RoleController {
 	@RequestMapping(value = { "/delete" }, method = RequestMethod.POST)
 	public JsonResult<Integer> delete(@RequestParam(value = "Ids") int id) {
 		int result = RoleService.getInstance().delete(id);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(result);
+		return jr;
+	}
+
+	@RequestMapping(value = { "/addUser" }, method = RequestMethod.POST)
+	public JsonResult<Integer> addUser(RoleAddUserViewModel rauvm) {
+	    int result =	RoleService.getInstance().insertUser(rauvm);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(result);
