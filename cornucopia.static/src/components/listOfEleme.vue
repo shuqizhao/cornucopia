@@ -429,8 +429,13 @@ export default {
               }
               form.submit();
             } else {
-              debugger;
-
+              var commitData = { Ids: formData };
+              $.extend(
+                commitData,
+                self.cfg.beforeBtnClick
+                  ? self.cfg.beforeBtnClick(commitData)
+                  : {}
+              )
               self.post({
                 url: c.url,
                 traditional: true,

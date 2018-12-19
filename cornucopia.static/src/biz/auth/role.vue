@@ -168,6 +168,11 @@ export default {
             roleId: self.currentRoleId
           };
         },
+        beforeBtnClick: function() {
+          return {
+            roleId: self.currentRoleId
+          };
+        },
         functions: {
           common: [
             {
@@ -335,7 +340,7 @@ export default {
             //do
             self.post({
               dataType: "json",
-              url: "/role/addUser",
+              url: "/role/addUsers",
               data: {
                 roleId: self.currentRoleId,
                 userIds: userIds

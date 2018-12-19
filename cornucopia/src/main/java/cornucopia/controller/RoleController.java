@@ -86,7 +86,10 @@ public class RoleController {
 	}
 
 	@RequestMapping(value = { "/deleteUsers" }, method = RequestMethod.POST)
-	public JsonResult<Integer> deleteUsers(@RequestBody RoleAddUserViewModel rauvm) {
+	public JsonResult<Integer> deleteUsers(@RequestParam(value = "Ids") int[] ids,int roleId) {
+		RoleAddUserViewModel rauvm = new RoleAddUserViewModel();
+		rauvm.setRoleId(roleId);
+		rauvm.setUserIds(ids);
 		int result = RoleService.getInstance().deleteUsers(rauvm);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
