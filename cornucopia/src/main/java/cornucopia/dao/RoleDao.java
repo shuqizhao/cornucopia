@@ -11,7 +11,6 @@ import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.mapping.StatementType;
 
 import cornucopia.entity.RoleEntity;
-import cornucopia.model.RoleAddUserViewModel;
 import cornucopia.util.PagingParameters;
 
 public interface RoleDao {
