@@ -59,8 +59,8 @@ public class RoleController {
 	}
 	
 	@RequestMapping(value = { "/disable" }, method = RequestMethod.POST)
-	public JsonResult<Integer> disable(@RequestParam(value = "Ids") int id) {
-		int result = RoleService.getInstance().disable(id);
+	public JsonResult<Integer> disable(@RequestParam(value = "Ids[]") int[] ids) {
+		int result = RoleService.getInstance().disable(ids[0]);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(result);
@@ -68,8 +68,8 @@ public class RoleController {
 	}
 	
 	@RequestMapping(value = { "/enable" }, method = RequestMethod.POST)
-	public JsonResult<Integer> enable(@RequestParam(value = "Ids") int id) {
-		int result = RoleService.getInstance().enable(id);
+	public JsonResult<Integer> enable(@RequestParam(value = "Ids[]") int[] ids) {
+		int result = RoleService.getInstance().enable(ids[0]);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(result);
@@ -77,8 +77,8 @@ public class RoleController {
 	}
 	
 	@RequestMapping(value = { "/delete" }, method = RequestMethod.POST)
-	public JsonResult<Integer> delete(@RequestParam(value = "Ids") int id) {
-		int result = RoleService.getInstance().delete(id);
+	public JsonResult<Integer> delete(@RequestParam(value = "Ids[]") int[] ids) {
+		int result = RoleService.getInstance().delete(ids[0]);
 		JsonResult<Integer> jr = new JsonResult<Integer>();
 		jr.setCode(200);
 		jr.setData(result);
@@ -86,7 +86,7 @@ public class RoleController {
 	}
 
 	@RequestMapping(value = { "/deleteUsers" }, method = RequestMethod.POST)
-	public JsonResult<Integer> deleteUsers(@RequestParam(value = "Ids") int[] ids,int roleId) {
+	public JsonResult<Integer> deleteUsers(@RequestParam(value = "Ids[]") int[] ids,int roleId) {
 		RoleAddUserViewModel rauvm = new RoleAddUserViewModel();
 		rauvm.setRoleId(roleId);
 		rauvm.setUserIds(ids);

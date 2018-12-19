@@ -430,7 +430,7 @@ export default {
               form.submit();
             } else {
               var commitData = { Ids: formData };
-              $.extend(
+              commitData = $.extend(
                 commitData,
                 self.cfg.beforeBtnClick
                   ? self.cfg.beforeBtnClick(commitData)
@@ -440,7 +440,7 @@ export default {
                 url: c.url,
                 traditional: true,
                 // dataType:'json',
-                data: { Ids: formData },
+                data: commitData,
                 success: function(response) {
                   if (c.onSuccess) {
                     c.onSuccess(response);
