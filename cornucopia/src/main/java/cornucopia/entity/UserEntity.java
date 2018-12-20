@@ -1,7 +1,7 @@
 package cornucopia.entity;
 
 public class UserEntity extends BaseEntity {
-	private String loinName;
+	private String loginName;
 
 	private String pwd;
 
@@ -89,12 +89,12 @@ public class UserEntity extends BaseEntity {
 		this.phone = phone;
 	}
 
-	public String getLoinName() {
-		return loinName;
+	public String getLoginName() {
+		return loginName;
 	}
 
-	public void setLoinName(String loinName) {
-		this.loinName = loinName;
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
 	}
 
 	public String getJobName() {

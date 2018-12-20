@@ -24,9 +24,13 @@ export default {
             isSearch: true
           },
           {
+            title: "登陆名",
+            name: "loginName"
+          },
+          {
             title: "是否启用",
             name: "isEnabled",
-            isSearch: true,
+            // isSearch: true,
             type: "combox",
             data: [
               {
@@ -53,12 +57,12 @@ export default {
           {
             title: "工号",
             name: "personNumber",
-            isSearch: true,
+            // isSearch: true,
             // fixed:true
           },
           {
             title: "职位",
-            name: "jobId"
+            name: "jobName"
           },
           {
             title: "工作邮箱",
@@ -70,22 +74,22 @@ export default {
           },
           {
             title: "所属上级",
-            name: "managerId"
+            name: "managerName"
           },
           {
             title: "所在部门",
-            name: "orgId"
+            name: "orgName"
           },
           {
             title: "创建时间",
             name: "createTime",
-            isSearch: true,
+            // isSearch: true,
             type: "timer"
           },
           {
             title: "修改时间",
             name: "updateTime",
-            isSearch: true,
+            // isSearch: true,
             type: "timer"
           },
           {
