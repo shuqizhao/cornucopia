@@ -83,11 +83,10 @@ export default {
     return {
       processes: [],
       cfg: {
-        // searchMode: "vertical",
         autoLoad: false,
         title: "流程监控",
         parentTitle: "系统管理",
-        url: "/process/taskList",
+        url: "/process/monitorList",
         columns: [
           {
             title: "流程名称",

@@ -28,6 +28,7 @@ import cornucopia.entity.UserEntity;
 import cornucopia.model.DoActionViewModel;
 import cornucopia.model.ProcessDataViewModel;
 import cornucopia.model.ProcessInstAuthViewModel;
+import cornucopia.model.ProcessMonitorViewModel;
 import cornucopia.model.ProcessSearchViewModel;
 import cornucopia.service.OrderService;
 import cornucopia.service.ProcessApproveService;
@@ -752,5 +753,19 @@ public class ProcessContorller {
 			jr.setMessage("没有权限");
 		}
 		return jr;
+	}
+
+	@RequestMapping(value = { "/monitorList" }, method = RequestMethod.POST)
+	public DataTableResult<ProcessDataEntity> monitorList(HttpServletRequest request, DataTableParameter dtp) {
+		PagingParameters pp = new PagingParameters();
+		pp.setStart(dtp.getiDisplayStart());
+		pp.setLength(dtp.getiDisplayLength());
+		// UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		ProcessMonitorViewModel pmvm = JSON.parseObject(dtp.getsSearch(), ProcessMonitorViewModel.class);
+		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().monitorList(pp,pmvm);
+		int count = pp.getTotalRows();
+		DataTableResult<ProcessDataEntity> dtr = new DataTableResult<ProcessDataEntity>(dtp.getsEcho() + 1, count,
+				count, processDatas);
+		return dtr;
 	}
 }

@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.mapping.StatementType;
 
 import cornucopia.entity.ProcessDataEntity;
+import cornucopia.model.ProcessMonitorViewModel;
 import cornucopia.model.ProcessSearchViewModel;
 import cornucopia.util.PagingParameters;
 
@@ -23,6 +24,11 @@ public interface ProcessDataDao {
 	@Options(statementType = StatementType.CALLABLE)
 	public List<ProcessDataEntity> launchedList(@Param("pp") PagingParameters pp, @Param("userId") int userId,
 			@Param("psvm") ProcessSearchViewModel psvm);
+
+	@Select("call sp_process_data_get_by_monitor_list(#{pp.start},#{pp.length},#{pmvm.processId},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
+	@Options(statementType = StatementType.CALLABLE)
+	public List<ProcessDataEntity> monitorList(@Param("pp") PagingParameters pp,
+			@Param("pmvm") ProcessMonitorViewModel pmvm);
 
 	@Select("call sp_process_data_get_by_mylaunched_category_group(#{userId})")
 	@Options(statementType = StatementType.CALLABLE)
@@ -50,7 +56,8 @@ public interface ProcessDataDao {
 
 	@Select("call sp_process_data_get_by_task_list(#{pp.start},#{pp.length},#{userId},#{psvm.columnName},#{psvm.columnValue},#{psvm.processId},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
 	@Options(statementType = StatementType.CALLABLE)
-	public List<ProcessDataEntity> taskList(@Param("pp") PagingParameters pp, @Param("userId") int userId,@Param("psvm") ProcessSearchViewModel psvm);
+	public List<ProcessDataEntity> taskList(@Param("pp") PagingParameters pp, @Param("userId") int userId,
+			@Param("psvm") ProcessSearchViewModel psvm);
 
 	@Select("call sp_process_data_get_by_inst_id(#{instId})")
 	public ProcessDataEntity getByInstId(@Param("instId") String instId);
@@ -66,5 +73,6 @@ public interface ProcessDataDao {
 
 	@Select("call sp_process_data_get_by_dealed_list(#{pp.start},#{pp.length},#{userId},#{psvm.columnName},#{psvm.columnValue},#{psvm.processId},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
 	@Options(statementType = StatementType.CALLABLE)
-	public List<ProcessDataEntity> dealedList(@Param("pp") PagingParameters pp, @Param("userId") int userId,@Param("psvm") ProcessSearchViewModel psvm);
+	public List<ProcessDataEntity> dealedList(@Param("pp") PagingParameters pp, @Param("userId") int userId,
+			@Param("psvm") ProcessSearchViewModel psvm);
 }
