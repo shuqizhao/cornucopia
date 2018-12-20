@@ -756,15 +756,15 @@ public class ProcessContorller {
 	}
 
 	@RequestMapping(value = { "/monitorList" }, method = RequestMethod.POST)
-	public DataTableResult<ProcessDataEntity> monitorList(HttpServletRequest request, DataTableParameter dtp) {
+	public DataTableResult<ProcessMonitorViewModel> monitorList(HttpServletRequest request, DataTableParameter dtp) {
 		PagingParameters pp = new PagingParameters();
 		pp.setStart(dtp.getiDisplayStart());
 		pp.setLength(dtp.getiDisplayLength());
 		// UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		ProcessMonitorViewModel pmvm = JSON.parseObject(dtp.getsSearch(), ProcessMonitorViewModel.class);
-		List<ProcessDataEntity> processDatas = ProcessDataService.getInstance().monitorList(pp,pmvm);
+		List<ProcessMonitorViewModel> processDatas = ProcessDataService.getInstance().monitorList(pp,pmvm);
 		int count = pp.getTotalRows();
-		DataTableResult<ProcessDataEntity> dtr = new DataTableResult<ProcessDataEntity>(dtp.getsEcho() + 1, count,
+		DataTableResult<ProcessMonitorViewModel> dtr = new DataTableResult<ProcessMonitorViewModel>(dtp.getsEcho() + 1, count,
 				count, processDatas);
 		return dtr;
 	}

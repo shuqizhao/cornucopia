@@ -27,7 +27,7 @@ public interface ProcessDataDao {
 
 	@Select("call sp_process_data_get_by_monitor_list(#{pp.start},#{pp.length},#{pmvm.processId},#{pp.totalRows,mode=OUT,jdbcType=INTEGER})")
 	@Options(statementType = StatementType.CALLABLE)
-	public List<ProcessDataEntity> monitorList(@Param("pp") PagingParameters pp,
+	public List<ProcessMonitorViewModel> monitorList(@Param("pp") PagingParameters pp,
 			@Param("pmvm") ProcessMonitorViewModel pmvm);
 
 	@Select("call sp_process_data_get_by_mylaunched_category_group(#{userId})")

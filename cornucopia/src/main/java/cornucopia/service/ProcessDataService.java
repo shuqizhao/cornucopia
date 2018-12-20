@@ -30,7 +30,7 @@ public class ProcessDataService {
 		return processDataDao.launchedList(pp, userId, psvm);
 	}
 
-	public List<ProcessDataEntity> monitorList(PagingParameters pp, ProcessMonitorViewModel pmvm) {
+	public List<ProcessMonitorViewModel> monitorList(PagingParameters pp, ProcessMonitorViewModel pmvm) {
 		return processDataDao.monitorList(pp, pmvm);
 	}
 

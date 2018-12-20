@@ -90,10 +90,13 @@ export default {
         columns: [
           {
             title: "流程名称",
-            name: "processName",
+            name: "processId",
             isSearch: true,
             type: "combox",
-            data: []
+            data: [],
+            formatter: function(data) {
+              return data.processName;
+            }
           },
           {
             title: "申请单号",
@@ -114,12 +117,15 @@ export default {
               return f;
             }
           },
-           {
+          {
             title: "申请人",
-            name: "createName",
-            isSearch: true
+            name: "createBy",
+            isSearch: true,
+            formatter: function(data) {
+              return data.createName;
+            }
           },
-           {
+          {
             title: "申请人账号",
             name: "loginName"
           },
@@ -220,48 +226,48 @@ export default {
           common: [
             {
               text: "重试",
-              url: "/process/monitorRetry",
-            //   mode: "navigate",
-            //   functionName: "monitorRetry"
+              url: "/process/monitorRetry"
+              //   mode: "navigate",
+              //   functionName: "monitorRetry"
             },
             {
               text: "启动",
               url: "/auth/userAdd",
-              mode: "navigate",
-            //   functionName: "processStart"
+              mode: "navigate"
+              //   functionName: "processStart"
             },
             {
               text: "删除",
               url: "/auth/userAdd",
-              mode: "navigate",
-            //   functionName: "processDelete"
+              mode: "navigate"
+              //   functionName: "processDelete"
             },
             {
               text: "跳转",
               url: "/auth/userAdd",
-              mode: "navigate",
-            //   functionName: "processJump"
+              mode: "navigate"
+              //   functionName: "processJump"
             },
             {
               text: "修改",
               url: "/auth/userAdd",
-              mode: "navigate",
-            //   functionName: "processUpdate"
+              mode: "navigate"
+              //   functionName: "processUpdate"
             },
             {
               text: "解析",
               url: "/auth/userAdd",
-              mode: "navigate",
-            //   functionName: "processParse"
+              mode: "navigate"
+              //   functionName: "processParse"
             },
-             {
+            {
               text: "模拟",
               url: "/auth/userAdd",
-              mode: "navigate",
-            //   functionName: "processDiagram"
+              mode: "navigate"
+              //   functionName: "processDiagram"
             }
           ]
-        },
+        }
       }
     };
   }
