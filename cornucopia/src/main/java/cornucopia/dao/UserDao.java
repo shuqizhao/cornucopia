@@ -51,4 +51,10 @@ public interface UserDao {
 
 	@Update("call sp_user_update_last_login_time(#{id})")
 	public int updateLastLoginTime(@Param("id")int id);
+
+	@Update("call sp_user_disable(#{id})")
+	public int disable(@Param("id")int id);
+	
+	@Update("call sp_user_enable(#{id})")
+	public int enable(@Param("id")int id);
 }

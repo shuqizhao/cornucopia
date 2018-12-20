@@ -100,4 +100,12 @@ public class UserService {
 	public ApplicantViewModel getApplicant(int id) {
 		return userdao.getApplicant(id);
 	}
+
+	public int enable(int id) {
+		return userdao.enable(id);
+	}
+
+	public int disable(int id) {
+		return userdao.disable(id);
+	}
 }

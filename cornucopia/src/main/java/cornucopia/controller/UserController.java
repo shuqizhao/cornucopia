@@ -85,4 +85,22 @@ public class UserController {
 		DataTableResult<UserEntity> dtr = new DataTableResult<UserEntity>(dtp.getsEcho() + 1, count, count, users);
 		return dtr;
 	}
+
+	@RequestMapping(value = { "/disable" }, method = RequestMethod.POST)
+	public JsonResult<Integer> disable(@RequestParam(value = "Ids[]")int[] ids) {
+		int result = UserService.getInstance().disable(ids[0]);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(result);
+		return jr;
+	}
+
+	@RequestMapping(value = { "/enable" }, method = RequestMethod.POST)
+	public JsonResult<Integer> enable(@RequestParam(value = "Ids[]")int[] ids) {
+		int result = UserService.getInstance().enable(ids[0]);
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		jr.setCode(200);
+		jr.setData(result);
+		return jr;
+	}
 }
