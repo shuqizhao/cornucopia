@@ -19,7 +19,7 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form class="form-inline form" onsubmit='return false;' role="form" style="">
+        <form class="form-inline form" onsubmit='return false;' role="form" style="text-align:center">
             <div class="box-body">
                 <template v-for="item in cfg.items" >
                     <input v-if="item.type=='hidden'" :id="item.name" type="hidden" :key="item.name" class="form-control" :value="detail[item.name]" :controltype='item.type' />

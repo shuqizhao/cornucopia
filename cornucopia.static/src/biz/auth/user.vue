@@ -8,12 +8,8 @@ export default {
     var self = this;
     return {
       cfg: {
-        // isShowSearchArea:"true",
-        scrollX: true,
-        scrollCollapse: true,
-        fixedColumns: {
-          leftColumns: 4
-        },
+        showRadio: true,
+        showCheckBox: false,
         title: "用户管理",
         parentTitle: "系统管理",
         url: "/user/list",
@@ -56,7 +52,7 @@ export default {
           },
           {
             title: "工号",
-            name: "personNumber",
+            name: "personNumber"
             // isSearch: true,
             // fixed:true
           },
