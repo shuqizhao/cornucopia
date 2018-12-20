@@ -35,7 +35,7 @@
           <a @click="onProcessClick(process)">{{process.name}}</a>
         </el-tag>
       </el-badge>
-    </template>
+    </template>-->
     <template slot="column">
       <el-table-column label="流程图">
         <template slot-scope="scope">
@@ -45,16 +45,16 @@
           </el-popover>
         </template>
       </el-table-column>
-    </template>-->
+    </template>
   </listV2>
 </template>
 <script>
-// import diagram from "../task/processInstDiagram.vue";
+import diagram from "../task/processInstDiagram.vue";
 
 export default {
-  //   components: {
-  //     diagram
-  //   },
+    components: {
+      diagram
+    },
   methods: {
     getProcesses: function(categoryId) {
       self = this;
