@@ -48,4 +48,7 @@ public interface UserDao {
 
 	@Select("call usp_user_get_applicant(#{id})")
 	public ApplicantViewModel getApplicant(@Param("id")int id);
+
+	@Update("call sp_user_update_last_login_time(#{id})")
+	public int updateLastLoginTime(@Param("id")int id);
 }

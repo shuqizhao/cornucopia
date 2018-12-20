@@ -37,6 +37,10 @@ public class UserService {
 		return userEntity;
 	}
 
+	public int updateLastLoginTime(int id) {
+		return userdao.updateLastLoginTime(id);
+	}
+
 	public List<UserEntity> getUsersByPage(PagingParameters pp,UserSearchViewModel urvm) {
 		return userdao.getUsersByPage(pp,urvm);
 	}

@@ -36,6 +36,7 @@ public class AuthController {
 		UserEntity userEntity = UserService.getInstance().isLogin(un, pwd);
 		if (userEntity != null) {
 			code = 200;
+			UserService.getInstance().updateLastLoginTime(userEntity.getId());
 			CookieUtil.set(response, "adAuthCookie", "true", 3600 * 24);
 			CookieUtil.set(response, "loginUser", un, 3600 * 24);
 			request.getSession().setAttribute("user", userEntity);
