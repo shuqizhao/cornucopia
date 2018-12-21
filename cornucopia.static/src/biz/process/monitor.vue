@@ -234,7 +234,7 @@ export default {
             },
             {
               text: "启动",
-              url: "/auth/monitorStart",
+              url: "/process/monitorStart",
               //   functionName: "processStart"
             },
             {

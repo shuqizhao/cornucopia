@@ -85,7 +85,7 @@ public interface ProcessDataDao {
 	@Options(statementType = StatementType.CALLABLE)
 	public int unDelete(@Param("id") int id, @Param("procinstId") String procinstId);
 
-	@Select("call sp_process_data_job_exists(#{procinstId})")
+	@Select("call sp_process_data_task_exists(#{procinstId})")
 	@Options(statementType = StatementType.CALLABLE)
-	public int jobExists(@Param("procinstId") String procinstId);
+	public int taskExists(@Param("procinstId") String procinstId);
 }

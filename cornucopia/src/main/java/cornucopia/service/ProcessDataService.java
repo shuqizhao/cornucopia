@@ -97,7 +97,7 @@ public class ProcessDataService {
 		return processDataDao.unDelete(id, procinstId);
 	}
 
-	public boolean jobExists(String procinstId) {
-		return processDataDao.jobExists(procinstId) > 0;
+	public boolean taskExists(String procinstId) {
+		return processDataDao.taskExists(procinstId) > 0;
 	}
 }

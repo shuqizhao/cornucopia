@@ -807,7 +807,7 @@ public class ProcessContorller {
 		int processDataId = ids[0];
 		// UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(processDataId);
-		boolean isJobExists =	ProcessDataService.getInstance().jobExists(processDataEntity.getProcinstId());
+		boolean isJobExists =	ProcessDataService.getInstance().taskExists(processDataEntity.getProcinstId());
 		if (processDataEntity.getProcessStatus() != 1) {
 			jr.setCode(500);
 			jr.setMessage("流程已结束");
