@@ -121,6 +121,7 @@ export default {
             title: "申请人",
             name: "createBy",
             isSearch: true,
+            type:"popup",
             formatter: function(data) {
               return data.createName;
             }

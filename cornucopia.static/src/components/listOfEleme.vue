@@ -106,6 +106,15 @@
                 ></el-date-picker>
               </el-form-item>
               <el-form-item
+                v-else-if="column.isSearch&&column.type=='popup'"
+                :key="column.name"
+                :label="column.title+' :'"
+              >
+                <el-input v-model="formInline[column.name]" disabled placeholder>
+                  <el-button slot="append" icon="el-icon-search" @click="onPopupClick(column)"></el-button>
+                </el-input>
+              </el-form-item>
+              <el-form-item
                 v-else-if="column.isSearch"
                 :key="column.name"
                 :label="column.title+' :'"
@@ -228,11 +237,34 @@
     >
       <component style="margin-top:-40px;margin-bottom:-40px;" v-bind:is="currentComponent"></component>
     </el-dialog>
+    <el-dialog
+      ref="applyDialog"
+      append-to-body
+      v-if="popupDialogVisible"
+      :visible.sync="popupDialogVisible"
+      :center="true"
+      :width="'65%'"
+      :title="applyDialogTitle"
+    >
+      <selectUser
+        ref="myApplyCompent"
+        :multiple="false"
+        style="margin-top:-40px;margin-bottom:-40px;"
+      ></selectUser>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="onDialogBtnCancel">取 消</el-button>
+        <el-button type="primary" @click="onDialogBtnOk">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import selectUser from "./selectUser.vue";
 export default {
+  components: {
+    selectUser
+  },
   props: ["cfg"],
   created: function() {
     self = this;
@@ -266,6 +298,9 @@ export default {
       searchColumns: [],
       formInline: {},
       dialogVisible: false,
+      popupDialogVisible: false,
+      applyDialogTitle: "",
+      currentPopupColumn:"",
       currentComponent: "",
       tableData: [],
       multipleSelection: [],
@@ -358,8 +393,8 @@ export default {
     },
     onButtonClick(c, e) {
       var self = this;
-      if(c.onClick){
-        c.onClick(c,e);
+      if (c.onClick) {
+        c.onClick(c, e);
         return;
       }
       if (c.mode == "navigate") {
@@ -435,7 +470,7 @@ export default {
                 self.cfg.beforeBtnClick
                   ? self.cfg.beforeBtnClick(commitData)
                   : {}
-              )
+              );
               self.post({
                 url: c.url,
                 traditional: true,
@@ -485,6 +520,32 @@ export default {
     onVerticalSelectChange(v) {
       this.formInline = {};
       this.formInline["columnName"] = v;
+    },
+    onPopupClick(column) {
+      this.currentPopupColumn = column;
+      this.popupDialogVisible = true;
+      this.applyDialogTitle = "选择员工";
+    },
+     onDialogBtnCancel: function() {
+      this.popupDialogVisible = false;
+      // this.currentComponent = "";
+    },
+    onDialogBtnOk: function(item) {
+      var self = this;
+
+      var selectedTableData = this.$refs.myApplyCompent.selectedTableData;
+      if (selectedTableData.length == 0) {
+        this.$message({
+          message: "未选择员工",
+          type: "warning"
+        });
+      } else {
+        debugger;
+        this.formInline[this.currentPopupColumn.name]=selectedTableData[0].id;
+
+        this.popupDialogVisible = false;
+        this.currentComponent = "";
+      }
     }
   }
 };
