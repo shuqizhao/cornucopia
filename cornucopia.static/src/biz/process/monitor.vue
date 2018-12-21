@@ -244,9 +244,11 @@ export default {
             },
             {
               text: "跳转",
-              url: "/auth/userAdd",
-              mode: "navigate"
-              //   functionName: "processJump"
+              url: "/process/monitorJump",
+              // functionName: "monitorJump",
+              onClick: function() {
+                alert("jump");
+              }
             },
             {
               text: "修改",
