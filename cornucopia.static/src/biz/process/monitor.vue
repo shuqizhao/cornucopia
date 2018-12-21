@@ -240,7 +240,7 @@ export default {
             {
               text: "删除",
               url: "/process/monitorDelete",
-              //   functionName: "monitorDelete"
+              functionName: "monitorDelete"
             },
             {
               text: "跳转",

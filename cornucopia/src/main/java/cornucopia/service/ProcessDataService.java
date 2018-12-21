@@ -92,4 +92,12 @@ public class ProcessDataService {
 	public int delete(int id) {
 		return processDataDao.delete(id);
 	}
+
+	public int unDelete(int id, String procinstId) {
+		return processDataDao.unDelete(id, procinstId);
+	}
+
+	public boolean jobExists(String procinstId) {
+		return processDataDao.jobExists(procinstId) > 0;
+	}
 }

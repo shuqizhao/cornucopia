@@ -89,7 +89,7 @@ public class ProcessService {
 		RuntimeService rs = ActivitiHelper.GetEngine().getRuntimeService();
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("dealUser", userId);
-		variables.put("isWhile", "1");
+		// variables.put("isWhile", "1");
 		ProcessInstance pi = rs.startProcessInstanceByKey(key, variables);
 		String instId = pi.getProcessInstanceId();
 		return instId;

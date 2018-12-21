@@ -77,7 +77,15 @@ public interface ProcessDataDao {
 	public List<ProcessDataEntity> dealedList(@Param("pp") PagingParameters pp, @Param("userId") int userId,
 			@Param("psvm") ProcessSearchViewModel psvm);
 
-	@Delete("call sp_process_data_delete(#{id})")
+	@Update("call sp_process_data_delete(#{id})")
 	@Options(statementType = StatementType.CALLABLE)
 	public int delete(@Param("id") int id);
+
+	@Update("call sp_process_data_undelete(#{id},#{procinstId})")
+	@Options(statementType = StatementType.CALLABLE)
+	public int unDelete(@Param("id") int id, @Param("procinstId") String procinstId);
+
+	@Select("call sp_process_data_job_exists(#{procinstId})")
+	@Options(statementType = StatementType.CALLABLE)
+	public int jobExists(@Param("procinstId") String procinstId);
 }

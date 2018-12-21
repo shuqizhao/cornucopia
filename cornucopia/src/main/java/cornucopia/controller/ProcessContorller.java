@@ -793,4 +793,34 @@ public class ProcessContorller {
 		}
 		return jr;
 	}
+
+	@Transactional(rollbackFor = Exception.class)
+	@RequestMapping(value = { "/monitorStart" }, method = RequestMethod.POST)
+	public JsonResult<Integer> monitorStart(HttpServletRequest request, @RequestParam(value = "Ids[]") int[] ids)
+			throws DocumentException, UnsupportedEncodingException {
+		JsonResult<Integer> jr = new JsonResult<Integer>();
+		if (ids.length > 1) {
+			jr.setCode(500);
+			jr.setMessage("只能选择一行");
+			return jr;
+		}
+		int processDataId = ids[0];
+		// UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+		ProcessDataEntity processDataEntity = ProcessDataService.getInstance().get(processDataId);
+		boolean isJobExists =	ProcessDataService.getInstance().jobExists(processDataEntity.getProcinstId());
+		if (processDataEntity.getProcessStatus() != 1) {
+			jr.setCode(500);
+			jr.setMessage("流程已结束");
+		}else if (isJobExists) {
+			jr.setCode(500);
+			jr.setMessage("流程已存在");
+		} else {
+			ProcessService.getInstance().StartProcess(processDataEntity);
+			ProcessDataService.getInstance().unDelete(processDataId,processDataEntity.getProcinstId());
+			ProcessService.getInstance().Complete(processDataEntity);
+			jr.setCode(200);
+			jr.setData(1);
+		}
+		return jr;
+	}
 }
