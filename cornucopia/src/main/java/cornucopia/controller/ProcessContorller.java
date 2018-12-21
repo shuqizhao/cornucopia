@@ -813,7 +813,7 @@ public class ProcessContorller {
 			jr.setMessage("流程已结束");
 		}else if (isJobExists) {
 			jr.setCode(500);
-			jr.setMessage("流程已存在");
+			jr.setMessage("流程任务已存在");
 		} else {
 			ProcessService.getInstance().StartProcess(processDataEntity);
 			ProcessDataService.getInstance().unDelete(processDataId,processDataEntity.getProcinstId());
