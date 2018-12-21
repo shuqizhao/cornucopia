@@ -52,9 +52,9 @@
 import diagram from "../task/processInstDiagram.vue";
 
 export default {
-    components: {
-      diagram
-    },
+  components: {
+    diagram
+  },
   methods: {
     getProcesses: function(categoryId) {
       self = this;
@@ -121,8 +121,8 @@ export default {
             title: "申请人",
             name: "createBy",
             isSearch: true,
-            type:"popup",
-            displayName:"name",
+            type: "popup",
+            displayName: "name",
             formatter: function(data) {
               return data.createName;
             }
@@ -235,7 +235,7 @@ export default {
             {
               text: "启动",
               url: "/process/monitorStart",
-              //   functionName: "processStart"
+              functionName: "monitorStart"
             },
             {
               text: "删除",
