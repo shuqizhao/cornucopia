@@ -234,15 +234,13 @@ export default {
             },
             {
               text: "启动",
-              url: "/auth/userAdd",
-              mode: "navigate"
+              url: "/auth/monitorStart",
               //   functionName: "processStart"
             },
             {
               text: "删除",
-              url: "/auth/userAdd",
-              mode: "navigate"
-              //   functionName: "processDelete"
+              url: "/process/monitorDelete",
+              //   functionName: "monitorDelete"
             },
             {
               text: "跳转",

@@ -2,6 +2,7 @@ package cornucopia.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
@@ -75,4 +76,8 @@ public interface ProcessDataDao {
 	@Options(statementType = StatementType.CALLABLE)
 	public List<ProcessDataEntity> dealedList(@Param("pp") PagingParameters pp, @Param("userId") int userId,
 			@Param("psvm") ProcessSearchViewModel psvm);
+
+	@Delete("call sp_process_data_delete(#{id})")
+	@Options(statementType = StatementType.CALLABLE)
+	public int delete(@Param("id") int id);
 }

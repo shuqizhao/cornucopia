@@ -88,4 +88,8 @@ public class ProcessDataService {
 	public List<ProcessDataEntity> dealedList(PagingParameters pp, int userId, ProcessSearchViewModel psvm) {
 		return processDataDao.dealedList(pp, userId, psvm);
 	}
+
+	public int delete(int id) {
+		return processDataDao.delete(id);
+	}
 }
