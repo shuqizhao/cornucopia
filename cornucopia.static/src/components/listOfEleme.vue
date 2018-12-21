@@ -110,7 +110,9 @@
                 :key="column.name"
                 :label="column.title+' :'"
               >
-                <el-input v-model="formInline[column.name]" disabled placeholder>
+                <el-input v-model="formInline[column.displayName]" style="width:100px;z-index:1;" disabled placeholder>
+                </el-input>
+                <el-input v-model="formInline[column.name]" style="width:1px;margin-left:-35px;" disabled placeholder>
                   <el-button slot="append" icon="el-icon-search" @click="onPopupClick(column)"></el-button>
                 </el-input>
               </el-form-item>
@@ -542,7 +544,7 @@ export default {
       } else {
         debugger;
         this.formInline[this.currentPopupColumn.name]=selectedTableData[0].id;
-
+        this.formInline[this.currentPopupColumn.displayName]=selectedTableData[0][this.currentPopupColumn.displayName];
         this.popupDialogVisible = false;
         this.currentComponent = "";
       }

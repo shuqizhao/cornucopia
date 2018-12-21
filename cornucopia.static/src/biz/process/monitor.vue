@@ -122,6 +122,7 @@ export default {
             name: "createBy",
             isSearch: true,
             type:"popup",
+            displayName:"name",
             formatter: function(data) {
               return data.createName;
             }
